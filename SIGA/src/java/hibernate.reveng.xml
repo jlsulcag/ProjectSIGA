@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="sigadb" match-schema="siga"/>
+  <table-filter match-name="unidad_medida"/>
+  <table-filter match-name="producto"/>
+  <table-filter match-name="marca"/>
+  <table-filter match-name="categoria"/>
+</hibernate-reverse-engineering>

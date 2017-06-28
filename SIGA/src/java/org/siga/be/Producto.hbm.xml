@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 09/06/2017 11:14:23 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.Producto" table="producto" schema="siga" optimistic-lock="version">
+        <id name="idproducto" type="int">
+            <column name="idproducto" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="categoria" class="org.siga.be.Categoria" fetch="select">
+            <column name="id_categoria" not-null="true" />
+        </many-to-one>
+        <many-to-one name="marca" class="org.siga.be.Marca" fetch="select">
+            <column name="id_marca" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unidadMedida" class="org.siga.be.UnidadMedida" fetch="select">
+            <column name="id_unidadmedida" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="60" not-null="true" />
+        </property>
+        <property name="codigo" type="string">
+            <column name="codigo" length="30" not-null="true" />
+        </property>
+        <property name="stockMinimo" type="int">
+            <column name="stock_minimo" not-null="true" />
+        </property>
+        <property name="stockMaximo" type="int">
+            <column name="stock_maximo" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

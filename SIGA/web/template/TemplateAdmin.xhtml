@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>.:SIGA:.</title>
+    </h:head>
+
+    <h:body>
+        <div class="ui-fluid">
+            <div id="top">
+                <ui:insert name="top">
+                    <p:panelGrid columns="2">
+                        <div id="logo">Logo</div>
+                        <div id="options">
+                            <h:form>
+                                <p:menubar>
+                                    <f:facet name="options">
+                                        <p:outputLabel value="Bienvenido(a) : " style="margin-right: 5px;"></p:outputLabel>
+                                        <p:menuButton value="#" iconPos="fa fa-user">
+                                            <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w"/>
+                                            <p:menuitem value="Información" icon="fa fa-user"/>
+                                        </p:menuButton>
+                                        <p:commandButton id="btnCancelarRegistro"  action="#"
+                                                         icon="fa fa-power-off" value="Cerrar Sesión" title="Cerrar Sesión"/>
+                                    </f:facet>
+                                </p:menubar>
+                            </h:form>
+
+                        </div>
+                    </p:panelGrid>
+
+                </ui:insert>
+            </div>
+            <div>
+                <div id="left">
+                    <ui:insert name="left">
+                        <h:form>
+                            <p:menu>
+                                <p:submenu label="File">
+                                    <p:menuitem value="Save" url="#" icon="ui-icon-disk" />
+                                    <p:menuitem value="Update" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                                </p:submenu>
+                                <p:submenu label="Edit">
+                                    <p:menuitem value="Delete" url="#" icon="ui-icon-close"/>
+                                </p:submenu>
+                                <p:submenu label="View">
+                                    <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
+                                    <p:menuitem value="Internal" icon="ui-icon-star"/>
+                                </p:submenu>
+                            </p:menu>
+                        </h:form>
+                    </ui:insert>
+                </div>
+                <div id="content" class="left_content">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+            </div>
+            <div id="bottom">
+                <ui:insert name="bottom">Bottom</ui:insert>
+            </div>
+        </div>
+    </h:body>
+
+</html>

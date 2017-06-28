@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form> 
+            <p:menubar>
+                <p:menuitem value="Inicio" url="/admin/page/inicioComision.xhtml" icon="ui-icon-home" />
+
+                <p:submenu label="Autoevaluación">
+                    <p:menuitem value="Administrar autoevaluación" url="/admin/page/administrarAutoevaluacion.xhtml"  />
+
+                </p:submenu>
+                <p:submenu label="Cuestionario">
+                    <p:menuitem value="Administrar cuestionario" url="/admin/page/administrarCuestionario.xhtml"  />
+                </p:submenu>
+                <p:submenu label="Encuesta">
+                    <p:menuitem value="Administrar encuesta" url="/admin/page/administrarEncuesta.xhtml"  />
+                </p:submenu>
+                <p:submenu label="Reportes">
+                    <p:menuitem value="Formato RD" url="formatoRD.xhtml" />
+                    <p:menuitem value="Formato RE" url="formatoRE.xhtml" />
+                    <p:menuitem value="Formato RP" url="formatoRP.xhtml" />
+                </p:submenu>
+                <p:submenu label="Estadisticas">
+                    <p:menuitem value="Encuestas" url="estadisticasEncuesta.xhtml" />                       
+                    <p:menuitem value="Generales" url="estadisticasTotal.xhtml" />                       
+                </p:submenu> 
+                <p:submenu label="Procesamiento">
+                    <p:menuitem value="Formato MR" url="/admin/page/formatoMR.xhtml" />
+                    <p:menuitem value="Formato RR" url="/admin/page/formatoRR.xhtml" />
+                    <p:menuitem value="Formato RC" url="/admin/page/formatoRC.xhtml" />
+                    <p:menuitem value="Formato RM" url="/admin/page/formatoRM.xhtml" />                        
+                </p:submenu>
+
+
+                <f:facet name="options">
+                    <p:outputLabel value="Bienvenido(a) : " style="margin-right: 5px;"></p:outputLabel>
+                    <p:menuButton value="#" iconPos="fa fa-user">
+                        <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:menuitem value="Información" icon="fa fa-user"/>
+                    </p:menuButton>
+                    <p:commandButton id="btnCancelarRegistro"  action="#"
+                                     icon="fa fa-power-off" value="Cerrar Sesión" title="Cerrar Sesión"/>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+    </h:body>
+</html>
+
