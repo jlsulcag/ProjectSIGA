@@ -10,31 +10,42 @@
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/cssLayout.css"/>
         <h:outputStylesheet name="./css/login.css"/>
+        <h:outputStylesheet name="./css/style.css"/>
         <title>.:SIGA:.</title>
     </h:head>
 
     <h:body>
-        <p:layout fullPage="true">
-            <p:layoutUnit position="center">
-                <!--
-     <div id="top">
-         <ui:insert name="top">Top</ui:insert>
-     </div>
-                -->
-                <div id="content" class="center_content">
-                    <ui:insert name="content">Content</ui:insert>
-                </div>
-                <!--
-                <div id="bottom">
-                    <ui:insert name="bottom">Bottom</ui:insert>
-                </div>
-                -->
-                
-            </p:layoutUnit>
+        <div class="background">
+            <p:layout fullPage="true">
+                <p:layoutUnit position="center">
+                    <div class="cabecera">
+                        <a href="./index.xhtml">
+                            <div class="banner">
+                                <div class="logo">
+                                    <div class="logo_unsch_banner" style="width: 80px;height: 100px;"></div>                       
+                                </div>
+                                <div class="masterinfo">                            
+                                    SISTEMA DE GESTION DE ALMACEN<br/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="content" class="center_content">
+                        <ui:insert name="content">
 
-        </p:layout>
-
-
+                        </ui:insert>
+                    </div>
+                    <div class="pie_login">
+                        <div class="info_pie">
+                            copyright &copy; 2017 | 
+                            <a href="#" target="_black">
+                                CACSMM 
+                            </a>  
+                        </div>
+                    </div>
+                </p:layoutUnit>
+            </p:layout>
+        </div>
     </h:body>
 
 </html>

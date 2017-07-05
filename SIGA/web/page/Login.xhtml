@@ -10,36 +10,29 @@
 
         <ui:composition template="./../template/TemplateLogin.xhtml">
             <ui:define name="content">
+                <p:growl id="growl" showDetail="true" life="3000" showSummary="true"/>
+                <h:form>
+                    <div class="centrarDiv">
+                        <p:panel id="pnlLogin" header="Iniciar Sesión">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel for="txtUsuario" value="Usuario :"/>
+                                <p:inputText id="txtUsuario" required="true"/>
 
-                <div class="contenedor">
-                    <div class="panel">
-                        <div class="box">
-                            <p:growl id="growl" showDetail="true" life="3000" showSummary="true"/>
-                            <h:form>
-                                <div class="divPanel">
-                                    <p:panel id="pnlLogin" header="Iniciar Sesión">
-                                        <h:panelGrid columns="2">
-                                            <h:outputLabel for="txtUsuario" value="Usuario :"/>
-                                            <p:inputText id="txtUsuario" required="true"/>
+                                <h:outputLabel for="txtContrasenia" value="Contraseña : "/>
+                                <p:password id="txtContrasenia" required="true"/>
 
-                                            <h:outputLabel for="txtContrasenia" value="Contraseña : "/>
-                                            <p:password id="txtContrasenia" required="true"/>
-
-                                            <f:facet name="footer">
-                                                <p:separator />
-                                                <div style="width: 100%;text-align: center;">
-                                                    <p:commandButton value="Iniciar Sesion" update=":growl" icon="ui-icon ui-icon-key"
-                                                                     />      
-                                                </div>                                    
-                                            </f:facet>
-                                        </h:panelGrid>
-                                    </p:panel>
-                                </div>
-
-                            </h:form>
-                        </div>
+                                <f:facet name="footer">
+                                    <p:separator />
+                                    <div style="width: 100%;text-align: center;">
+                                        <p:commandButton value="Iniciar Sesion" update=":growl" icon="ui-icon ui-icon-key"
+                                                         />      
+                                    </div>                                    
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:panel>
                     </div>
-                </div>
+
+                </h:form>
 
 
 
