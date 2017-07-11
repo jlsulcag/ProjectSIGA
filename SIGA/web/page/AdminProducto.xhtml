@@ -13,6 +13,9 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnl_adminproducto" header="Administrar Producto">
+                    <h:form id="formBtnNew">
+                        <p:commandButton id="btnNew" icon="icon-add" value="Nuevo" title="Nuevo" />                  
+                    </h:form>
                     <h:form>
                         <p:dataTable id="lista" value="#" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
@@ -32,41 +35,36 @@
                                 <h:outputText />
                             </p:column>
 
-                            <p:column headerText="Código" style="width: 220px">
+                            <p:column headerText="Código" style="width: 50px">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column headerText="Stock Min" style="width:60px;text-align: center">
+                            <p:column headerText="Stock Min" style="width:50px;text-align: center">
                                 <h:outputText />
                             </p:column>
 
-                            <p:column headerText="Stock Max" style="width:100px;">
+                            <p:column headerText="Stock Max" style="width:50px;">
                                 <h:outputText />
                             </p:column>
 
 
-                            <p:column headerText="Categoría" style="width:10px;">
+                            <p:column headerText="Categoría" style="width:80px;">
                                 <h:outputText />
                             </p:column>
-
-                            <p:column headerText="Estado" style="width: 10px; text-align: center">
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText /></f:facet>
-                                    <f:facet name="input">
-                                        <p:selectOneMenu id="cbx_estado" label="Estado" style="width: 150px"
-                                                         value="#">
-                                            <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true" />
-                                            <f:selectItem itemLabel="Activado" itemValue="true"/>
-                                            <f:selectItem itemLabel="Desactivado" itemValue="false"/>
-                                        </p:selectOneMenu>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnEdit" update="" oncomplete="" 
+                                                 icon="icon-editar" title="Editar">
+                                    <f:setPropertyActionListener value="" target="#" />
+                                </p:commandButton>                            
+                            </p:column>
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnDelete" update="" oncomplete="" 
+                                                 immediate="True" icon="icon-eliminar" title="Eliminar">
+                                    <f:setPropertyActionListener value="#" target="#" />           
+                                </p:commandButton>                                                        
 
                             </p:column>
 
-                            <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
-                                <p:rowEditor />
-                            </p:column>
                         </p:dataTable>
                     </h:form>
                     <h:panelGrid columns="3" cellpadding="5">

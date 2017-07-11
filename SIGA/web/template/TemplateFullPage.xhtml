@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,9 +16,21 @@
     <h:body>
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="50">
+            <p:layoutUnit position="north" size="65">
                 <ui:insert name="top">
-
+                    <h:form>
+                        <p:menubar style="border: 0">
+                            <f:facet name="options">
+                                <p:outputLabel value="Bienvenido(a) : " style="margin-right: 5px;"></p:outputLabel>
+                                <p:menuButton value="#" iconPos="fa fa-user">
+                                    <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w"/>
+                                    <p:menuitem value="Información" icon="fa fa-user"/>
+                                </p:menuButton>
+                                <p:commandButton id="btnCancelarRegistro"  action="#"
+                                                 icon="fa fa-power-off" value="Cerrar Sesión" title="Cerrar Sesión"/>
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
                 </ui:insert>
             </p:layoutUnit>
 
@@ -31,17 +44,31 @@
                 <ui:insert name="left">
                     <h:form>
                         <p:menu toggleable="true" style="width: 95%">
-                            <p:submenu label="File">
-                                <p:menuitem value="Save" url="#" icon="ui-icon-disk" />
-                                <p:menuitem value="Update" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                            <p:submenu label="ALMACEN">
+                                <p:menuitem value="Productos" url="#" icon="ui-icon-disk" />
+                                <p:menuitem value="Movimientos" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                                <p:menuitem value="Inventario" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                                <p:menuitem value="Stock" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                                <p:menuitem value="Formula/Receta" url="#" icon="ui-icon-arrowrefresh-1-w"/>
                             </p:submenu>
-                            <p:submenu label="Edit">
-                                <p:menuitem value="Delete" url="#" icon="ui-icon-close"/>
+                            <p:submenu label="COMPRAS">
+                                <p:menuitem value="Proveedores" url="#" icon="ui-icon-close"/>
+                                <p:menuitem value="Orden de compra" url="#" icon="ui-icon-close"/>
+                                <p:menuitem value="Productos" url="#" icon="ui-icon-close"/>
+                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-close"/>
+                                <p:menuitem value="Documentos" url="#" icon="ui-icon-close"/>
                             </p:submenu>
-                            <p:submenu label="View">
+                            <p:submenu label="CONFIGURACIÓN">
+                                <p:menuitem value="Productos" url="http://www.primefaces.org" icon="ui-icon-home"/>
+                                <p:menuitem value="Proveedor"  icon="ui-icon-star"/>
+                                <p:menuitem value="Almacen"  icon="ui-icon-star"/>
+                                <p:menuitem value="Dependencia/Área"  icon="ui-icon-star"/>
+                            </p:submenu>
+                            <p:submenu label="REPORTES">
                                 <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
                                 <p:menuitem value="Internal"  icon="ui-icon-star"/>
                             </p:submenu>
+
                         </p:menu>
                         <!--
                         <p:menu>
