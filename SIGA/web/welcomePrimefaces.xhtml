@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Header
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <p:menu>
+                        <p:submenu label="Resources">
+                            <p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
+                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
+                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+
+                        </p:submenu>
+
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    Welcome to PrimeFaces
+                    <p:growl id="msg" showDetail="true"/>
+                    <p:panel id="pnl_adminproducto" header="Administrar Producto">
+                        <h:form id="formBtnNew">
+                            <p:commandButton id="btnNew" icon="icon-add" value="Nuevo" title="Nuevo" 
+                                             update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
+                        </h:form>
+                        <h:form>
+                            <p:dataTable id="lista" value="#" var="item"
+                                         paginator="true" rows="10" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20" editable="true">
+                                <f:facet name="header">
+                                    Productos
+                                </f:facet>
+
+                                <p:ajax event="rowEdit"  update=":msg"/>
+                                <p:ajax event="rowEditCancel" update=":msg"/>
+
+                                <p:column style="width:15px;text-align: center" headerText="Nº">
+                                    <h:outputText />
+                                </p:column>
+                                <p:column headerText="Descripción" style=" width: 250px">
+                                    <h:outputText />
+                                </p:column>
+
+                                <p:column headerText="Código" style="width: 50px">
+                                    <h:outputText />
+                                </p:column>
+
+                                <p:column headerText="Stock Min" style="width:50px;text-align: center">
+                                    <h:outputText />
+                                </p:column>
+
+                                <p:column headerText="Stock Max" style="width:50px;">
+                                    <h:outputText />
+                                </p:column>
+
+
+                                <p:column headerText="Categoría" style="width:80px;">
+                                    <h:outputText />
+                                </p:column>
+                                <p:column style="width:30px;text-align: center">
+                                    <p:commandButton id="btnEdit" update="" oncomplete="" 
+                                                     icon="icon-editar" title="Editar">
+                                        <f:setPropertyActionListener value="" target="#" />
+                                    </p:commandButton>                            
+                                </p:column>
+                                <p:column style="width:30px;text-align: center">
+                                    <p:commandButton id="btnDelete" update="" oncomplete="" 
+                                                     immediate="True" icon="icon-eliminar" title="Eliminar">
+                                        <f:setPropertyActionListener value="#" target="#" />           
+                                    </p:commandButton>                                                        
+
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+
+
+                        <h:form id="formNew">
+                            <p:dialog header="Registrar Producto" widgetVar="dlgNew" id="dlgNew" modal="false" resizable="false" closable="true">
+                                <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+                                    <h:outputLabel for="cbxCategoria" value="categoría :"/>
+                                    <p:selectOneMenu id="cbxCategoria" >
+                                        <f:selectItem itemLabel="Seleccione"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </p:dialog>
+                        </h:form>
+
+                    </p:panel>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

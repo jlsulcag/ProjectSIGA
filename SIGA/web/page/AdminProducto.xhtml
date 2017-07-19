@@ -14,7 +14,8 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnl_adminproducto" header="Administrar Producto">
                     <h:form id="formBtnNew">
-                        <p:commandButton id="btnNew" icon="icon-add" value="Nuevo" title="Nuevo" />                  
+                        <p:commandButton id="btnNew" icon="icon-add" value="Nuevo" title="Nuevo" 
+                                         update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
                     </h:form>
                     <h:form>
                         <p:dataTable id="lista" value="#" var="item"
@@ -67,9 +68,45 @@
 
                         </p:dataTable>
                     </h:form>
-                    <h:panelGrid columns="3" cellpadding="5">
 
-                    </h:panelGrid>
+
+                    <h:form id="formNew">
+                        <p:dialog header="Registrar Producto" widgetVar="dlgNew" id="dlgNew" modal="false" resizable="false" closable="true" class="dialog">
+                            <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+
+                                <h:outputLabel for="txtDescripcion" value="Descripción :"/>
+                                <p:inputText id="txtDescripcion" label="Descripción"/>
+
+                                <h:outputLabel for="txtCodigo" value="Codigo :"/>
+                                <p:inputText id="txtCodigo" label="Codigo"/>
+
+                                <h:outputLabel for="cbxCategoria" value="Categoría :"/>
+                                <p:selectOneMenu id="cbxCategoria" >
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
+                                <p:spinner id="spStockMin" />
+                                
+                                <h:outputLabel for="spStockMax" value="Stock Máximo: " />
+                                <p:spinner id="spStockMax" />
+                                
+                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
+                                <p:selectOneMenu id="cbxUnidadMedida" >
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                </p:selectOneMenu>
+                                
+                                <h:outputLabel for="cbxEstado" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstado" style="width: 150px">
+                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
+                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+                                </p:selectOneMenu>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
                 </p:panel>
             </ui:define>
 
