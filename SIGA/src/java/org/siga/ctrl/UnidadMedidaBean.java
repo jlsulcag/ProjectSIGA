@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.context.RequestContext;
 import org.siga.be.UnidadMedida;
 import org.siga.bl.UnidadMedidaBl;
 import org.siga.util.MensajeView;
@@ -35,6 +36,41 @@ public class UnidadMedidaBean {
             MensajeView.registroError();
         }
         listar();
+    }
+    
+    public void actualizar(){
+        UnidadMedida temp = new UnidadMedida();
+        temp = buscarId();
+        temp.setDescripcion(getUnidadMedida().getDescripcion().toUpperCase());
+        res = getUnidadMedidaBl().actualizar(temp);
+        if(res == 0){
+            MensajeView.actCorrecto();
+        }else{
+            MensajeView.actError();
+        }
+        listar();
+    }
+    
+    public void eliminar() {
+        UnidadMedida temp = new UnidadMedida();
+        temp = buscarId();
+        res = getUnidadMedidaBl().eliminar(temp);
+        if(res == 0){
+            MensajeView.eliminacionCorrecta();
+        }else{
+            MensajeView.eliminacionErronea();
+        }
+        listar();
+    }
+    
+    public void limpiar(){
+        unidadMedida.setIdunidadmedida(0);
+        unidadMedida.setDescripcion("");
+        
+    }
+    
+    public void reset(){
+        RequestContext.getCurrentInstance().reset("formNew:dlgNew");
     }
     
     @PostConstruct
@@ -72,6 +108,10 @@ public class UnidadMedidaBean {
 
     public void setUnidadMedida(UnidadMedida unidadMedida) {
         this.unidadMedida = unidadMedida;
+    }
+
+    private UnidadMedida buscarId() {
+        return unidadMedidaBl.buscar(getUnidadMedida().getIdunidadmedida());
     }
     
 }

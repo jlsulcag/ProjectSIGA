@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public abstract class AbstractDA<T> implements DAO<T>{
-    private static final int SUCCESS=0,ERROR=-1;
+    private static final long SUCCESS=0,ERROR=-1;
     @Autowired  
     @Qualifier("sessionFactory")
     private SessionFactory sessionFactory;
