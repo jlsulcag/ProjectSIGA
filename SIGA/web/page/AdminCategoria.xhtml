@@ -12,22 +12,19 @@
 
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel id="pnl_adminproducto" header="Administrar Producto">
+                <p:panel id="pnl_admincategoria" header="Administrar Categoria">
                     <h:form id="formBtnNew">
                         <p:commandButton id="btnNew" icon="ui-icon-extlink" value="Nuevo" title="Nuevo" 
                                          update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
                     </h:form>
                     <h:form>
-                        <p:dataTable id="lista" value="#" var="item"
+                        <p:dataTable id="lista" value="#{categoriaBean.listCategorias}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">
-                                Productos
+                                Categorias
                             </f:facet>
-
-                            <p:ajax event="rowEdit"  update=":msg"/>
-                            <p:ajax event="rowEditCancel" update=":msg"/>
 
                             <p:column style="width:15px;text-align: center" headerText="Nº">
                                 <h:outputText />
@@ -36,28 +33,17 @@
                                 <h:outputText />
                             </p:column>
 
-                            <p:column headerText="Código" style="width: 50px">
+                            <p:column headerText="Estado" style="width: 50px">
                                 <h:outputText />
                             </p:column>
-
-                            <p:column headerText="Stock Min" style="width:50px;text-align: center">
-                                <h:outputText />
-                            </p:column>
-
-                            <p:column headerText="Stock Max" style="width:50px;">
-                                <h:outputText />
-                            </p:column>
-
-
-                            <p:column headerText="Categoría" style="width:80px;">
-                                <h:outputText />
-                            </p:column>
+                            
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnEdit" update="" oncomplete="" 
                                                  icon="icon-editar" title="Editar">
                                     <f:setPropertyActionListener value="" target="#" />
                                 </p:commandButton>                            
                             </p:column>
+                            
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update="" oncomplete="" 
                                                  immediate="True" icon="icon-eliminar" title="Eliminar">
@@ -71,31 +57,12 @@
 
 
                     <h:form id="formNew">
-                        <p:dialog header="Registrar Producto" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                        <p:dialog header="Registrar Categoría" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
                                 <p:inputText id="txtDescripcion" label="Descripción" style="width: 400px"/>
-
-                                <h:outputLabel for="txtCodigo" value="Codigo :"/>
-                                <p:inputText id="txtCodigo" label="Codigo" style="width: 400px"/>
-
-                                <h:outputLabel for="cbxCategoria" value="Categoría :"/>
-                                <p:selectOneMenu id="cbxCategoria" style="width: 300px">
-                                    <f:selectItem itemLabel="Seleccione"/>
-                                </p:selectOneMenu>
-
-                                <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
-                                <p:spinner id="spStockMin" />
-
-                                <h:outputLabel for="spStockMax" value="Stock Máximo: " />
-                                <p:spinner id="spStockMax" />
-
-                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
-                                <p:selectOneMenu id="cbxUnidadMedida" style="width: 150px">
-                                    <f:selectItem itemLabel="Seleccione"/>
-                                </p:selectOneMenu>
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px">

@@ -2,19 +2,19 @@
 package org.siga.bl;
 
 import java.util.List;
-import org.siga.be.Producto;
-import org.siga.dao.ProductoDao;
+import org.siga.be.UnidadMedida;
+import org.siga.dao.UnidadMedidaDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("productoBl")
-public class ProductoBl extends AbstractBL<Producto>{
+@Service
+public class UnidadMedidaBl extends AbstractBL<UnidadMedida>{
     @Autowired
-    @Qualifier("productoDao")
-    private ProductoDao dao;
+    @Qualifier("unidadMedidaDao")
+    private UnidadMedidaDao dao;
 
     @Override
     public AbstractDA getDAO() {
@@ -23,46 +23,46 @@ public class ProductoBl extends AbstractBL<Producto>{
 
     @Override
     public void setDA(AbstractDA dao) {
-        this.dao = (ProductoDao) dao;
+        this.dao = (UnidadMedidaDao) dao;
     }
 
     @Override
-    public long registrar(Producto bean) {
+    public long registrar(UnidadMedida bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(Producto bean) {
+    public long actualizar(UnidadMedida bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(Producto bean) {
+    public long eliminar(UnidadMedida bean) {
         return delete(bean);
     }
 
     @Override
-    public List<Producto> listar() {
+    public List<UnidadMedida> listar() {
         return list();
     }
 
     @Override
-    public List<Producto> listar(String ref) {
+    public List<UnidadMedida> listar(String ref) {
         return list(ref);
     }
 
     @Override
-    public List<Producto> listar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<UnidadMedida> listar(long id) {
+        return list(id);
     }
 
     @Override
-    public Producto buscar(long id) {
+    public UnidadMedida buscar(long id) {
         return search(id);
     }
 
     @Override
-    public Producto buscar(String ref) {
+    public UnidadMedida buscar(String ref) {
         return search(ref);
     }
 

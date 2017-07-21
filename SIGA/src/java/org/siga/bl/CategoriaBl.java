@@ -2,67 +2,67 @@
 package org.siga.bl;
 
 import java.util.List;
-import org.siga.be.Producto;
-import org.siga.dao.ProductoDao;
+import org.siga.be.Categoria;
+import org.siga.dao.CategoriaDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("productoBl")
-public class ProductoBl extends AbstractBL<Producto>{
+@Service("categoriaBl")
+public class CategoriaBl extends AbstractBL<Categoria>{
     @Autowired
-    @Qualifier("productoDao")
-    private ProductoDao dao;
-
+    @Qualifier("categoriaDao")
+    private CategoriaDao categoriaDao;
+    
     @Override
     public AbstractDA getDAO() {
-        return dao;
+        return categoriaDao;
     }
 
     @Override
     public void setDA(AbstractDA dao) {
-        this.dao = (ProductoDao) dao;
+        this.categoriaDao = (CategoriaDao) dao;
     }
 
     @Override
-    public long registrar(Producto bean) {
+    public long registrar(Categoria bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(Producto bean) {
+    public long actualizar(Categoria bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(Producto bean) {
+    public long eliminar(Categoria bean) {
         return delete(bean);
     }
 
     @Override
-    public List<Producto> listar() {
+    public List<Categoria> listar() {
         return list();
     }
 
     @Override
-    public List<Producto> listar(String ref) {
+    public List<Categoria> listar(String ref) {
         return list(ref);
     }
 
     @Override
-    public List<Producto> listar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Categoria> listar(long id) {
+        return list(id);
     }
 
     @Override
-    public Producto buscar(long id) {
+    public Categoria buscar(long id) {
         return search(id);
     }
 
     @Override
-    public Producto buscar(String ref) {
+    public Categoria buscar(String ref) {
         return search(ref);
     }
 

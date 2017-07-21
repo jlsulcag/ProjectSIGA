@@ -45,7 +45,7 @@ public class ProductoDao extends AbstractDA<Producto>{
 
     @Override
     public Producto buscar(String ref) {
-        return search("from producto p where p.descripcion = '"+ref+"'");
+        return search("from Producto p where p.descripcion = '"+ref+"'");
     }
 
     @Override

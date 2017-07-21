@@ -1,4 +1,8 @@
 
-.dialog{
-    width: 100%;
+.ui-dialog {
+    width: 800px;
+}
+
+.ui-dialog-content{
+    width: 600px;
 }

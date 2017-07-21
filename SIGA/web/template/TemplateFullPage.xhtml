@@ -10,7 +10,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/cssLayout.css"/>
-        <h:outputStylesheet name="./css/custom.css"/>
         <title>.:SIGA:.</title>
     </h:head>
 
@@ -46,28 +45,30 @@
                     <h:form>
                         <p:menu toggleable="true" style="width: 95%">
                             <p:submenu label="ALMACEN">
-                                <p:menuitem value="Productos" url="#" icon="ui-icon-disk" />
-                                <p:menuitem value="Movimientos" url="#" icon="ui-icon-arrowrefresh-1-w"/>
-                                <p:menuitem value="Inventario" url="#" icon="ui-icon-arrowrefresh-1-w"/>
-                                <p:menuitem value="Stock" url="#" icon="ui-icon-arrowrefresh-1-w"/>
-                                <p:menuitem value="Formula/Receta" url="#" icon="ui-icon-arrowrefresh-1-w"/>
+                                <p:menuitem value="Productos" url="#" icon="ui-icon-extlink" />
+                                <p:menuitem value="Movimientos" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Inventario" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Stock" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Formula/Receta" url="#" icon="ui-icon-extlink"/>
                             </p:submenu>
                             <p:submenu label="COMPRAS">
-                                <p:menuitem value="Proveedores" url="#" icon="ui-icon-close"/>
-                                <p:menuitem value="Orden de compra" url="#" icon="ui-icon-close"/>
-                                <p:menuitem value="Productos" url="#" icon="ui-icon-close"/>
-                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-close"/>
-                                <p:menuitem value="Documentos" url="#" icon="ui-icon-close"/>
+                                <p:menuitem value="Proveedores" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Orden de compra" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Productos" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Documentos" url="#" icon="ui-icon-extlink"/>
                             </p:submenu>
                             <p:submenu label="CONFIGURACIÓN">
-                                <p:menuitem value="Productos" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                                <p:menuitem value="Proveedor"  icon="ui-icon-star"/>
-                                <p:menuitem value="Almacen"  icon="ui-icon-star"/>
-                                <p:menuitem value="Dependencia/Área"  icon="ui-icon-star"/>
+                                <p:menuitem value="Categoria" url="/siga/page/AdminCategoria.xhtml" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Productos" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Proveedor"  icon="ui-icon-extlink"/>
+                                <p:menuitem value="Almacen"  icon="ui-icon-extlink"/>
+                                <p:menuitem value="Dependencia/Área"  icon="ui-icon-extlink" url="/siga/page/AdminDependencia.xhtml"/>
+                                <p:menuitem value="Unidad de Medida"  icon="ui-icon-extlink" url="/siga/page/AdminUnidadMedida.xhtml"/>
                             </p:submenu>
                             <p:submenu label="REPORTES">
-                                <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                                <p:menuitem value="Internal"  icon="ui-icon-star"/>
+                                <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Internal"  icon="ui-icon-extlink"/>
                             </p:submenu>
 
                         </p:menu>

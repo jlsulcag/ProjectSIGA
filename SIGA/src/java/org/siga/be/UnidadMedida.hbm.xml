@@ -6,7 +6,7 @@
     <class name="org.siga.be.UnidadMedida" table="unidad_medida" schema="siga" optimistic-lock="version">
         <id name="idunidadmedida" type="int">
             <column name="idunidadmedida" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="descripcion" type="string">
             <column name="descripcion" length="201" not-null="true" />
