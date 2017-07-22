@@ -14,10 +14,21 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnl_admincategoria" header="Administrar Categoria">
                     <h:form id="formBtnNew">
-                        <p:commandButton id="btnNew" icon="ui-icon-extlink" value="Nuevo" title="Nuevo" 
-                                         update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
+                                                 update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{categoriaBean.limpiar()}"/> 
+                            </f:facet>
+                            <f:facet name="right">
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{categoriaBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{categoriaBean.listarRef()}" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:toolbar>
+
                     </h:form>
-                    <h:form>
+                    <h:form id="formDataTable">
                         <p:dataTable id="lista" value="#{categoriaBean.listCategorias}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -27,27 +38,27 @@
                             </f:facet>
 
                             <p:column style="width:15px;text-align: center" headerText="Nº">
-                                <h:outputText />
+                                <h:outputText value="#{item.idcategoria}"/>
                             </p:column>
                             <p:column headerText="Descripción" style=" width: 250px">
-                                <h:outputText />
+                                <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
                             <p:column headerText="Estado" style="width: 50px">
                                 <h:outputText />
                             </p:column>
-                            
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnEdit" update="" oncomplete="" 
-                                                 icon="icon-editar" title="Editar">
-                                    <f:setPropertyActionListener value="" target="#" />
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{categoriaBean.categoria}" />
                                 </p:commandButton>                            
                             </p:column>
-                            
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="" 
-                                                 immediate="True" icon="icon-eliminar" title="Eliminar">
-                                    <f:setPropertyActionListener value="#" target="#" />           
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{categoriaBean.categoria}" />           
                                 </p:commandButton>                                                        
 
                             </p:column>
@@ -62,7 +73,7 @@
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
-                                <p:inputText id="txtDescripcion" label="Descripción" style="width: 400px"/>
+                                <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{categoriaBean.categoria.descripcion}" />
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px">
@@ -73,12 +84,57 @@
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton value="Save" icon="ui-icon-check" />
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{categoriaBean.registrar()}"/> 
                                     <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
                                 </f:facet>
 
                             </h:panelGrid>
                         </p:dialog>
+                    </h:form>
+
+                    <h:form id="formEdit">
+                        <p:dialog header="Actualizar datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridEdit" columns="2"  cellpadding="3">
+
+                                <h:inputHidden value="#{categoriaBean.categoria.idcategoria}" />
+                                <h:inputHidden />
+
+                                <h:outputLabel for="txtCategoriaEdit" value="Categoria :"/>
+                                <p:inputText id="txtCategoriaEdit" label="Categoria" required="true" value="#{categoriaBean.categoria.descripcion}" style="width: 400px; text-transform:uppercase;"/>
+
+                                <h:outputLabel for="cbxEstado" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
+                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+                                </p:selectOneMenu>
+
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
+                                                     title="Guardar" value="Guardar" actionListener="#{categoriaBean.actualizar()}"/>
+                                    <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
+                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="formDelete">
+                        <p:confirmDialog id="confirmDialog" message="¿Esta seguro que desea eliminar el registro?"
+                                         header="Eliminar Registro" widgetVar="dlgDelete" >
+                            <h:inputHidden value="#{categoriaBean.categoria.idcategoria}" />
+                            <p:commandButton id="btnConf" update=":formDataTable, :msg" value="Aceptar" styleClass="ui-confirmdialog-yes" 
+                                             icon="icon-aceptar" oncomplete="dlgDelete.hide()" 
+                                             actionListener="#{categoriaBean.eliminar()}"/>
+
+                            <p:commandButton id="btnCancel" value="Cancelar" styleClass="ui-confirmdialog-no" 
+                                             icon="icon-cancelar" oncomplete="PF('dlgDelete').hide();" />
+
+                        </p:confirmDialog>
                     </h:form>
 
                 </p:panel>

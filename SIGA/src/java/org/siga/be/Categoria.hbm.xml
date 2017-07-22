@@ -4,7 +4,7 @@
 <!-- Generated 09/06/2017 11:14:23 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="org.siga.be.Categoria" table="categoria" schema="siga" optimistic-lock="version">
-        <id name="idcategoria" type="int">
+        <id name="idcategoria" type="long">
             <column name="idcategoria" />
             <generator class="increment" />
         </id>

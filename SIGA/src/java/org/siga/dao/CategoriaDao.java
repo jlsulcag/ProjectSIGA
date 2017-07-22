@@ -31,7 +31,7 @@ public class CategoriaDao extends AbstractDA<Categoria>{
 
     @Override
     public List<Categoria> listar(String ref) {
-        return list(ref);
+        return list("from Categoria c where c.descripcion like '%"+ref+"%'");
     }
 
     @Override

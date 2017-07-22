@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Categoria  implements java.io.Serializable {
 
 
-     private int idcategoria;
+     private long idcategoria;
      private String descripcion;
      private Set<Producto> productos = new HashSet<Producto>(0);
 
@@ -31,11 +31,11 @@ public class Categoria  implements java.io.Serializable {
        this.productos = productos;
     }
    
-    public int getIdcategoria() {
+    public long getIdcategoria() {
         return this.idcategoria;
     }
     
-    public void setIdcategoria(int idcategoria) {
+    public void setIdcategoria(long idcategoria) {
         this.idcategoria = idcategoria;
     }
     public String getDescripcion() {
