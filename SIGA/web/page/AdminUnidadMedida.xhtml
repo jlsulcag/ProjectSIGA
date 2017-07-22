@@ -17,12 +17,14 @@
                     <h:form id="formBtnNew">
                         <p:toolbar>
                             <f:facet name="left">
-                                <p:commandButton id="btnNew" icon="ui-icon-extlink" value="Nuevo" title="Nuevo" 
+                                <p:commandButton id="btnNew" icon=" ui-icon-plus" value="Nuevo" title="Nuevo" 
                                                  update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{unidadMedidaBean.limpiar()}"/> 
                             </f:facet>
                             <f:facet name="right">
-                                <p:inputText id="txtBusqueda" style="width: 200px"/>
-                                <p:commandButton id="btnBuscar" icon ="ui-icon-searh" value="Buscar"/>
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{unidadMedidaBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{unidadMedidaBean.listarRef()}" />
+                                </p:inputText>
                             </f:facet>
                         </p:toolbar>
 
@@ -47,16 +49,16 @@
                                 <h:outputText />
                             </p:column>
 
-                            <p:column style="width:30px;text-align: center">
+                            <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
-                                                 icon="ui-icon-edit" title="Editar">
+                                                 icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{unidadMedidaBean.unidadMedida}" />
                                 </p:commandButton>                            
                             </p:column>
 
-                            <p:column style="width:30px;text-align: center">
+                            <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnDelete" update=":formDelete" oncomplete="PF('dlgDelete').show();" 
-                                                 immediate="True" icon="ui-icon-delete" title="Eliminar">
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
                                     <f:setPropertyActionListener value="#{item}" target="#{unidadMedidaBean.unidadMedida}" />           
                                 </p:commandButton>                                                        
 

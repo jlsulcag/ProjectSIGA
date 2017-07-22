@@ -24,6 +24,7 @@ public class UnidadMedidaBean {
     private List<UnidadMedida> listaUnidadMedidas = new LinkedList<>();
     private List<SelectItem> selectOneItemsUnidadMedida;
     private long res;
+    private String txtBusqueda;
     
     public UnidadMedidaBean() {
     }
@@ -69,6 +70,10 @@ public class UnidadMedidaBean {
         
     }
     
+    public void listarRef(){
+        setListaUnidadMedidas(unidadMedidaBl.listar(getTxtBusqueda()));
+    }
+    
     public void reset(){
         RequestContext.getCurrentInstance().reset("formNew:dlgNew");
     }
@@ -112,6 +117,14 @@ public class UnidadMedidaBean {
 
     private UnidadMedida buscarId() {
         return unidadMedidaBl.buscar(getUnidadMedida().getIdunidadmedida());
+    }
+
+    public String getTxtBusqueda() {
+        return txtBusqueda;
+    }
+
+    public void setTxtBusqueda(String txtBusqueda) {
+        this.txtBusqueda = txtBusqueda;
     }
     
 }

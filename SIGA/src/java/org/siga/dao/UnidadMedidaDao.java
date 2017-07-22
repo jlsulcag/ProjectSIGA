@@ -31,7 +31,7 @@ public class UnidadMedidaDao extends AbstractDA<UnidadMedida>{
 
     @Override
     public List<UnidadMedida> listar(String ref) {
-        return list(ref);
+        return list("from UnidadMedida u where u.descripcion like '%"+ref+"%'");
     }
 
     @Override
