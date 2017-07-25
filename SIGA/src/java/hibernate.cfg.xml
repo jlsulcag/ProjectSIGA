@@ -13,5 +13,6 @@
     <mapping resource="org/siga/be/Marca.hbm.xml"/>
     <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
     <mapping resource="org/siga/be/Producto.hbm.xml"/>
+    <mapping resource="org/siga/be/Almacen.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
