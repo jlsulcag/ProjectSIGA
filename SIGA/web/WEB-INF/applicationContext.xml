@@ -54,6 +54,7 @@
                 <value>/org/siga/be/Producto.hbm.xml</value>   
                 <value>/org/siga/be/UnidadMedida.hbm.xml</value>   
                 <value>/org/siga/be/Almacen.hbm.xml</value>   
+                <value>/org/siga/be/Proveedor.hbm.xml</value>   
             </list>
         </property>        
     </bean>

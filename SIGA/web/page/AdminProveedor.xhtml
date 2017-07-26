@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel id="pnl_adminalmacen" header="Administrar Proveedor">
+                    <h:form id="formBtnNew">
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
+                                                 update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{proveedorBean.limpiar()}"/> 
+                            </f:facet>
+                            <f:facet name="right">
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{proveedorBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:toolbar>
+
+                    </h:form>
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{proveedorBean.listProveedores}" var="item"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">
+                                Proveedor
+                            </f:facet>
+
+                            <p:column style="width:15px;text-align: center" headerText="Nº">
+                                <h:outputText value="#{item.idproveedor}"/>
+                            </p:column>
+                            <p:column headerText="Razon Social" style="width: 300px">
+                                <h:outputText value="#{item.razonSocial}"/> 
+                            </p:column>
+
+                            <p:column headerText="Ruc" style="width: 200px">
+                                <h:outputText value="#{item.ruc}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Dirección" style="width: 200px">
+                                <h:outputText value="#{item.direccion}"/>
+                            </p:column>
+
+                            <p:column headerText="Estado" style="width: 50px">
+                                <h:outputText />
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{proveedorBean.proveedor}" />
+                                </p:commandButton>                            
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{proveedorBean.proveedor}" />           
+                                </p:commandButton>                                                        
+
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+
+
+                    <h:form id="formNew">
+                        <p:dialog header="Registrar" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+
+                                <h:outputLabel for="txtRazonSocial" value="Razón Social :"/>
+                                <p:inputText id="txtRazonSocial" label="Razón Social" required="true" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.razonSocial}" />
+                                
+                                <h:outputLabel for="txtRuc" value="N° Ruc :"/>
+                                <p:inputText id="txtRuc" label="RUC" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.ruc}" />
+                                
+                                
+                                <h:outputLabel for="txtDireccion" value="Dirección :"/>
+                                <p:inputText id="txtDireccion" label="Dirección" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.direccion}" />
+                                
+                                <h:outputLabel for="txtTelefono" value="Telf Celular :"/>
+                                <p:inputText id="txtTelefono" label="Telefono Celular" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.telefono}" />
+                                
+                                <h:outputLabel for="txtEmail" value="Correo Electrónico :"/>
+                                <p:inputText id="txtEmail" label="Correo Electrónico" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.email}" />
+                                
+                                <h:outputLabel for="txtContacto" value="Contacto :"/>
+                                <p:inputText id="txtContacto" label="Contacto" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
+
+                                <h:outputLabel for="cbxEstado" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
+                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+                                </p:selectOneMenu>
+
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{proveedorBean.registrar()}"/> 
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="formEdit">
+                        <p:dialog header="Actualizar datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridEdit" columns="2"  cellpadding="3">
+
+                                <h:inputHidden value="#{almacenBean.almacen.idalmacen}" />
+                                <h:inputHidden />
+
+                                <h:outputLabel for="txtNombreEdit" value="Nombre :"/>
+                                <p:inputText id="txtNombreEdit" label="Nombre" required="true" value="#{almacenBean.almacen.nombre}" style="width: 400px; text-transform:uppercase;"/>
+                                
+                                <h:outputLabel for="txtDireccionEdit" value="Dirección :"/>
+                                <p:inputText id="txtDireccionEdit" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
+
+                                <h:outputLabel for="cbxEstado" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
+                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+                                </p:selectOneMenu>
+
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
+                                                     title="Guardar" value="Guardar" actionListener="#{almacenBean.actualizar()}"/>
+                                    <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
+                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="formDelete">
+                        <p:confirmDialog id="confirmDialog" message="¿Esta seguro que desea eliminar el registro?"
+                                         header="Eliminar Registro" widgetVar="dlgDelete" >
+                            <h:inputHidden value="#{almacenBean.almacen.idalmacen}" />
+                            <p:commandButton id="btnConf" update=":formDataTable, :msg" value="Aceptar" styleClass="ui-confirmdialog-yes" 
+                                             icon="icon-aceptar" oncomplete="dlgDelete.hide()" 
+                                             actionListener="#{almacenBean.eliminar()}"/>
+
+                            <p:commandButton id="btnCancel" value="Cancelar" styleClass="ui-confirmdialog-no" 
+                                             icon="icon-cancelar" oncomplete="PF('dlgDelete').hide();" />
+
+                        </p:confirmDialog>
+                    </h:form>
+
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

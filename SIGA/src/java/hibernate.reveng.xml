@@ -7,4 +7,5 @@
   <table-filter match-name="marca"/>
   <table-filter match-name="categoria"/>
   <table-filter match-name="almacen"/>
+  <table-filter match-name="proveedor"/>
 </hibernate-reverse-engineering>

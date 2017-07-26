@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25/07/2017 10:16:34 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.Proveedor" table="proveedor" schema="siga" optimistic-lock="version">
+        <id name="idproveedor" type="long">
+            <column name="idproveedor" />
+            <generator class="increment" />
+        </id>
+        <property name="codigo" type="string">
+            <column name="codigo" length="10" not-null="true" />
+        </property>
+        <property name="razonSocial" type="string">
+            <column name="razon_social" length="60" not-null="true" />
+        </property>
+        <property name="ruc" type="string">
+            <column name="ruc" length="15" not-null="true" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="60" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="30" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="60" not-null="true" />
+        </property>
+        <property name="contacto" type="string">
+            <column name="contacto" length="60" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
