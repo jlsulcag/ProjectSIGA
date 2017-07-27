@@ -31,7 +31,7 @@ public class ProveedorDao extends AbstractDA<Proveedor>{
 
     @Override
     public List<Proveedor> listar(String ref) {
-        return list(ref);
+        return list("from Proveedor p where p.razonSocial like '%"+ref+"%'");
     }
 
     @Override

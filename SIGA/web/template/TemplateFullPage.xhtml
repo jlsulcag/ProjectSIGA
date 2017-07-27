@@ -44,21 +44,7 @@
                 <ui:insert name="left">
                     <h:form>
                         <p:menu toggleable="true" style="width: 95%">
-                            <p:submenu label="ALMACEN">
-                                <p:menuitem value="Productos" url="#" icon="ui-icon-extlink" />
-                                <p:menuitem value="Movimientos" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Inventario" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Stock" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Formula/Receta" url="#" icon="ui-icon-extlink"/>
-                            </p:submenu>
-                            <p:submenu label="ENTRADAS">
-                                <p:menuitem value="Proveedores" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Orden de compra" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Productos" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-extlink"/>
-                                <p:menuitem value="Documentos" url="#" icon="ui-icon-extlink"/>
-                            </p:submenu>
-                            <p:submenu label="CONFIGURACIÓN">
+                            <p:submenu label="MAESTROS">
                                 <p:menuitem value="Categoria" url="/siga/page/AdminCategoria.xhtml" icon="ui-icon-extlink"/>
                                 <p:menuitem value="Unidad de Medida"  icon="ui-icon-extlink" url="/siga/page/AdminUnidadMedida.xhtml"/>
                                 <p:menuitem value="Almacen"  icon="ui-icon-extlink" url="/siga/page/AdminAlmacen.xhtml"/>
@@ -67,6 +53,21 @@
                                 <p:menuitem value="Dependencia/Área"  icon="ui-icon-extlink" url="/siga/page/AdminDependencia.xhtml"/>
                                 
                             </p:submenu>
+                            <p:submenu label="ENTRADAS">
+                                <p:menuitem value="Nota de entrada" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-extlink"/>
+                            </p:submenu>
+                            <p:submenu label="ALMACEN">
+                                <p:menuitem value="Productos" url="#" icon="ui-icon-extlink" />
+                                <p:menuitem value="Movimientos" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Inventario" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Stock" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Formula/Receta" url="#" icon="ui-icon-extlink"/>
+                            </p:submenu>
+                            <p:submenu label="SALIDAS">
+                                <p:menuitem value="Nota de salida" url="#" icon="ui-icon-extlink"/>
+                                <p:menuitem value="Registro de compras" url="#" icon="ui-icon-extlink"/>
+                            </p:submenu>                            
                             <p:submenu label="REPORTES">
                                 <p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
                                 <p:menuitem value="Internal"  icon="ui-icon-extlink"/>

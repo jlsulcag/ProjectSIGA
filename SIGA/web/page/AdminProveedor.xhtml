@@ -22,7 +22,7 @@
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
                                 <p:inputText id="txtBusqueda" style="width: 300px" value="#{proveedorBean.txtBusqueda}">
-                                    <p:ajax event="keyup" update=":formDataTable" />
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{proveedorBean.buscarRef()}"/>
                                 </p:inputText>
                             </f:facet>
                         </p:toolbar>
@@ -40,15 +40,15 @@
                             <p:column style="width:15px;text-align: center" headerText="Nº">
                                 <h:outputText value="#{item.idproveedor}"/>
                             </p:column>
-                            <p:column headerText="Razon Social" style="width: 300px">
+                            <p:column headerText="Razon Social" style="width: 250px">
                                 <h:outputText value="#{item.razonSocial}"/> 
                             </p:column>
 
-                            <p:column headerText="Ruc" style="width: 200px">
+                            <p:column headerText="Ruc" style="width: 100px">
                                 <h:outputText value="#{item.ruc}"/>
                             </p:column>
-                            
-                            <p:column headerText="Dirección" style="width: 200px">
+
+                            <p:column headerText="Dirección" style="width: 180px">
                                 <h:outputText value="#{item.direccion}"/>
                             </p:column>
 
@@ -62,15 +62,6 @@
                                     <f:setPropertyActionListener value="#{item}" target="#{proveedorBean.proveedor}" />
                                 </p:commandButton>                            
                             </p:column>
-
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
-                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{proveedorBean.proveedor}" />           
-                                </p:commandButton>                                                        
-
-                            </p:column>
-
                         </p:dataTable>
                     </h:form>
 
@@ -83,24 +74,24 @@
                                 <h:outputLabel for="txtRazonSocial" value="Razón Social :"/>
                                 <p:inputText id="txtRazonSocial" label="Razón Social" required="true" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.razonSocial}" />
-                                
+
                                 <h:outputLabel for="txtRuc" value="N° Ruc :"/>
                                 <p:inputText id="txtRuc" label="RUC" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.ruc}" />
-                                
-                                
+
+
                                 <h:outputLabel for="txtDireccion" value="Dirección :"/>
                                 <p:inputText id="txtDireccion" label="Dirección" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.direccion}" />
-                                
+
                                 <h:outputLabel for="txtTelefono" value="Telf Celular :"/>
                                 <p:inputText id="txtTelefono" label="Telefono Celular" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.telefono}" />
-                                
+
                                 <h:outputLabel for="txtEmail" value="Correo Electrónico :"/>
                                 <p:inputText id="txtEmail" label="Correo Electrónico" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.email}" />
-                                
+
                                 <h:outputLabel for="txtContacto" value="Contacto :"/>
                                 <p:inputText id="txtContacto" label="Contacto" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
@@ -128,14 +119,34 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2"  cellpadding="3">
 
-                                <h:inputHidden value="#{almacenBean.almacen.idalmacen}" />
+                                <h:inputHidden value="#{proveedorBean.proveedor.idproveedor}" />
                                 <h:inputHidden />
 
-                                <h:outputLabel for="txtNombreEdit" value="Nombre :"/>
-                                <p:inputText id="txtNombreEdit" label="Nombre" required="true" value="#{almacenBean.almacen.nombre}" style="width: 400px; text-transform:uppercase;"/>
-                                
+                                <h:outputLabel for="txtRazonSocialEdit" value="Razón Social :"/>
+                                <p:inputText id="txtRazonSocialEdit" label="Razón Social" required="true" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.razonSocial}" />
+
+                                <h:outputLabel for="txtRucEdit" value="N° Ruc :"/>
+                                <p:inputText id="txtRucEdit" label="RUC" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.ruc}" />
+
+
                                 <h:outputLabel for="txtDireccionEdit" value="Dirección :"/>
-                                <p:inputText id="txtDireccionEdit" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
+                                <p:inputText id="txtDireccionEdit" label="Dirección" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.direccion}" />
+
+                                <h:outputLabel for="txtTelefonoEdit" value="Telf Celular :"/>
+                                <p:inputText id="txtTelefonoEdit" label="Telefono Celular" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.telefono}" />
+
+                                <h:outputLabel for="txtEmailEdit" value="Correo Electrónico :"/>
+                                <p:inputText id="txtEmailEdit" label="Correo Electrónico" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.email}" />
+
+                                <h:outputLabel for="txtContactoEdit" value="Contacto :"/>
+                                <p:inputText id="txtContactoEdit" label="Contacto" 
+                                             style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
+
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px">
@@ -147,29 +158,14 @@
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
-                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
-                                                     title="Guardar" value="Guardar" actionListener="#{almacenBean.actualizar()}"/>
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
+                                                     title="Guardar" value="Guardar" actionListener="#{proveedorBean.actualizar()}"/>
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>
                     </h:form>
-
-                    <h:form id="formDelete">
-                        <p:confirmDialog id="confirmDialog" message="¿Esta seguro que desea eliminar el registro?"
-                                         header="Eliminar Registro" widgetVar="dlgDelete" >
-                            <h:inputHidden value="#{almacenBean.almacen.idalmacen}" />
-                            <p:commandButton id="btnConf" update=":formDataTable, :msg" value="Aceptar" styleClass="ui-confirmdialog-yes" 
-                                             icon="icon-aceptar" oncomplete="dlgDelete.hide()" 
-                                             actionListener="#{almacenBean.eliminar()}"/>
-
-                            <p:commandButton id="btnCancel" value="Cancelar" styleClass="ui-confirmdialog-no" 
-                                             icon="icon-cancelar" oncomplete="PF('dlgDelete').hide();" />
-
-                        </p:confirmDialog>
-                    </h:form>
-
                 </p:panel>
             </ui:define>
 

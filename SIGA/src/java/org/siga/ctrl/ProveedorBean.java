@@ -45,6 +45,31 @@ public class ProveedorBean {
         
     }
     
+    public void actualizar(){
+        Proveedor temp = new Proveedor();
+        temp = buscarId();
+        temp.setCodigo(proveedor.getCodigo().toUpperCase());
+        temp.setRazonSocial(proveedor.getRazonSocial().toUpperCase());
+        temp.setRuc(proveedor.getRuc().toUpperCase());
+        temp.setDireccion(proveedor.getDireccion().toUpperCase());
+        temp.setTelefono(proveedor.getTelefono().toUpperCase());
+        temp.setEmail(proveedor.getEmail().toUpperCase());
+        temp.setContacto(proveedor.getContacto().toUpperCase());
+        
+        res = proveedorBl.actualizar(temp);
+        if(res == 0){
+            MensajeView.actCorrecto();
+        }else{
+            MensajeView.actError();
+        }
+        listar();
+        
+    }
+    
+    public void buscarRef(){
+        setListProveedores(proveedorBl.listar(txtBusqueda));
+    }
+    
     public void limpiar(){
         proveedor.setIdproveedor(0);
         proveedor.setCodigo("");
@@ -91,6 +116,10 @@ public class ProveedorBean {
     @PostConstruct
     private void listar() {
         setListProveedores(proveedorBl.listar());
+    }
+
+    private Proveedor buscarId() {
+        return proveedorBl.buscar(proveedor.getIdproveedor());
     }
     
 }
