@@ -4,7 +4,7 @@
       <TDBADiagramObject id="1" propertiesclass="TDiagramMetaTableProperties" objectname="siga.categoria">
         <TDiagramMetaTableProperties>
           <Glyph>
-            <Geometry left="110" top="240" width="200" height="69"/>
+            <Geometry left="80" top="240" width="200" height="90"/>
           </Glyph>
         </TDiagramMetaTableProperties>
       </TDBADiagramObject>
@@ -22,7 +22,7 @@
             <Glyph>
               <Geometry>
                 <Point x="470" y="464"/>
-                <Point x="210" y="270"/>
+                <Point x="180" y="281"/>
               </Geometry>
             </Glyph>
           </Relation>
@@ -31,14 +31,14 @@
       <TDBADiagramObject id="4" propertiesclass="TDiagramMetaTableProperties" objectname="siga.proveedor">
         <TDiagramMetaTableProperties>
           <Glyph>
-            <Geometry left="760" top="160" width="200" height="181"/>
+            <Geometry left="760" top="150" width="200" height="181"/>
           </Glyph>
         </TDiagramMetaTableProperties>
       </TDBADiagramObject>
       <TDBADiagramObject id="7" propertiesclass="TDiagramMetaTableProperties" objectname="siga.unidad_medida">
         <TDiagramMetaTableProperties>
           <Glyph>
-            <Geometry left="100" top="520" width="200" height="69"/>
+            <Geometry left="80" top="360" width="200" height="90"/>
           </Glyph>
         </TDiagramMetaTableProperties>
       </TDBADiagramObject>
@@ -49,7 +49,7 @@
             <Glyph>
               <Geometry>
                 <Point x="470" y="460"/>
-                <Point x="200" y="554"/>
+                <Point x="180" y="405"/>
               </Geometry>
             </Glyph>
           </Relation>
@@ -155,13 +155,40 @@
             <Glyph>
               <Geometry>
                 <Point x="1020" y="540"/>
-                <Point x="860" y="250"/>
+                <Point x="860" y="240"/>
               </Geometry>
             </Glyph>
           </Relation>
         </TDiagramForeignKeyProperties>
       </TDBADiagramObject>
+      <TDBADiagramObject id="21" propertiesclass="TDiagramMetaTableProperties" objectname="siga.tipo_movimiento">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1230" top="350" width="200" height="83"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="22" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada.fk_tipomov">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="352" top="352" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="1030" y="560"/>
+                <Point x="1290" y="390"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="23" propertiesclass="TDiagramMetaTableProperties" objectname="siga.dependencia">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1220" top="230" width="200" height="83"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
     </Elements>
-    <Surface zoom="69.12" scrollx="54" scrolly="40"/>
+    <Surface zoom="55.296" scrollx="11" scrolly="0"/>
   </TDBADiagramController>
 </XMLDiagram>
