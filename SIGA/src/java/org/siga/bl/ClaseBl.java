@@ -2,19 +2,19 @@
 package org.siga.bl;
 
 import java.util.List;
-import org.siga.be.Categoria;
-import org.siga.dao.CategoriaDao;
+import org.siga.be.Clase;
+import org.siga.dao.ClaseDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("categoriaBl")
-public class CategoriaBl extends AbstractBL<Categoria>{
+@Service("claseBl")
+public class ClaseBl extends AbstractBL<Clase>{
     @Autowired
-    @Qualifier("categoriaDao")
-    private CategoriaDao categoriaDao;
+    @Qualifier("claseDao")
+    private ClaseDao categoriaDao;
     
     @Override
     public AbstractDA getDAO() {
@@ -23,46 +23,46 @@ public class CategoriaBl extends AbstractBL<Categoria>{
 
     @Override
     public void setDA(AbstractDA dao) {
-        this.categoriaDao = (CategoriaDao) dao;
+        this.categoriaDao = (ClaseDao) dao;
     }
 
     @Override
-    public long registrar(Categoria bean) {
+    public long registrar(Clase bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(Categoria bean) {
+    public long actualizar(Clase bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(Categoria bean) {
+    public long eliminar(Clase bean) {
         return delete(bean);
     }
 
     @Override
-    public List<Categoria> listar() {
+    public List<Clase> listar() {
         return list();
     }
 
     @Override
-    public List<Categoria> listar(String ref) {
+    public List<Clase> listar(String ref) {
         return list(ref);
     }
 
     @Override
-    public List<Categoria> listar(long id) {
+    public List<Clase> listar(long id) {
         return list(id);
     }
 
     @Override
-    public Categoria buscar(long id) {
+    public Clase buscar(long id) {
         return search(id);
     }
 
     @Override
-    public Categoria buscar(String ref) {
+    public Clase buscar(String ref) {
         return search(ref);
     }
 

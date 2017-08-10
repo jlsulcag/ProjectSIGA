@@ -9,11 +9,29 @@
     <property name="hibernate.connection.password">siga%admin</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
-    <mapping resource="org/siga/be/Categoria.hbm.xml"/>
-    <mapping resource="org/siga/be/Marca.hbm.xml"/>
-    <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
-    <mapping resource="org/siga/be/Producto.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaSalida.hbm.xml"/>
+    <mapping resource="org/siga/be/TipoMovimiento.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaEntrada.hbm.xml"/>
+    <mapping resource="org/siga/be/OrdenCompraDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/AlmacenProducto.hbm.xml"/>
+    <mapping resource="org/siga/be/Dependencia.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaEntradaDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/Permiso.hbm.xml"/>
     <mapping resource="org/siga/be/Almacen.hbm.xml"/>
     <mapping resource="org/siga/be/Proveedor.hbm.xml"/>
+    <mapping resource="org/siga/be/UsuarioRol.hbm.xml"/>
+    <mapping resource="org/siga/be/EstadoCivil.hbm.xml"/>
+    <mapping resource="org/siga/be/Persona.hbm.xml"/>
+    <mapping resource="org/siga/be/Clase.hbm.xml"/>
+    <mapping resource="org/siga/be/Pedido.hbm.xml"/>
+    <mapping resource="org/siga/be/Familia.hbm.xml"/>
+    <mapping resource="org/siga/be/Usuario.hbm.xml"/>
+    <mapping resource="org/siga/be/Rol.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaSalidaDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/OrdenCompra.hbm.xml"/>
+    <mapping resource="org/siga/be/TipoDocIdentidad.hbm.xml"/>
+    <mapping resource="org/siga/be/Producto.hbm.xml"/>
+    <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

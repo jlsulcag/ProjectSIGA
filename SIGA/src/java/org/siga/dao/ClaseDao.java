@@ -2,56 +2,56 @@
 package org.siga.dao;
 
 import java.util.List;
-import org.siga.be.Categoria;
+import org.siga.be.Clase;
 import org.siga.util.AbstractDA;
 import org.springframework.stereotype.Repository;
 
-@Repository("categoriaDao")
-public class CategoriaDao extends AbstractDA<Categoria>{
+@Repository("claseDao")
+public class ClaseDao extends AbstractDA<Clase>{
 
     @Override
-    public long registrar(Categoria bean) {
+    public long registrar(Clase bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(Categoria bean) {
+    public long actualizar(Clase bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(Categoria bean) {
+    public long eliminar(Clase bean) {
         return delete(bean);
     }
 
     @Override
-    public List<Categoria> listar() {
-        return list(Categoria.class);
+    public List<Clase> listar() {
+        return list(Clase.class);
     }
 
     @Override
-    public List<Categoria> listar(String ref) {
+    public List<Clase> listar(String ref) {
         return list("from Categoria c where c.descripcion like '%"+ref+"%'");
     }
 
     @Override
-    public List<Categoria> listar(long id) {
+    public List<Clase> listar(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Categoria buscar(long id) {
-        return search(Categoria.class, id);
+    public Clase buscar(long id) {
+        return search(Clase.class, id);
     }
 
     @Override
-    public Categoria buscar(String ref) {
+    public Clase buscar(String ref) {
         return search(ref);
     }
 
     @Override
     public long id() {
-        return maxId(Categoria.class);
+        return maxId(Clase.class);
     }
     
 }

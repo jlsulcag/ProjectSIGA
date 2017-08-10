@@ -46,7 +46,7 @@
                             </p:column>
 
                             <p:column headerText="Estado" style="width:50px;text-align: center">
-                                <h:outputText />
+                                <h:outputText value="#{item.estado}"/>
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
@@ -55,7 +55,7 @@
                                     <f:setPropertyActionListener value="#{item}" target="#{unidadMedidaBean.unidadMedida}" />
                                 </p:commandButton>                            
                             </p:column>
-
+                            <!--
                             <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnDelete" update=":formDelete" oncomplete="PF('dlgDelete').show();" 
                                                  immediate="True" icon="ui-icon-trash" title="Eliminar">
@@ -63,7 +63,7 @@
                                 </p:commandButton>                                                        
 
                             </p:column>
-
+                            -->
                         </p:dataTable>
                     </h:form>
                 </p:panel>
@@ -76,7 +76,7 @@
                             <p:inputText id="txtUnidadMedida" label="Unidad de Medida" value="#{unidadMedidaBean.unidadMedida.descripcion}" style="width: 400px"/>
 
                             <h:outputLabel for="cbxEstado" value="Estado:" />
-                            <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                            <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{unidadMedidaBean.unidadMedida.estado}">
                                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                 <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -106,7 +106,7 @@
                             <p:inputText id="txtUnidadMedidaEdit" label="Unidad de Medida" value="#{unidadMedidaBean.unidadMedida.descripcion}" style="width: 400px"/>
 
                             <h:outputLabel for="cbxEstado" value="Estado:" />
-                            <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                            <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{unidadMedidaBean.unidadMedida.estado}">
                                 <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                 <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -115,10 +115,10 @@
                             <f:facet name="footer">
                                 <p:separator/>
                                 <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
-                                                 oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
+                                                 oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
                                                  title="Guardar" value="Guardar" actionListener="#{unidadMedidaBean.actualizar()}"/>
                                 <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                 icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                                 icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                             </f:facet>
                         </h:panelGrid>
                     </p:dialog>

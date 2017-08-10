@@ -25,7 +25,7 @@
                             <f:facet name="header">
                                 Productos
                             </f:facet>
-                            
+
                             <p:column style="width:15px;text-align: center" headerText="Nº">
                                 <h:outputText />
                             </p:column>
@@ -55,13 +55,6 @@
                                     <f:setPropertyActionListener value="" target="#" />
                                 </p:commandButton>                            
                             </p:column>
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="" 
-                                                 immediate="True" icon="icon-eliminar" title="Eliminar">
-                                    <f:setPropertyActionListener value="#" target="#" />           
-                                </p:commandButton>                                                        
-
-                            </p:column>
 
                         </p:dataTable>
                     </h:form>
@@ -72,14 +65,24 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
+                                <h:outputLabel for="cbxFamilia" value="Familia :"/>
+                                <p:selectOneMenu id="cbxFamilia" style="width: 380px">
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="cbxClase" value="Clase :"/>
+                                <p:selectOneMenu id="cbxClase" style="width: 380px">
+                                    <f:selectItem itemLabel="Seleccione"/>
+                                </p:selectOneMenu>
+
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
                                 <p:inputText id="txtDescripcion" label="Descripción" style="width: 400px"/>
 
                                 <h:outputLabel for="txtCodigo" value="Codigo :"/>
                                 <p:inputText id="txtCodigo" label="Codigo" style="width: 400px"/>
 
-                                <h:outputLabel for="cbxCategoria" value="Categoría :"/>
-                                <p:selectOneMenu id="cbxCategoria" style="width: 300px">
+                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
+                                <p:selectOneMenu id="cbxUnidadMedida" style="width: 380px">
                                     <f:selectItem itemLabel="Seleccione"/>
                                 </p:selectOneMenu>
 
@@ -89,14 +92,9 @@
                                 <h:outputLabel for="spStockMax" value="Stock Máximo: " />
                                 <p:spinner id="spStockMax" />
 
-                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
-                                <p:selectOneMenu id="cbxUnidadMedida" style="width: 150px">
-                                    <f:selectItem itemLabel="Seleccione"/>
-                                </p:selectOneMenu>
-
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                <p:selectOneMenu id="cbxEstado" style="width: 380px">
+                                    <f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
                                 </p:selectOneMenu>

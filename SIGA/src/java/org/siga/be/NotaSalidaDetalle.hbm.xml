@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.NotaSalidaDetalle" table="nota_salida_detalle" schema="siga" optimistic-lock="version">
+        <id name="idnotasalidadetalle" type="long">
+            <column name="idnotasalidadetalle" />
+            <generator class="increment" />
+        </id>
+        <property name="idProducto" type="int">
+            <column name="id_producto" not-null="true" />
+        </property>
+        <property name="idUnidadmedida" type="java.lang.Integer">
+            <column name="id_unidadmedida" />
+        </property>
+        <property name="idNotasalida" type="int">
+            <column name="id_notasalida" not-null="true" />
+        </property>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

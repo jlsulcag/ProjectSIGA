@@ -2,10 +2,28 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="sigadb" match-schema="siga"/>
-  <table-filter match-name="unidad_medida"/>
-  <table-filter match-name="producto"/>
-  <table-filter match-name="marca"/>
-  <table-filter match-name="categoria"/>
-  <table-filter match-name="almacen"/>
+  <table-filter match-name="persona"/>
+  <table-filter match-name="rol"/>
+  <table-filter match-name="tipo_doc_identidad"/>
+  <table-filter match-name="permiso"/>
+  <table-filter match-name="clase"/>
+  <table-filter match-name="nota_salida"/>
+  <table-filter match-name="pedido_detalle"/>
   <table-filter match-name="proveedor"/>
+  <table-filter match-name="producto"/>
+  <table-filter match-name="orden_compra_detalle"/>
+  <table-filter match-name="orden_compra"/>
+  <table-filter match-name="nota_entrada"/>
+  <table-filter match-name="tipo_movimiento"/>
+  <table-filter match-name="almacen_producto"/>
+  <table-filter match-name="usuario_rol"/>
+  <table-filter match-name="almacen"/>
+  <table-filter match-name="familia"/>
+  <table-filter match-name="usuario"/>
+  <table-filter match-name="dependencia"/>
+  <table-filter match-name="nota_entrada_detalle"/>
+  <table-filter match-name="nota_salida_detalle"/>
+  <table-filter match-name="unidad_medida"/>
+  <table-filter match-name="estado_civil"/>
+  <table-filter match-name="pedido"/>
 </hibernate-reverse-engineering>

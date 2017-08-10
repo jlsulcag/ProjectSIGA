@@ -3,22 +3,16 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.UnidadMedida" table="unidad_medida" schema="siga" optimistic-lock="version">
-        <id name="idunidadmedida" type="long">
-            <column name="idunidadmedida" />
+    <class name="org.siga.be.Dependencia" table="dependencia" schema="siga" optimistic-lock="version">
+        <id name="iddependencia" type="long">
+            <column name="iddependencia" />
             <generator class="increment" />
         </id>
         <property name="descripcion" type="string">
-            <column name="descripcion" length="201" not-null="true" />
+            <column name="descripcion" length="160" not-null="true" />
         </property>
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
-        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_unidadmedida" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.Producto" />
-        </set>
     </class>
 </hibernate-mapping>

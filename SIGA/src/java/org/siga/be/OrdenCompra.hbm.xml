@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.OrdenCompra" table="orden_compra" schema="siga" optimistic-lock="version">
+        <id name="idordencompra" type="long">
+            <column name="idordencompra" />
+            <generator class="increment" />
+        </id>
+        <property name="numero" type="long">
+            <column name="numero" not-null="true" />
+        </property>
+        <property name="fecha" type="date">
+            <column name="fecha" length="13" not-null="true" />
+        </property>
+        <property name="idProveedor" type="int">
+            <column name="id_proveedor" not-null="true" />
+        </property>
+        <property name="fechaEntrega" type="date">
+            <column name="fecha_entrega" length="13" not-null="true" />
+        </property>
+        <property name="lugarEntrega" type="string">
+            <column name="lugar_entrega" length="80" not-null="true" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="240" not-null="true" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="30" not-null="true">
+                <comment>APROBADO NO APROBADO ANULADO</comment>
+            </column>
+        </property>
+        <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_ordencompra" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.OrdenCompraDetalle" />
+        </set>
+        <set name="notaEntradas" table="nota_entrada" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_ordencompra" />
+            </key>
+            <one-to-many class="org.siga.be.NotaEntrada" />
+        </set>
+    </class>
+</hibernate-mapping>

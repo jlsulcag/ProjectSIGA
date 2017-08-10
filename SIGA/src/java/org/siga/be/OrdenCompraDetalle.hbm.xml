@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.OrdenCompraDetalle" table="orden_compra_detalle" schema="siga" optimistic-lock="version">
+        <id name="idordencompradetalle" type="long">
+            <column name="idordencompradetalle" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="ordenCompra" class="org.siga.be.OrdenCompra" fetch="select">
+            <column name="id_ordencompra" not-null="true" />
+        </many-to-one>
+        <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
+            <column name="id_producto" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true" />
+        </property>
+        <property name="idUnidadmedida" type="java.lang.Integer">
+            <column name="id_unidadmedida" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="300" />
+        </property>
+    </class>
+</hibernate-mapping>

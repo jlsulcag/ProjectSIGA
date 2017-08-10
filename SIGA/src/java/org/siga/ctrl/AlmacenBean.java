@@ -44,6 +44,7 @@ public class AlmacenBean {
         temp = buscarId();
         temp.setNombre(almacen.getNombre().toUpperCase());
         temp.setDireccion(almacen.getDireccion().toUpperCase());
+        temp.setEstado(almacen.getEstado().toUpperCase());
         res = almacenBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();

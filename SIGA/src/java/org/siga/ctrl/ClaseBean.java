@@ -6,30 +6,31 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.siga.be.Categoria;
-import org.siga.bl.CategoriaBl;
+import org.siga.be.Clase;
+import org.siga.bl.ClaseBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
-public class CategoriaBean {
+public class ClaseBean {
 
-    @ManagedProperty(value = "#{categoriaBl}")
-    private CategoriaBl categoriaBl;
+    @ManagedProperty(value = "#{claseBl}")
+    private ClaseBl categoriaBl;
 
-    @ManagedProperty(value = "#{categoria}")
-    private Categoria categoria;
+    @ManagedProperty(value = "#{clase}")
+    private Clase clase;
     private String txtBusqueda;
     private long res;
 
-    private List<Categoria> listCategorias = new LinkedList<>();
+    private List<Clase> listClases = new LinkedList<>();
 
-    public CategoriaBean() {
+    public ClaseBean() {
     }
 
     public void registrar() {
-        categoria.setDescripcion(categoria.getDescripcion().toUpperCase());
-        res = getCategoriaBl().registrar(getCategoria());
+        clase.setDescripcion(clase.getDescripcion().toUpperCase());
+        clase.setEstado(clase.getEstado().toUpperCase());
+        res = getCategoriaBl().registrar(getClase());
         if (res == 0) {
             MensajeView.registroCorrecto();
         } else {
@@ -39,9 +40,10 @@ public class CategoriaBean {
     }
 
     public void actualizar() {
-        Categoria temp = new Categoria();
+        Clase temp = new Clase();
         temp = buscarId();
-        temp.setDescripcion(getCategoria().getDescripcion());
+        temp.setDescripcion(clase.getDescripcion().toUpperCase());
+        temp.setEstado(clase.getEstado().toUpperCase());
         res = getCategoriaBl().actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
@@ -52,7 +54,7 @@ public class CategoriaBean {
     }
     
     public void eliminar() {
-        Categoria temp = new Categoria();
+        Clase temp = new Clase();
         temp = buscarId();
         res = categoriaBl.eliminar(temp);
         if(res == 0){
@@ -64,45 +66,45 @@ public class CategoriaBean {
     }
 
     public void limpiar() {
-        categoria.setIdcategoria(0);
-        categoria.setDescripcion("");
+        clase.setIdclase(0);
+        clase.setDescripcion("");
     }
 
     @PostConstruct
     public void listar() {
-        setListCategorias(categoriaBl.listar());
+        setListClases(categoriaBl.listar());
     }
     
     public void listarRef(){
-        setListCategorias(categoriaBl.listar(getTxtBusqueda()));
+        setListClases(categoriaBl.listar(getTxtBusqueda()));
     }
 
-    public CategoriaBl getCategoriaBl() {
+    public ClaseBl getCategoriaBl() {
         return categoriaBl;
     }
 
-    public void setCategoriaBl(CategoriaBl categoriaBl) {
+    public void setCategoriaBl(ClaseBl categoriaBl) {
         this.categoriaBl = categoriaBl;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Clase getClase() {
+        return clase;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setClase(Clase clase) {
+        this.clase = clase;
     }
 
-    public List<Categoria> getListCategorias() {
-        return listCategorias;
+    public List<Clase> getListClases() {
+        return listClases;
     }
 
-    public void setListCategorias(List<Categoria> listCategorias) {
-        this.listCategorias = listCategorias;
+    public void setListClases(List<Clase> listClases) {
+        this.listClases = listClases;
     }
 
-    private Categoria buscarId() {
-        return categoriaBl.buscar(categoria.getIdcategoria());
+    private Clase buscarId() {
+        return categoriaBl.buscar(clase.getIdclase());
     }
 
     public String getTxtBusqueda() {

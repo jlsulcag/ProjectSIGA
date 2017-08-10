@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.UsuarioRol" table="usuario_rol" schema="siga" optimistic-lock="version">
+        <id name="idusuariorol" type="long">
+            <column name="idusuariorol" />
+            <generator class="increment" />
+        </id>
+        <property name="idUsuario" type="java.lang.Integer">
+            <column name="id_usuario" />
+        </property>
+        <property name="idRol" type="java.lang.Integer">
+            <column name="id_rol" />
+        </property>
+        <property name="fechaReg" type="date">
+            <column name="fecha_reg" length="13" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="50" not-null="true" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="estado" />
+        </property>
+    </class>
+</hibernate-mapping>

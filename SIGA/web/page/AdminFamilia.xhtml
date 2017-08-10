@@ -12,80 +12,69 @@
 
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel id="pnl_admincategoria" header="Administrar Categoria">
+                <p:panel id="pnl_adminClase" header="Administrar Familia">
                     <h:form id="formBtnNew">
                         <p:toolbar>
                             <f:facet name="left">
-                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
-                                                 update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{categoriaBean.limpiar()}"/> 
+                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo"
+                                                 update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{familiaBean.limpiar()}" />
                             </f:facet>
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
-                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{categoriaBean.txtBusqueda}">
-                                    <p:ajax event="keyup" update=":formDataTable" listener="#{categoriaBean.listarRef()}" />
+                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{familiaBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{familiaBean.listarRef()}" />
                                 </p:inputText>
                             </f:facet>
                         </p:toolbar>
 
                     </h:form>
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{categoriaBean.listCategorias}" var="item"
+                        <p:dataTable id="lista" value="#{familiaBean.listFamilias}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">
-                                Categorias
+                                Familias
                             </f:facet>
-
                             <p:column style="width:15px;text-align: center" headerText="Nº">
-                                <h:outputText value="#{item.idcategoria}"/>
+                                <h:outputText value="#{item.idfamilia}"/>
                             </p:column>
                             <p:column headerText="Descripción" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
                             <p:column headerText="Estado" style="width: 50px">
-                                <h:outputText />
+                                <h:outputText value="#{item.estado}"/>
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{categoriaBean.categoria}" />
+                                    <f:setPropertyActionListener value="#{item}" target="#{familiaBean.familia}" />
                                 </p:commandButton>                            
                             </p:column>
-
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
-                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{categoriaBean.categoria}" />           
-                                </p:commandButton>                                                        
-
-                            </p:column>
-
                         </p:dataTable>
                     </h:form>
 
-
                     <h:form id="formNew">
-                        <p:dialog header="Registrar Categoría" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                        <p:dialog header="Registrar Familia" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
-                                <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{categoriaBean.categoria.descripcion}" />
+                                <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{familiaBean.familia.descripcion}" />
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{familiaBean.familia.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
+                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT" />
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
                                 </p:selectOneMenu>
 
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
-                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{categoriaBean.registrar()}"/> 
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{familiaBean.registrar()}"/> 
                                     <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
                                 </f:facet>
 
@@ -98,14 +87,14 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2"  cellpadding="3">
 
-                                <h:inputHidden value="#{categoriaBean.categoria.idcategoria}" />
+                                <h:inputHidden value="#{familiaBean.familia.idfamilia}" />
                                 <h:inputHidden />
 
                                 <h:outputLabel for="txtCategoriaEdit" value="Categoria :"/>
-                                <p:inputText id="txtCategoriaEdit" label="Categoria" required="true" value="#{categoriaBean.categoria.descripcion}" style="width: 400px; text-transform:uppercase;"/>
+                                <p:inputText id="txtCategoriaEdit" label="Categoria" required="true" value="#{familiaBean.familia.descripcion}" style="width: 400px; text-transform:uppercase;"/>
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{familiaBean.familia.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -114,27 +103,13 @@
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
-                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
-                                                     title="Guardar" value="Guardar" actionListener="#{categoriaBean.actualizar()}"/>
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
+                                                     title="Guardar" value="Guardar" actionListener="#{familiaBean.actualizar()}"/>
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>
-                    </h:form>
-
-                    <h:form id="formDelete">
-                        <p:confirmDialog id="confirmDialog" message="¿Esta seguro que desea eliminar el registro?"
-                                         header="Eliminar Registro" widgetVar="dlgDelete" >
-                            <h:inputHidden value="#{categoriaBean.categoria.idcategoria}" />
-                            <p:commandButton id="btnConf" update=":formDataTable, :msg" value="Aceptar" styleClass="ui-confirmdialog-yes" 
-                                             icon="icon-aceptar" oncomplete="dlgDelete.hide()" 
-                                             actionListener="#{categoriaBean.eliminar()}"/>
-
-                            <p:commandButton id="btnCancel" value="Cancelar" styleClass="ui-confirmdialog-no" 
-                                             icon="icon-cancelar" oncomplete="PF('dlgDelete').hide();" />
-
-                        </p:confirmDialog>
                     </h:form>
 
                 </p:panel>

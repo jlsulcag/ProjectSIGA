@@ -47,9 +47,9 @@
                             <p:column headerText="Dirección" style="width: 200px">
                                 <h:outputText value="#{item.direccion}"/>
                             </p:column>
-
+                            
                             <p:column headerText="Estado" style="width: 50px">
-                                <h:outputText />
+                                <h:outputText value="#{item.estado}"/>
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
@@ -58,7 +58,7 @@
                                     <f:setPropertyActionListener value="#{item}" target="#{almacenBean.almacen}" />
                                 </p:commandButton>                            
                             </p:column>
-
+                            <!--
                             <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
                                                  immediate="True" icon="ui-icon-trash" title="Eliminar">
@@ -66,7 +66,7 @@
                                 </p:commandButton>                                                        
 
                             </p:column>
-
+                            -->
                         </p:dataTable>
                     </h:form>
 
@@ -83,7 +83,7 @@
                                 <p:inputText id="txtDireccion" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{almacenBean.almacen.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -115,7 +115,7 @@
                                 <p:inputText id="txtDireccionEdit" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{almacenBean.almacen.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -124,10 +124,10 @@
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
-                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
                                                      title="Guardar" value="Guardar" actionListener="#{almacenBean.actualizar()}"/>
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>

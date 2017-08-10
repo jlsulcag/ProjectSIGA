@@ -1,5 +1,5 @@
 package org.siga.be;
-// Generated 25/07/2017 10:16:33 AM by Hibernate Tools 4.3.1
+// Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
 import org.springframework.stereotype.Component;
 
@@ -16,6 +16,7 @@ public class Almacen  implements java.io.Serializable {
      private long idalmacen;
      private String nombre;
      private String direccion;
+     private String estado;
 
     public Almacen() {
     }
@@ -46,6 +47,14 @@ public class Almacen  implements java.io.Serializable {
     
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 

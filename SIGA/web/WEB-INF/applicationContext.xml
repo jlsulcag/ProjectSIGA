@@ -49,12 +49,30 @@
         </property>        
         <property name="mappingResources">
             <list>               
-                <value>/org/siga/be/Categoria.hbm.xml</value>   
-                <value>/org/siga/be/Marca.hbm.xml</value>   
-                <value>/org/siga/be/Producto.hbm.xml</value>   
-                <value>/org/siga/be/UnidadMedida.hbm.xml</value>   
-                <value>/org/siga/be/Almacen.hbm.xml</value>   
-                <value>/org/siga/be/Proveedor.hbm.xml</value>   
+                <value>/org/siga/be/NotaSalida.hbm.xml</value>   
+                <value>/org/siga/be/TipoMovimiento.hbm.xml</value>   
+                <value>/org/siga/be/NotaEntrada.hbm.xml</value>   
+                <value>/org/siga/be/OrdenCompraDetalle.hbm.xml</value>   
+                <value>/org/siga/be/AlmacenProducto.hbm.xml</value>   
+                <value>/org/siga/be/Dependencia.hbm.xml</value>  
+                <value>/org/siga/be/NotaEntradaDetalle.hbm.xml</value>  
+                <value>/org/siga/be/Permiso.hbm.xml</value>  
+                <value>/org/siga/be/Almacen.hbm.xml</value>  
+                <value>/org/siga/be/Proveedor.hbm.xml</value>  
+                <value>/org/siga/be/UsuarioRol.hbm.xml</value>  
+                <value>/org/siga/be/EstadoCivil.hbm.xml</value>  
+                <value>/org/siga/be/Persona.hbm.xml</value>  
+                <value>/org/siga/be/Clase.hbm.xml</value>  
+                <value>/org/siga/be/Pedido.hbm.xml</value>  
+                <value>/org/siga/be/Familia.hbm.xml</value>  
+                <value>/org/siga/be/Usuario.hbm.xml</value>  
+                <value>/org/siga/be/Rol.hbm.xml</value>  
+                <value>/org/siga/be/NotaSalidaDetalle.hbm.xml</value>  
+                <value>/org/siga/be/OrdenCompra.hbm.xml</value>  
+                <value>/org/siga/be/TipoDocIdentidad.hbm.xml</value>  
+                <value>/org/siga/be/Producto.hbm.xml</value>  
+                <value>/org/siga/be/UnidadMedida.hbm.xml</value>  
+                <value>/org/siga/be/PedidoDetalle.hbm.xml</value>  
             </list>
         </property>        
     </bean>

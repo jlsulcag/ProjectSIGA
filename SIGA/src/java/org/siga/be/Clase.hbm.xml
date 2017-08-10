@@ -1,19 +1,25 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 09/06/2017 11:14:23 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.Marca" table="marca" schema="siga" optimistic-lock="version">
-        <id name="idmarca" type="int">
-            <column name="idmarca" />
+    <class name="org.siga.be.Clase" table="clase" schema="siga" optimistic-lock="version">
+        <id name="idclase" type="long">
+            <column name="idclase" />
             <generator class="increment" />
         </id>
+        <many-to-one name="familia" class="org.siga.be.Familia" fetch="select">
+            <column name="id_familia" />
+        </many-to-one>
         <property name="descripcion" type="string">
             <column name="descripcion" length="40" not-null="true" />
         </property>
+        <property name="estado" type="string">
+            <column name="estado" length="10" not-null="true" />
+        </property>
         <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="id_marca" not-null="true" />
+                <column name="id_clase" />
             </key>
             <one-to-many class="org.siga.be.Producto" />
         </set>
