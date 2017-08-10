@@ -34,7 +34,7 @@ public class ProveedorBean {
         proveedor.setTelefono(proveedor.getTelefono().toUpperCase());
         proveedor.setEmail(proveedor.getEmail().toUpperCase());
         proveedor.setContacto(proveedor.getContacto().toUpperCase());
-        
+        proveedor.setEstado("ACT");
         res = proveedorBl.registrar(proveedor);
         if(res == 0){
             MensajeView.registroCorrecto();
@@ -55,7 +55,7 @@ public class ProveedorBean {
         temp.setTelefono(proveedor.getTelefono().toUpperCase());
         temp.setEmail(proveedor.getEmail().toUpperCase());
         temp.setContacto(proveedor.getContacto().toUpperCase());
-        
+        temp.setEstado(proveedor.getEstado().toUpperCase());
         res = proveedorBl.actualizar(temp);
         if(res == 0){
             MensajeView.actCorrecto();

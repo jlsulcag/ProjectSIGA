@@ -24,6 +24,7 @@ public class Proveedor  implements java.io.Serializable {
      private String contacto;
      private Date fechaReg;
      private String telfFijo;
+     private String estado;
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
 
     public Proveedor() {
@@ -132,6 +133,14 @@ public class Proveedor  implements java.io.Serializable {
     
     public void setNotaEntradas(Set<NotaEntrada> notaEntradas) {
         this.notaEntradas = notaEntradas;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 

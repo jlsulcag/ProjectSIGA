@@ -53,7 +53,7 @@
                             </p:column>
 
                             <p:column headerText="Estado" style="width: 50px">
-                                <h:outputText />
+                                <h:outputText value="#{item.estado}"/>
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
@@ -95,14 +95,7 @@
                                 <h:outputLabel for="txtContacto" value="Contacto :"/>
                                 <p:inputText id="txtContacto" label="Contacto" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
-
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
-                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
-                                </p:selectOneMenu>
-
+                                
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
@@ -149,7 +142,7 @@
 
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{proveedorBean.proveedor.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>

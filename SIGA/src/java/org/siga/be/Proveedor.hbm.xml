@@ -35,6 +35,9 @@
         <property name="telfFijo" type="string">
             <column name="telf_fijo" length="30" not-null="true" />
         </property>
+        <property name="estado" type="string">
+            <column name="estado" length="10" not-null="true" />
+        </property>
         <set name="notaEntradas" table="nota_entrada" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_proveedor" />
