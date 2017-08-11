@@ -14,11 +14,22 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnl_adminproducto" header="Administrar Dependencia/Area">
                     <h:form id="formBtnNew">
-                        <p:commandButton id="btnNew" icon="ui-icon-extlink" value="Nuevo" title="Nuevo" 
-                                         update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
+                                         update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{dependenciaBean.limpiar()}"/> 
+                            </f:facet>
+                            <f:facet name="right">
+                                 <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px; text-transform: uppercase" value="#{dependenciaBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{dependenciaBean.listarRef()}" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:toolbar>
+                                         
                     </h:form>
-                    <h:form>
-                        <p:dataTable id="lista" value="#" var="item"
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{dependenciaBean.listDependencia}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">
@@ -27,20 +38,20 @@
                             </f:facet>
                             
                             <p:column style="width:15px;text-align: center" headerText="Nº">
-                                <h:outputText />
+                                <h:outputText value="#{item.iddependencia}"/>
                             </p:column>
                             <p:column headerText="Dependencia" style=" width: 250px">
-                                <h:outputText />
+                                <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
                             <p:column headerText="Estado" style="width:50px;text-align: center">
-                                <h:outputText />
+                                <h:outputText value="#{item.estado}"/>
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnEdit" update="" oncomplete="" 
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="" target="#" />
+                                    <f:setPropertyActionListener value="#{item}" target="#{dependenciaBean.dependencia}" />
                                 </p:commandButton>                            
                             </p:column>
 
@@ -54,10 +65,29 @@
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
                                 <h:outputLabel for="txtDependencia" value="Dependencia :"/>
-                                <p:inputText id="txtDependencia" label="Dependencia" style="width: 400px"/>
+                                <p:inputText id="txtDependencia" label="Dependencia" value="#{dependenciaBean.dependencia.descripcion}" style="width: 400px; text-transform: uppercase"/>
 
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px">
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{dependenciaBean.registrar()}"/> 
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    
+                     <h:form id="formEdit">
+                        <p:dialog header="Actualizar registro" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
+
+                                <h:outputLabel for="txtDependenciaEdit" value="Dependencia :"/>
+                                <p:inputText id="txtDependenciaEdit" label="Dependencia" value="#{dependenciaBean.dependencia.descripcion}" style="width: 400px; text-transform: uppercase"/>
+
+                                <h:outputLabel for="cbxEstadoEdit" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstadoEdit" style="width: 300px" value="#{dependenciaBean.dependencia.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
@@ -65,8 +95,11 @@
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton value="Guardar" icon="ui-icon-check" />
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                    <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
+                                                     title="Guardar" value="Guardar" actionListener="#{dependenciaBean.actualizar()}"/>
+                                    <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>
 
                             </h:panelGrid>

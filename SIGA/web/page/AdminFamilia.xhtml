@@ -21,7 +21,7 @@
                             </f:facet>
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
-                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{familiaBean.txtBusqueda}">
+                                <p:inputText id="txtBusqueda" style="width: 300px; text-transform: uppercase" value="#{familiaBean.txtBusqueda}">
                                     <p:ajax event="keyup" update=":formDataTable" listener="#{familiaBean.listarRef()}" />
                                 </p:inputText>
                             </f:facet>
