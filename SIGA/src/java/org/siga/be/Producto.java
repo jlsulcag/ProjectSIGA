@@ -27,6 +27,9 @@ public class Producto  implements java.io.Serializable {
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
     public Producto() {
+        this.idproducto = 0;
+        this.clase = new Clase();
+        this.unidadMedida = new UnidadMedida();
     }
 
 	

@@ -95,6 +95,12 @@ public class UnidadMedidaBean {
     }
 
     public List<SelectItem> getSelectOneItemsUnidadMedida() {
+        this.selectOneItemsUnidadMedida= new LinkedList<SelectItem>();
+        for (UnidadMedida obj : listaUnidadMedidas) {
+            this.setUnidadMedida(obj);
+            SelectItem selectItem = new SelectItem(unidadMedida.getIdunidadmedida(), unidadMedida.getDescripcion());
+            this.selectOneItemsUnidadMedida.add(selectItem);
+        }
         return selectOneItemsUnidadMedida;
     }
 

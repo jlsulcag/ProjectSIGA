@@ -30,7 +30,7 @@ public class ProductoDao extends AbstractDA<Producto>{
 
     @Override
     public List<Producto> listar(String ref) {
-        return list("from Producto p where p.descripcion like '%"+ref+"%'");
+        return list(ref);
     }
 
     @Override
@@ -51,6 +51,16 @@ public class ProductoDao extends AbstractDA<Producto>{
     @Override
     public long id() {
         return maxId(Producto.class);
+    }
+    
+    public List<Producto> listarFull(String ref) {
+        ref = "from Producto p left join fetch p.clase left join fetch p.unidadMedida";
+        return listar(ref);
+    }
+
+    public List<Producto> listarRef(String txtBusqueda) {
+        String ref = "from Producto p left join fetch p.clase left join fetch p.unidadMedida where p.descripcion like '%"+txtBusqueda+"%'";
+        return listar(ref);
     }
     
 }

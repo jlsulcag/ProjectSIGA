@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.siga.be.Clase;
 import org.siga.bl.ClaseBl;
 import org.siga.util.MensajeView;
@@ -23,6 +24,7 @@ public class ClaseBean {
     private long res;
 
     private List<Clase> listClases = new LinkedList<>();
+    private List<SelectItem> selectOneItemsClase;
 
     public ClaseBean() {
     }
@@ -113,6 +115,20 @@ public class ClaseBean {
 
     public void setTxtBusqueda(String txtBusqueda) {
         this.txtBusqueda = txtBusqueda;
+    }
+
+    public List<SelectItem> getSelectOneItemsClase() {
+        this.selectOneItemsClase= new LinkedList<SelectItem>();
+        for (Clase fam : listClases) {
+            this.setClase(fam);
+            SelectItem selectItem = new SelectItem(clase.getIdclase(), clase.getDescripcion());
+            this.selectOneItemsClase.add(selectItem);
+        }
+        return selectOneItemsClase;
+    }
+
+    public void setSelectOneItemsClase(List<SelectItem> selectOneItemsClase) {
+        this.selectOneItemsClase = selectOneItemsClase;
     }
 
 }

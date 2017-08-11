@@ -71,4 +71,12 @@ public class ProductoBl extends AbstractBL<Producto>{
         return maxId();
     }
     
+    public List<Producto> listarFull(String ref) {
+        return dao.listarFull(ref);
+    }
+
+    public List<Producto> listarRef(String txtBusqueda) {
+        return dao.listarRef(txtBusqueda);
+    }
+    
 }

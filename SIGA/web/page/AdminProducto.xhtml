@@ -14,11 +14,22 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnl_adminproducto" header="Administrar Producto">
                     <h:form id="formBtnNew">
-                        <p:commandButton id="btnNew" icon="ui-icon-extlink" value="Nuevo" title="Nuevo" 
-                                         update=":formNew" oncomplete="PF('dlgNew').show();"/>                  
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
+                                                 update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{productoBean.limpiar()}"/>
+                            </f:facet>
+                            <f:facet name="right">
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px; text-transform:uppercase; " value="#{productoBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{productoBean.buscarRef()}"/>
+                                </p:inputText>
+                            </f:facet>
+                        </p:toolbar>
+
                     </h:form>
-                    <h:form>
-                        <p:dataTable id="lista" value="#" var="item"
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{productoBean.listaProductos}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
@@ -27,32 +38,32 @@
                             </f:facet>
 
                             <p:column style="width:15px;text-align: center" headerText="Nº">
-                                <h:outputText />
+                                <h:outputText value="#{item.idproducto}"/>
                             </p:column>
                             <p:column headerText="Descripción" style=" width: 250px">
-                                <h:outputText />
+                                <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
                             <p:column headerText="Código" style="width: 50px">
-                                <h:outputText />
+                                <h:outputText value="#{item.codigo}"/>
                             </p:column>
 
                             <p:column headerText="Stock Min" style="width:50px;text-align: center">
-                                <h:outputText />
+                                <h:outputText value="#{item.stockMinimo}"/>
                             </p:column>
 
                             <p:column headerText="Stock Max" style="width:50px;">
-                                <h:outputText />
+                                <h:outputText value="#{item.stockMaximo}"/>
                             </p:column>
 
 
-                            <p:column headerText="Categoría" style="width:80px;">
-                                <h:outputText />
+                            <p:column headerText="Clase" style="width:80px;">
+                                <h:outputText value="#{item.clase.descripcion}"/>
                             </p:column>
                             <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnEdit" update="" oncomplete="" 
-                                                 icon="icon-editar" title="Editar">
-                                    <f:setPropertyActionListener value="" target="#" />
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{productoBean.producto}" />
                                 </p:commandButton>                            
                             </p:column>
 
@@ -65,44 +76,82 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
 
-                                <h:outputLabel for="cbxFamilia" value="Familia :"/>
-                                <p:selectOneMenu id="cbxFamilia" style="width: 380px">
-                                    <f:selectItem itemLabel="Seleccione"/>
-                                </p:selectOneMenu>
-
                                 <h:outputLabel for="cbxClase" value="Clase :"/>
-                                <p:selectOneMenu id="cbxClase" style="width: 380px">
-                                    <f:selectItem itemLabel="Seleccione"/>
+                                <p:selectOneMenu id="cbxClase" style="width: 380px" value="#{productoBean.producto.clase.idclase}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{claseBean.selectOneItemsClase}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
-                                <p:inputText id="txtDescripcion" label="Descripción" style="width: 400px"/>
+                                <p:inputText id="txtDescripcion" label="Descripción" value="#{productoBean.producto.descripcion}" style="width: 400px; text-transform:uppercase;" required="true"/>
 
                                 <h:outputLabel for="txtCodigo" value="Codigo :"/>
-                                <p:inputText id="txtCodigo" label="Codigo" style="width: 400px"/>
+                                <p:inputText id="txtCodigo" label="Codigo" value="#{productoBean.producto.codigo}" style="width: 400px; text-transform:uppercase;"/>
 
                                 <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
-                                <p:selectOneMenu id="cbxUnidadMedida" style="width: 380px">
-                                    <f:selectItem itemLabel="Seleccione"/>
+                                <p:selectOneMenu id="cbxUnidadMedida" style="width: 380px" value="#{productoBean.producto.unidadMedida.idunidadmedida}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
-                                <p:spinner id="spStockMin" />
+                                <p:spinner id="spStockMin" value="#{productoBean.producto.stockMinimo}"/>
 
                                 <h:outputLabel for="spStockMax" value="Stock Máximo: " />
-                                <p:spinner id="spStockMax" />
+                                <p:spinner id="spStockMax" value="#{productoBean.producto.stockMaximo}"/>
 
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 380px">
-                                    <f:selectItem itemLabel="Seleccione" noSelectionOption="true" />
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Save" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{productoBean.registrar()}"/>
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    
+                    <h:form id="formEdit">
+                        <p:dialog header="Actualizar Registro" widgetVar="dlgEdit" id="dlgNew" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
+
+                                <h:outputLabel for="cbxClaseEdit" value="Clase :"/>
+                                <p:selectOneMenu id="cbxClaseEdit" style="width: 380px" value="#{productoBean.producto.clase.idclase}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{claseBean.selectOneItemsClase}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txtDescripcionEdit" value="Descripción :"/>
+                                <p:inputText id="txtDescripcionEdit" label="Descripción" value="#{productoBean.producto.descripcion}" style="width: 400px; text-transform:uppercase;" required="true"/>
+
+                                <h:outputLabel for="txtCodigoEdit" value="Codigo :"/>
+                                <p:inputText id="txtCodigoEdit" label="Codigo" value="#{productoBean.producto.codigo}" style="width: 400px; text-transform:uppercase;"/>
+
+                                <h:outputLabel for="cbxUnidadMedidaEdit" value="Unidad de Medida :"/>
+                                <p:selectOneMenu id="cbxUnidadMedidaEdit" style="width: 380px" value="#{productoBean.producto.unidadMedida.idunidadmedida}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="spStockMinEdit" value="Stock Mínimo: " />
+                                <p:spinner id="spStockMinEdit" value="#{productoBean.producto.stockMinimo}"/>
+
+                                <h:outputLabel for="spStockMaxEdit" value="Stock Máximo: " />
+                                <p:spinner id="spStockMaxEdit" value="#{productoBean.producto.stockMaximo}"/>
+                                
+                                <h:outputLabel for="cbxEstadoEdit" value="Estado:" />
+                                <p:selectOneMenu id="cbxEstadoEdit" style="width: 300px" value="#{productoBean.producto.estado}">
+                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
                                 </p:selectOneMenu>
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton value="Save" icon="ui-icon-check" />
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                    <p:commandButton value="Save" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgEdit').hide();" actionListener="#{productoBean.actualizar()}"/>
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />
                                 </f:facet>
 
                             </h:panelGrid>
