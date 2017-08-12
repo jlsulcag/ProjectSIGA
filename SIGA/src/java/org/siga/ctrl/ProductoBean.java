@@ -58,7 +58,6 @@ public class ProductoBean {
 
     public void registrar() {
         producto.setIdFamilia(idFamilia);
-        producto.setClase(clase);
         producto.setDescripcion(producto.getDescripcion().toUpperCase());
         producto.setCodigo(producto.getCodigo().toUpperCase());
         producto.setFechaReg(new Date());
