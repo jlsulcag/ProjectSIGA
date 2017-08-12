@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column headerText="Descripción" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
-                            </p:column>
+                            </p:column>                            
 
                             <p:column headerText="Código" style="width: 50px">
                                 <h:outputText value="#{item.codigo}"/>
@@ -55,7 +55,6 @@
                             <p:column headerText="Stock Max" style="width:50px;">
                                 <h:outputText value="#{item.stockMaximo}"/>
                             </p:column>
-
 
                             <p:column headerText="Clase" style="width:80px;">
                                 <h:outputText value="#{item.clase.descripcion}"/>
@@ -75,11 +74,18 @@
                         <p:dialog header="Registrar Producto" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
-
+                                
+                                <h:outputLabel for="cbxFamilia" value="Familia :"/>
+                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{productoBean.idFamilia}">
+                                    <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClase"/>
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsFamilia}"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="cbxClase" value="Clase :"/>
                                 <p:selectOneMenu id="cbxClase" style="width: 380px" value="#{productoBean.producto.clase.idclase}">
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{claseBean.selectOneItemsClase}"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsClase}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
@@ -116,10 +122,17 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
 
+                                <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
+                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{productoBean.idFamilia}">
+                                    <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClaseEdit"/>
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsFamilia}"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="cbxClaseEdit" value="Clase :"/>
                                 <p:selectOneMenu id="cbxClaseEdit" style="width: 380px" value="#{productoBean.producto.clase.idclase}">
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{claseBean.selectOneItemsClase}"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsClase}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txtDescripcionEdit" value="Descripción :"/>

@@ -20,6 +20,8 @@ public class Clase  implements java.io.Serializable {
      private Set<Producto> productos = new HashSet<Producto>(0);
 
     public Clase() {
+        this.idclase = 0;
+        this.familia = new Familia();
     }
 
 	

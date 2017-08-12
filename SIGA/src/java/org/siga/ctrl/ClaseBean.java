@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import org.siga.be.Clase;
+import org.siga.be.Familia;
 import org.siga.bl.ClaseBl;
 import org.siga.util.MensajeView;
 
@@ -16,7 +17,7 @@ import org.siga.util.MensajeView;
 public class ClaseBean {
 
     @ManagedProperty(value = "#{claseBl}")
-    private ClaseBl categoriaBl;
+    private ClaseBl claseBl;
 
     @ManagedProperty(value = "#{clase}")
     private Clase clase;
@@ -31,8 +32,8 @@ public class ClaseBean {
 
     public void registrar() {
         clase.setDescripcion(clase.getDescripcion().toUpperCase());
-        clase.setEstado(clase.getEstado().toUpperCase());
-        res = getCategoriaBl().registrar(getClase());
+        clase.setEstado("ACT");
+        res = getClaseBl().registrar(getClase());
         if (res == 0) {
             MensajeView.registroCorrecto();
         } else {
@@ -46,7 +47,8 @@ public class ClaseBean {
         temp = buscarId();
         temp.setDescripcion(clase.getDescripcion().toUpperCase());
         temp.setEstado(clase.getEstado().toUpperCase());
-        res = getCategoriaBl().actualizar(temp);
+        temp.setFamilia(clase.getFamilia());
+        res = getClaseBl().actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
         } else {
@@ -58,7 +60,7 @@ public class ClaseBean {
     public void eliminar() {
         Clase temp = new Clase();
         temp = buscarId();
-        res = categoriaBl.eliminar(temp);
+        res = claseBl.eliminar(temp);
         if(res == 0){
             MensajeView.eliminacionCorrecta();
         }else{
@@ -69,24 +71,29 @@ public class ClaseBean {
 
     public void limpiar() {
         clase.setIdclase(0);
+        clase.setFamilia(new Familia());
         clase.setDescripcion("");
     }
 
     @PostConstruct
     public void listar() {
-        setListClases(categoriaBl.listar());
+        setListClases(claseBl.listarFull(""));
+    }
+    
+    public void listarClasexIdFamilia(){
+        
     }
     
     public void listarRef(){
-        setListClases(categoriaBl.listar(getTxtBusqueda()));
+        setListClases(claseBl.listar(getTxtBusqueda()));
     }
 
-    public ClaseBl getCategoriaBl() {
-        return categoriaBl;
+    public ClaseBl getClaseBl() {
+        return claseBl;
     }
 
-    public void setCategoriaBl(ClaseBl categoriaBl) {
-        this.categoriaBl = categoriaBl;
+    public void setClaseBl(ClaseBl claseBl) {
+        this.claseBl = claseBl;
     }
 
     public Clase getClase() {
@@ -106,7 +113,7 @@ public class ClaseBean {
     }
 
     private Clase buscarId() {
-        return categoriaBl.buscar(clase.getIdclase());
+        return claseBl.buscar(clase.getIdclase());
     }
 
     public String getTxtBusqueda() {

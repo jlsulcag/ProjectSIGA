@@ -32,6 +32,9 @@
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" not-null="true" />
         </property>
+        <property name="idFamilia" type="long">
+            <column name="id_familia" not-null="false" />
+        </property>
         <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_producto" not-null="true" />

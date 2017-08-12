@@ -31,7 +31,7 @@ public class ClaseDao extends AbstractDA<Clase>{
 
     @Override
     public List<Clase> listar(String ref) {
-        return list("from Categoria c where c.descripcion like '%"+ref+"%'");
+        return list(ref);
     }
 
     @Override
@@ -52,6 +52,16 @@ public class ClaseDao extends AbstractDA<Clase>{
     @Override
     public long id() {
         return maxId(Clase.class);
+    }
+
+    public List<Clase> listarFull(String string) {
+        string = "from Clase a left join fetch a.familia";
+        return listar(string);
+    }
+
+    public List<Clase> listarClasePorFamilia(long idFam) {
+        String hql = "select a from Clase a left join fetch a.familia b where b.idfamilia = "+idFam;
+        return listar(hql);
     }
     
 }

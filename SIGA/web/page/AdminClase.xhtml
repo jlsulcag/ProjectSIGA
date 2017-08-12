@@ -43,7 +43,11 @@
                             <p:column headerText="Descripción" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>
-
+                            
+                            <p:column headerText="Familia" style=" width: 250px">
+                                <h:outputText value="#{item.familia.descripcion}"/>
+                            </p:column>
+                            
                             <p:column headerText="Estado" style="width: 50px">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
@@ -71,17 +75,16 @@
                         <p:dialog header="Registrar Clase" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
-
-                                <h:outputLabel for="txtDescripcion" value="Descripción :"/>
-                                <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{claseBean.clase.descripcion}" />
-
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{claseBean.clase.estado}">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
-                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
+                                
+                                <h:outputLabel for="cbxFamilia" value="Familia :"/>
+                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{familiaBean.selectOneItemsFamilia}"/>
                                 </p:selectOneMenu>
 
+                                <h:outputLabel for="txtDescripcion" value="Clase :"/>
+                                <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{claseBean.clase.descripcion}" />
+                                
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
@@ -100,9 +103,15 @@
 
                                 <h:inputHidden value="#{claseBean.clase.idclase}" />
                                 <h:inputHidden />
+                                
+                                <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
+                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{familiaBean.selectOneItemsFamilia}"/>
+                                </p:selectOneMenu>
 
-                                <h:outputLabel for="txtCategoriaEdit" value="Categoria :"/>
-                                <p:inputText id="txtCategoriaEdit" label="Categoria" required="true" value="#{claseBean.clase.descripcion}" style="width: 400px; text-transform:uppercase;"/>
+                                <h:outputLabel for="txtCategoriaEdit" value="Clase :"/>
+                                <p:inputText id="txtCategoriaEdit" label="Clase" required="true" value="#{claseBean.clase.descripcion}" style="width: 400px; text-transform:uppercase;"/>
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{claseBean.clase.estado}">
@@ -114,10 +123,10 @@
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
-                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-save" 
+                                                     oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
                                                      title="Guardar" value="Guardar" actionListener="#{claseBean.actualizar()}"/>
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-cancel" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>

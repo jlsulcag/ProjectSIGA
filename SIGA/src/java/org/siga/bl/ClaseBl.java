@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 public class ClaseBl extends AbstractBL<Clase>{
     @Autowired
     @Qualifier("claseDao")
-    private ClaseDao categoriaDao;
+    private ClaseDao dao;
     
     @Override
     public AbstractDA getDAO() {
-        return categoriaDao;
+        return dao;
     }
 
     @Override
     public void setDA(AbstractDA dao) {
-        this.categoriaDao = (ClaseDao) dao;
+        this.dao = (ClaseDao) dao;
     }
 
     @Override
@@ -69,6 +69,14 @@ public class ClaseBl extends AbstractBL<Clase>{
     @Override
     public long id() {
         return maxId();
+    }
+
+    public List<Clase> listarFull(String string) {
+        return dao.listarFull(string);
+    }
+
+    public List<Clase> listarClasePorFamilia(long idFam) {
+        return dao.listarClasePorFamilia(idFam);
     }
     
 }

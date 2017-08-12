@@ -23,6 +23,7 @@ public class Producto  implements java.io.Serializable {
      private int stockMaximo;
      private String estado;
      private Date fechaReg;
+     private long idFamilia;
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
@@ -133,6 +134,14 @@ public class Producto  implements java.io.Serializable {
     
     public void setNotaEntradaDetalles(Set<NotaEntradaDetalle> notaEntradaDetalles) {
         this.notaEntradaDetalles = notaEntradaDetalles;
+    }
+
+    public long getIdFamilia() {
+        return idFamilia;
+    }
+
+    public void setIdFamilia(long idFamilia) {
+        this.idFamilia = idFamilia;
     }
 
 
