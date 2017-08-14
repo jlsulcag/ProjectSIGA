@@ -44,15 +44,15 @@
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>                            
 
-                            <p:column headerText="Código" style="width: 50px">
-                                <h:outputText value="#{item.codigo}"/>
+                            <p:column headerText="Cant x UM" style="width: 50px">
+                                <h:outputText value="#{item.fraccion}"/>
                             </p:column>
 
                             <p:column headerText="Stock Min" style="width:50px;text-align: center">
                                 <h:outputText value="#{item.stockMinimo}"/>
                             </p:column>
 
-                            <p:column headerText="Stock Max" style="width:50px;">
+                            <p:column headerText="Stock Max" style="width:50px; text-align: center">
                                 <h:outputText value="#{item.stockMaximo}"/>
                             </p:column>
                             <p:column headerText="Clase" style="width:80px;">
@@ -98,12 +98,16 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
+                                
+                                <h:outputLabel for="spFraccion" value="Cant x UM: " />
+                                <p:spinner id="spFraccion" value="#{productoBean.producto.fraccion}" required="true"/>
 
                                 <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMin" value="#{productoBean.producto.stockMinimo}"/>
 
                                 <h:outputLabel for="spStockMax" value="Stock Máximo: " />
-                                <p:spinner id="spStockMax" value="#{productoBean.producto.stockMaximo}"/>
+                                <p:spinner id="spStockMax" value="#{productoBean.producto.stockMaximo}"/>                               
+                                
 
                                 <f:facet name="footer">
                                     <p:separator/>
@@ -145,15 +149,18 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
+                                
+                                <h:outputLabel for="spFraccionEdit" value="Cant x UM: " />
+                                <p:spinner id="spFraccionEdit" value="#{productoBean.producto.fraccion}"/>
 
                                 <h:outputLabel for="spStockMinEdit" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMinEdit" value="#{productoBean.producto.stockMinimo}"/>
 
                                 <h:outputLabel for="spStockMaxEdit" value="Stock Máximo: " />
-                                <p:spinner id="spStockMaxEdit" value="#{productoBean.producto.stockMaximo}"/>
+                                <p:spinner id="spStockMaxEdit" value="#{productoBean.producto.stockMaximo}"/>                              
                                 
                                 <h:outputLabel for="cbxEstadoEdit" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstadoEdit" style="width: 300px" value="#{productoBean.producto.estado}">
+                                <p:selectOneMenu id="cbxEstadoEdit" style="width: 380px" value="#{productoBean.producto.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>

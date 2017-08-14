@@ -22,6 +22,7 @@ public class OrdenCompra  implements java.io.Serializable {
      private String lugarEntrega;
      private String observacion;
      private String estado;
+     private String horaRegistro;
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
 
@@ -121,6 +122,14 @@ public class OrdenCompra  implements java.io.Serializable {
     
     public void setNotaEntradas(Set<NotaEntrada> notaEntradas) {
         this.notaEntradas = notaEntradas;
+    }
+
+    public String getHoraRegistro() {
+        return horaRegistro;
+    }
+
+    public void setHoraRegistro(String horaRegistro) {
+        this.horaRegistro = horaRegistro;
     }
 
 

@@ -31,6 +31,9 @@
                 <comment>APROBADO NO APROBADO ANULADO</comment>
             </column>
         </property>
+        <property name="horaRegistro" type="string">
+            <column name="hora_registro" length="30" not-null="true" />
+        </property>
         <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_ordencompra" not-null="true" />

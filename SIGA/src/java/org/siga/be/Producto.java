@@ -24,6 +24,7 @@ public class Producto  implements java.io.Serializable {
      private String estado;
      private Date fechaReg;
      private long idFamilia;
+     private int fraccion;
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
@@ -142,6 +143,14 @@ public class Producto  implements java.io.Serializable {
 
     public void setIdFamilia(long idFamilia) {
         this.idFamilia = idFamilia;
+    }
+
+    public int getFraccion() {
+        return fraccion;
+    }
+
+    public void setFraccion(int fraccion) {
+        this.fraccion = fraccion;
     }
 
 
