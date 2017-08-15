@@ -1,14 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                content
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel id="pnl_ordencompra" header="Registrar Orden de Compra">
+                    <!--
+                    <h:form id="formTolbar">
+                        <p:toolbar>
+                            <f:facet name="left">
+                                
+                            </f:facet>
+                            <f:facet name="rigth">
+                                
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+                    -->
+                    <h:form id="formregistro">
+                        <h:panelGrid id="gridNew" columns="2" cellpadding="3"> 
+                            <p:fieldset>
+                                <h:outputLabel for="txfNumero" value="Número :"/>
+                                <p:inputText id="txfNumero" label="Numero" style="width: 100px; text-transform: uppercase" required="true"/>
+                                <h:outputLabel for="txfFecha" value="Fecha :"/>
+                                <p:calendar id="txfFecha" class="calendar" showOn="button" navigator="true" pattern="dd/MM/yyyy">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+                            </p:fieldset>
+                            
+                            <p:fieldset>
+                                <h:outputLabel for="txfProveedor" value="Proveedor :"/>
+                                <p:inputText id="txfProveedor" label="Proveedor" style="width: 300px; text-transform: uppercase" required="true"/>
+                                <p:commandButton id="btnBuscarProv" title="Buscar"  value="Buscar" style="margin-left: 10px"/> 
+                            </p:fieldset>
+
+                        </h:panelGrid>
+                        <h:panelGrid id="gridProducto" columns="1" cellpadding="3">
+                            <p:fieldset style="width: 100%">
+                                <h:outputLabel for="txfProducto" value="Producto :"/>
+                                <p:inputText id="txfProducto" label="Producto" style="width: 400px; text-transform: uppercase" required="true"/>
+                                <p:commandButton id="btnBuscarProd" title="Buscar"  value="Buscar" style="margin-left: 10px"/> 
+                            </p:fieldset>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
             </ui:define>
 
         </ui:composition>
