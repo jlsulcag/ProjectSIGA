@@ -5,13 +5,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import org.siga.be.Proveedor;
 import org.siga.bl.ProveedorBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ProveedorBean {
 
     @ManagedProperty(value = "#{proveedor}")
@@ -67,7 +68,14 @@ public class ProveedorBean {
     }
     
     public void buscarRef(){
-        setListProveedores(proveedorBl.listar(txtBusqueda));
+        System.out.println("texto  enviado "+txtBusqueda);
+        setListProveedores(proveedorBl.buscarRef(txtBusqueda));
+    }
+    
+    public List<Proveedor> complete(String query){
+        System.out.println("texto  enviad "+txtBusqueda);
+        System.out.println(" retoran query "+query);
+        return  proveedorBl.buscarRef(query);
     }
     
     public void limpiar(){

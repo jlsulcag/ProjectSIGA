@@ -39,6 +39,10 @@
                         <p:outputLabel value="Datos del producto" style="font-weight: bold"></p:outputLabel>
                         <p:separator></p:separator>
                         <h:panelGrid columns="2" cellpadding="1">
+                            <h:outputLabel for="txfPro" value="Proveedor :"/>
+                            <p:autoComplete id="txfPro" value="#{proveedorBean.proveedor}" completeMethod="#{proveedorBean.complete}" 
+                                            var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.razonSocial}" forceSelection="true"/>
+                            
                             <h:outputLabel for="txfProducto" value="Producto :"/>
                             <p:inputText id="txfProducto" label="Producto" style="width: 400px; text-transform: uppercase" required="true"/>
 

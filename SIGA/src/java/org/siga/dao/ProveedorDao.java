@@ -31,7 +31,7 @@ public class ProveedorDao extends AbstractDA<Proveedor>{
 
     @Override
     public List<Proveedor> listar(String ref) {
-        return list("from Proveedor p where p.razonSocial like '%"+ref+"%'");
+        return list(ref);
     }
 
     @Override
@@ -52,6 +52,11 @@ public class ProveedorDao extends AbstractDA<Proveedor>{
     @Override
     public long id() {
         return maxId(Proveedor.class);
+    }
+
+    public List<Proveedor> buscarRef(String txtBusqueda) {
+        String hql = "From Proveedor a where a.razonSocial like '%"+txtBusqueda+"%'";
+        return listar(hql);
     }
     
 }

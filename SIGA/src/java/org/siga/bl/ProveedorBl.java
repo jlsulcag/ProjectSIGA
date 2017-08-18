@@ -71,5 +71,9 @@ public class ProveedorBl extends AbstractBL<Proveedor>{
     public long id() {
         return maxId();
     }
+
+    public List<Proveedor> buscarRef(String txtBusqueda) {
+        return dao.buscarRef(txtBusqueda);
+    }
     
 }
