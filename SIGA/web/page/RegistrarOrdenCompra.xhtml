@@ -21,8 +21,10 @@
                             <p:calendar id="txfFecha" class="calendar" showOn="button" navigator="true" pattern="dd/MM/yyyy">
                                 <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
                             </p:calendar>
-                            <h:outputLabel for="txfProveedor" value="Proveedor :"/>
-                            <p:inputText id="txfProveedor" label="Proveedor" style="width: 300px; text-transform: uppercase" required="true"/>
+                            <h:outputLabel for="txfPro" value="Proveedor :"/>
+                            <p:autoComplete id="txfPro" value="#{ordenCompraBean.proveedor}" completeMethod="#{ordenCompraBean.listProveedoresRef}" 
+                                            var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.razonSocial}" forceSelection="true"
+                                            style="text-transform: uppercase"/>
 
                             <h:outputLabel for="txfFechaEntrega" value="Fecha de entrega:"/>
                             <p:calendar id="txfFechaEntrega" class="calendar" showOn="button" navigator="true" pattern="dd/MM/yyyy">
@@ -38,13 +40,12 @@
                         </h:panelGrid>
                         <p:outputLabel value="Datos del producto" style="font-weight: bold"></p:outputLabel>
                         <p:separator></p:separator>
-                        <h:panelGrid columns="2" cellpadding="1">
-                            <h:outputLabel for="txfPro" value="Proveedor :"/>
-                            <p:autoComplete id="txfPro" value="#{proveedorBean.proveedor}" completeMethod="#{proveedorBean.complete}" 
-                                            var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.razonSocial}" forceSelection="true"/>
+                        <h:panelGrid columns="2" cellpadding="1">                            
                             
                             <h:outputLabel for="txfProducto" value="Producto :"/>
-                            <p:inputText id="txfProducto" label="Producto" style="width: 400px; text-transform: uppercase" required="true"/>
+                            <p:autoComplete id="txfProducto" value="#{ordenCompraBean.producto}" completeMethod="#{ordenCompraBean.listProductosRef}" 
+                                            var="item" itemLabel="#{item.descripcion}" itemValue="#{item.descripcion}" forceSelection="true"
+                                            style="text-transform: uppercase"/>
 
                             <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                             <p:inputText id="txfCantidad" label="Cantidad" style="width: 400px; text-transform: uppercase" required="true"/>
