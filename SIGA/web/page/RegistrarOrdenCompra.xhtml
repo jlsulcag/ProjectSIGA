@@ -12,7 +12,7 @@
 
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <h:form>
+                <h:form id="formDatos">
                     <p:panel header="Registrar Orden de Compra">
                         <h:panelGrid columns="2" cellpadding="1">
                             <h:outputLabel for="txfNumero" value="Número :"/>
@@ -32,10 +32,10 @@
                             </p:calendar>
 
                             <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :"/>
-                            <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="width: 300px; text-transform: uppercase" required="true"/>
+                            <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="text-transform: uppercase" required="true"/>
 
                             <h:outputLabel for="txfObservacion" value="Observación :"/>
-                            <p:inputText id="txfObservacion" label="Observación" style="width: 300px; text-transform: uppercase" required="true"/>
+                            <p:inputText id="txfObservacion" label="Observación" style="text-transform: uppercase" required="true"/>
 
                         </h:panelGrid>
                         <p:outputLabel value="Datos del producto" style="font-weight: bold"></p:outputLabel>
@@ -48,21 +48,35 @@
                                             style="text-transform: uppercase"/>
 
                             <h:outputLabel for="txfCantidad" value="Cantidad :"/>
-                            <p:inputText id="txfCantidad" label="Cantidad" style="width: 400px; text-transform: uppercase" required="true"/>
+                            <p:spinner id="txfCantidad" />
 
                             <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
-                            <p:selectOneMenu id="cbxUnidadMedida" style="width: 380px" value="#{productoBean.producto.unidadMedida.idunidadmedida}">
+                            <p:selectOneMenu id="cbxUnidadMedida"  value="#{productoBean.producto.unidadMedida.idunidadmedida}">
                                 <f:selectItem itemLabel="SELECCIONE"/>
                                 <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                             </p:selectOneMenu>
                             
                             <h:outputLabel for="txfValorCompra" value="Valor de compra:"/>
-                            <p:inputText id="txfValorCompra" label="Valor de compra" style="width: 400px; text-transform: uppercase" required="true"/>
+                            <p:inputText id="txfValorCompra" label="Valor de compra" style="text-transform: uppercase" required="true"/>
                             
                             <h:outputLabel for="txfPrecioCompra" value="Precio de compra:"/>
-                            <p:inputText id="txfPrecioCompra" label="Precio de compra" style="width: 400px; text-transform: uppercase" required="true"/>
+                            <p:inputText id="txfPrecioCompra" label="Precio de compra" style="text-transform: uppercase" required="true"/>
+                            
+                            <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
+                            <p:spinner id="txfDesc1"/>
+                            
+                            <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
+                            <p:spinner id="txfDesc2"/>
                         </h:panelGrid>
                     </p:panel>
+                </h:form>
+                <h:form>
+                    <p:toolbar style="margin-top: 10px">
+                        <f:facet name="right">
+                            <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
+                                                 update=":formDatos" actionListener="#{claseBean.limpiar()}"/>
+                        </f:facet>
+                    </p:toolbar>
                 </h:form>
             </ui:define>
 

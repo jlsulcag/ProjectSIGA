@@ -18,14 +18,14 @@ import org.siga.bl.ProveedorBl;
 @ManagedBean
 @SessionScoped
 public class OrdenCompraBean {
-//    @ManagedProperty(value = "#{ordenCompra]")
-//    private OrdenCompra ordencompra;    
-//    @ManagedProperty(value = "#{ordenCompraBl}")
-//    private OrdenCompraBl ordenCompraBl;    
-//    @ManagedProperty(value = "#{ordenCompraDetalle}")
-//    private OrdenCompraDetalle ordenCompraDetalle;    
-//    @ManagedProperty(value = "#{ordenCompraDetalleBl}")
-//    private OrdenCompraDetalleBl ordenCompraDetalleBl; 
+    @ManagedProperty(value = "#{ordenCompra}")
+    private OrdenCompra ordenCompra;    
+    @ManagedProperty(value = "#{ordenCompraBl}")
+    private OrdenCompraBl ordenCompraBl;    
+    @ManagedProperty(value = "#{ordenCompraDetalle}")
+    private OrdenCompraDetalle ordenCompraDetalle;    
+    @ManagedProperty(value = "#{ordenCompraDetalleBl}")
+    private OrdenCompraDetalleBl ordenCompraDetalleBl; 
     @ManagedProperty(value = "#{proveedor}")
     private Proveedor proveedor;
     @ManagedProperty(value = "#{proveedorBl}")
@@ -46,7 +46,7 @@ public class OrdenCompraBean {
     public List<Producto> listProductosRef(String ref){
         return getProductoBl().listarRef(ref.toUpperCase());
     }
-
+    
     public Producto getProducto() {
         return producto;
     }
@@ -77,6 +77,38 @@ public class OrdenCompraBean {
 
     public void setProveedorBl(ProveedorBl proveedorBl) {
         this.proveedorBl = proveedorBl;
+    }
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
+    }
+
+    public OrdenCompraBl getOrdenCompraBl() {
+        return ordenCompraBl;
+    }
+
+    public void setOrdenCompraBl(OrdenCompraBl ordenCompraBl) {
+        this.ordenCompraBl = ordenCompraBl;
+    }
+
+    public OrdenCompraDetalle getOrdenCompraDetalle() {
+        return ordenCompraDetalle;
+    }
+
+    public void setOrdenCompraDetalle(OrdenCompraDetalle ordenCompraDetalle) {
+        this.ordenCompraDetalle = ordenCompraDetalle;
+    }
+
+    public OrdenCompraDetalleBl getOrdenCompraDetalleBl() {
+        return ordenCompraDetalleBl;
+    }
+
+    public void setOrdenCompraDetalleBl(OrdenCompraDetalleBl ordenCompraDetalleBl) {
+        this.ordenCompraDetalleBl = ordenCompraDetalleBl;
     }
     
 }
