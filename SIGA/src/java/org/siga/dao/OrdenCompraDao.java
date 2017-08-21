@@ -52,5 +52,10 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra>{
     public long id() {
         return maxId(OrdenCompra.class);
     }
+
+    public List<OrdenCompra> listarFull(String string) {
+        string = "from OrdenCompra a order by a.numero desc";
+        return listar(string);
+    }
     
 }

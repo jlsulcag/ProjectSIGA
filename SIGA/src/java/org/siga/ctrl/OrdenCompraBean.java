@@ -2,6 +2,7 @@
 package org.siga.ctrl;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -14,9 +15,12 @@ import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.ProveedorBl;
+import org.siga.util.MensajeView;
+import org.siga.util.Utilitario;
+import org.siga.util.Utilitarios;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class OrdenCompraBean {
     @ManagedProperty(value = "#{ordenCompra}")
     private OrdenCompra ordenCompra;    
@@ -35,10 +39,30 @@ public class OrdenCompraBean {
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
     
+    private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles;
+    private long res;
     
     
     public OrdenCompraBean() {
+    }
+    @PostConstruct
+    public void listarOrdenCompra(){
+        setListOrdenCompra(ordenCompraBl.listarFull(""));
+    }
+    public void registrar(){
+        System.out.println("proveedor "+proveedor.getRazonSocial());
+        ordenCompra.setIdProveedor(1);
+        ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
+        ordenCompra.setEstado("REG");
+        ordenCompra.setHoraRegistro(Utilitarios.horaActual());
+        res = ordenCompraBl.registrar(ordenCompra);
+        if (res == 0) {
+            MensajeView.registroCorrecto();
+        } else {
+            MensajeView.registroError();
+        }
+        listarOrdenCompra();
     }
     public List<Proveedor> listProveedoresRef(String ref){
         return getProveedorBl().buscarRef(ref.toUpperCase());
@@ -109,6 +133,14 @@ public class OrdenCompraBean {
 
     public void setOrdenCompraDetalleBl(OrdenCompraDetalleBl ordenCompraDetalleBl) {
         this.ordenCompraDetalleBl = ordenCompraDetalleBl;
+    }
+
+    public List<OrdenCompra> getListOrdenCompra() {
+        return listOrdenCompra;
+    }
+
+    public void setListOrdenCompra(List<OrdenCompra> listOrdenCompra) {
+        this.listOrdenCompra = listOrdenCompra;
     }
     
 }

@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel id="pnl_admincategoria" header="Administrar Oden Compra Detalle">
+                    <h:form id="formTolbar">
+                        <p:toolbar style="margin-top: 10px">
+                            <f:facet name="left">
+                                <p:commandButton id="btnGuardar" icon="ui-icon-check" value="Guardar" title="Guardar" 
+                                                 update=":formNew" actionListener="#"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{claseBean.listClases}" var="item"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Orden Compra Detalle</f:facet>
+                        </p:dataTable>
+                    </h:form>
+
+                    <h:form id="formNew">
+                        <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+                                
+                                <h:panelGrid columns="2" cellpadding="1">                            
+
+                                <h:outputLabel for="txfProducto" value="Producto :"/>
+                                <p:autoComplete id="txfProducto" value="#{ordenCompraBean.producto}" completeMethod="#{ordenCompraBean.listProductosRef}" 
+                                                var="item" itemLabel="#{item.descripcion}" itemValue="#{item.descripcion}" forceSelection="true"
+                                                style="text-transform: uppercase"/>
+
+                                <h:outputLabel for="txfCantidad" value="Cantidad :"/>
+                                <p:spinner id="txfCantidad" />
+
+                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
+                                <p:selectOneMenu id="cbxUnidadMedida"  value="#{productoBean.producto.unidadMedida.idunidadmedida}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfValorCompra" value="Valor de compra:"/>
+                                <p:inputText id="txfValorCompra" label="Valor de compra" style="text-transform: uppercase" required="true"/>
+
+                                <h:outputLabel for="txfPrecioCompra" value="Precio de compra:"/>
+                                <p:inputText id="txfPrecioCompra" label="Precio de compra" style="text-transform: uppercase" required="true"/>
+
+                                <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
+                                <p:spinner id="txfDesc1"/>
+
+                                <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
+                                <p:spinner id="txfDesc2"/>
+                                
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="formEdit">
+                        <p:dialog header="Actualizar Registro" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

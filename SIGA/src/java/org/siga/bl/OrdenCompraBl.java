@@ -76,5 +76,9 @@ public class OrdenCompraBl extends AbstractBL<OrdenCompra>{
     public void setDao(OrdenCompraDao dao) {
         this.dao = dao;
     }
+
+    public List<OrdenCompra> listarFull(String string) {
+        return dao.listarFull(string);
+    }
     
 }
