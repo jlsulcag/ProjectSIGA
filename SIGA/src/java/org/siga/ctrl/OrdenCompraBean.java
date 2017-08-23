@@ -1,6 +1,7 @@
 
 package org.siga.ctrl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import org.siga.util.Utilitario;
 import org.siga.util.Utilitarios;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class OrdenCompraBean {
     @ManagedProperty(value = "#{ordenCompra}")
     private OrdenCompra ordenCompra;    
@@ -30,8 +31,8 @@ public class OrdenCompraBean {
     private OrdenCompraDetalle ordenCompraDetalle;    
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
     private OrdenCompraDetalleBl ordenCompraDetalleBl; 
-    @ManagedProperty(value = "#{proveedor}")
-    private Proveedor proveedor;
+//    @ManagedProperty(value = "#{proveedor}")
+//    private Proveedor proveedor;
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
     @ManagedProperty(value = "#{producto}")
@@ -41,6 +42,7 @@ public class OrdenCompraBean {
     
     private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles;
+    private List<Proveedor> listProveedores;
     private long res;
     
     
@@ -48,11 +50,19 @@ public class OrdenCompraBean {
     }
     @PostConstruct
     public void listarOrdenCompra(){
-        setListOrdenCompra(ordenCompraBl.listarFull(""));
+        listOrdenCompra = new ArrayList<>();
+        for (OrdenCompra obj : ordenCompraBl.listarFull("")) {
+            obj.setProveedor(proveedorBl.buscar(obj.getIdProveedor()));
+            listOrdenCompra.add(obj);
+        }
+        setListOrdenCompra(listOrdenCompra);
+//        setListOrdenCompra(ordenCompraBl.listarFull(""));
     }
     public void registrar(){
-        System.out.println("proveedor "+proveedor.getRazonSocial());
-        ordenCompra.setIdProveedor(1);
+        //buscar  proveedor por razon social
+        System.out.println("proveedor "+ordenCompra.getProveedor().getRazonSocial());
+        //ordenCompra.setProveedor(proveedorBl.buscarXNombre(proveedor.getRazonSocial()));
+        //ordenCompra.setIdProveedor((int) proveedor.getIdproveedor());
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
         ordenCompra.setEstado("REG");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
@@ -87,13 +97,13 @@ public class OrdenCompraBean {
         this.productoBl = productoBl;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
+//    public Proveedor getProveedor() {
+//        return proveedor;
+//    }
+//
+//    public void setProveedor(Proveedor proveedor) {
+//        this.proveedor = proveedor;
+//    }
 
     public ProveedorBl getProveedorBl() {
         return proveedorBl;

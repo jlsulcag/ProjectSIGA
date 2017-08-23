@@ -59,6 +59,7 @@ public class ProveedorBl extends AbstractBL<Proveedor>{
 
     @Override
     public Proveedor buscar(long id) {
+        System.out.println("id "+id);
         return search(id);
     }
 
@@ -74,6 +75,15 @@ public class ProveedorBl extends AbstractBL<Proveedor>{
 
     public List<Proveedor> buscarRef(String txtBusqueda) {
         return dao.buscarRef(txtBusqueda);
+    }
+
+    public Proveedor buscarxID(Long id) {
+        dao = new ProveedorDao();
+        return dao.buscarxID(id);
+    }
+
+    public Proveedor buscarXNombre(String razonSocial) {
+        return dao.buscarXNombre(razonSocial);
     }
     
 }

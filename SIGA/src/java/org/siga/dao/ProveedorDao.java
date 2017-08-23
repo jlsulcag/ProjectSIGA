@@ -58,5 +58,15 @@ public class ProveedorDao extends AbstractDA<Proveedor>{
         String hql = "From Proveedor a where a.razonSocial like '%"+txtBusqueda+"%'";
         return listar(hql);
     }
+
+    public Proveedor buscarxID(Long id) {
+        String hql = "From Proveedor a where a.idproveedor = "+id;
+        return buscar(hql);
+    }
+
+    public Proveedor buscarXNombre(String razonSocial) {
+        String hql = "From Proveedor a where a.razonSocial = '"+razonSocial+"'";
+        return buscar(hql);
+    }
     
 }
