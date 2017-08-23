@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
@@ -104,6 +106,12 @@ public class OrdenCompraBean {
     
     public long maxNumero(){
         return ordenCompraBl.buscarUltimoNumero();
+    }
+    
+    public String redirigir() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
+        return "RegistrarOrdenCompraDetalle";
     }
     
     public List<Proveedor> listProveedoresRef(String ref){

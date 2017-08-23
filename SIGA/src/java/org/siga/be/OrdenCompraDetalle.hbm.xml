@@ -23,5 +23,26 @@
         <property name="observacion" type="string">
             <column name="observacion" length="300" />
         </property>
+        <property name="lote" type="string">
+            <column name="lote" length="30" />
+        </property>
+        <property name="fechaVencimiento" type="date">
+            <column name="fecha_vencimiento" length="30" />
+        </property>
+        <property name="valorCompra" type="big_decimal">
+            <column name="valor_compra" precision="18" />
+        </property>
+        
+        <property name="precioCompra" type="big_decimal">
+            <column name="precio_compra" precision="18" />
+        </property>
+        
+        <property name="desc1" type="double">
+            <column name="desc1" precision="18" />
+        </property>
+        
+        <property name="desc2" type="double">
+            <column name="desc2" precision="18" />
+        </property>
     </class>
 </hibernate-mapping>

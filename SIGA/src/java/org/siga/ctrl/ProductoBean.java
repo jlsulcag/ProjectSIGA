@@ -38,6 +38,7 @@ public class ProductoBean {
     
     private List<SelectItem> selectOneItemsFamilia;
     private List<SelectItem> selectOneItemsClase;
+    private List<SelectItem> selectOneItemsProducto;
     private List<Familia> listFamilias;
     private List<Clase> listClases;
     private String txtBusqueda;
@@ -232,6 +233,25 @@ public class ProductoBean {
 
     public void setListClases(List<Clase> listClases) {
         this.listClases = listClases;
+    }
+
+    public List<SelectItem> getSelectOneItemsProducto() {
+        this.selectOneItemsProducto= new LinkedList<SelectItem>();
+        for (Producto obj : listarProducto()) {
+            this.setProducto(obj);
+            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
+            this.selectOneItemsProducto.add(selectItem);
+        }
+        return selectOneItemsProducto;
+    }
+
+    public void setSelectOneItemsProducto(List<SelectItem> selectOneItemsProducto) {
+        this.selectOneItemsProducto = selectOneItemsProducto;
+    }
+
+    private Iterable<Producto> listarProducto() {
+        setListaProductos(productoBl.listar());
+        return getListaProductos();
     }
 
 }

@@ -29,7 +29,7 @@
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
-                            <f:facet name="header">Orden Compra Detalle</f:facet>
+                            <f:facet name="header">Orden de Compra</f:facet>
 
                             <p:column style="width:15px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idordencompra}"/>
@@ -55,10 +55,9 @@
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnDetalle" title="Detalles" ajax="true" immediate="true"
-                                                 icon="ui-icon-extlink">
+                                <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{ordenCompraBean.redirigir()}">
                                     <f:setPropertyActionListener value="#{item}" target="#{ordenCompraBean.ordenCompra}" />
-                                </p:commandButton>                            
+                                </p:commandButton>                           
                             </p:column>
 
                             <p:column style="width:10px;text-align: center">
@@ -88,7 +87,7 @@
                                 <p:inputText id="txfNumero" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
                                              value="#{ordenCompraBean.ordenCompra.numero}"/>
 
-                                <h:outputLabel for="txfFecha" value="Fecha :"/>
+                                <h:outputLabel for="txfFecha" value="Fecha de Emisión:"/>
                                 <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
                                             value="#{ordenCompraBean.ordenCompra.fecha}">
                                     <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
@@ -138,7 +137,7 @@
                                 <p:inputText id="txfNumeroEdit" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
                                              value="#{ordenCompraBean.ordenCompra.numero}"/>
 
-                                <h:outputLabel for="txfFechaEdit" value="Fecha :"/>
+                                <h:outputLabel for="txfFechaEdit" value="Fecha de Emisión :"/>
                                 <p:calendar id="txfFechaEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
                                             value="#{ordenCompraBean.ordenCompra.fecha}">
                                     <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />

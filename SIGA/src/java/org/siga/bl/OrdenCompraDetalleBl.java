@@ -70,6 +70,14 @@ public class OrdenCompraDetalleBl extends AbstractBL<OrdenCompraDetalle>{
     public long id() {
         return maxId();
     }
+
+    public List<OrdenCompraDetalle> listarFull() {
+        return dao.listarFull();
+    }
+
+    public List<OrdenCompraDetalle> listarXIdOrdenCompra(long id) {
+        return dao.listarXIdOrdenCompra(id);
+    }
     
     
 }

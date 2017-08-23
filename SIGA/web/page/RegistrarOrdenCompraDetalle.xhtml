@@ -11,69 +11,210 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel id="pnl_admincategoria" header="Administrar Oden Compra Detalle">
+                <p:panel header="Administrar Oden Compra Detalle">
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
                             <f:facet name="left">
-                                <p:commandButton id="btnGuardar" icon="ui-icon-check" value="Guardar" title="Guardar" 
-                                                 update=":formNew" actionListener="#"/>
+                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                 update=":formNew" actionListener="#{ordenCompraDetalleBean.limpiar()}" oncomplete="PF('dlgNew').show();"/>
                             </f:facet>
                         </p:toolbar>
                     </h:form>
 
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{claseBean.listClases}" var="item"
+                        <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Orden Compra Detalle</f:facet>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idordencompradetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{item.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="P/Compra">
+                                <h:outputText value="#{item.valorCompra}"/>
+                            </p:column>
+
+                            <p:column headerText="V/Compra">
+                                <h:outputText value="#{item.precioCompra}"/>
+                            </p:column>
+
+                            <p:column headerText="Descuento">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Sub Total">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />
+                                </p:commandButton>                            
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />           
+                                </p:commandButton>                                                        
+
+                            </p:column>
+
                         </p:dataTable>
                     </h:form>
 
                     <h:form id="formNew">
                         <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
-                                  resizable="false" closable="false">
-                            <h:panelGrid id="gridNew" columns="2" cellpadding="3">
-                                
-                                <h:panelGrid columns="2" cellpadding="1">                            
+                                  resizable="false" closable="true">
 
-                                <h:outputLabel for="txfProducto" value="Producto :"/>
-                                <p:autoComplete id="txfProducto" value="#{ordenCompraBean.producto}" completeMethod="#{ordenCompraBean.listProductosRef}" 
-                                                var="item" itemLabel="#{item.descripcion}" itemValue="#{item.descripcion}" forceSelection="true"
-                                                style="text-transform: uppercase"/>
+                            <h:panelGrid columns="4" cellpadding="1">                            
+
+                                <h:outputLabel for="cbxProducto" value="Producto :"/>
+                                <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
-                                <p:spinner id="txfCantidad" />
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}"/>
 
-                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Medida :"/>
-                                <p:selectOneMenu id="cbxUnidadMedida"  value="#{productoBean.producto.unidadMedida.idunidadmedida}">
+                                <h:outputLabel for="txfLote" value="Lote:"/>
+                                <p:inputText id="txfLote" label="Lote"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
+
+                                <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
+                                <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{ordenCompraDetalleBean.ordenCompraDetalle.fechaVencimiento}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputLabel for="cbxUnidadMedida" value="Unidad de Adquisición :"/>
+                                <p:selectOneMenu id="cbxUnidadMedida" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
+                                    <f:selectItem itemLabel="UNIDAD"/>
+                                    <f:selectItem itemLabel="UNIDAD BASE"/>                                    
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfValorCompra" value="Valor de compra:"/>
-                                <p:inputText id="txfValorCompra" label="Valor de compra" style="text-transform: uppercase" required="true"/>
+                                <p:inputText id="txfValorCompra" label="Valor de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}"/>
 
                                 <h:outputLabel for="txfPrecioCompra" value="Precio de compra:"/>
-                                <p:inputText id="txfPrecioCompra" label="Precio de compra" style="text-transform: uppercase" required="true"/>
+                                <p:inputText id="txfPrecioCompra" label="Precio de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}"/>
 
                                 <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
-                                <p:spinner id="txfDesc1"/>
+                                <p:inputText id="txfDesc1" label="Descuento 1"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc1}"/>
 
                                 <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
-                                <p:spinner id="txfDesc2"/>
-                                
+                                <p:inputText id="txfDesc2" label="Descuento 2"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc2}"/>                                
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{ordenCompraDetalleBean.registrar()}"/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                </f:facet>
+
                             </h:panelGrid>
                         </p:dialog>
                     </h:form>
 
                     <h:form id="formEdit">
                         <p:dialog header="Actualizar Registro" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
-                                  resizable="false" closable="false">
-                            <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
+                                  resizable="false" closable="true">
+                            <h:panelGrid columns="4" cellpadding="1"> 
+                                
+                                <h:inputHidden value="#{ordenCompraDetalleBean.ordenCompraDetalle.idordencompradetalle}" />
+                                <h:inputHidden />
+                                <h:inputHidden />
+                                <h:inputHidden />
+
+                                <h:outputLabel for="cbxProductoEdit" value="Producto :"/>
+                                <p:selectOneMenu id="cbxProductoEdit" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfCantidadEdit" value="Cantidad :"/>
+                                <p:inputText id="txfCantidadEdit" label="Cantidad" required="true"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}"/>
+
+                                <h:outputLabel for="txfLoteEdit" value="Lote:"/>
+                                <p:inputText id="txfLoteEdit" label="Lote"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
+
+                                <h:outputLabel for="txfFechaVencEdit" value="fecha de vencimiento:"/>
+                                <p:calendar id="txfFechaVencEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{ordenCompraDetalleBean.ordenCompraDetalle.fechaVencimiento}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputLabel for="cbxUnidadMedidaEdit" value="Unidad de Adquisición :"/>
+                                <p:selectOneMenu id="cbxUnidadMedidaEdit" >
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItem itemLabel="UNIDAD"/>
+                                    <f:selectItem itemLabel="UNIDAD BASE"/>                                    
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfValorCompraEdit" value="Valor de compra:"/>
+                                <p:inputText id="txfValorCompraEdit" label="Valor de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}"/>
+
+                                <h:outputLabel for="txfPrecioCompraEdit" value="Precio de compra:"/>
+                                <p:inputText id="txfPrecioCompraEdit" label="Precio de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}"/>
+
+                                <h:outputLabel for="txfDesc1Edit" value="% Descuento 1:"/>
+                                <p:inputText id="txfDesc1Edit" label="Descuento 1"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc1}"/>
+
+                                <h:outputLabel for="txfDesc2Edit" value="% Descuento 2:"/>
+                                <p:inputText id="txfDesc2Edit" label="Descuento 2"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc2}"/>                                
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgEdit').hide();" actionListener="#{ordenCompraDetalleBean.actualizar()}"/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />
+                                </f:facet>
 
                             </h:panelGrid>
                         </p:dialog>
+                    </h:form>
+
+                    <h:form id="formDelete">
+                        <p:confirmDialog id="confirmDialog" message="¿Esta seguro que desea eliminar el registro?" 
+                                         header="Eliminar Registro" showEffect="fade" 
+                                         hideEffect="explode" widgetVar="dlgDelete">
+                            <h:inputHidden value="#{ordenCompraDetalleBean.ordenCompraDetalle.idordencompradetalle}" />
+                            <p:commandButton id="btnConf" update=":formDataTable, :msg" value="Aceptar" styleClass="ui-confirmdialog-yes" 
+                                             icon="ui-icon-check" oncomplete="dlgDelete.hide()" 
+                                             actionListener="#{ordenCompraDetalleBean.eliminar()}"/>
+
+                            <p:commandButton id="btnCancel" value="Cancelar" styleClass="ui-confirmdialog-no" 
+                                             icon="ui-icon-close" oncomplete="PF('dlgDelete').hide();" />
+
+                        </p:confirmDialog>
                     </h:form>
                 </p:panel>
             </ui:define>
