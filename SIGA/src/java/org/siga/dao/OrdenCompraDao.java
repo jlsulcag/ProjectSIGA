@@ -1,13 +1,51 @@
-
 package org.siga.dao;
 
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.siga.be.OrdenCompra;
 import org.siga.util.AbstractDA;
+import org.siga.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-@Repository("ordenCompraDao")
-public class OrdenCompraDao extends AbstractDA<OrdenCompra>{
 
+@Repository("ordenCompraDao")
+public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
+
+    @Autowired
+    @Qualifier("sessionFactory")
+    private SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Deprecated
+    public Session getSession() {
+        try {
+            return getSessionFactory().getCurrentSession();
+        } catch (HibernateException e) {
+            return getSessionFactory().openSession();
+        }
+    }
+
+//    private void iniciarOperacion() throws HibernateException {
+//        sesion = HibernateUtil.getSessionFactory().openSession();
+//        tx = sesion.beginTransaction();
+//    }
+//    
+//    private void manejaExcepcion(HibernateException he) {
+//        tx.rollback();
+//        throw new HibernateException("Ocurrió un error en la capa de acceso a datos", he);
+//    }
     @Override
     public long registrar(OrdenCompra bean) {
         return save(bean);
@@ -25,7 +63,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra>{
 
     @Override
     public List<OrdenCompra> listar() {
-        return  list(OrdenCompra.class);
+        return list(OrdenCompra.class);
     }
 
     @Override
@@ -57,5 +95,26 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra>{
         string = "from OrdenCompra a order by a.numero desc";
         return listar(string);
     }
-    
+
+    public long buscarUltimoNumero() {
+        Session s = getSession();
+        Transaction t = s.beginTransaction();
+        long num = 0;
+        try {
+            String hql = "select max(a.numero) from OrdenCompra a";
+            Query query = s.createQuery(hql);
+            if (query.uniqueResult() == null) {
+                num = 0;
+            } else {
+                num = (long) query.uniqueResult();
+            }
+            t.commit();
+            s.close();
+            return num;
+        } catch (HibernateException e) {
+            t.rollback();
+            return 0;
+        }
+    }
+
 }

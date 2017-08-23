@@ -74,6 +74,38 @@ public class OrdenCompraBean {
         }
         listarOrdenCompra();
     }
+    
+    public void actualizar(){
+        OrdenCompra temp = new OrdenCompra();
+        temp = buscarId();
+        temp.setFecha(ordenCompra.getFecha());
+        temp.setIdProveedor(ordenCompra.getIdProveedor());
+        temp.setFechaEntrega(ordenCompra.getFechaEntrega());
+        temp.setLugarEntrega(ordenCompra.getLugarEntrega().toUpperCase());
+        temp.setObservacion(ordenCompra.getObservacion().toUpperCase());
+        res = ordenCompraBl.actualizar(temp);
+        if (res == 0) {
+            MensajeView.actCorrecto();
+        } else {
+            MensajeView.actError();
+        }
+        listarOrdenCompra();
+    }
+    
+    public void limpiar(){
+        ordenCompra.setIdordencompra(0);
+        ordenCompra.setNumero(maxNumero()+1);
+        ordenCompra.setFecha(null);
+        ordenCompra.setIdProveedor(0);
+        ordenCompra.setFechaEntrega(null);
+        ordenCompra.setLugarEntrega("");
+        ordenCompra.setObservacion("");
+    }
+    
+    public long maxNumero(){
+        return ordenCompraBl.buscarUltimoNumero();
+    }
+    
     public List<Proveedor> listProveedoresRef(String ref){
         return getProveedorBl().buscarRef(ref.toUpperCase());
     }
@@ -151,6 +183,10 @@ public class OrdenCompraBean {
 
     public void setListOrdenCompra(List<OrdenCompra> listOrdenCompra) {
         this.listOrdenCompra = listOrdenCompra;
+    }
+
+    private OrdenCompra buscarId() {
+        return ordenCompraBl.buscar(ordenCompra.getIdordencompra());
     }
     
 }

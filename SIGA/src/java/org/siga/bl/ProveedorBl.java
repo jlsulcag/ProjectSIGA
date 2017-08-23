@@ -59,7 +59,6 @@ public class ProveedorBl extends AbstractBL<Proveedor>{
 
     @Override
     public Proveedor buscar(long id) {
-        System.out.println("id "+id);
         return search(id);
     }
 

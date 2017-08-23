@@ -1,12 +1,14 @@
 
 package org.siga.ctrl;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.siga.be.Proveedor;
 import org.siga.bl.ProveedorBl;
 import org.siga.util.MensajeView;
@@ -21,6 +23,7 @@ public class ProveedorBean {
     private ProveedorBl proveedorBl;
     
     private List<Proveedor> listProveedores;
+    private List<SelectItem> selectOneItemsProveedores;
     private String txtBusqueda;
     private long res;
             
@@ -128,6 +131,25 @@ public class ProveedorBean {
 
     private Proveedor buscarId() {
         return proveedorBl.buscar(proveedor.getIdproveedor());
+    }
+
+    public List<SelectItem> getSelectOneItemsProveedores() {        
+        this.selectOneItemsProveedores = new LinkedList<SelectItem>();
+        for (Proveedor obj : listarProveedor()) {
+            this.setProveedor(obj);
+            SelectItem selectItem = new SelectItem(getProveedor().getIdproveedor(), getProveedor().getRazonSocial());
+            this.selectOneItemsProveedores.add(selectItem);
+        }
+        return selectOneItemsProveedores;
+    }
+
+    public void setSelectOneItemsProveedores(List<SelectItem> selectOneItemsProveedores) {
+        this.selectOneItemsProveedores = selectOneItemsProveedores;
+    }
+
+    private Iterable<Proveedor> listarProveedor() {
+        setListProveedores(proveedorBl.listar());
+        return getListProveedores();
     }
     
 }
