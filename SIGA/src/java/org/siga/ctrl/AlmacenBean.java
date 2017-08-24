@@ -1,6 +1,7 @@
 
 package org.siga.ctrl;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -12,7 +13,7 @@ import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
-public class AlmacenBean {
+public class AlmacenBean implements Serializable{
     
     @ManagedProperty(value = "#{almacenBl}")
     private AlmacenBl almacenBl;
