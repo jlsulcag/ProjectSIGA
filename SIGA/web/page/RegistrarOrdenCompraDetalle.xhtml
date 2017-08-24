@@ -85,10 +85,16 @@
                             <h:panelGrid columns="4" cellpadding="1">                            
 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
-                                <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" filter="true" filterMatchMode="contains">
+                                <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" 
+                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                    <f:ajax render="txfFraccion"/>
                                 </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFraccion" value="Fracción por Unidad :"/>
+                                <p:inputText id="txfFraccion" label="Fracción"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.fraccion}"/>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
@@ -142,7 +148,7 @@
                         <p:dialog header="Actualizar Registro" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
                                   resizable="false" closable="true">
                             <h:panelGrid columns="4" cellpadding="1"> 
-                                
+
                                 <h:inputHidden value="#{ordenCompraDetalleBean.ordenCompraDetalle.idordencompradetalle}" />
                                 <h:inputHidden />
                                 <h:inputHidden />
