@@ -17,9 +17,6 @@
         <property name="cantidad" type="int">
             <column name="cantidad" not-null="true" />
         </property>
-        <property name="idUnidadmedida" type="java.lang.Integer">
-            <column name="id_unidadmedida" />
-        </property>
         <property name="observacion" type="string">
             <column name="observacion" length="300" />
         </property>
@@ -43,6 +40,14 @@
         
         <property name="desc2" type="double">
             <column name="desc2" precision="18" />
+        </property>
+        
+        <property name="unidadMedida" type="string">
+            <column name="unidad_medida" length="30" />
+        </property>
+        
+        <property name="montoDescItem" type="big_decimal">
+            <column name="monto_descItem" precision="18" />
         </property>
     </class>
 </hibernate-mapping>

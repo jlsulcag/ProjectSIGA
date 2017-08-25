@@ -2,6 +2,7 @@ package org.siga.be;
 // Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +25,16 @@ public class OrdenCompra  implements java.io.Serializable {
      private String estado;
      private String horaRegistro;
      private Proveedor proveedor;
+     private Date fechaRecepcion;
+     private int idAlmacenDestino;
+     private int idMoneda;
+     private String docReferencia;
+     private BigDecimal valorBruto;
+     private BigDecimal montoDesc;
+     private BigDecimal valorNeto;
+     private BigDecimal montoIgv;
+     private BigDecimal montoTotal;
+     
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
 
@@ -141,6 +152,78 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+
+    public int getIdAlmacenDestino() {
+        return idAlmacenDestino;
+    }
+
+    public void setIdAlmacenDestino(int idAlmacenDestino) {
+        this.idAlmacenDestino = idAlmacenDestino;
+    }
+
+    public int getIdMoneda() {
+        return idMoneda;
+    }
+
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
+    }
+
+    public String getDocReferencia() {
+        return docReferencia;
+    }
+
+    public void setDocReferencia(String docReferencia) {
+        this.docReferencia = docReferencia;
+    }
+
+    public BigDecimal getValorBruto() {
+        return valorBruto;
+    }
+
+    public void setValorBruto(BigDecimal valorBruto) {
+        this.valorBruto = valorBruto;
+    }
+
+    public BigDecimal getMontoDesc() {
+        return montoDesc;
+    }
+
+    public void setMontoDesc(BigDecimal montoDesc) {
+        this.montoDesc = montoDesc;
+    }
+
+    public BigDecimal getValorNeto() {
+        return valorNeto;
+    }
+
+    public void setValorNeto(BigDecimal valorNeto) {
+        this.valorNeto = valorNeto;
+    }
+
+    public BigDecimal getMontoIgv() {
+        return montoIgv;
+    }
+
+    public void setMontoIgv(BigDecimal montoIgv) {
+        this.montoIgv = montoIgv;
+    }
+
+    public BigDecimal getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(BigDecimal montoTotal) {
+        this.montoTotal = montoTotal;
     }
 
 

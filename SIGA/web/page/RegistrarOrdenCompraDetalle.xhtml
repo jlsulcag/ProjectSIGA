@@ -12,6 +12,7 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Oden Compra Detalle">
+                    
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
                             <f:facet name="left">
@@ -86,14 +87,44 @@
                                 </p:column>
                             </p:summaryRow>
 
-                        </p:dataTable>
-                    </h:form>
-                    <h:form id="formTolbarBottom">
-                        <f:facet name="left">
-                            sd
-                        </f:facet>
-                    </h:form>
+                        </p:dataTable>                        
 
+                    </h:form>                    
+                    <h:form>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <h:outputLabel for="txf1" value="Valor Bruto :" style="text-align: right"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <p:inputText id="txf1" label="Valor Bruto" readonly="true" style="width: 70px"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <h:outputLabel for="txf2" value="Dscto :" style="text-align: right"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <p:inputText id="tx2" label="Dscto" readonly="true" style="width: 70px"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <h:outputLabel for="txf3" value="Valor Neto :" style="text-align: right"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <p:inputText id="txf3" label="Valor Neto" readonly="true" style="width: 70px"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <h:outputLabel for="txf4" value="IGV :" style="text-align: right"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <p:inputText id="txf4" label="IGV" readonly="true" style="width: 70px"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <h:outputLabel for="txf5" value="Total :" style="text-align: right"/>
+                            </div>
+                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
+                                <p:inputText id="txf5" label="Total" readonly="true" style="width: 70px"/>
+                            </div>
+                        </div>
+                    </h:form>
+                    
                     <h:form id="formNew">
                         <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">

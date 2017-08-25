@@ -13,7 +13,6 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
      private OrdenCompra ordenCompra;
      private Producto producto;
      private int cantidad;
-     private Integer idUnidadmedida;
      private String observacion;
      private String lote;
      private Date fechaVencimiento;
@@ -21,6 +20,8 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
      private BigDecimal precioCompra;
      private double desc1;
      private double desc2;
+     private String unidadMedida;
+     private BigDecimal montoDescItem;
 
     public OrdenCompraDetalle() {
         this.idordencompradetalle = 0;
@@ -35,12 +36,11 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
         this.producto = producto;
         this.cantidad = cantidad;
     }
-    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, int cantidad, Integer idUnidadmedida, String observacion) {
+    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, int cantidad, String observacion) {
        this.idordencompradetalle = idordencompradetalle;
        this.ordenCompra = ordenCompra;
        this.producto = producto;
        this.cantidad = cantidad;
-       this.idUnidadmedida = idUnidadmedida;
        this.observacion = observacion;
     }
    
@@ -71,13 +71,6 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-    public Integer getIdUnidadmedida() {
-        return this.idUnidadmedida;
-    }
-    
-    public void setIdUnidadmedida(Integer idUnidadmedida) {
-        this.idUnidadmedida = idUnidadmedida;
     }
     public String getObservacion() {
         return this.observacion;
@@ -133,6 +126,22 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
 
     public void setDesc2(double desc2) {
         this.desc2 = desc2;
+    }
+
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public BigDecimal getMontoDescItem() {
+        return montoDescItem;
+    }
+
+    public void setMontoDescItem(BigDecimal montoDescItem) {
+        this.montoDescItem = montoDescItem;
     }
 
 
