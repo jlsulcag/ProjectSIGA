@@ -2,6 +2,7 @@
 package org.siga.ctrl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -34,6 +35,8 @@ public class OrdenCompraDetalleBean {
     
     private List<OrdenCompraDetalle> listOrdenCompraDetalles;
     private long res;
+    private boolean compraxUnidad;
+    private int totalProductos;
     
     public OrdenCompraDetalleBean() {
     }
@@ -109,6 +112,35 @@ public class OrdenCompraDetalleBean {
         }
         listar();
     }
+    
+    public void buscarProducto(){
+        producto=productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
+    }
+    
+    public void setIsCompraUnitaria(){
+        setCompraxUnidad(compraxUnidad);
+        System.out.println("paso  .... "+  compraxUnidad);
+        System.out.println("cantidad "+ordenCompraDetalle.getCantidad());
+        if(ordenCompraDetalle.getCantidad()>0){
+            calcularTotalProductos();
+        }
+    }
+    
+    public void calcularTotalProductos(){
+        if(compraxUnidad){
+            setTotalProductos(ordenCompraDetalle.getCantidad());
+        }else{
+            setTotalProductos(ordenCompraDetalle.getCantidad()*producto.getFraccion());
+        }
+    }
+    
+    public void calcularPrecioCompra(){
+        ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
+    }
+    
+    public void calcularValorCompra(){
+        ordenCompraDetalle.setValorCompra((ordenCompraDetalle.getPrecioCompra().divide(MensajeView.IGV_DIV, 2, RoundingMode.HALF_UP)));
+    }
 
     public OrdenCompraDetalle getOrdenCompraDetalle() {
         return ordenCompraDetalle;
@@ -160,6 +192,22 @@ public class OrdenCompraDetalleBean {
 
     private OrdenCompraDetalle buscarId() {
         return ordenCompraDetalleBl.buscar(ordenCompraDetalle.getIdordencompradetalle());
+    }
+
+    public boolean isCompraxUnidad() {
+        return compraxUnidad;
+    }
+
+    public void setCompraxUnidad(boolean compraxUnidad) {
+        this.compraxUnidad = compraxUnidad;
+    }
+
+    public int getTotalProductos() {
+        return totalProductos;
+    }
+
+    public void setTotalProductos(int totalProductos) {
+        this.totalProductos = totalProductos;
     }
     
 }

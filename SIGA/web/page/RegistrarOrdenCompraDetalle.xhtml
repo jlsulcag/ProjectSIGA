@@ -23,7 +23,7 @@
 
                     <h:form id="formDataTable">
                         <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
-                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Orden Compra Detalle</f:facet>
@@ -75,7 +75,23 @@
 
                             </p:column>
 
+                            <p:summaryRow>
+                                <p:column colspan="3" style="text-align:right">
+                                    <h:outputText value="Sub Total:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText >
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:summaryRow>
+
                         </p:dataTable>
+                    </h:form>
+                    <h:form id="formTolbarBottom">
+                        <f:facet name="left">
+                            sd
+                        </f:facet>
                     </h:form>
 
                     <h:form id="formNew">
@@ -86,23 +102,40 @@
 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
                                 <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" 
-                                                  filter="true" filterMatchMode="contains" >
+                                                 filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <f:ajax render="txfFraccion"/>
+                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfFraccion" value="Fracción por Unidad :"/>
-                                <p:inputText id="txfFraccion" label="Fracción"
-                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.fraccion}"/>
+                                <p:inputText id="txfFraccion" label="Fracción" readonly="true"
+                                             value="#{ordenCompraDetalleBean.producto.fraccion}"/>
+
+                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true"
+                                             value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
+
+                                <h:outputLabel for="txfCompraxUnidad" value=" Compra por unidad ?:"/>
+                                <p:selectBooleanCheckbox value="#{ordenCompraDetalleBean.compraxUnidad}">
+                                    <p:ajax update="txfTotalproductos" listener="#{ordenCompraDetalleBean.setIsCompraUnitaria()}" />
+                                </p:selectBooleanCheckbox>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
-                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}"/>
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}">
+                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{ordenCompraDetalleBean.calcularTotalProductos()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
+                                <p:inputText id="txfTotalproductos" label="Cantidad"
+                                             value="#{ordenCompraDetalleBean.totalProductos}"/>
 
                                 <h:outputLabel for="txfLote" value="Lote:"/>
                                 <p:inputText id="txfLote" label="Lote"
                                              value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
+
+
 
                                 <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
                                 <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
@@ -119,11 +152,15 @@
 
                                 <h:outputLabel for="txfValorCompra" value="Valor de compra:"/>
                                 <p:inputText id="txfValorCompra" label="Valor de compra"
-                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}"/>
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}">
+                                    <p:ajax event="keyup" update="txfPrecioCompra" listener="#{ordenCompraDetalleBean.calcularPrecioCompra()}"/>
+                                </p:inputText>
 
                                 <h:outputLabel for="txfPrecioCompra" value="Precio de compra:"/>
                                 <p:inputText id="txfPrecioCompra" label="Precio de compra"
-                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}"/>
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}">
+                                    <p:ajax event="keyup" update="txfValorCompra" listener="#{ordenCompraDetalleBean.calcularValorCompra()}"/>
+                                </p:inputText>
 
                                 <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
                                 <p:inputText id="txfDesc1" label="Descuento 1"

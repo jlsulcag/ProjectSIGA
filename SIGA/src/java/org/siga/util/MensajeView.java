@@ -1,10 +1,12 @@
 package org.siga.util;
 
+import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 public class MensajeView {
-
+    public static final BigDecimal IGV = new BigDecimal("0.18");
+    public static final BigDecimal IGV_DIV = new BigDecimal("1.18");
     String mensaje = "";
 
     public static void registroCorrecto() {

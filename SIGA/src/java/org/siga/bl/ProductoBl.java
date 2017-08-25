@@ -78,5 +78,9 @@ public class ProductoBl extends AbstractBL<Producto>{
     public List<Producto> listarRef(String txtBusqueda) {
         return dao.listarRef(txtBusqueda);
     }
+
+    public Producto buscarxID(long idproducto) {
+        return dao.buscarxID(idproducto);
+    }
     
 }

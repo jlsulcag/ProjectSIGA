@@ -45,7 +45,7 @@ public class ProductoDao extends AbstractDA<Producto>{
 
     @Override
     public Producto buscar(String ref) {
-        return search("from Producto p where p.descripcion = '"+ref+"'");
+        return search(ref);
     }
 
     @Override
@@ -61,6 +61,11 @@ public class ProductoDao extends AbstractDA<Producto>{
     public List<Producto> listarRef(String txtBusqueda) {
         String ref = "from Producto p left join fetch p.clase left join fetch p.unidadMedida where p.descripcion like '%"+txtBusqueda+"%'";
         return listar(ref);
+    }
+
+    public Producto buscarxID(long idproducto) {
+        String hql = "from Producto p left join fetch p.clase left join fetch p.unidadMedida where p.idproducto = "+idproducto;
+        return buscar(hql);
     }
     
 }
