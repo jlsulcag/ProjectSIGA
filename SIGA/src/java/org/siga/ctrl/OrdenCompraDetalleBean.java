@@ -37,6 +37,7 @@ public class OrdenCompraDetalleBean {
     private long res;
     private boolean compraxUnidad;
     private int totalProductos;
+    private BigDecimal subTotalItem;
     
     public OrdenCompraDetalleBean() {
     }
@@ -48,6 +49,17 @@ public class OrdenCompraDetalleBean {
             ordenCompraDetalle.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
         }
         //validar  unidad d adquisicion
+        //realizar los calculos con el valor de compra
+        ordenCompraDetalle.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
+        ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
+        if(compraxUnidad){
+            ordenCompraDetalle.setUnidadMedida("UNIDAD");
+        }else{
+            ordenCompraDetalle.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
+        }
+        double du;
+        du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
+        ordenCompraDetalle.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
         res = ordenCompraDetalleBl.registrar(ordenCompraDetalle);
         if (res == 0) {
             MensajeView.registroCorrecto();
@@ -119,8 +131,6 @@ public class OrdenCompraDetalleBean {
     
     public void setIsCompraUnitaria(){
         setCompraxUnidad(compraxUnidad);
-        System.out.println("paso  .... "+  compraxUnidad);
-        System.out.println("cantidad "+ordenCompraDetalle.getCantidad());
         if(ordenCompraDetalle.getCantidad()>0){
             calcularTotalProductos();
         }
@@ -208,6 +218,18 @@ public class OrdenCompraDetalleBean {
 
     public void setTotalProductos(int totalProductos) {
         this.totalProductos = totalProductos;
+    }
+
+    public BigDecimal getSubTotalItem() {
+        return subTotalItem;
+    }
+
+    public void setSubTotalItem(BigDecimal subTotalItem) {
+        this.subTotalItem = subTotalItem;
+    }
+
+    private double calcularDescItem(double desc1, double desc2) {
+        return ((desc1+desc2)-((desc1*desc2)/100));
     }
     
 }

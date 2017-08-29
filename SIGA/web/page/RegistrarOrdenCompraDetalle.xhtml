@@ -12,7 +12,7 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Oden Compra Detalle">
-                    
+
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
                             <f:facet name="left">
@@ -42,7 +42,7 @@
                             </p:column>
 
                             <p:column headerText="Unidad Medida">
-                                <h:outputText/>
+                                <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
                             <p:column headerText="P/Compra">
@@ -54,12 +54,19 @@
                             </p:column>
 
                             <p:column headerText="Descuento">
-                                <h:outputText/>
+                                <h:outputText value="#{item.montoDescitem}"/>
                             </p:column>
 
                             <p:column headerText="Sub Total">
-                                <h:outputText/>
+                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
                             </p:column>
+
+                            <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="7" style="text-align:right" footerText="Totals:" />
+                                <p:column footerText="$#{item.cantidad*item.valorCompra}" />
+                            </p:row>
+                            </p:columnGroup>
 
                             <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
@@ -102,7 +109,7 @@
                                 <h:outputLabel for="txf2" value="Dscto :" style="text-align: right"/>
                             </div>
                             <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="tx2" label="Dscto" readonly="true" style="width: 70px"/>
+                                <p:inputText id="txf2" label="Dscto" readonly="true" style="width: 70px"/>
                             </div>
                             <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
                                 <h:outputLabel for="txf3" value="Valor Neto :" style="text-align: right"/>
@@ -124,7 +131,7 @@
                             </div>
                         </div>
                     </h:form>
-                    
+
                     <h:form id="formNew">
                         <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
@@ -148,7 +155,7 @@
                                              value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
 
                                 <h:outputLabel for="txfCompraxUnidad" value=" Compra por unidad ?:"/>
-                                <p:selectBooleanCheckbox value="#{ordenCompraDetalleBean.compraxUnidad}">
+                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{ordenCompraDetalleBean.compraxUnidad}">
                                     <p:ajax update="txfTotalproductos" listener="#{ordenCompraDetalleBean.setIsCompraUnitaria()}" />
                                 </p:selectBooleanCheckbox>
 
@@ -181,13 +188,13 @@
                                     <f:selectItem itemLabel="UNIDAD BASE"/>                                    
                                 </p:selectOneMenu>
 
-                                <h:outputLabel for="txfValorCompra" value="Valor de compra:"/>
+                                <h:outputLabel for="txfValorCompra" value="Valor Unitario :"/>
                                 <p:inputText id="txfValorCompra" label="Valor de compra"
                                              value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}">
                                     <p:ajax event="keyup" update="txfPrecioCompra" listener="#{ordenCompraDetalleBean.calcularPrecioCompra()}"/>
                                 </p:inputText>
 
-                                <h:outputLabel for="txfPrecioCompra" value="Precio de compra:"/>
+                                <h:outputLabel for="txfPrecioCompra" value="Precio Unitario :"/>
                                 <p:inputText id="txfPrecioCompra" label="Precio de compra"
                                              value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}">
                                     <p:ajax event="keyup" update="txfValorCompra" listener="#{ordenCompraDetalleBean.calcularValorCompra()}"/>

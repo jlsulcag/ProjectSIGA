@@ -21,7 +21,8 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
      private double desc1;
      private double desc2;
      private String unidadMedida;
-     private BigDecimal montoDescItem;
+     private BigDecimal montoDescitem;
+     private BigDecimal subTotal;
 
     public OrdenCompraDetalle() {
         this.idordencompradetalle = 0;
@@ -136,12 +137,20 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
         this.unidadMedida = unidadMedida;
     }
 
-    public BigDecimal getMontoDescItem() {
-        return montoDescItem;
+    public BigDecimal getMontoDescitem() {
+        return montoDescitem;
     }
 
-    public void setMontoDescItem(BigDecimal montoDescItem) {
-        this.montoDescItem = montoDescItem;
+    public void setMontoDescitem(BigDecimal montoDescitem) {
+        this.montoDescitem = montoDescitem;
+    }
+
+    public BigDecimal getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(BigDecimal subTotal) {
+        this.subTotal = subTotal;
     }
 
 
