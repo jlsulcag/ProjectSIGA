@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -22,7 +23,7 @@ import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class OrdenCompraDetalleBean {
     @ManagedProperty(value = "#{ordenCompraDetalle}")
     private OrdenCompraDetalle ordenCompraDetalle;    
@@ -40,7 +41,7 @@ public class OrdenCompraDetalleBean {
     private boolean compraxUnidad;
     private int totalProductos;
     private BigDecimal subTotalItem;
-    private BigDecimal totalTemp = new BigDecimal(BigInteger.ZERO);;
+    private BigDecimal totalTemp;
     
     public OrdenCompraDetalleBean() {
     }
@@ -54,7 +55,7 @@ public class OrdenCompraDetalleBean {
         //validar  unidad d adquisicion
         //realizar los calculos con el valor de compra
         ordenCompraDetalle.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
-        ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
+        //ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
         if(compraxUnidad){
             ordenCompraDetalle.setUnidadMedida("UNIDAD");
         }else{
@@ -63,15 +64,14 @@ public class OrdenCompraDetalleBean {
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         ordenCompraDetalle.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
-        totalTemp = totalTemp.add(ordenCompraDetalle.getSubTotal());
-        ordenCompraDetalle.setTotal(totalTemp);
-        System.out.println("total "+ordenCompraDetalle.getTotal());
+        //totalTemp = totalTemp.add(ordenCompraDetalle.getSubTotal());
         listOrdenCompraDetalles.add(ordenCompraDetalle);
-        
+        calcularTotal(listOrdenCompraDetalles);
     }
     
     
     public void registrar(){
+        
         ordenCompraDetalle.setLote(ordenCompraDetalle.getLote().toUpperCase());
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(httpSession.getAttribute("idOrdenCompra") != null){
@@ -80,7 +80,7 @@ public class OrdenCompraDetalleBean {
         //validar  unidad d adquisicion
         //realizar los calculos con el valor de compra
         ordenCompraDetalle.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
-        ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
+        //ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
         if(compraxUnidad){
             ordenCompraDetalle.setUnidadMedida("UNIDAD");
         }else{
@@ -90,12 +90,15 @@ public class OrdenCompraDetalleBean {
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         ordenCompraDetalle.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
         res = ordenCompraDetalleBl.registrar(ordenCompraDetalle);
+        
         if (res == 0) {
             MensajeView.registroCorrecto();
         } else {
             MensajeView.registroError();
-        }
+        }        
         listar();
+        System.out.println("lista ........ "+listOrdenCompraDetalles.size());
+        //calcularTotal(listOrdenCompraDetalles);
     }
     
     public void limpiar(){
@@ -111,14 +114,16 @@ public class OrdenCompraDetalleBean {
         ordenCompraDetalle.setDesc1(0);
         ordenCompraDetalle.setDesc2(0);
     }
-//    @PostConstruct
+    @PostConstruct
     public void listar(){
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(httpSession.getAttribute("idOrdenCompra") != null){
             setListOrdenCompraDetalles(ordenCompraDetalleBl.listarXIdOrdenCompra(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
+            
         }else{
             setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
         }
+        calcularTotal(getListOrdenCompraDetalles());
         //setListOrdenCompraDetalles(ordenCompraDetalleBl.listar());
     }
     
@@ -271,6 +276,13 @@ public class OrdenCompraDetalleBean {
 
     public void setTotalTemp(BigDecimal totalTemp) {
         this.totalTemp = totalTemp;
+    }
+
+    private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
+        totalTemp = new BigDecimal(BigInteger.ZERO);
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            totalTemp = totalTemp.add(obj.getSubTotal());
+        }
     }
     
 }

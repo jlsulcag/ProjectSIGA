@@ -23,7 +23,6 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
      private String unidadMedida;
      private BigDecimal montoDescitem;
      private BigDecimal subTotal;
-     private BigDecimal total;
 
     public OrdenCompraDetalle() {
         this.idordencompradetalle = 0;
@@ -153,18 +152,6 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-
-
-
 }
 
 
