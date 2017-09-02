@@ -23,7 +23,7 @@ import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class OrdenCompraDetalleBean {
     @ManagedProperty(value = "#{ordenCompraDetalle}")
     private OrdenCompraDetalle ordenCompraDetalle;    
@@ -47,25 +47,37 @@ public class OrdenCompraDetalleBean {
     }
     
     public void agregar(){
-        ordenCompraDetalle.setLote(ordenCompraDetalle.getLote().toUpperCase());
+        OrdenCompraDetalle temp = new OrdenCompraDetalle();
+//        temp = this.ordenCompraDetalle;
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(httpSession.getAttribute("idOrdenCompra") != null){
-            ordenCompraDetalle.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
+            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
         }
-        //validar  unidad d adquisicion
-        //realizar los calculos con el valor de compra
-        ordenCompraDetalle.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
-        //ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
+        temp.setProducto(producto);
+        temp.setCantidad(ordenCompraDetalle.getCantidad());
+        temp.setObservacion("");
+        temp.setLote(ordenCompraDetalle.getLote().toUpperCase());
+        temp.setFechaVencimiento(ordenCompraDetalle.getFechaVencimiento());
+        temp.setValorCompra(ordenCompraDetalle.getValorCompra());
+        temp.setPrecioCompra(ordenCompraDetalle.getPrecioCompra());
+        temp.setDesc1(ordenCompraDetalle.getDesc1());
+        temp.setDesc2(ordenCompraDetalle.getDesc2());
         if(compraxUnidad){
-            ordenCompraDetalle.setUnidadMedida("UNIDAD");
+            temp.setUnidadMedida("UNIDAD");
         }else{
-            ordenCompraDetalle.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
+            temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         }
+        //realizar los calculos con el valor de compra, para  obtener el sub total por item
+        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));        
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
-        ordenCompraDetalle.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
-        //totalTemp = totalTemp.add(ordenCompraDetalle.getSubTotal());
-        listOrdenCompraDetalles.add(ordenCompraDetalle);
+        temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
+                
+        listOrdenCompraDetalles.add(temp);
+        System.out.println("tamano lista "+listOrdenCompraDetalles.size());
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            System.out.println("nombre prodycto "+obj.getProducto().getDescripcion());
+        }
         calcularTotal(listOrdenCompraDetalles);
     }
     
