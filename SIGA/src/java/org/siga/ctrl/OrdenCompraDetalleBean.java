@@ -123,7 +123,7 @@ public class OrdenCompraDetalleBean {
         }else{
             setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
         }
-        calcularTotal(getListOrdenCompraDetalles());
+        //calcularTotal(getListOrdenCompraDetalles());
         //setListOrdenCompraDetalles(ordenCompraDetalleBl.listar());
     }
     
