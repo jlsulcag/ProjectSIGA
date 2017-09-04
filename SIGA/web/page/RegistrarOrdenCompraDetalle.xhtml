@@ -97,7 +97,8 @@
                     <h:form id="formTool2" style="padding-top: 5px">
                         <p:toolbar>
                             <f:facet name="right">
-                                <p:commandButton type="button" value="Guardar" icon="ui-icon-document" />
+                                <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                                 actionListener="#{ordenCompraDetalleBean.registrar()}"/>
                             </f:facet>
                         </p:toolbar>
                     </h:form>

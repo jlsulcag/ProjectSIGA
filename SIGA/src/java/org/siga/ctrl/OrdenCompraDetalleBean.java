@@ -74,16 +74,15 @@ public class OrdenCompraDetalleBean {
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
                 
         listOrdenCompraDetalles.add(temp);
-        System.out.println("tamano lista "+listOrdenCompraDetalles.size());
-        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
-            System.out.println("nombre prodycto "+obj.getProducto().getDescripcion());
-        }
         calcularTotal(listOrdenCompraDetalles);
     }
     
     
     public void registrar(){
-        
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            ordenCompraDetalleBl.registrar(obj);
+        }
+        /*
         ordenCompraDetalle.setLote(ordenCompraDetalle.getLote().toUpperCase());
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(httpSession.getAttribute("idOrdenCompra") != null){
@@ -109,8 +108,7 @@ public class OrdenCompraDetalleBean {
             MensajeView.registroError();
         }        
         listar();
-        System.out.println("lista ........ "+listOrdenCompraDetalles.size());
-        //calcularTotal(listOrdenCompraDetalles);
+                */
     }
     
     public void limpiar(){
