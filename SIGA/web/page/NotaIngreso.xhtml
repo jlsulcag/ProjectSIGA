@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Nota de Ingreso">
+                    <h:form>
+                        <div class="ui-fluid">
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel value="Tipo Movim :" for="txfDocumento"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2"> 
+                                    <p:selectOneMenu id="txfDocumento" value="#" >
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel value="Numero :" for="txfNumero"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true"
+                                                 />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel value="Fecha :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                                >
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="opt1" value="Orden de Compra" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:selectOneMenu id="opt1" value="#" >
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="txfFecha1" value="Fecha:"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:calendar id="txfFecha1" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                                >
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="txfDoc" value="Doc Ref :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:inputText id="txfDoc" label="Documento de referencia" style="text-transform: uppercase"
+                                                 value=""/>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:selectOneMenu id="cbxProveedor" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" 
+                                                     filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                        <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="txfFechaEntrega" value="Fecha de entrega:"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:calendar id="txfFechaEntrega" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                                value="#{generarOrdenCompraBean.ordenCompra.fechaEntrega}">
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="text-transform: uppercase"
+                                                 value="#{ordenCompraBean.ordenCompra.lugarEntrega}"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" 
+                                                     filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+
+                                </div>
+                            </div>
+                        </div> 
+
+
+                        <div class="ui-fluid">
+
+                            <h:form id="formTolbar">
+                                <p:toolbar style="margin-top: 10px">
+                                    <f:facet name="left">
+                                        <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                         update=":formNew" actionListener="#{ordenCompraDetalleBean.limpiar()}" oncomplete="PF('dlgNew').show();"/>
+                                    </f:facet>
+                                </p:toolbar>
+                            </h:form>
+
+
+
+                            <h:form id="formDataTable">
+                                <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item" reflow="true"
+                                             paginator="false" rows="10" paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20" editable="true">
+                                    <f:facet name="header">Productos</f:facet>
+
+                                    <p:column headerText="ID">
+                                        <h:outputText value="#{item.idordencompradetalle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Producto">
+                                        <h:outputText value="#{item.producto.descripcion}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Cantidad">
+                                        <h:outputText value="#{item.cantidad}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Unidad Medida">
+                                        <h:outputText value="#{item.unidadMedida}"/>
+                                    </p:column>
+
+                                    <p:column headerText="V/Compra">
+                                        <h:outputText value="#{item.valorCompra}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Descuento">
+                                        <h:outputText value="#{item.montoDescitem}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Sub Total">
+                                        <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                                    </p:column>
+
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column colspan="6" style="text-align:right" footerText="Total :" />
+                                            <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" />
+                                            <p:column colspan="2"/>
+                                        </p:row>
+                                    </p:columnGroup>
+
+                                    <p:column style="width:30px;text-align: center">
+                                        <p:commandButton id="btnEdit" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                            <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />
+                                        </p:commandButton>                            
+                                    </p:column>
+
+                                    <p:column style="width:30px;text-align: center">
+                                        <p:commandButton id="btnDelete" update=""  
+                                                         immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                            <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />           
+                                        </p:commandButton>                                                        
+
+                                    </p:column>
+
+                                    <p:summaryRow>
+                                        <p:column colspan="3" style="text-align:right">
+                                            <h:outputText value="Sub Total:" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText >
+                                                <f:convertNumber type="currency" currencySymbol="$" />
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:summaryRow>
+
+                                </p:dataTable>                        
+
+                            </h:form> 
+
+                            <h:form id="formTool2" style="padding-top: 5px">
+                                <p:toolbar>
+                                    <f:facet name="right">
+                                        <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                                         actionListener="#{ordenCompraDetalleBean.registrar()}"/>
+                                    </f:facet>
+                                </p:toolbar>
+                            </h:form>
+
+                        </div>
+                    </h:form>
+                </p:panel>
+
+                <h:form id="formNew">
+                    <p:dialog header="Registrar" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                              resizable="false" closable="true">
+                        <h:panelGrid columns="4" cellpadding="1">
+                            <h:outputLabel for="cbxProducto" value="Producto :"/>
+                            <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" 
+                                             filter="true" filterMatchMode="contains" >
+                                <f:selectItem itemLabel="SELECCIONE"/>
+                                <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="txfFraccion" value="Fracción por Unidad :"/>
+                            <p:inputText id="txfFraccion" label="Fracción" readonly="true"
+                                         value="#{ordenCompraDetalleBean.producto.fraccion}"/>
+
+                            <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                            <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true"
+                                         value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
+
+
+
+                        </h:panelGrid>
+
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -11,7 +11,7 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel header="Administrar Oden Compra Detalle">
+                <p:panel header="Administrar Orden Compra Detalle">
 
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
@@ -27,7 +27,7 @@
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
-                            <f:facet name="header">Orden Compra Detalle</f:facet>
+                            <f:facet name="header">Productos</f:facet>
 
                             <p:column headerText="ID">
                                 <h:outputText value="#{item.idordencompradetalle}"/>
