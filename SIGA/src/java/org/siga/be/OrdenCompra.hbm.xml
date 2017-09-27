@@ -34,6 +34,34 @@
         <property name="horaRegistro" type="string">
             <column name="hora_registro" length="30" not-null="true" />
         </property>
+        <property name="fechaRecepcion" type="date">
+            <column name="fecha_recepcion" length="13" />
+        </property>
+        <property name="idAlmacenDestino" type="int">
+            <column name="id_almacendestino"  />
+        </property>
+        <property name="idMoneda" type="int">
+            <column name="id_moneda"  />
+        </property>
+        <property name="docReferencia" type="string">
+            <column name="doc_referencia" length="80" />
+        </property>
+        <property name="valorBruto" type="big_decimal">
+            <column name="valor_bruto" precision="18" not-null="true" default="0.00" />
+        </property>
+        <property name="montoDesc" type="big_decimal">
+            <column name="monto_desc" precision="18" not-null="true" default="0.00"/>
+        </property>
+        <property name="valorNeto" type="big_decimal">
+            <column name="valor_neto" precision="18" not-null="true" default="0.00"/>
+        </property>
+        <property name="montoIgv" type="big_decimal">
+            <column name="monto_igv" precision="18" not-null="true" default="0.00"/>
+        </property>
+        <property name="montoTotal" type="big_decimal">
+            <column name="monto_total" precision="18" not-null="true" default="0.00"/>
+        </property>
+        
         <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_ordencompra" not-null="true" />

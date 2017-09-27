@@ -1,6 +1,7 @@
 
 package org.siga.ctrl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -62,12 +63,17 @@ public class OrdenCompraBean {
     }
     public void registrar(){
         //buscar  proveedor por razon social
-        System.out.println("proveedor "+ordenCompra.getProveedor().getRazonSocial());
+        //System.out.println("proveedor "+ordenCompra.getProveedor().getRazonSocial());
         //ordenCompra.setProveedor(proveedorBl.buscarXNombre(proveedor.getRazonSocial()));
         //ordenCompra.setIdProveedor((int) proveedor.getIdproveedor());
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
         ordenCompra.setEstado("REG");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
+        ordenCompra.setValorBruto(BigDecimal.ZERO);
+        ordenCompra.setMontoDesc(BigDecimal.ZERO);
+        ordenCompra.setValorNeto(BigDecimal.ZERO);
+        ordenCompra.setMontoIgv(BigDecimal.ZERO);
+        ordenCompra.setMontoTotal(BigDecimal.ZERO);
         res = ordenCompraBl.registrar(ordenCompra);
         if (res == 0) {
             MensajeView.registroCorrecto();

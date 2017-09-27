@@ -79,8 +79,14 @@ public class ProductoBean {
         temp = buscarId();
         temp.setDescripcion(producto.getDescripcion().toUpperCase());
         temp.setCodigo(producto.getCodigo().toUpperCase());
-        temp.setFechaReg(new Date());
+        temp.setStockMinimo(producto.getStockMinimo());
+        temp.setStockMaximo(producto.getStockMaximo());
+        temp.setUnidadMedida(producto.getUnidadMedida());
         temp.setEstado(producto.getEstado());
+        temp.setFechaReg(new Date());
+        temp.setClase(producto.getClase());
+        temp.setIdFamilia(idFamilia);
+        temp.setFraccion(producto.getFraccion());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
