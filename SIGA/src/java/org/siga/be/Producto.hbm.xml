@@ -8,6 +8,9 @@
             <column name="idproducto" />
             <generator class="increment" />
         </id>
+        <many-to-one name="familia" class="org.siga.be.Familia" fetch="select">
+            <column name="id_familia" />
+        </many-to-one>
         <many-to-one name="clase" class="org.siga.be.Clase" fetch="select">
             <column name="id_clase" />
         </many-to-one>
@@ -31,9 +34,6 @@
         </property>
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" not-null="true" />
-        </property>
-        <property name="idFamilia" type="long">
-            <column name="id_familia" not-null="false" />
         </property>
         <property name="fraccion" type="int">
             <column name="fraccion" not-null="true" />

@@ -16,8 +16,6 @@ import org.siga.bl.ClaseBl;
 import org.siga.bl.FamiliaBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
-import org.siga.util.Tarea;
-import static org.siga.util.Utilitario.setTareaEvento;
 
 @ManagedBean
 @ViewScoped
@@ -58,7 +56,7 @@ public class ProductoBean {
     }
 
     public void registrar() {
-        producto.setIdFamilia(idFamilia);
+        //producto.setIdFamilia(idFamilia);
         producto.setDescripcion(producto.getDescripcion().toUpperCase());
         producto.setCodigo(producto.getCodigo().toUpperCase());
         producto.setFechaReg(new Date());
@@ -85,7 +83,8 @@ public class ProductoBean {
         temp.setEstado(producto.getEstado());
         temp.setFechaReg(new Date());
         temp.setClase(producto.getClase());
-        temp.setIdFamilia(idFamilia);
+        temp.setFamilia(producto.getFamilia());
+        //temp.setIdFamilia(idFamilia);
         temp.setFraccion(producto.getFraccion());
         res = productoBl.actualizar(temp);
         if (res == 0) {
@@ -113,7 +112,7 @@ public class ProductoBean {
     }
     
     public List<Clase> listarClasesXFamilia(){
-        return claseBl.listarClasePorFamilia(idFamilia);        
+        return claseBl.listarClasePorFamilia(producto.getFamilia().getIdfamilia());        
     }
     
     

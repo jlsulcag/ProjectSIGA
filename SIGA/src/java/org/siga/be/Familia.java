@@ -17,6 +17,7 @@ public class Familia  implements java.io.Serializable {
      private String descripcion;
      private String estado;
      private Set<Clase> clases = new HashSet<Clase>(0);
+     private Set<Producto> productos = new HashSet<Producto>(0);
 
     public Familia() {
     }
@@ -61,6 +62,14 @@ public class Familia  implements java.io.Serializable {
     
     public void setClases(Set<Clase> clases) {
         this.clases = clases;
+    }
+
+    public Set<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(Set<Producto> productos) {
+        this.productos = productos;
     }
 
 

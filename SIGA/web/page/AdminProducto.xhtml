@@ -75,7 +75,7 @@
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
                                 
                                 <h:outputLabel for="cbxFamilia" value="Familia :"/>
-                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{productoBean.idFamilia}">
+                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{productoBean.producto.familia.idfamilia}">
                                     <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClase"/>
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsFamilia}"/>
@@ -126,7 +126,7 @@
                             <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
 
                                 <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
-                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{productoBean.idFamilia}">
+                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{productoBean.producto.familia.idfamilia}">
                                     <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClaseEdit"/>
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsFamilia}"/>
