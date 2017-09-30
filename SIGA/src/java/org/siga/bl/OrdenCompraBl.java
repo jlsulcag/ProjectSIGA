@@ -84,5 +84,9 @@ public class OrdenCompraBl extends AbstractBL<OrdenCompra>{
     public long buscarUltimoNumero() {
         return dao.buscarUltimoNumero();
     }
+
+    public List<OrdenCompra> listOrdenCompraXEstado(String estado) {
+        return dao.listOrdenCompraXEstado(estado);
+    }
     
 }

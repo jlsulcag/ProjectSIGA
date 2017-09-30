@@ -1,0 +1,255 @@
+<XMLDiagram>
+  <TDBADiagramController Locked="0">
+    <Elements>
+      <TDBADiagramObject id="1" propertiesclass="TDiagramMetaTableProperties" objectname="siga.clase">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="110" top="280" width="200" height="110"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="2" propertiesclass="TDiagramMetaTableProperties" objectname="siga.producto">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="370" top="360" width="190" height="200"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="4" propertiesclass="TDiagramMetaTableProperties" objectname="siga.proveedor">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="930" top="770" width="200" height="210"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="7" propertiesclass="TDiagramMetaTableProperties" objectname="siga.unidad_medida">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="90" top="480" width="200" height="90"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="8" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.producto.fk_unidadmedida">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="128" top="128" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="465" y="456"/>
+                <Point x="190" y="525"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="9" propertiesclass="TDiagramMetaTableProperties" objectname="siga.nota_entrada">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="920" top="420" width="200" height="240"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="14" propertiesclass="TDiagramMetaTableProperties" objectname="siga.orden_compra">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="630" top="690" width="210" height="300"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="15" propertiesclass="TDiagramMetaTableProperties" objectname="siga.orden_compra_detalle">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="380" top="690" width="190" height="240"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="16" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.orden_compra_detalle.fk_pro2">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="256" top="256" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="470" y="795"/>
+                <Point x="465" y="466"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="17" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.orden_compra_detalle.fk_orden1">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="272" top="272" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="490" y="840"/>
+                <Point x="740" y="840"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="19" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada.fk_orden2">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="304" top="304" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="1020" y="540"/>
+                <Point x="740" y="840"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="20" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada.fk_prove1">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="320" top="320" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="1020" y="540"/>
+                <Point x="1030" y="880"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="21" propertiesclass="TDiagramMetaTableProperties" objectname="siga.tipo_movimiento">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1230" top="350" width="200" height="83"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="22" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada.fk_tipomov">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="352" top="352" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="1030" y="560"/>
+                <Point x="1290" y="390"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="23" propertiesclass="TDiagramMetaTableProperties" objectname="siga.dependencia">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1220" top="230" width="200" height="83"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="11" propertiesclass="TDiagramMetaTableProperties" objectname="siga.nota_salida">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1220" top="670" width="200" height="209"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="12" propertiesclass="TDiagramMetaTableProperties" objectname="siga.nota_salida_detalle">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="1220" top="900" width="200" height="111"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="13" propertiesclass="TDiagramMetaTableProperties" objectname="siga.pedido">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="110" top="850" width="200" height="209"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="18" propertiesclass="TDiagramMetaTableProperties" objectname="siga.pedido_detalle">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="110" top="630" width="200" height="140"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="24" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.pedido_detalle.fk_pedido1">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="384" top="384" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="200" y="690"/>
+                <Point x="200" y="960"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="25" propertiesclass="TDiagramMetaTableProperties" objectname="siga.familia">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="110" top="140" width="200" height="83"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="3" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.clase.fk_familia">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="400" top="400" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="190" y="330"/>
+                <Point x="180" y="180"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="26" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.producto.fk_clase">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="416" top="416" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="445" y="436"/>
+                <Point x="180" y="340"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="5" propertiesclass="TDiagramMetaTableProperties" objectname="siga.nota_entrada_detalle">
+        <TDiagramMetaTableProperties>
+          <Glyph>
+            <Geometry left="630" top="440" width="200" height="209"/>
+          </Glyph>
+        </TDiagramMetaTableProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="6" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada_detalle.fk_nea1">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="400" top="400" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="730" y="544"/>
+                <Point x="1020" y="540"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+      <TDBADiagramObject id="10" propertiesclass="TDiagramForeignKeyProperties" objectname="siga.nota_entrada_detalle.fk_pro1">
+        <TDiagramForeignKeyProperties>
+          <Relation>
+            <Geometry left="416" top="416" width="200" height="100"/>
+            <Glyph>
+              <Geometry>
+                <Point x="730" y="544"/>
+                <Point x="470" y="460"/>
+              </Geometry>
+            </Glyph>
+          </Relation>
+        </TDiagramForeignKeyProperties>
+      </TDBADiagramObject>
+    </Elements>
+    <Surface zoom="108" scrollx="398" scrolly="354"/>
+  </TDBADiagramController>
+</XMLDiagram>

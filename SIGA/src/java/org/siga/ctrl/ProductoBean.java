@@ -82,8 +82,8 @@ public class ProductoBean {
         temp.setUnidadMedida(producto.getUnidadMedida());
         temp.setEstado(producto.getEstado());
         temp.setFechaReg(new Date());
-        temp.setClase(producto.getClase());
         temp.setFamilia(producto.getFamilia());
+        temp.setClase(producto.getClase());        
         //temp.setIdFamilia(idFamilia);
         temp.setFraccion(producto.getFraccion());
         res = productoBl.actualizar(temp);

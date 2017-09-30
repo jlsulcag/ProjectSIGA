@@ -1,3 +1,4 @@
+
 package org.siga.dao;
 
 import java.util.List;
@@ -6,15 +7,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.siga.be.OrdenCompra;
+import org.siga.be.NotaEntrada;
 import org.siga.util.AbstractDA;
-import org.siga.util.HibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-@Repository("ordenCompraDao")
-public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
+@Repository("notaIngresoDao")
+public class NotaIngresoDao extends AbstractDA<NotaEntrada>{
 
     @Autowired
     @Qualifier("sessionFactory")
@@ -36,63 +35,54 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
             return getSessionFactory().openSession();
         }
     }
-
-//    private void iniciarOperacion() throws HibernateException {
-//        sesion = HibernateUtil.getSessionFactory().openSession();
-//        tx = sesion.beginTransaction();
-//    }
-//    
-//    private void manejaExcepcion(HibernateException he) {
-//        tx.rollback();
-//        throw new HibernateException("Ocurrió un error en la capa de acceso a datos", he);
-//    }
+    
     @Override
-    public long registrar(OrdenCompra bean) {
+    public long registrar(NotaEntrada bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(OrdenCompra bean) {
+    public long actualizar(NotaEntrada bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(OrdenCompra bean) {
+    public long eliminar(NotaEntrada bean) {
         return delete(bean);
     }
 
     @Override
-    public List<OrdenCompra> listar() {
-        return list(OrdenCompra.class);
+    public List<NotaEntrada> listar() {
+        return list(NotaEntrada.class);
     }
 
     @Override
-    public List<OrdenCompra> listar(String ref) {
+    public List<NotaEntrada> listar(String ref) {
         return list(ref);
     }
 
     @Override
-    public List<OrdenCompra> listar(long id) {
+    public List<NotaEntrada> listar(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OrdenCompra buscar(long id) {
-        return search(OrdenCompra.class, id);
+    public NotaEntrada buscar(long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OrdenCompra buscar(String ref) {
-        return search(ref);
+    public NotaEntrada buscar(String ref) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public long id() {
-        return maxId(OrdenCompra.class);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public List<OrdenCompra> listarFull(String string) {
-        string = "from OrdenCompra a order by a.numero desc";
+    
+    public List<NotaEntrada> listarFull(String string) {
+        string = "from NotaEntrada a order by a.numero desc";
         return listar(string);
     }
 
@@ -101,7 +91,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
         Transaction t = s.beginTransaction();
         long num = 0;
         try {
-            String hql = "select max(a.numero) from OrdenCompra a";
+            String hql = "select max(a.numero) from NotaEntrada a";
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
                 num = 0;
@@ -116,10 +106,4 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
             return 0;
         }
     }
-
-    public List<OrdenCompra> listOrdenCompraXEstado(String estado) {
-        String hql = "from OrdenCompra a where a.estado = '"+estado+"'";
-        return listar(hql);
-    }
-
 }

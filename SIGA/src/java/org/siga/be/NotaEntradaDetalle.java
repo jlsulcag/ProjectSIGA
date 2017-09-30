@@ -3,6 +3,7 @@ package org.siga.be;
 
 
 import java.math.BigDecimal;
+import java.util.Date;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,41 +13,48 @@ import org.springframework.stereotype.Component;
 public class NotaEntradaDetalle  implements java.io.Serializable {
 
 
-     private int idnotaentradadetalle;
+     private long idnotaentradadetalle;
      private NotaEntrada notaEntrada;
      private Producto producto;
-     private Integer idUnidad;
      private int cantidad;
-     private BigDecimal costoUnitario;
-     private BigDecimal importe;
+     private String lote;
+     private Date fechaVencimiento;
+     private BigDecimal valorCompra;
+     private BigDecimal precioCompra;
+     private double desc1;
+     private double desc2;
+     private String unidadMedida;
+     private BigDecimal montoDescitem;
+     private BigDecimal subTotal;
 
     public NotaEntradaDetalle() {
+        this.idnotaentradadetalle = 0;
+        this.notaEntrada = new NotaEntrada();
+        this.producto = new Producto();
     }
 
-	
-    public NotaEntradaDetalle(int idnotaentradadetalle, NotaEntrada notaEntrada, Producto producto, int cantidad, BigDecimal costoUnitario, BigDecimal importe) {
+    public NotaEntradaDetalle(long idnotaentradadetalle, NotaEntrada notaEntrada, Producto producto, int cantidad, String lote, Date fechaVencimiento, BigDecimal valorCompra, BigDecimal precioCompra, double desc1, double desc2, String unidadMedida, BigDecimal montoDescitem, BigDecimal subTotal) {
         this.idnotaentradadetalle = idnotaentradadetalle;
         this.notaEntrada = notaEntrada;
         this.producto = producto;
         this.cantidad = cantidad;
-        this.costoUnitario = costoUnitario;
-        this.importe = importe;
+        this.lote = lote;
+        this.fechaVencimiento = fechaVencimiento;
+        this.valorCompra = valorCompra;
+        this.precioCompra = precioCompra;
+        this.desc1 = desc1;
+        this.desc2 = desc2;
+        this.unidadMedida = unidadMedida;
+        this.montoDescitem = montoDescitem;
+        this.subTotal = subTotal;
     }
-    public NotaEntradaDetalle(int idnotaentradadetalle, NotaEntrada notaEntrada, Producto producto, Integer idUnidad, int cantidad, BigDecimal costoUnitario, BigDecimal importe) {
-       this.idnotaentradadetalle = idnotaentradadetalle;
-       this.notaEntrada = notaEntrada;
-       this.producto = producto;
-       this.idUnidad = idUnidad;
-       this.cantidad = cantidad;
-       this.costoUnitario = costoUnitario;
-       this.importe = importe;
-    }
+         
    
-    public int getIdnotaentradadetalle() {
+    public long getIdnotaentradadetalle() {
         return this.idnotaentradadetalle;
     }
     
-    public void setIdnotaentradadetalle(int idnotaentradadetalle) {
+    public void setIdnotaentradadetalle(long idnotaentradadetalle) {
         this.idnotaentradadetalle = idnotaentradadetalle;
     }
     public NotaEntrada getNotaEntrada() {
@@ -63,13 +71,7 @@ public class NotaEntradaDetalle  implements java.io.Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    public Integer getIdUnidad() {
-        return this.idUnidad;
-    }
-    
-    public void setIdUnidad(Integer idUnidad) {
-        this.idUnidad = idUnidad;
-    }
+   
     public int getCantidad() {
         return this.cantidad;
     }
@@ -77,19 +79,77 @@ public class NotaEntradaDetalle  implements java.io.Serializable {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    public BigDecimal getCostoUnitario() {
-        return this.costoUnitario;
-    }
     
-    public void setCostoUnitario(BigDecimal costoUnitario) {
-        this.costoUnitario = costoUnitario;
+    public String getLote() {
+        return lote;
     }
-    public BigDecimal getImporte() {
-        return this.importe;
+
+    public void setLote(String lote) {
+        this.lote = lote;
     }
-    
-    public void setImporte(BigDecimal importe) {
-        this.importe = importe;
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public BigDecimal getValorCompra() {
+        return valorCompra;
+    }
+
+    public void setValorCompra(BigDecimal valorCompra) {
+        this.valorCompra = valorCompra;
+    }
+
+    public BigDecimal getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(BigDecimal precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public double getDesc1() {
+        return desc1;
+    }
+
+    public void setDesc1(double desc1) {
+        this.desc1 = desc1;
+    }
+
+    public double getDesc2() {
+        return desc2;
+    }
+
+    public void setDesc2(double desc2) {
+        this.desc2 = desc2;
+    }
+
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public BigDecimal getMontoDescitem() {
+        return montoDescitem;
+    }
+
+    public void setMontoDescitem(BigDecimal montoDescitem) {
+        this.montoDescitem = montoDescitem;
+    }
+
+    public BigDecimal getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(BigDecimal subTotal) {
+        this.subTotal = subTotal;
     }
 
 

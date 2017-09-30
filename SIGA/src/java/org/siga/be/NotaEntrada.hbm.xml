@@ -4,7 +4,7 @@
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="org.siga.be.NotaEntrada" table="nota_entrada" schema="siga" optimistic-lock="version">
-        <id name="idnotaentrada" type="int">
+        <id name="idnotaentrada" type="long">
             <column name="idnotaentrada" />
             <generator class="increment" />
         </id>
@@ -23,9 +23,6 @@
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" not-null="true" />
         </property>
-        <property name="idTipoentrada" type="int">
-            <column name="id_tipoentrada" not-null="true" />
-        </property>
         <property name="fechaDocref" type="date">
             <column name="fecha_docref" length="13" />
         </property>
@@ -43,6 +40,9 @@
         </property>
         <property name="idComprobante" type="java.lang.Integer">
             <column name="id_comprobante" />
+        </property>
+        <property name="tipoIngreso" type="string">
+            <column name="tipo_ingreso" length="30" not-null="true" />
         </property>
         <set name="notaEntradaDetalles" table="nota_entrada_detalle" inverse="true" lazy="true" fetch="select">
             <key>

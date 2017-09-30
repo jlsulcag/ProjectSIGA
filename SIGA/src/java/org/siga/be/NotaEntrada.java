@@ -14,18 +14,18 @@ import org.springframework.stereotype.Component;
 public class NotaEntrada  implements java.io.Serializable {
 
 
-     private int idnotaentrada;
+     private long idnotaentrada;
      private OrdenCompra ordenCompra;
      private Proveedor proveedor;
      private TipoMovimiento tipoMovimiento;
      private long numero;
      private Date fechaReg;
-     private int idTipoentrada;
      private Date fechaDocref;
      private String nroDocref;
      private int idAlmacendestino;
      private int idUserReg;
      private String observacion;
+     private String tipoIngreso;
      private Integer idComprobante;
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
@@ -33,23 +33,21 @@ public class NotaEntrada  implements java.io.Serializable {
     }
 
 	
-    public NotaEntrada(int idnotaentrada, long numero, Date fechaReg, int idTipoentrada, int idAlmacendestino, int idUserReg, String observacion) {
+    public NotaEntrada(int idnotaentrada, long numero, Date fechaReg, int idAlmacendestino, int idUserReg, String observacion) {
         this.idnotaentrada = idnotaentrada;
         this.numero = numero;
         this.fechaReg = fechaReg;
-        this.idTipoentrada = idTipoentrada;
         this.idAlmacendestino = idAlmacendestino;
         this.idUserReg = idUserReg;
         this.observacion = observacion;
     }
-    public NotaEntrada(int idnotaentrada, OrdenCompra ordenCompra, Proveedor proveedor, TipoMovimiento tipoMovimiento, long numero, Date fechaReg, int idTipoentrada, Date fechaDocref, String nroDocref, int idAlmacendestino, int idUserReg, String observacion, Integer idComprobante, Set<NotaEntradaDetalle> notaEntradaDetalles) {
+    public NotaEntrada(int idnotaentrada, OrdenCompra ordenCompra, Proveedor proveedor, TipoMovimiento tipoMovimiento, long numero, Date fechaReg, Date fechaDocref, String nroDocref, int idAlmacendestino, int idUserReg, String observacion, Integer idComprobante, Set<NotaEntradaDetalle> notaEntradaDetalles) {
        this.idnotaentrada = idnotaentrada;
        this.ordenCompra = ordenCompra;
        this.proveedor = proveedor;
        this.tipoMovimiento = tipoMovimiento;
        this.numero = numero;
        this.fechaReg = fechaReg;
-       this.idTipoentrada = idTipoentrada;
        this.fechaDocref = fechaDocref;
        this.nroDocref = nroDocref;
        this.idAlmacendestino = idAlmacendestino;
@@ -59,11 +57,11 @@ public class NotaEntrada  implements java.io.Serializable {
        this.notaEntradaDetalles = notaEntradaDetalles;
     }
    
-    public int getIdnotaentrada() {
+    public long getIdnotaentrada() {
         return this.idnotaentrada;
     }
     
-    public void setIdnotaentrada(int idnotaentrada) {
+    public void setIdnotaentrada(long idnotaentrada) {
         this.idnotaentrada = idnotaentrada;
     }
     public OrdenCompra getOrdenCompra() {
@@ -100,13 +98,6 @@ public class NotaEntrada  implements java.io.Serializable {
     
     public void setFechaReg(Date fechaReg) {
         this.fechaReg = fechaReg;
-    }
-    public int getIdTipoentrada() {
-        return this.idTipoentrada;
-    }
-    
-    public void setIdTipoentrada(int idTipoentrada) {
-        this.idTipoentrada = idTipoentrada;
     }
     public Date getFechaDocref() {
         return this.fechaDocref;
@@ -156,6 +147,14 @@ public class NotaEntrada  implements java.io.Serializable {
     
     public void setNotaEntradaDetalles(Set<NotaEntradaDetalle> notaEntradaDetalles) {
         this.notaEntradaDetalles = notaEntradaDetalles;
+    }
+
+    public String getTipoIngreso() {
+        return tipoIngreso;
+    }
+
+    public void setTipoIngreso(String tipoIngreso) {
+        this.tipoIngreso = tipoIngreso;
     }
 
 

@@ -16,46 +16,44 @@
                     <h:form>
                         <div class="ui-fluid">
                             <div class="ui-g">
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel value="Tipo Movim :" for="txfDocumento"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2"> 
-                                    <p:selectOneMenu id="txfDocumento" value="#" >
-                                        <f:selectItem itemLabel="SELECCIONE"/>
-                                    </p:selectOneMenu>
-                                </div>
+
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
                                     <h:outputLabel value="Numero :" for="txfNumero"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true"
-                                                 />
+                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true" disabled="true"
+                                                 value="#{notaIngresoBean.notaEntrada.numero}"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
                                     <h:outputLabel value="Fecha :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                                >
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                                value="#{notaIngresoBean.notaEntrada.fechaReg}">
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="opt1" value="Orden de Compra" />
+                                    <h:outputLabel for="cbxTipoIngreso" value="Tipo Ingreso" />
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:selectOneMenu id="opt1" value="#" >
-                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                    <p:selectOneMenu id="cbxTipoIngreso" value="#{notaIngresoBean.notaEntrada.tipoIngreso}" required="true">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="POR COMPRA" itemValue="POR COMPRA"/>
+                                        <f:selectItem itemLabel="OTROS" itemValue="OTROS"/>
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="txfFecha1" value="Fecha:"/>
+                                    <h:outputLabel for="cbxOrden" value="Orden de Compra" />
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:calendar id="txfFecha1" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                                >
-                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                    </p:calendar>
+                                    <p:selectOneMenu id="cbxOrden" value="#{notaIngresoBean.notaEntrada.ordenCompra.idordencompra}" 
+                                                     filter="true" filterMatchMode="contains">                                        
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{ordenCompraBean.selectOneItemsOrdenCompra}"/>
+                                        <p:ajax listener="#{notaIngresoBean.listarDetalleOrdenCompra()}" update="formDataTable" />
+                                    </p:selectOneMenu>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
                                     <h:outputLabel for="txfDoc" value="Doc Ref :"/>
@@ -125,14 +123,14 @@
 
 
                             <h:form id="formDataTable">
-                                <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item" reflow="true"
+                                <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
                                              paginator="false" rows="10" paginatorPosition="bottom"
                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="10,15,20" editable="true">
                                     <f:facet name="header">Productos</f:facet>
 
                                     <p:column headerText="ID">
-                                        <h:outputText value="#{item.idordencompradetalle}"/>
+                                        <h:outputText value="#{item.idnotaentradadetalle}"/>
                                     </p:column>
 
                                     <p:column headerText="Producto">
@@ -162,7 +160,7 @@
                                     <p:columnGroup type="footer">
                                         <p:row>
                                             <p:column colspan="6" style="text-align:right" footerText="Total :" />
-                                            <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" />
+                                            <p:column footerText="#" />
                                             <p:column colspan="2"/>
                                         </p:row>
                                     </p:columnGroup>
@@ -170,14 +168,14 @@
                                     <p:column style="width:30px;text-align: center">
                                         <p:commandButton id="btnEdit" 
                                                          icon="ui-icon-pencil" title="Editar">
-                                            <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />
+                                            <f:setPropertyActionListener value="#" target="#" />
                                         </p:commandButton>                            
                                     </p:column>
 
                                     <p:column style="width:30px;text-align: center">
                                         <p:commandButton id="btnDelete" update=""  
                                                          immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                            <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />           
+                                            <f:setPropertyActionListener value="#" target="#" />           
                                         </p:commandButton>                                                        
 
                                     </p:column>

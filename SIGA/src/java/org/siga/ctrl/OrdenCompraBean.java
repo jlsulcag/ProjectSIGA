@@ -3,6 +3,7 @@ package org.siga.ctrl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -10,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
@@ -43,6 +45,7 @@ public class OrdenCompraBean {
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
     
+    private List<SelectItem> selectOneItemsOrdenCompra;
     private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles;
     private List<Proveedor> listProveedores;
@@ -67,7 +70,7 @@ public class OrdenCompraBean {
         //ordenCompra.setProveedor(proveedorBl.buscarXNombre(proveedor.getRazonSocial()));
         //ordenCompra.setIdProveedor((int) proveedor.getIdproveedor());
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
-        ordenCompra.setEstado("REG");
+        ordenCompra.setEstado("APROBADO");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
         ordenCompra.setValorBruto(BigDecimal.ZERO);
         ordenCompra.setMontoDesc(BigDecimal.ZERO);
@@ -201,6 +204,24 @@ public class OrdenCompraBean {
 
     private OrdenCompra buscarId() {
         return ordenCompraBl.buscar(ordenCompra.getIdordencompra());
+    }
+
+    public List<SelectItem> getSelectOneItemsOrdenCompra() {
+        this.selectOneItemsOrdenCompra= new LinkedList<SelectItem>();
+        for (OrdenCompra obj : listOrdenCompraXEstado("APROBADO")) {
+            this.setOrdenCompra(obj);
+            SelectItem selectItem = new SelectItem(ordenCompra.getIdordencompra(), ordenCompra.getNumero()+"");
+            this.selectOneItemsOrdenCompra.add(selectItem);
+        }
+        return selectOneItemsOrdenCompra;
+    }
+    
+    private List<OrdenCompra> listOrdenCompraXEstado(String estado){
+        return ordenCompraBl.listOrdenCompraXEstado(estado);
+    }
+
+    public void setSelectOneItemsOrdenCompra(List<SelectItem> selectOneItemsOrdenCompra) {
+        this.selectOneItemsOrdenCompra = selectOneItemsOrdenCompra;
     }
     
 }
