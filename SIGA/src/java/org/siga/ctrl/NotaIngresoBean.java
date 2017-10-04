@@ -17,6 +17,7 @@ import org.siga.be.Proveedor;
 import org.siga.be.TipoMovimiento;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
+import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 
 @ManagedBean
@@ -32,11 +33,24 @@ public class NotaIngresoBean {
     private NotaIngresoDetalleBl notaIngresoDetalleBl;
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
     private OrdenCompraDetalleBl ordenCompraDetalleBl;
+    @ManagedProperty(value = "#{ordenCompra}")
+    private OrdenCompra ordenCompra;
+    @ManagedProperty(value = "#{ordenCompraBl}") 
+    private OrdenCompraBl ordenCompraBl;
     //private List<NotaEntrada> listNotaEntrada;
     private List<NotaEntradaDetalle> listNotaEntradaDetalle;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
     
+    
+    
     public NotaIngresoBean() {
+    }
+    
+    public void registrar(){
+        System.out.println("lista "+listNotaEntradaDetalle.size());
+        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+            notaIngresoDetalleBl.registrar(obj);
+        }
     }
     
     @PostConstruct
@@ -57,11 +71,10 @@ public class NotaIngresoBean {
     }
     
     public void listarDetalleOrdenCompra(){
-        System.out.println("id orden compra "+notaEntrada.getOrdenCompra().getIdordencompra());
         //Obtener la lista de DetalleOrdenCompra
         long id = notaEntrada.getOrdenCompra().getIdordencompra();
         listOrdenCompraDetalle = ordenCompraDetalleBl.listarXIdOrdenCompra(id);
-        setListNotaEntradaDetalle(new ArrayList<>());
+        listNotaEntradaDetalle = new ArrayList<>();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalle) {
             notaEntradaDetalle.setNotaEntrada(notaEntrada);
             notaEntradaDetalle.setProducto(obj.getProducto());
@@ -74,8 +87,13 @@ public class NotaIngresoBean {
             notaEntradaDetalle.setDesc2(obj.getDesc2());
             notaEntradaDetalle.setUnidadMedida(obj.getUnidadMedida());
             notaEntradaDetalle.setMontoDescitem(obj.getMontoDescitem());
+            notaEntradaDetalle.setCantSolicitada(obj.getCantidad());
+            //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
+            notaEntradaDetalle.setCantRecibida(notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
+            notaEntradaDetalle.setCantPendiente(notaEntradaDetalle.getCantSolicitada()-notaEntradaDetalle.getCantRecibida());
+            notaEntradaDetalle.setCantIngreso(notaEntradaDetalle.getCantPendiente());
             
-            getListNotaEntradaDetalle().add(notaEntradaDetalle);
+            listNotaEntradaDetalle.add(notaEntradaDetalle);
         }
     }
 
@@ -133,5 +151,21 @@ public class NotaIngresoBean {
 
     public void setListNotaEntradaDetalle(List<NotaEntradaDetalle> listNotaEntradaDetalle) {
         this.listNotaEntradaDetalle = listNotaEntradaDetalle;
+    }
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
+    }
+
+    public OrdenCompraBl getOrdenCompraBl() {
+        return ordenCompraBl;
+    }
+
+    public void setOrdenCompraBl(OrdenCompraBl ordenCompraBl) {
+        this.ordenCompraBl = ordenCompraBl;
     }
 }

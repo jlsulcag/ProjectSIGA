@@ -12,7 +12,7 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Orden Compra Detalle">
-
+                    
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
                             <f:facet name="left">
@@ -21,7 +21,7 @@
                             </f:facet>
                         </p:toolbar>
                     </h:form>
-
+                    
                     <h:form id="formDataTable">
                         <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
                                      paginator="false" rows="10" paginatorPosition="bottom"

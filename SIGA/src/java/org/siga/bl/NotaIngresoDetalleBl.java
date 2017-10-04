@@ -78,5 +78,9 @@ public class NotaIngresoDetalleBl extends AbstractBL<NotaEntradaDetalle>{
     public void setDao(NotaIngresoDetalleDao dao) {
         this.dao = dao;
     }
+
+    public int getCantIngresada(long idproducto, long id) {
+        return dao.getCantIngresada(idproducto, id);
+    }
     
 }
