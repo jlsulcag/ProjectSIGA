@@ -1,4 +1,3 @@
-
 package org.siga.ctrl;
 
 import com.sun.javafx.scene.control.skin.VirtualFlow;
@@ -8,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
@@ -23,6 +23,7 @@ import org.siga.bl.OrdenCompraDetalleBl;
 @ManagedBean
 @ViewScoped
 public class NotaIngresoBean {
+
     @ManagedProperty(value = "#{notaEntrada}")
     private NotaEntrada notaEntrada;
     @ManagedProperty(value = "#{notaIngresoBl}")
@@ -35,48 +36,68 @@ public class NotaIngresoBean {
     private OrdenCompraDetalleBl ordenCompraDetalleBl;
     @ManagedProperty(value = "#{ordenCompra}")
     private OrdenCompra ordenCompra;
-    @ManagedProperty(value = "#{ordenCompraBl}") 
+    @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
+    
+    
     //private List<NotaEntrada> listNotaEntrada;
     private List<NotaEntradaDetalle> listNotaEntradaDetalle;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
-    
-    
-    
+
+    private long res;
+
     public NotaIngresoBean() {
     }
-    
-    public void registrar(){
-        System.out.println("lista "+listNotaEntradaDetalle.size());
-        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-            notaIngresoDetalleBl.registrar(obj);
+
+    public void registrar() {
+        System.out.println("lista " + listNotaEntradaDetalle.size());
+        
+        NotaEntrada notaEntradaTemp = new NotaEntrada();
+
+        notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+        //notaEntrada.setIdAlmacendestino(0);
+        notaEntrada.setIdUserReg(0);
+        notaEntrada.setObservacion("");
+        //notaEntrada.setTipoIngreso("");
+        System.out.println("nota entrada id orden compra "+notaEntrada.getOrdenCompra().getIdordencompra());
+        System.out.println("nota entrada numero "+notaEntrada.getNumero());
+        System.out.println("tipo ingreso "+notaEntrada.getTipoIngreso());
+        System.out.println("doc ref "+notaEntrada.getNroDocref());
+
+        res = notaIngresoBl.registrar(notaEntrada);
+        
+        if (res == 0) {
+            for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+                obj.setNotaEntrada(notaEntrada);
+                notaIngresoDetalleBl.registrar(obj);
+            }
         }
+
     }
     
     @PostConstruct
-    public void limpiar(){
-        getNotaEntrada().setIdnotaentrada(0);
-        getNotaEntrada().setNumero(maxNumero()+1);
-        getNotaEntrada().setFechaReg(new Date());
-        getNotaEntrada().setOrdenCompra(new OrdenCompra());
-        getNotaEntrada().setFechaDocref(null);
-        getNotaEntrada().setNroDocref("");
-        getNotaEntrada().setProveedor(new Proveedor());
-        getNotaEntrada().setTipoMovimiento(new TipoMovimiento());
-        getNotaEntrada().setObservacion("");
+    public void iniciar() {
+        System.out.println("iniciando ............");
+        notaEntrada.setIdnotaentrada(0);
+        notaEntrada.setNumero(maxNumero() + 1);
+        notaEntrada.setFechaReg(new Date());
+        notaEntrada.setOrdenCompra(new OrdenCompra());
+        notaEntrada.setFechaDocref(null);
+        notaEntrada.setNroDocref("");
+        notaEntrada.setObservacion("");
     }
-
+    
     private long maxNumero() {
         return getNotaIngresoBl().buscarUltimoNumero();
     }
-    
-    public void listarDetalleOrdenCompra(){
+
+    public void listarDetalleOrdenCompra() {
         //Obtener la lista de DetalleOrdenCompra
         long id = notaEntrada.getOrdenCompra().getIdordencompra();
         listOrdenCompraDetalle = ordenCompraDetalleBl.listarXIdOrdenCompra(id);
         listNotaEntradaDetalle = new ArrayList<>();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalle) {
-            notaEntradaDetalle.setNotaEntrada(notaEntrada);
+            //notaEntradaDetalle.setNotaEntrada(notaEntrada);
             notaEntradaDetalle.setProducto(obj.getProducto());
             notaEntradaDetalle.setCantidad(obj.getCantidad());
             notaEntradaDetalle.setLote(obj.getLote());
@@ -89,10 +110,10 @@ public class NotaIngresoBean {
             notaEntradaDetalle.setMontoDescitem(obj.getMontoDescitem());
             notaEntradaDetalle.setCantSolicitada(obj.getCantidad());
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
-            notaEntradaDetalle.setCantRecibida(notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
-            notaEntradaDetalle.setCantPendiente(notaEntradaDetalle.getCantSolicitada()-notaEntradaDetalle.getCantRecibida());
+            notaEntradaDetalle.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
+            notaEntradaDetalle.setCantPendiente(notaEntradaDetalle.getCantSolicitada() - notaEntradaDetalle.getCantRecibida());
             notaEntradaDetalle.setCantIngreso(notaEntradaDetalle.getCantPendiente());
-            
+
             listNotaEntradaDetalle.add(notaEntradaDetalle);
         }
     }

@@ -16,8 +16,6 @@ public class NotaEntrada  implements java.io.Serializable {
 
      private long idnotaentrada;
      private OrdenCompra ordenCompra;
-     private Proveedor proveedor;
-     private TipoMovimiento tipoMovimiento;
      private long numero;
      private Date fechaReg;
      private Date fechaDocref;
@@ -26,10 +24,11 @@ public class NotaEntrada  implements java.io.Serializable {
      private int idUserReg;
      private String observacion;
      private String tipoIngreso;
-     private Integer idComprobante;
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
     public NotaEntrada() {
+        this.idnotaentrada = 0;
+        this.ordenCompra = new OrdenCompra();
     }
 
 	
@@ -41,21 +40,7 @@ public class NotaEntrada  implements java.io.Serializable {
         this.idUserReg = idUserReg;
         this.observacion = observacion;
     }
-    public NotaEntrada(int idnotaentrada, OrdenCompra ordenCompra, Proveedor proveedor, TipoMovimiento tipoMovimiento, long numero, Date fechaReg, Date fechaDocref, String nroDocref, int idAlmacendestino, int idUserReg, String observacion, Integer idComprobante, Set<NotaEntradaDetalle> notaEntradaDetalles) {
-       this.idnotaentrada = idnotaentrada;
-       this.ordenCompra = ordenCompra;
-       this.proveedor = proveedor;
-       this.tipoMovimiento = tipoMovimiento;
-       this.numero = numero;
-       this.fechaReg = fechaReg;
-       this.fechaDocref = fechaDocref;
-       this.nroDocref = nroDocref;
-       this.idAlmacendestino = idAlmacendestino;
-       this.idUserReg = idUserReg;
-       this.observacion = observacion;
-       this.idComprobante = idComprobante;
-       this.notaEntradaDetalles = notaEntradaDetalles;
-    }
+    
    
     public long getIdnotaentrada() {
         return this.idnotaentrada;
@@ -71,20 +56,7 @@ public class NotaEntrada  implements java.io.Serializable {
     public void setOrdenCompra(OrdenCompra ordenCompra) {
         this.ordenCompra = ordenCompra;
     }
-    public Proveedor getProveedor() {
-        return this.proveedor;
-    }
     
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
-    public TipoMovimiento getTipoMovimiento() {
-        return this.tipoMovimiento;
-    }
-    
-    public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
-    }
     public long getNumero() {
         return this.numero;
     }
@@ -134,13 +106,7 @@ public class NotaEntrada  implements java.io.Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-    public Integer getIdComprobante() {
-        return this.idComprobante;
-    }
     
-    public void setIdComprobante(Integer idComprobante) {
-        this.idComprobante = idComprobante;
-    }
     public Set<NotaEntradaDetalle> getNotaEntradaDetalles() {
         return this.notaEntradaDetalles;
     }

@@ -82,17 +82,17 @@ public class NotaIngresoDetalleDao extends AbstractDA<NotaEntradaDetalle>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getCantIngresada(long idproducto, long id) {
+    public long getCantIngresada(long idproducto, long id) {
         Session s = getSession();
         Transaction t = s.beginTransaction();
-        int cant = 0;
+        long cant = 0;
         try {
             String hql = "select sum(a.cantidad) from NotaEntradaDetalle a where a.producto.idproducto = "+idproducto +" and a.notaEntrada.ordenCompra.idordencompra = "+id;
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
                 cant = 0;
             } else {
-                cant = (int) query.uniqueResult();
+                cant = (long) query.uniqueResult();
             }
             t.commit();
             s.close();

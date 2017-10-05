@@ -11,12 +11,6 @@
         <many-to-one name="ordenCompra" class="org.siga.be.OrdenCompra" fetch="select">
             <column name="id_ordencompra" />
         </many-to-one>
-        <many-to-one name="proveedor" class="org.siga.be.Proveedor" fetch="select">
-            <column name="id_proveedor" />
-        </many-to-one>
-        <many-to-one name="tipoMovimiento" class="org.siga.be.TipoMovimiento" fetch="select">
-            <column name="id_tipomovimiento" />
-        </many-to-one>
         <property name="numero" type="long">
             <column name="numero" not-null="true" />
         </property>
@@ -37,9 +31,6 @@
         </property>
         <property name="observacion" type="string">
             <column name="observacion" length="300" not-null="true" />
-        </property>
-        <property name="idComprobante" type="java.lang.Integer">
-            <column name="id_comprobante" />
         </property>
         <property name="tipoIngreso" type="string">
             <column name="tipo_ingreso" length="30" not-null="true" />

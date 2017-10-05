@@ -60,36 +60,16 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
                                     <p:inputText id="txfDoc" label="Documento de referencia" style="text-transform: uppercase"
-                                                 value=""/>
+                                                 value="#{notaIngresoBean.notaEntrada.nroDocref}"/>
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
+                                    <h:outputLabel for="txfProveedor" value="Proveedor :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:selectOneMenu id="cbxProveedor" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" 
-                                                     filter="true" filterMatchMode="contains">
-                                        <f:selectItem itemLabel="SELECCIONE"/>
-                                        <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
-                                    </p:selectOneMenu>
+                                    <p:inputText id="txfProveedor" label="Proveedor"  readonly="true" disabled="true"/>
                                 </div>
 
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="txfFechaEntrega" value="Fecha de entrega:"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:calendar id="txfFechaEntrega" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                                value="#{generarOrdenCompraBean.ordenCompra.fechaEntrega}">
-                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                    </p:calendar>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="text-transform: uppercase"
-                                                 value="#{ordenCompraBean.ordenCompra.lugarEntrega}"/>
-                                </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
                                     <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
                                 </div>
@@ -105,91 +85,79 @@
                                 <div class="ui-g-12 ui-md-3 ui-lg-2">
 
                                 </div>
+
+
+
                             </div>                            
                         </div> 
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                                 actionListener="#{notaIngresoBean.registrar()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>                        
 
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Productos</f:facet>
 
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idnotaentradadetalle}"/>
+                            </p:column>
 
-                        <div class="ui-fluid">
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
 
-                            <h:form id="formTolbar">
-                                <!--
-                                <p:toolbar style="margin-top: 10px">
-                                    <f:facet name="left">
-                                        <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar"/>
+                            <p:column headerText="Cant Solicitada">
+                                <h:outputText value="#{item.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Recibida">
+                                <h:outputText value="#{item.cantRecibida}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Pendiente">
+                                <h:outputText value="#{item.cantPendiente}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Ingreso">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.cantIngreso}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{notaIngresoBean.notaEntradaDetalle.cantIngreso}"/>
                                     </f:facet>
-                                </p:toolbar>
-                                -->
-                            </h:form>                            
+                                </p:cellEditor>
+                            </p:column>
 
-                            <h:form id="formDataTable">
-                                <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
-                                             paginator="false" rows="10" paginatorPosition="bottom"
-                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="10,15,20" editable="true">
-                                    <f:facet name="header">Productos</f:facet>
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
 
-                                    <p:column headerText="ID">
-                                        <h:outputText value="#{item.idnotaentradadetalle}"/>
-                                    </p:column>
+                            <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
+                                <p:rowEditor />
+                            </p:column>
 
-                                    <p:column headerText="Producto">
-                                        <h:outputText value="#{item.producto.descripcion}"/>
-                                    </p:column>
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnDelete" update=""  
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#" target="#" />           
+                                </p:commandButton>                                                        
 
-                                    <p:column headerText="Cant Solicitada">
-                                        <h:outputText value="#{item.cantidad}"/>
-                                    </p:column>
+                            </p:column>
 
-                                    <p:column headerText="Cant Recibida">
-                                        <h:outputText value="#{item.cantRecibida}"/>
-                                    </p:column>
-
-                                    <p:column headerText="Cant Pendiente">
-                                        <h:outputText value="#{item.cantPendiente}"/>
-                                    </p:column>
-
-                                    <p:column headerText="Cant Ingreso">
-                                        <p:cellEditor>
-                                            <f:facet name="output"><h:outputText value="#{item.cantIngreso}" /></f:facet>
-                                            <f:facet name="input">
-                                                <p:inputText id="txtCantIngreso" label="Cantidad" value="#{notaIngresoBean.notaEntradaDetalle.cantIngreso}"/>
-                                            </f:facet>
-                                        </p:cellEditor>
-                                    </p:column>
-
-                                    <p:column headerText="Unidad Medida">
-                                        <h:outputText value="#{item.unidadMedida}"/>
-                                    </p:column>
-
-                                    <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
-                                        <p:rowEditor />
-                                    </p:column>
-
-                                    <p:column style="width:30px;text-align: center">
-                                        <p:commandButton id="btnDelete" update=""  
-                                                         immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                            <f:setPropertyActionListener value="#" target="#" />           
-                                        </p:commandButton>                                                        
-
-                                    </p:column>
-
-                                </p:dataTable>                        
+                        </p:dataTable>                        
 
 
 
-                            </h:form> 
+                    </h:form>  
 
-                            <h:form id="formTool2" style="padding-top: 5px">
-                                <p:toolbar>
-                                    <f:facet name="right">
-                                        <p:commandButton value="Guardar" icon="ui-icon-document" 
-                                                         actionListener="#{notaIngresoBean.registrar()}"/>
-                                    </f:facet>
-                                </p:toolbar>
-                            </h:form>
+                    <h:form id="formTool2" style="padding-top: 5px">
 
-                        </div>
                     </h:form>
                 </p:panel>
 

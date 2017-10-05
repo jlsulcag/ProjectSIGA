@@ -79,7 +79,7 @@ public class NotaIngresoDetalleBl extends AbstractBL<NotaEntradaDetalle>{
         this.dao = dao;
     }
 
-    public int getCantIngresada(long idproducto, long id) {
+    public long getCantIngresada(long idproducto, long id) {
         return dao.getCantIngresada(idproducto, id);
     }
     
