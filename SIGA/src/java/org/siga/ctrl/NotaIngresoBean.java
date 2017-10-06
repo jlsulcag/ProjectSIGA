@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.RowEditEvent;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.TipoMovimiento;
 import org.siga.bl.NotaIngresoBl;
@@ -38,8 +42,9 @@ public class NotaIngresoBean {
     private OrdenCompra ordenCompra;
     @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
-    
-    
+
+    private NotaEntradaDetalle notaEntradaDetalleTemp;
+
     //private List<NotaEntrada> listNotaEntrada;
     private List<NotaEntradaDetalle> listNotaEntradaDetalle;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
@@ -51,7 +56,7 @@ public class NotaIngresoBean {
 
     public void registrar() {
         System.out.println("lista " + listNotaEntradaDetalle.size());
-        
+
         NotaEntrada notaEntradaTemp = new NotaEntrada();
 
         notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
@@ -59,13 +64,13 @@ public class NotaIngresoBean {
         notaEntrada.setIdUserReg(0);
         notaEntrada.setObservacion("");
         //notaEntrada.setTipoIngreso("");
-        System.out.println("nota entrada id orden compra "+notaEntrada.getOrdenCompra().getIdordencompra());
-        System.out.println("nota entrada numero "+notaEntrada.getNumero());
-        System.out.println("tipo ingreso "+notaEntrada.getTipoIngreso());
-        System.out.println("doc ref "+notaEntrada.getNroDocref());
+        System.out.println("nota entrada id orden compra " + notaEntrada.getOrdenCompra().getIdordencompra());
+        System.out.println("nota entrada numero " + notaEntrada.getNumero());
+        System.out.println("tipo ingreso " + notaEntrada.getTipoIngreso());
+        System.out.println("doc ref " + notaEntrada.getNroDocref());
 
         res = notaIngresoBl.registrar(notaEntrada);
-        
+
         if (res == 0) {
             for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
                 obj.setNotaEntrada(notaEntrada);
@@ -74,7 +79,7 @@ public class NotaIngresoBean {
         }
 
     }
-    
+
     @PostConstruct
     public void iniciar() {
         System.out.println("iniciando ............");
@@ -86,7 +91,7 @@ public class NotaIngresoBean {
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
     }
-    
+
     private long maxNumero() {
         return getNotaIngresoBl().buscarUltimoNumero();
     }
@@ -98,24 +103,60 @@ public class NotaIngresoBean {
         listNotaEntradaDetalle = new ArrayList<>();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalle) {
             //notaEntradaDetalle.setNotaEntrada(notaEntrada);
-            notaEntradaDetalle.setProducto(obj.getProducto());
-            notaEntradaDetalle.setCantidad(obj.getCantidad());
-            notaEntradaDetalle.setLote(obj.getLote());
-            notaEntradaDetalle.setFechaVencimiento(obj.getFechaVencimiento());
-            notaEntradaDetalle.setValorCompra(obj.getValorCompra());
-            notaEntradaDetalle.setPrecioCompra(obj.getPrecioCompra());
-            notaEntradaDetalle.setDesc1(obj.getDesc1());
-            notaEntradaDetalle.setDesc2(obj.getDesc2());
-            notaEntradaDetalle.setUnidadMedida(obj.getUnidadMedida());
-            notaEntradaDetalle.setMontoDescitem(obj.getMontoDescitem());
-            notaEntradaDetalle.setCantSolicitada(obj.getCantidad());
+            NotaEntradaDetalle notaED = new NotaEntradaDetalle();
+            notaED.setProducto(obj.getProducto());
+            notaED.setCantidad(obj.getCantidad());
+            notaED.setLote(obj.getLote());
+            notaED.setFechaVencimiento(obj.getFechaVencimiento());
+            notaED.setValorCompra(obj.getValorCompra());
+            notaED.setPrecioCompra(obj.getPrecioCompra());
+            notaED.setDesc1(obj.getDesc1());
+            notaED.setDesc2(obj.getDesc2());
+            notaED.setUnidadMedida(obj.getUnidadMedida());
+            notaED.setMontoDescitem(obj.getMontoDescitem());
+            notaED.setCantSolicitada(obj.getCantidad());
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
-            notaEntradaDetalle.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
-            notaEntradaDetalle.setCantPendiente(notaEntradaDetalle.getCantSolicitada() - notaEntradaDetalle.getCantRecibida());
-            notaEntradaDetalle.setCantIngreso(notaEntradaDetalle.getCantPendiente());
-
-            listNotaEntradaDetalle.add(notaEntradaDetalle);
+            notaED.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
+            notaED.setCantPendiente(notaED.getCantSolicitada() - notaED.getCantRecibida());
+            notaED.setCantIngreso(notaED.getCantPendiente());
+            //validar que solo se agreguen los productos que faltan recepcionar
+            if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
+                listNotaEntradaDetalle.add(notaED);
+            }
         }
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        notaEntradaDetalleTemp = new NotaEntradaDetalle();
+        String msg = "";
+        notaEntradaDetalleTemp.setProducto(((NotaEntradaDetalle) event.getObject()).getProducto());
+        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantidad());
+        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantIngreso());
+        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantPendiente());
+        System.out.println("item seleccionado ........   " + notaEntradaDetalleTemp.getProducto().getDescripcion());
+        System.out.println("cantidad ingresada........   " + notaEntradaDetalleTemp.getCantIngreso());
+        System.out.println("cantidad pendiente........   " + notaEntradaDetalleTemp.getCantPendiente());
+        System.out.println("item recibida  ........   " + notaEntradaDetalleTemp.getCantRecibida());
+        System.out.println("item cantidad ........   " + notaEntradaDetalleTemp.getCantidad());
+        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+            System.out.println("tamaño lista "+listNotaEntradaDetalle.size());
+            if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
+                System.out.println("aquii");
+                System.out.println("ingreso "+notaEntradaDetalleTemp.getCantIngreso());
+                    System.out.println("pendiente "+obj.getCantPendiente());
+                if (notaEntradaDetalleTemp.getCantidad() > obj.getCantPendiente()) {                    
+                    msg = "La cantidad ingresada supera a la cantidad pendiente";
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", msg);
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                }
+            }
+        }
+
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edicion cancelada", null);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public NotaEntrada getNotaEntrada() {
@@ -188,5 +229,13 @@ public class NotaIngresoBean {
 
     public void setOrdenCompraBl(OrdenCompraBl ordenCompraBl) {
         this.ordenCompraBl = ordenCompraBl;
+    }
+
+    public NotaEntradaDetalle getNotaEntradaDetalleTemp() {
+        return notaEntradaDetalleTemp;
+    }
+
+    public void setNotaEntradaDetalleTemp(NotaEntradaDetalle notaEntradaDetalleTemp) {
+        this.notaEntradaDetalleTemp = notaEntradaDetalleTemp;
     }
 }
