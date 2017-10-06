@@ -14,9 +14,6 @@
         <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
             <column name="id_producto" not-null="true" />
         </many-to-one>
-        <property name="cantidad" type="int">
-            <column name="cantidad" not-null="true"/>
-        </property>
         <property name="lote" type="string">
             <column length="30" name="lote"/>
         </property>
@@ -40,6 +37,18 @@
         </property>
         <property name="montoDescitem" type="big_decimal">
             <column name="monto_descitem" precision="18"/>
+        </property>
+        <property name="cantSolicitada" type="int">
+            <column name="cant_solicitada" not-null="true"/>
+        </property>
+        <property name="cantRecibida" type="int">
+            <column name="cant_recibida" not-null="true"/>
+        </property>
+        <property name="cantPendiente" type="int">
+            <column name="cant_pendiente" not-null="true"/>
+        </property>
+        <property name="cantIngreso" type="int">
+            <column name="cant_ingreso" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>

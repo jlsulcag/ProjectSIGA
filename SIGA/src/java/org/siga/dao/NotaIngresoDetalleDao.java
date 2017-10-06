@@ -87,7 +87,7 @@ public class NotaIngresoDetalleDao extends AbstractDA<NotaEntradaDetalle>{
         Transaction t = s.beginTransaction();
         long cant = 0;
         try {
-            String hql = "select sum(a.cantidad) from NotaEntradaDetalle a where a.producto.idproducto = "+idproducto +" and a.notaEntrada.ordenCompra.idordencompra = "+id;
+            String hql = "select sum(a.cantIngreso) from NotaEntradaDetalle a where a.producto.idproducto = "+idproducto +" and a.notaEntrada.ordenCompra.idordencompra = "+id;
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
                 cant = 0;

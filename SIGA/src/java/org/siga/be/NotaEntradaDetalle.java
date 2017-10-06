@@ -14,7 +14,6 @@ public class NotaEntradaDetalle implements java.io.Serializable {
     private long idnotaentradadetalle;
     private NotaEntrada notaEntrada;
     private Producto producto;
-    private int cantidad;
     private String lote;
     private Date fechaVencimiento;
     private BigDecimal valorCompra;
@@ -33,23 +32,7 @@ public class NotaEntradaDetalle implements java.io.Serializable {
         this.idnotaentradadetalle = 0;
         this.notaEntrada = new NotaEntrada();
         this.producto = new Producto();
-    }
-
-    public NotaEntradaDetalle(long idnotaentradadetalle, NotaEntrada notaEntrada, Producto producto, int cantidad, String lote, Date fechaVencimiento, BigDecimal valorCompra, BigDecimal precioCompra, double desc1, double desc2, String unidadMedida, BigDecimal montoDescitem, BigDecimal subTotal) {
-        this.idnotaentradadetalle = idnotaentradadetalle;
-        this.notaEntrada = notaEntrada;
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.lote = lote;
-        this.fechaVencimiento = fechaVencimiento;
-        this.valorCompra = valorCompra;
-        this.precioCompra = precioCompra;
-        this.desc1 = desc1;
-        this.desc2 = desc2;
-        this.unidadMedida = unidadMedida;
-        this.montoDescitem = montoDescitem;
-        this.subTotal = subTotal;
-    }
+    } 
 
     public long getIdnotaentradadetalle() {
         return this.idnotaentradadetalle;
@@ -73,15 +56,7 @@ public class NotaEntradaDetalle implements java.io.Serializable {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
-    }
-
-    public int getCantidad() {
-        return this.cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
+    }   
 
     public String getLote() {
         return lote;

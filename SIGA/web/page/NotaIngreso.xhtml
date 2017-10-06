@@ -117,7 +117,7 @@
                             </p:column>
 
                             <p:column headerText="Cant Solicitada">
-                                <h:outputText value="#{item.cantidad}"/>
+                                <h:outputText value="#{item.cantSolicitada}"/>
                             </p:column>
 
                             <p:column headerText="Cant Recibida">
@@ -130,9 +130,9 @@
 
                             <p:column headerText="Cant Ingreso">
                                 <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{item.cantIngreso}" /></f:facet>
+                                    <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantIngreso}" /></f:facet>
                                     <f:facet name="input">
-                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{notaIngresoBean.notaEntradaDetalle.cantIngreso}"/>
+                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{item.cantIngreso}"/>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>

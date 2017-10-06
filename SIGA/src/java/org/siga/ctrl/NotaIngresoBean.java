@@ -55,19 +55,11 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
-        System.out.println("lista " + listNotaEntradaDetalle.size());
-
-        NotaEntrada notaEntradaTemp = new NotaEntrada();
-
         notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
         //notaEntrada.setIdAlmacendestino(0);
         notaEntrada.setIdUserReg(0);
         notaEntrada.setObservacion("");
         //notaEntrada.setTipoIngreso("");
-        System.out.println("nota entrada id orden compra " + notaEntrada.getOrdenCompra().getIdordencompra());
-        System.out.println("nota entrada numero " + notaEntrada.getNumero());
-        System.out.println("tipo ingreso " + notaEntrada.getTipoIngreso());
-        System.out.println("doc ref " + notaEntrada.getNroDocref());
 
         res = notaIngresoBl.registrar(notaEntrada);
 
@@ -82,7 +74,6 @@ public class NotaIngresoBean {
 
     @PostConstruct
     public void iniciar() {
-        System.out.println("iniciando ............");
         notaEntrada.setIdnotaentrada(0);
         notaEntrada.setNumero(maxNumero() + 1);
         notaEntrada.setFechaReg(new Date());
@@ -105,7 +96,6 @@ public class NotaIngresoBean {
             //notaEntradaDetalle.setNotaEntrada(notaEntrada);
             NotaEntradaDetalle notaED = new NotaEntradaDetalle();
             notaED.setProducto(obj.getProducto());
-            notaED.setCantidad(obj.getCantidad());
             notaED.setLote(obj.getLote());
             notaED.setFechaVencimiento(obj.getFechaVencimiento());
             notaED.setValorCompra(obj.getValorCompra());
@@ -114,15 +104,16 @@ public class NotaIngresoBean {
             notaED.setDesc2(obj.getDesc2());
             notaED.setUnidadMedida(obj.getUnidadMedida());
             notaED.setMontoDescitem(obj.getMontoDescitem());
+
             notaED.setCantSolicitada(obj.getCantidad());
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
             notaED.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
             notaED.setCantPendiente(notaED.getCantSolicitada() - notaED.getCantRecibida());
             notaED.setCantIngreso(notaED.getCantPendiente());
             //validar que solo se agreguen los productos que faltan recepcionar
-            if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
-                listNotaEntradaDetalle.add(notaED);
-            }
+            //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
+            listNotaEntradaDetalle.add(notaED);
+            //}
         }
     }
 
@@ -130,23 +121,16 @@ public class NotaIngresoBean {
         notaEntradaDetalleTemp = new NotaEntradaDetalle();
         String msg = "";
         notaEntradaDetalleTemp.setProducto(((NotaEntradaDetalle) event.getObject()).getProducto());
-        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantidad());
-        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantIngreso());
-        notaEntradaDetalleTemp.setCantidad(((NotaEntradaDetalle) event.getObject()).getCantPendiente());
-        System.out.println("item seleccionado ........   " + notaEntradaDetalleTemp.getProducto().getDescripcion());
-        System.out.println("cantidad ingresada........   " + notaEntradaDetalleTemp.getCantIngreso());
-        System.out.println("cantidad pendiente........   " + notaEntradaDetalleTemp.getCantPendiente());
-        System.out.println("item recibida  ........   " + notaEntradaDetalleTemp.getCantRecibida());
-        System.out.println("item cantidad ........   " + notaEntradaDetalleTemp.getCantidad());
+        notaEntradaDetalleTemp.setCantIngreso(((NotaEntradaDetalle) event.getObject()).getCantIngreso());
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-            System.out.println("tamaño lista "+listNotaEntradaDetalle.size());
+            //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
             if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
-                System.out.println("aquii");
-                System.out.println("ingreso "+notaEntradaDetalleTemp.getCantIngreso());
-                    System.out.println("pendiente "+obj.getCantPendiente());
-                if (notaEntradaDetalleTemp.getCantidad() > obj.getCantPendiente()) {                    
+                
+                if (notaEntradaDetalleTemp.getCantIngreso() > obj.getCantPendiente()) {
+                    //la cantidad ingresa se debe mantener
+                    obj.setCantIngreso(obj.getCantPendiente());
                     msg = "La cantidad ingresada supera a la cantidad pendiente";
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", msg);
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
                     FacesContext.getCurrentInstance().addMessage(null, message);
                 }
             }
