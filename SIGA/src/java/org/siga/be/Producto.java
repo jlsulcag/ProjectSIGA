@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Producto  implements java.io.Serializable {
 
-
      private long idproducto;
      private Clase clase;
      private UnidadMedida unidadMedida;
@@ -23,7 +22,6 @@ public class Producto  implements java.io.Serializable {
      private int stockMaximo;
      private String estado;
      private Date fechaReg;
-     private long idFamilia;
      private int fraccion;
      private Familia familia;
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
@@ -137,14 +135,6 @@ public class Producto  implements java.io.Serializable {
     
     public void setNotaEntradaDetalles(Set<NotaEntradaDetalle> notaEntradaDetalles) {
         this.notaEntradaDetalles = notaEntradaDetalles;
-    }
-
-    public long getIdFamilia() {
-        return idFamilia;
-    }
-
-    public void setIdFamilia(long idFamilia) {
-        this.idFamilia = idFamilia;
     }
 
     public int getFraccion() {

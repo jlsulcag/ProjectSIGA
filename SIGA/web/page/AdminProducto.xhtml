@@ -61,7 +61,7 @@
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{productoBean.producto}" />
+                                    <f:setPropertyActionListener value="#{item}" target="#{productoBean.producto}"/>
                                 </p:commandButton>                            
                             </p:column>
 
@@ -127,9 +127,10 @@
 
                                 <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
                                 <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{productoBean.producto.familia.idfamilia}">
-                                    <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClaseEdit"/>
+                                    
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsFamilia}"/>
+                                    <p:ajax listener="#{productoBean.listarClasesXFamilia()}" process="formEdit:cbxFamiliaEdit" update="cbxClaseEdit"/>
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="cbxClaseEdit" value="Clase :"/>

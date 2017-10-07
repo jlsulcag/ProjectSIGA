@@ -54,12 +54,12 @@ public class ProductoDao extends AbstractDA<Producto>{
     }
     
     public List<Producto> listarFull(String ref) {
-        ref = "from Producto p left join fetch p.clase left join fetch p.unidadMedida";
+        ref = "from Producto p left join fetch p.clase left join fetch p.familia left join fetch p.unidadMedida";
         return listar(ref);
     }
 
     public List<Producto> listarRef(String txtBusqueda) {
-        String ref = "from Producto p left join fetch p.clase left join fetch p.unidadMedida where p.descripcion like '%"+txtBusqueda+"%'";
+        String ref = "from Producto p left join fetch p.clase left join fetch p.familia left join fetch p.unidadMedida where p.descripcion like '%"+txtBusqueda+"%'";
         return listar(ref);
     }
 

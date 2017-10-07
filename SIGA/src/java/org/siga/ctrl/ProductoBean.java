@@ -42,7 +42,7 @@ public class ProductoBean {
     private String txtBusqueda;
     private List<Producto> listaProductos;
     private long res;
-    private long idFamilia;
+    private long idFamiliaTemp;
 
     //Metodos transaccionales
     @PostConstruct
@@ -56,7 +56,7 @@ public class ProductoBean {
     }
 
     public void registrar() {
-        //producto.setIdFamilia(idFamilia);
+        //producto.setIdFamilia(idFamiliaTemp);
         producto.setDescripcion(producto.getDescripcion().toUpperCase());
         producto.setCodigo(producto.getCodigo().toUpperCase());
         producto.setFechaReg(new Date());
@@ -84,8 +84,10 @@ public class ProductoBean {
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
         temp.setClase(producto.getClase());        
-        //temp.setIdFamilia(idFamilia);
+        //temp.setIdFamilia(idFamiliaTemp);
         temp.setFraccion(producto.getFraccion());
+        System.out.println("id familia recuperado .... "+temp.getFamilia().getIdfamilia());
+        System.out.println("id clase recuperado .... "+temp.getClase().getIdclase());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
@@ -210,12 +212,12 @@ public class ProductoBean {
         this.familia = familia;
     }
 
-    public long getIdFamilia() {
-        return idFamilia;
+    public long getIdFamiliaTemp() {
+        return idFamiliaTemp;
     }
 
-    public void setIdFamilia(long idFamilia) {
-        this.idFamilia = idFamilia;
+    public void setIdFamiliaTemp(long idFamiliaTemp) {
+        this.idFamiliaTemp = idFamiliaTemp;
     }
 
     public List<SelectItem> getSelectOneItemsClase() {
