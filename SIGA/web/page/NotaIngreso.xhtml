@@ -11,89 +11,93 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <p:growl id="msg" showDetail="true"/>
+                <p:growl id="msg" showDetail="false"/>
                 <p:panel header="Nota de Ingreso">
-                    <h:form>
+                    <h:form id="formP">
                         <div class="ui-fluid">
                             <div class="ui-g">
 
 
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel value="Numero :" for="txfNumero"/>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfNumero" label="Numero" required="true" readonly="true" disabled="true"
                                                  value="#{notaIngresoBean.notaEntrada.numero}"/>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel value="Fecha :"/>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
                                                 value="#{notaIngresoBean.notaEntrada.fechaReg}">
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="cbxTipoIngreso" value="Tipo Ingreso" />
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxTipoIngreso" value="Tipo Ingreso :" />
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:selectOneMenu id="cbxTipoIngreso" value="#{notaIngresoBean.notaEntrada.tipoIngreso}" required="true">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxTipoIngreso" value="#{notaIngresoBean.notaEntrada.tipoIngreso}" required="true" label="Tipo de ingreso">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="POR COMPRA" itemValue="POR COMPRA"/>
                                         <f:selectItem itemLabel="OTROS" itemValue="OTROS"/>
                                     </p:selectOneMenu>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="cbxOrden" value="Orden de Compra" />
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxOrden" value="Orden de Compra :" />
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:selectOneMenu id="cbxOrden" value="#{notaIngresoBean.notaEntrada.ordenCompra.idordencompra}" 
-                                                     filter="true" filterMatchMode="contains">                                        
+                                                     filter="true" filterMatchMode="contains" required="true" label="Orden de compra">                                        
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItems value="#{ordenCompraBean.selectOneItemsOrdenCompra}"/>
                                         <p:ajax listener="#{notaIngresoBean.listarDetalleOrdenCompra()}" update="formDataTable" />
                                     </p:selectOneMenu>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="rbtnEstado" value="Estado:" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneRadio id="rbtn_estado" value="#{notaIngresoBean.ordenCompra.estado}" label="Estado" required="true">
+                                        <f:selectItem itemLabel="PARCIAL" itemValue="APROBADO" />
+                                        <f:selectItem itemLabel="TOTAL" itemValue="CERRADO" />
+                                    </p:selectOneRadio>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfProveedor" value="Proveedor :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfProveedor" label="Proveedor"  readonly="true" disabled="true"/>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDoc" value="Doc Ref :"/>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfDoc" label="Documento de referencia" style="text-transform: uppercase"
                                                  value="#{notaIngresoBean.notaEntrada.nroDocref}"/>
                                 </div>
 
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <h:outputLabel for="txfProveedor" value="Proveedor :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-                                    <p:inputText id="txfProveedor" label="Proveedor"  readonly="true" disabled="true"/>
-                                </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:selectOneMenu id="cbxAlmacen" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" 
                                                      filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="SELECCIONE"/>
                                     </p:selectOneMenu>
                                 </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-2">
-
-                                </div>
-
-
-
                             </div>                            
                         </div> 
                         <p:toolbar>
                             <f:facet name="right">
-                                <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
                                                  actionListener="#{notaIngresoBean.registrar()}"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{notaIngresoBean.iniciar()}"
+                                                 update="formP, :formDataTable"/>
                             </f:facet>
                         </p:toolbar>
                     </h:form>                        
@@ -104,7 +108,7 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Productos</f:facet>
-                            
+
                             <p:ajax event="rowEdit" listener="#{notaIngresoBean.onRowEdit}"  update=":msg"/>
                             <p:ajax event="rowEditCancel" listener="#{notaIngresoBean.onRowCancel}"  update=":msg"/>
 

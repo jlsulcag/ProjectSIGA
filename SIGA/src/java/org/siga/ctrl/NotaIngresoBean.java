@@ -23,6 +23,7 @@ import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
@@ -62,14 +63,21 @@ public class NotaIngresoBean {
         //notaEntrada.setTipoIngreso("");
 
         res = notaIngresoBl.registrar(notaEntrada);
-
+        //Registrar Nota Entrada Detalle
         if (res == 0) {
             for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
                 obj.setNotaEntrada(notaEntrada);
                 notaIngresoDetalleBl.registrar(obj);
             }
         }
-
+        //Actualizar el estado de  la orden de compra
+        long res = -1;
+        res = actualizarEstadoOrdenCompra();
+        if (res == 0) {
+            MensajeView.actCorrecto();
+        } else {
+            MensajeView.actError();
+        }
     }
 
     @PostConstruct
@@ -81,6 +89,15 @@ public class NotaIngresoBean {
         notaEntrada.setFechaDocref(null);
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
+        notaEntrada.setTipoIngreso("");
+        ordenCompra.setEstado("");
+        if(listNotaEntradaDetalle == null){
+        
+        }else{
+            listNotaEntradaDetalle.clear();
+        }
+        
+        
     }
 
     private long maxNumero() {
@@ -125,7 +142,7 @@ public class NotaIngresoBean {
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
             //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
             if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
-                
+
                 if (notaEntradaDetalleTemp.getCantIngreso() > obj.getCantPendiente()) {
                     //la cantidad ingresa se debe mantener
                     obj.setCantIngreso(obj.getCantPendiente());
@@ -221,5 +238,36 @@ public class NotaIngresoBean {
 
     public void setNotaEntradaDetalleTemp(NotaEntradaDetalle notaEntradaDetalleTemp) {
         this.notaEntradaDetalleTemp = notaEntradaDetalleTemp;
+    }
+
+    private long actualizarEstadoOrdenCompra() {
+        OrdenCompra temp = new OrdenCompra();
+        if (notaEntrada.getOrdenCompra() != null) {
+            temp = ordenCompraBl.buscar(notaEntrada.getOrdenCompra().getIdordencompra());
+            //temp = notaEntrada.getOrdenCompra();
+//            temp.setIdordencompra(notaEntrada.getOrdenCompra().getIdordencompra());            
+//            temp.setNumero(notaEntrada.getOrdenCompra().getNumero());
+//            temp.setFecha(notaEntrada.getOrdenCompra().getFecha());
+//            temp.setProveedor(notaEntrada.getOrdenCompra().getProveedor());
+//            temp.setFechaEntrega(notaEntrada.getOrdenCompra().getFechaEntrega());
+//            temp.setLugarEntrega(notaEntrada.getOrdenCompra().getLugarEntrega());
+//            temp.setObservacion(notaEntrada.getOrdenCompra().getObservacion());            
+              temp.setEstado(ordenCompra.getEstado());
+//            temp.setHoraRegistro(notaEntrada.getOrdenCompra().getHoraRegistro());
+//            temp.setFechaRecepcion(new Date());
+//            temp.setIdAlmacenDestino(0);
+//            temp.setIdMoneda(0);
+//            temp.setDocReferencia("");
+//            temp.setValorBruto(notaEntrada.getOrdenCompra().getValorBruto());
+//            temp.setMontoDesc(notaEntrada.getOrdenCompra().getMontoDesc());
+//            temp.setValorNeto(notaEntrada.getOrdenCompra().getValorNeto());
+//            temp.setMontoIgv(notaEntrada.getOrdenCompra().getMontoIgv());
+//            temp.setMontoTotal(notaEntrada.getOrdenCompra().getMontoTotal());
+            
+            return ordenCompraBl.actualizar(temp);
+        }else{
+            return -1;
+        }
+
     }
 }
