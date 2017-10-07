@@ -1,13 +1,13 @@
 
 package org.siga.ctrl;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import org.siga.be.Proveedor;
 import org.siga.bl.ProveedorBl;
@@ -39,6 +39,7 @@ public class ProveedorBean {
         proveedor.setEmail(proveedor.getEmail().toUpperCase());
         proveedor.setContacto(proveedor.getContacto().toUpperCase());
         proveedor.setEstado("ACT");
+        proveedor.setFechaReg(new Date());
         res = proveedorBl.registrar(proveedor);
         if(res == 0){
             MensajeView.registroCorrecto();
@@ -147,7 +148,7 @@ public class ProveedorBean {
         this.selectOneItemsProveedores = selectOneItemsProveedores;
     }
 
-    private Iterable<Proveedor> listarProveedor() {
+    private List<Proveedor> listarProveedor() {
         setListProveedores(proveedorBl.listar());
         return getListProveedores();
     }

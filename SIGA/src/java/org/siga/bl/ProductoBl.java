@@ -82,5 +82,6 @@ public class ProductoBl extends AbstractBL<Producto>{
     public Producto buscarxID(long idproducto) {
         return dao.buscarxID(idproducto);
     }
+
     
 }

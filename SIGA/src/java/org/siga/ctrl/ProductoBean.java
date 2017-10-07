@@ -163,7 +163,7 @@ public class ProductoBean {
     }
 
     private Producto buscarId() {
-        return productoBl.buscar(producto.getIdproducto());
+        return productoBl.buscarxID(producto.getIdproducto());
     }
 
     public ClaseBl getClaseBl() {

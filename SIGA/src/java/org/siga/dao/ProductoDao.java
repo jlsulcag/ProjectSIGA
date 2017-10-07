@@ -64,7 +64,7 @@ public class ProductoDao extends AbstractDA<Producto>{
     }
 
     public Producto buscarxID(long idproducto) {
-        String hql = "from Producto p left join fetch p.clase left join fetch p.unidadMedida where p.idproducto = "+idproducto;
+        String hql = "from Producto p left join fetch p.clase left join fetch p.familia left join fetch p.unidadMedida where p.idproducto = "+idproducto;
         return buscar(hql);
     }
     
