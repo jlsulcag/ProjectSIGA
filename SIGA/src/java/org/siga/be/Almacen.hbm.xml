@@ -17,5 +17,11 @@
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
+        <set name="almacenProductos" table="almacen_producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_almacen" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.AlmacenProducto" />
+        </set>
     </class>
 </hibernate-mapping>

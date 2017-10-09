@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="false"/>
+                <p:panel header="Nota de Ingreso">
+                    <h:form id="formP">
+                        <div class="ui-fluid">
+                            <div class="ui-g">
+
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Numero :" for="txfNumero"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true" disabled="true"
+                                                 value="#{notaIngresoBean.notaEntrada.numero}"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Fecha :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                                value="#{notaIngresoBean.notaEntrada.fechaReg}">
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxTipoIngreso" value="Tipo Ingreso :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxTipoIngreso" value="#{notaIngresoBean.notaEntrada.tipoIngreso}" required="true" label="Tipo de ingreso">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="INVENTARIO INICIAL" itemValue="INVENTARIO INICIAL"/>
+                                        <f:selectItem itemLabel="OTROS" itemValue="OTROS"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" 
+                                                     filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>                            
+                        </div> 
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                 update=":formNew" actionListener="#{ordenCompraDetalleBean.limpiar()}" oncomplete="PF('dlgNew').show();"/>
+                            </f:facet>
+                            <f:facet name="right">
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                 actionListener="#{notaIngresoBean.registrar()}"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{notaIngresoBean.iniciar()}"
+                                                 update="formP, :formDataTable"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>                        
+
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Productos</f:facet>
+
+                            <p:ajax event="rowEdit" listener="#{notaIngresoBean.onRowEdit}"  update=":msg"/>
+                            <p:ajax event="rowEditCancel" listener="#{notaIngresoBean.onRowCancel}"  update=":msg"/>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idnotaentradadetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Ingreso">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantIngreso}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{item.cantIngreso}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+
+                            <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnDelete" update=""  
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#" target="#" />           
+                                </p:commandButton>                                                        
+
+                            </p:column>
+
+                        </p:dataTable>                        
+
+
+
+                    </h:form>  
+
+                    <h:form id="formNew">
+                        <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                                  resizable="false" closable="true">
+
+                            <h:panelGrid columns="4" cellpadding="1">                            
+
+                                <h:outputLabel for="cbxProducto" value="Producto :"/>
+                                <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" 
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
+                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
+                                             value="#{ordenCompraDetalleBean.producto.fraccion}"/>
+
+                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
+                                             value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
+
+                                <h:outputLabel for="txfCompraxUnidad" value="Unitario :"/>
+                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{ordenCompraDetalleBean.compraxUnidad}">
+                                    <p:ajax update="txfTotalproductos" listener="#{ordenCompraDetalleBean.setIsCompraUnitaria()}" />
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputLabel for="txfCantidad" value="Cantidad :"/>
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}">
+                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{ordenCompraDetalleBean.calcularTotalProductos()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
+                                <p:inputText id="txfTotalproductos" label="Cantidad" disabled="true"
+                                             value="#{ordenCompraDetalleBean.totalProductos}"/>
+
+                                <h:outputLabel for="txfLote" value="Lote:"/>
+                                <p:inputText id="txfLote" label="Lote"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
+
+
+
+                                <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
+                                <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{ordenCompraDetalleBean.ordenCompraDetalle.fechaVencimiento}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                                               
+                                <f:facet name="footer">
+                                    <p:separator/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+
+                                    <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{ordenCompraDetalleBean.agregar()}"/>
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                </p:panel>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

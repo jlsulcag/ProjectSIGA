@@ -1,6 +1,8 @@
 package org.siga.be;
 // Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 
 
@@ -17,6 +19,7 @@ public class Almacen  implements java.io.Serializable {
      private String nombre;
      private String direccion;
      private String estado;
+     private Set<AlmacenProducto> almacenProductos = new HashSet<AlmacenProducto>(0);
 
     public Almacen() {
     }
@@ -55,6 +58,14 @@ public class Almacen  implements java.io.Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Set<AlmacenProducto> getAlmacenProductos() {
+        return almacenProductos;
+    }
+
+    public void setAlmacenProductos(Set<AlmacenProducto> almacenProductos) {
+        this.almacenProductos = almacenProductos;
     }
 
 

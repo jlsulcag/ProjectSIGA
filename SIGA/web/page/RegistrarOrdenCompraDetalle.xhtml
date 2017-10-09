@@ -154,7 +154,7 @@
                                     <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
                                 </p:selectOneMenu>
 
-                                <h:outputLabel for="txfFraccion" value="Fracción por Unidad :"/>
+                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
                                 <p:inputText id="txfFraccion" label="Fracción" readonly="true"
                                              value="#{ordenCompraDetalleBean.producto.fraccion}"/>
 
