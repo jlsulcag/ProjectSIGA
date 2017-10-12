@@ -3,6 +3,7 @@ package org.siga.ctrl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -16,6 +17,7 @@ import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
+import org.siga.be.Proveedor;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
@@ -45,11 +47,11 @@ public class NotaIngresoBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
-    
+
     private NotaEntradaDetalle notaEntradaDetalleTemp;
 
     //private List<NotaEntrada> listNotaEntrada;
-    private List<NotaEntradaDetalle> listNotaEntradaDetalle;
+    private List<NotaEntradaDetalle> listNotaEntradaDetalle = new LinkedList<>();
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
     private boolean compraxUnidad;
     private int totalProductos;
@@ -60,9 +62,11 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
-        if(notaEntrada.getOrdenCompra() != null){
+        int r = -1;
+        
+        if (notaEntrada.getOrdenCompra() != null) {
             notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
-        }        
+        }
         //notaEntrada.setIdAlmacendestino(0);
         notaEntrada.setIdUserReg(0);
         notaEntrada.setObservacion("");
@@ -76,14 +80,19 @@ public class NotaIngresoBean {
                 notaIngresoDetalleBl.registrar(obj);
             }
         }
-        //Actualizar el estado de  la orden de compra
-        long res = -1;
-        res = actualizarEstadoOrdenCompra();
-        if (res == 0) {
-            MensajeView.actCorrecto();
-        } else {
-            MensajeView.actError();
+        //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
+        if (notaEntrada.getOrdenCompra() != null) {
+            long res = -1;
+            res = actualizarEstadoOrdenCompra();
         }
+        r = 1;
+        if (r == 1) {
+            MensajeView.registroCorrecto();
+        } else {
+            MensajeView.registroError();
+        }
+        iniciar();
+
     }
 
     @PostConstruct
@@ -91,22 +100,23 @@ public class NotaIngresoBean {
         notaEntrada.setIdnotaentrada(0);
         notaEntrada.setNumero(maxNumero() + 1);
         notaEntrada.setFechaReg(new Date());
-        notaEntrada.setOrdenCompra(new OrdenCompra());
+        notaEntrada.setOrdenCompra(null);
         notaEntrada.setFechaDocref(null);
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
         notaEntrada.setTipoIngreso("");
         ordenCompra.setEstado("");
-        if(listNotaEntradaDetalle == null){
-        
-        }else{
+        notaEntrada.setIdAlmacendestino(0);
+        notaEntrada.setProveedor(new Proveedor());
+        if (listNotaEntradaDetalle == null) {
+
+        } else {
             listNotaEntradaDetalle.clear();
         }
-        
-        
+
     }
-    
-    public void limpiarNew(){
+
+    public void limpiarNew() {
         System.out.println("Aqui .................... ");
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
@@ -117,7 +127,7 @@ public class NotaIngresoBean {
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-        
+
     }
 
     private long maxNumero() {
@@ -179,14 +189,14 @@ public class NotaIngresoBean {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void setIsCompraUnitaria() {
         setCompraxUnidad(compraxUnidad);
 //        if (notaEntradaDetalle.getCantIngreso() > 0) {
 //            calcularTotalProductos();
 //        }
     }
-    
+
 //    public void calcularTotalProductos() {
 //        if (compraxUnidad) {
 //            setTotalProductos(ordenCompraDetalle.getCantidad());
@@ -194,7 +204,6 @@ public class NotaIngresoBean {
 //            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
 //        }
 //    }
-    
     public void calcularTotalProductos() {
         if (compraxUnidad) {
             setTotalProductos(notaEntradaDetalle.getCantIngreso());
@@ -202,9 +211,8 @@ public class NotaIngresoBean {
             setTotalProductos(notaEntradaDetalle.getCantIngreso() * producto.getFraccion());
         }
     }
-    
+
     public void agregarProducto() {
-        listNotaEntradaDetalle = new ArrayList<>();
         NotaEntradaDetalle ned = new NotaEntradaDetalle();
         ned.setProducto(producto);
         ned.setLote(notaEntradaDetalle.getLote());
@@ -215,7 +223,7 @@ public class NotaIngresoBean {
         ned.setDesc2(0);
         if (compraxUnidad) {
             ned.setUnidadMedida("UNIDAD");
-        }else{
+        } else {
             ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         }
         ned.setMontoDescitem(BigDecimal.ZERO);
@@ -223,10 +231,10 @@ public class NotaIngresoBean {
         ned.setCantSolicitada(0);
         ned.setCantPendiente(0);
         ned.setCantRecibida(0);
-        
+
         listNotaEntradaDetalle.add(ned);
     }
-    
+
     public void buscarProducto() {
         producto = getProductoBl().buscarxID(notaEntradaDetalle.getProducto().getIdproducto());
     }
@@ -323,7 +331,7 @@ public class NotaIngresoBean {
 //            temp.setFechaEntrega(notaEntrada.getOrdenCompra().getFechaEntrega());
 //            temp.setLugarEntrega(notaEntrada.getOrdenCompra().getLugarEntrega());
 //            temp.setObservacion(notaEntrada.getOrdenCompra().getObservacion());            
-              temp.setEstado(ordenCompra.getEstado());
+            temp.setEstado(ordenCompra.getEstado());
 //            temp.setHoraRegistro(notaEntrada.getOrdenCompra().getHoraRegistro());
 //            temp.setFechaRecepcion(new Date());
 //            temp.setIdAlmacenDestino(0);
@@ -334,9 +342,9 @@ public class NotaIngresoBean {
 //            temp.setValorNeto(notaEntrada.getOrdenCompra().getValorNeto());
 //            temp.setMontoIgv(notaEntrada.getOrdenCompra().getMontoIgv());
 //            temp.setMontoTotal(notaEntrada.getOrdenCompra().getMontoTotal());
-            
+
             return ordenCompraBl.actualizar(temp);
-        }else{
+        } else {
             return -1;
         }
 

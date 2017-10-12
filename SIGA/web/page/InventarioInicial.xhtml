@@ -11,12 +11,11 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <p:growl id="msg" showDetail="false"/>
+                <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Nota de Ingreso">
                     <h:form id="formP">
                         <div class="ui-fluid">
                             <div class="ui-g">
-
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel value="Numero :" for="txfNumero"/>
@@ -75,7 +74,7 @@
                                                  update="formNew" actionListener="#{notaIngresoBean.limpiarNew()}" oncomplete="PF('dlgNew').show();"/>
                             </f:facet>
                             <f:facet name="right">
-                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
                                                  actionListener="#{notaIngresoBean.registrar()}"/>
                                 <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{notaIngresoBean.iniciar()}"
                                                  update="formP, :formDataTable"/>
