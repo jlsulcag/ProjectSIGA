@@ -17,11 +17,11 @@ public class NotaEntrada  implements java.io.Serializable {
      private long idnotaentrada;
      private OrdenCompra ordenCompra;
      private Proveedor proveedor;
+     private Almacen almacenDestino;
      private long numero;
      private Date fechaReg;
      private Date fechaDocref;
      private String nroDocref;
-     private int idAlmacendestino;
      private int idUserReg;
      private String observacion;
      private String tipoIngreso;
@@ -31,16 +31,6 @@ public class NotaEntrada  implements java.io.Serializable {
         this.idnotaentrada = 0;
         this.ordenCompra = new OrdenCompra();
         this.proveedor = new Proveedor();
-    }
-
-	
-    public NotaEntrada(int idnotaentrada, long numero, Date fechaReg, int idAlmacendestino, int idUserReg, String observacion) {
-        this.idnotaentrada = idnotaentrada;
-        this.numero = numero;
-        this.fechaReg = fechaReg;
-        this.idAlmacendestino = idAlmacendestino;
-        this.idUserReg = idUserReg;
-        this.observacion = observacion;
     }
     
    
@@ -87,13 +77,6 @@ public class NotaEntrada  implements java.io.Serializable {
     public void setNroDocref(String nroDocref) {
         this.nroDocref = nroDocref;
     }
-    public int getIdAlmacendestino() {
-        return this.idAlmacendestino;
-    }
-    
-    public void setIdAlmacendestino(int idAlmacendestino) {
-        this.idAlmacendestino = idAlmacendestino;
-    }
     public int getIdUserReg() {
         return this.idUserReg;
     }
@@ -131,6 +114,14 @@ public class NotaEntrada  implements java.io.Serializable {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public Almacen getAlmacenDestino() {
+        return almacenDestino;
+    }
+
+    public void setAlmacenDestino(Almacen almacenDestino) {
+        this.almacenDestino = almacenDestino;
     }
 
 

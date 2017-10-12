@@ -14,6 +14,9 @@
         <many-to-one name="proveedor" class="org.siga.be.Proveedor" fetch="select">
             <column name="id_proveedor" />
         </many-to-one>
+        <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacendestino" />
+        </many-to-one>
         <property name="numero" type="long">
             <column name="numero" not-null="true" />
         </property>
@@ -25,9 +28,6 @@
         </property>
         <property name="nroDocref" type="string">
             <column name="nro_docref" length="20" />
-        </property>
-        <property name="idAlmacendestino" type="int">
-            <column name="id_almacendestino" not-null="true" />
         </property>
         <property name="idUserReg" type="int">
             <column name="id_user_reg" not-null="true" />

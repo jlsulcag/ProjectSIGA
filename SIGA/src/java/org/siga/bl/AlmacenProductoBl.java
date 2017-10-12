@@ -3,6 +3,7 @@ package org.siga.bl;
 
 import java.util.List;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Producto;
 import org.siga.dao.AlmacenProductoDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
@@ -68,6 +69,10 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public AlmacenProducto buscarProductoxAlmacenyLote(String lote, long idAlmacendestino, Producto producto) {
+        return dao.buscarProductoxAlmacenyLote(lote, idAlmacendestino, producto);
     }
     
 }

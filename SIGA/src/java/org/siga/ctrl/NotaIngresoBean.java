@@ -12,12 +12,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
+import org.siga.be.Almacen;
+import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
+import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
@@ -47,6 +50,10 @@ public class NotaIngresoBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
+    @ManagedProperty(value = "#{almacenProducto}")
+    private AlmacenProducto almacenProducto;
+    @ManagedProperty(value = "#{almacenProductoBl}")
+    private AlmacenProductoBl almacenProductoBl;
 
     private NotaEntradaDetalle notaEntradaDetalleTemp;
 
@@ -63,7 +70,7 @@ public class NotaIngresoBean {
 
     public void registrar() {
         int r = -1;
-        
+
         if (notaEntrada.getOrdenCompra() != null) {
             notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
         }
@@ -85,7 +92,8 @@ public class NotaIngresoBean {
             long res = -1;
             res = actualizarEstadoOrdenCompra();
         }
-        r = 1;
+        //Actualizar el stock de almacen segun las cantidades ingresadas
+        r = actualizarStockAlmacen();
         if (r == 1) {
             MensajeView.registroCorrecto();
         } else {
@@ -106,7 +114,7 @@ public class NotaIngresoBean {
         notaEntrada.setObservacion("");
         notaEntrada.setTipoIngreso("");
         ordenCompra.setEstado("");
-        notaEntrada.setIdAlmacendestino(0);
+        notaEntrada.setAlmacenDestino(new Almacen());
         notaEntrada.setProveedor(new Proveedor());
         if (listNotaEntradaDetalle == null) {
 
@@ -380,5 +388,46 @@ public class NotaIngresoBean {
 
     public void setTotalProductos(int totalProductos) {
         this.totalProductos = totalProductos;
+    }
+
+    private int actualizarStockAlmacen() {
+        int res = -1;
+        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+            AlmacenProducto temp = new AlmacenProducto();
+            almacenProducto.setProducto(obj.getProducto());
+            almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
+            almacenProducto.setLote(obj.getLote());
+            almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
+            almacenProducto.setValor(obj.getValorCompra());
+            temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
+            if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
+                almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
+                almacenProducto.setStockActual(obj.getCantIngreso()+temp.getStockActual());
+                almacenProductoBl.actualizar(almacenProducto);
+                res = 1;
+            } else {//Registrar nuevo
+                almacenProducto.setProducto(obj.getProducto());
+                almacenProducto.setStockActual(obj.getCantIngreso());
+                almacenProductoBl.registrar(almacenProducto);
+                res = 1;
+            }
+        }
+        return res;
+    }
+
+    public AlmacenProducto getAlmacenProducto() {
+        return almacenProducto;
+    }
+
+    public void setAlmacenProducto(AlmacenProducto almacenProducto) {
+        this.almacenProducto = almacenProducto;
+    }
+
+    public AlmacenProductoBl getAlmacenProductoBl() {
+        return almacenProductoBl;
+    }
+
+    public void setAlmacenProductoBl(AlmacenProductoBl almacenProductoBl) {
+        this.almacenProductoBl = almacenProductoBl;
     }
 }

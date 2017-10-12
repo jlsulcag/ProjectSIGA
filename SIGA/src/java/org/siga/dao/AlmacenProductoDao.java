@@ -3,6 +3,7 @@ package org.siga.dao;
 
 import java.util.List;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Producto;
 import org.siga.util.AbstractDA;
 import org.springframework.stereotype.Repository;
 @Repository("almacenProductoDao")
@@ -45,12 +46,17 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
 
     @Override
     public AlmacenProducto buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public AlmacenProducto buscarProductoxAlmacenyLote(String lote, long idAlmacendestino, Producto producto) {
+        String hql = "from AlmacenProducto a where a.almacen.idalmacen = "+idAlmacendestino+" and a.lote = '"+ lote +"' and a.producto.idproducto = "+producto.getIdproducto();
+        return buscar(hql);
     }
     
 }

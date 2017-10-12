@@ -48,7 +48,7 @@
                                     <h:outputLabel for="cbxAlmacen" value="Almacen Destino :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#{notaIngresoBean.notaEntrada.idAlmacendestino}" 
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{notaIngresoBean.notaEntrada.almacenDestino.idalmacen}" 
                                                      filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
