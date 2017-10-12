@@ -1,6 +1,6 @@
 package org.siga.ctrl;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
@@ -17,12 +16,11 @@ import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
-import org.siga.be.Proveedor;
-import org.siga.be.TipoMovimiento;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -43,12 +41,18 @@ public class NotaIngresoBean {
     private OrdenCompra ordenCompra;
     @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
-
+    @ManagedProperty(value = "#{producto}")
+    private Producto producto;
+    @ManagedProperty(value = "#{productoBl}")
+    private ProductoBl productoBl;
+    
     private NotaEntradaDetalle notaEntradaDetalleTemp;
 
     //private List<NotaEntrada> listNotaEntrada;
     private List<NotaEntradaDetalle> listNotaEntradaDetalle;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
+    private boolean compraxUnidad;
+    private int totalProductos;
 
     private long res;
 
@@ -56,7 +60,9 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
-        notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+        if(notaEntrada.getOrdenCompra() != null){
+            notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+        }        
         //notaEntrada.setIdAlmacendestino(0);
         notaEntrada.setIdUserReg(0);
         notaEntrada.setObservacion("");
@@ -97,6 +103,20 @@ public class NotaIngresoBean {
             listNotaEntradaDetalle.clear();
         }
         
+        
+    }
+    
+    public void limpiarNew(){
+        System.out.println("Aqui .................... ");
+        notaEntradaDetalle.setIdnotaentradadetalle(0);
+        notaEntradaDetalle.setProducto(new Producto());
+        notaEntradaDetalle.setUnidadMedida("");
+        notaEntradaDetalle.getProducto().setFraccion(0);
+        setCompraxUnidad(false);
+        notaEntradaDetalle.setCantIngreso(0);
+        setTotalProductos(0);
+        notaEntradaDetalle.setFechaVencimiento(null);
+        notaEntradaDetalle.setLote("");
         
     }
 
@@ -158,6 +178,57 @@ public class NotaIngresoBean {
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    
+    public void setIsCompraUnitaria() {
+        setCompraxUnidad(compraxUnidad);
+//        if (notaEntradaDetalle.getCantIngreso() > 0) {
+//            calcularTotalProductos();
+//        }
+    }
+    
+//    public void calcularTotalProductos() {
+//        if (compraxUnidad) {
+//            setTotalProductos(ordenCompraDetalle.getCantidad());
+//        } else {
+//            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
+//        }
+//    }
+    
+    public void calcularTotalProductos() {
+        if (compraxUnidad) {
+            setTotalProductos(notaEntradaDetalle.getCantIngreso());
+        } else {
+            setTotalProductos(notaEntradaDetalle.getCantIngreso() * producto.getFraccion());
+        }
+    }
+    
+    public void agregarProducto() {
+        listNotaEntradaDetalle = new ArrayList<>();
+        NotaEntradaDetalle ned = new NotaEntradaDetalle();
+        ned.setProducto(producto);
+        ned.setLote(notaEntradaDetalle.getLote());
+        ned.setFechaVencimiento(notaEntradaDetalle.getFechaVencimiento());
+        ned.setValorCompra(BigDecimal.ZERO);
+        ned.setPrecioCompra(BigDecimal.ZERO);
+        ned.setDesc1(0);
+        ned.setDesc2(0);
+        if (compraxUnidad) {
+            ned.setUnidadMedida("UNIDAD");
+        }else{
+            ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
+        }
+        ned.setMontoDescitem(BigDecimal.ZERO);
+        ned.setCantIngreso(totalProductos);
+        ned.setCantSolicitada(0);
+        ned.setCantPendiente(0);
+        ned.setCantRecibida(0);
+        
+        listNotaEntradaDetalle.add(ned);
+    }
+    
+    public void buscarProducto() {
+        producto = getProductoBl().buscarxID(notaEntradaDetalle.getProducto().getIdproducto());
     }
 
     public NotaEntrada getNotaEntrada() {
@@ -269,5 +340,37 @@ public class NotaIngresoBean {
             return -1;
         }
 
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public ProductoBl getProductoBl() {
+        return productoBl;
+    }
+
+    public void setProductoBl(ProductoBl productoBl) {
+        this.productoBl = productoBl;
+    }
+
+    public boolean isCompraxUnidad() {
+        return compraxUnidad;
+    }
+
+    public void setCompraxUnidad(boolean compraxUnidad) {
+        this.compraxUnidad = compraxUnidad;
+    }
+
+    public int getTotalProductos() {
+        return totalProductos;
+    }
+
+    public void setTotalProductos(int totalProductos) {
+        this.totalProductos = totalProductos;
     }
 }

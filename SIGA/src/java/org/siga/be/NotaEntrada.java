@@ -16,6 +16,7 @@ public class NotaEntrada  implements java.io.Serializable {
 
      private long idnotaentrada;
      private OrdenCompra ordenCompra;
+     private Proveedor proveedor;
      private long numero;
      private Date fechaReg;
      private Date fechaDocref;
@@ -29,6 +30,7 @@ public class NotaEntrada  implements java.io.Serializable {
     public NotaEntrada() {
         this.idnotaentrada = 0;
         this.ordenCompra = new OrdenCompra();
+        this.proveedor = new Proveedor();
     }
 
 	
@@ -123,7 +125,13 @@ public class NotaEntrada  implements java.io.Serializable {
         this.tipoIngreso = tipoIngreso;
     }
 
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
 
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
 
 
 }

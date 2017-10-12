@@ -2,11 +2,13 @@
 package org.siga.ctrl;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.siga.be.Almacen;
 import org.siga.bl.AlmacenBl;
 import org.siga.util.MensajeView;
@@ -24,6 +26,7 @@ public class AlmacenBean implements Serializable{
     
     private String txtBusqueda;
     private long res;
+    private List<SelectItem> selectOneItemsAlmacen;
     
     public AlmacenBean() {
     }
@@ -117,6 +120,25 @@ public class AlmacenBean implements Serializable{
 
     public void setListAlmacenes(List<Almacen> listAlmacenes) {
         this.listAlmacenes = listAlmacenes;
+    }
+
+    public List<SelectItem> getSelectOneItemsAlmacen() {
+        this.selectOneItemsAlmacen = new LinkedList<SelectItem>();
+        for (Almacen obj : listarAlmacen()) {
+            this.setAlmacen(obj);
+            SelectItem selectItem = new SelectItem(getAlmacen().getIdalmacen(), getAlmacen().getNombre());
+            this.selectOneItemsAlmacen.add(selectItem);
+        }
+        return selectOneItemsAlmacen;
+    }
+
+    public void setSelectOneItemsAlmacen(List<SelectItem> selectOneItemsAlmacen) {
+        this.selectOneItemsAlmacen = selectOneItemsAlmacen;
+    }
+
+    private List<Almacen> listarAlmacen() {
+        setListAlmacenes(almacenBl.listar());
+        return getListAlmacenes();
     }
     
 }

@@ -54,6 +54,7 @@ public class OrdenCompraBean {
     
     public OrdenCompraBean() {
     }
+    
     @PostConstruct
     public void listarOrdenCompra(){
         listOrdenCompra = new ArrayList<>();

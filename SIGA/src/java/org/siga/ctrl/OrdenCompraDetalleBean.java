@@ -36,8 +36,7 @@ public class OrdenCompraDetalleBean {
     @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
 
-    private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
-    ;
+    private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();    
     private long res;
     private boolean compraxUnidad;
     private int totalProductos;
