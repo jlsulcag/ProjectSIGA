@@ -71,8 +71,10 @@ public class NotaIngresoBean {
     public void registrar() {
         int r = -1;
 
-        if (notaEntrada.getOrdenCompra() != null) {
+        if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
             notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+        }else{
+            notaEntrada.setOrdenCompra(null);
         }
         //notaEntrada.setIdAlmacendestino(0);
         notaEntrada.setIdUserReg(0);
@@ -88,7 +90,7 @@ public class NotaIngresoBean {
             }
         }
         //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
-        if (notaEntrada.getOrdenCompra() != null) {
+        if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
             long res = -1;
             res = actualizarEstadoOrdenCompra();
         }
@@ -108,13 +110,13 @@ public class NotaIngresoBean {
         notaEntrada.setIdnotaentrada(0);
         notaEntrada.setNumero(maxNumero() + 1);
         notaEntrada.setFechaReg(new Date());
-        notaEntrada.setOrdenCompra(null);
+        //notaEntrada.setOrdenCompra(new OrdenCompra());
         notaEntrada.setFechaDocref(null);
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
         notaEntrada.setTipoIngreso("");
         ordenCompra.setEstado("");
-        notaEntrada.setAlmacenDestino(new Almacen());
+        //notaEntrada.setAlmacenDestino(new Almacen());
         notaEntrada.setProveedor(new Proveedor());
         if (listNotaEntradaDetalle == null) {
 
@@ -129,7 +131,9 @@ public class NotaIngresoBean {
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
-        notaEntradaDetalle.getProducto().setFraccion(0);
+        //notaEntradaDetalle.getProducto().setFraccion(0);
+        producto.setFraccion(0);
+        producto.getUnidadMedida().setDescripcion("");
         setCompraxUnidad(false);
         notaEntradaDetalle.setCantIngreso(0);
         setTotalProductos(0);
@@ -392,6 +396,7 @@ public class NotaIngresoBean {
 
     private int actualizarStockAlmacen() {
         int res = -1;
+        System.out.println("lista  tamaño = "+listNotaEntradaDetalle.size());
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
             AlmacenProducto temp = new AlmacenProducto();
             almacenProducto.setProducto(obj.getProducto());

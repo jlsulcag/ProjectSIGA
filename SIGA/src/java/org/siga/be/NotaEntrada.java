@@ -31,6 +31,7 @@ public class NotaEntrada  implements java.io.Serializable {
         this.idnotaentrada = 0;
         this.ordenCompra = new OrdenCompra();
         this.proveedor = new Proveedor();
+        this.almacenDestino = new Almacen();
     }
     
    
