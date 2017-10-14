@@ -68,5 +68,9 @@ public class AlmacenBl extends AbstractBL<Almacen>{
     public long id() {
         return maxId();
     }
+
+    public Almacen buscarXNombre(String ref) {
+        return dao.buscarXNombre(ref);
+    }
     
 }

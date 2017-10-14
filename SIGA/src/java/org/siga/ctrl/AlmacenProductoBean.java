@@ -1,12 +1,17 @@
 
 package org.siga.ctrl;
 
+import java.util.LinkedList;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
+import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaEntrada;
 import org.siga.be.Producto;
+import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaIngresoBl;
 
@@ -23,8 +28,23 @@ public class AlmacenProductoBean {
     private NotaIngresoBl notaIngresoBl;
     @ManagedProperty(value = "#{producto}")
     private Producto producto;
+    @ManagedProperty(value = "#{almacenBl}")
+    private AlmacenBl almacenBl;
+    
+    private List<AlmacenProducto> listInventario;
+    private String txtBusqueda;
     
     public AlmacenProductoBean() {
+    }
+    
+    @PostConstruct
+    public void inicio(){
+        almacenProducto.setAlmacen(defaultAlmacen());
+        listarProductos(almacenProducto.getAlmacen().getIdalmacen());
+    }
+    
+    public void listarRef(){
+        setListInventario(almacenProductoBl.listarRef(txtBusqueda.toUpperCase(), almacenProducto.getAlmacen().getIdalmacen()));
     }
 
     public AlmacenProducto getAlmacenProducto() {
@@ -65,6 +85,38 @@ public class AlmacenProductoBean {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    private Almacen defaultAlmacen() {
+        return almacenBl.buscarXNombre("ALMACEN CENTRAL");
+    }
+
+    public AlmacenBl getAlmacenBl() {
+        return almacenBl;
+    }
+
+    public void setAlmacenBl(AlmacenBl almacenBl) {
+        this.almacenBl = almacenBl;
+    }
+
+    public List<AlmacenProducto> getListInventario() {
+        return listInventario;
+    }
+
+    public void setListInventario(List<AlmacenProducto> listInventario) {
+        this.listInventario = listInventario;
+    }
+
+    private void listarProductos(long idalmacen) {
+        setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));
+    }
+
+    public String getTxtBusqueda() {
+        return txtBusqueda;
+    }
+
+    public void setTxtBusqueda(String txtBusqueda) {
+        this.txtBusqueda = txtBusqueda;
     }
     
 }

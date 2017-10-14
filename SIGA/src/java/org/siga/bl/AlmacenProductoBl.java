@@ -2,6 +2,7 @@
 package org.siga.bl;
 
 import java.util.List;
+import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.Producto;
 import org.siga.dao.AlmacenProductoDao;
@@ -74,5 +75,14 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
     public AlmacenProducto buscarProductoxAlmacenyLote(String lote, long idAlmacendestino, Producto producto) {
         return dao.buscarProductoxAlmacenyLote(lote, idAlmacendestino, producto);
     }
+
+    public List<AlmacenProducto> listarXAlmacen(long idalmacen) {
+        return dao.listarXAlmacen(idalmacen);
+    }
+
+    public List<AlmacenProducto> listarRef(String ref, long idalmacen) {
+        return dao.listarRef(ref, idalmacen);
+    }
+
     
 }

@@ -2,6 +2,7 @@
 package org.siga.dao;
 
 import java.util.List;
+import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.Producto;
 import org.siga.util.AbstractDA;
@@ -57,6 +58,16 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
     public AlmacenProducto buscarProductoxAlmacenyLote(String lote, long idAlmacendestino, Producto producto) {
         String hql = "from AlmacenProducto a where a.almacen.idalmacen = "+idAlmacendestino+" and a.lote = '"+ lote +"' and a.producto.idproducto = "+producto.getIdproducto();
         return buscar(hql);
+    }
+
+    public List<AlmacenProducto> listarXAlmacen(long idalmacen) {
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e where c.idalmacen = "+idalmacen;
+        return listar(hql);
+    }
+
+    public List<AlmacenProducto> listarRef(String ref, long idalmacen) {
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e where b.descripcion like '%"+ref+"%' and c.idalmacen = "+idalmacen;
+        return listar(hql);
     }
     
 }

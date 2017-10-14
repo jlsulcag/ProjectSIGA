@@ -20,7 +20,7 @@
                                     <h:outputLabel value="Almacen :" for="cbxAlmacen"/>                                    
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#" required="true" label="Almacen">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{almacenProductoBean.almacenProducto.almacen.idalmacen}" required="true" label="Almacen">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
                                     </p:selectOneMenu>
@@ -30,7 +30,9 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txtProducto" label="Producto" required="true"
-                                                 value="#"/>
+                                                 value="#{almacenProductoBean.txtBusqueda}">
+                                        <p:ajax event="keyup" update=":formDataTable" listener="#{almacenProductoBean.listarRef()}" />
+                                    </p:inputText>
                                 </div>
                             </div>
                         </div>
@@ -38,30 +40,40 @@
                     </h:form>
                     
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#" var="item" reflow="true"
+                        <p:dataTable id="lista" value="#{almacenProductoBean.listInventario}" var="item" reflow="true"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Productos</f:facet>
                             
                             <p:column headerText="ID">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.producto.idproducto}"/>
                             </p:column>
                             
                             <p:column headerText="Producto">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
                             
                             <p:column headerText="Clase">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.producto.clase.descripcion}"/>
                             </p:column>
                             
                             <p:column headerText="Familia">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.producto.familia.descripcion}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Vencimiento">
+                                <h:outputText value="#{item.fechaVencimiento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Lote">
+                                <h:outputText value="#{item.lote}"/>
                             </p:column>
                             
                             <p:column headerText="Stock Disponible">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.stockActual}"/>
                             </p:column>
                             
                         </p:dataTable>

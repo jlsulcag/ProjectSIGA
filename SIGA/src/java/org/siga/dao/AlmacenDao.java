@@ -52,5 +52,10 @@ public class AlmacenDao extends AbstractDA<Almacen>{
     public long id() {
         return maxId(Almacen.class);
     }
+
+    public Almacen buscarXNombre(String ref) {
+        String hql = "from Almacen a where a.nombre = '"+ref+"'";
+        return buscar(hql);
+    }
     
 }
