@@ -3,6 +3,7 @@ package org.siga.ctrl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,7 +27,7 @@ import org.siga.util.Utilitario;
 import org.siga.util.Utilitarios;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class OrdenCompraBean {
     @ManagedProperty(value = "#{ordenCompra}")
     private OrdenCompra ordenCompra;    
@@ -35,9 +36,7 @@ public class OrdenCompraBean {
     @ManagedProperty(value = "#{ordenCompraDetalle}")
     private OrdenCompraDetalle ordenCompraDetalle;    
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
-    private OrdenCompraDetalleBl ordenCompraDetalleBl; 
-//    @ManagedProperty(value = "#{proveedor}")
-//    private Proveedor proveedor;
+    private OrdenCompraDetalleBl ordenCompraDetalleBl; ;
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
     @ManagedProperty(value = "#{producto}")
@@ -47,7 +46,7 @@ public class OrdenCompraBean {
     
     private List<SelectItem> selectOneItemsOrdenCompra;
     private List<OrdenCompra> listOrdenCompra;
-    private List<OrdenCompraDetalle> listOrdenCompraDetalles;
+    private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private List<Proveedor> listProveedores;
     private long res;
     
@@ -57,9 +56,10 @@ public class OrdenCompraBean {
     
     @PostConstruct
     public void listarOrdenCompra(){
+        limpiar();
         listOrdenCompra = new ArrayList<>();
         for (OrdenCompra obj : ordenCompraBl.listarFull("")) {
-            obj.setProveedor(proveedorBl.buscar(obj.getIdProveedor()));
+            //obj.setProveedor(proveedorBl.buscar(obj.getIdProveedor()));
             listOrdenCompra.add(obj);
         }
         setListOrdenCompra(listOrdenCompra);
@@ -91,7 +91,7 @@ public class OrdenCompraBean {
         OrdenCompra temp = new OrdenCompra();
         temp = buscarId();
         temp.setFecha(ordenCompra.getFecha());
-        temp.setIdProveedor(ordenCompra.getIdProveedor());
+        temp.setProveedor(ordenCompra.getProveedor());
         temp.setFechaEntrega(ordenCompra.getFechaEntrega());
         temp.setLugarEntrega(ordenCompra.getLugarEntrega().toUpperCase());
         temp.setObservacion(ordenCompra.getObservacion().toUpperCase());
@@ -107,11 +107,11 @@ public class OrdenCompraBean {
     public void limpiar(){
         ordenCompra.setIdordencompra(0);
         ordenCompra.setNumero(maxNumero()+1);
-        ordenCompra.setFecha(null);
-        ordenCompra.setIdProveedor(0);
+        ordenCompra.setFecha(new Date());
         ordenCompra.setFechaEntrega(null);
         ordenCompra.setLugarEntrega("");
         ordenCompra.setObservacion("");
+        invalidarSesionOrdenCompra();
     }
     
     public long maxNumero(){
@@ -146,14 +146,6 @@ public class OrdenCompraBean {
     public void setProductoBl(ProductoBl productoBl) {
         this.productoBl = productoBl;
     }
-
-//    public Proveedor getProveedor() {
-//        return proveedor;
-//    }
-//
-//    public void setProveedor(Proveedor proveedor) {
-//        this.proveedor = proveedor;
-//    }
 
     public ProveedorBl getProveedorBl() {
         return proveedorBl;
@@ -223,6 +215,26 @@ public class OrdenCompraBean {
 
     public void setSelectOneItemsOrdenCompra(List<SelectItem> selectOneItemsOrdenCompra) {
         this.selectOneItemsOrdenCompra = selectOneItemsOrdenCompra;
+    }
+
+    private void invalidarSesionOrdenCompra() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.getAttribute("idOrdenCompra");
+        httpSession.invalidate();
+    }
+    
+    public void limpiarNew() {        
+        //setListOrdenCompraDetalles(new LinkedList<>());
+        producto.setFraccion(0);
+        producto.getUnidadMedida().setDescripcion("");
+    }
+
+    public List<OrdenCompraDetalle> getListOrdenCompraDetalles() {
+        return listOrdenCompraDetalles;
+    }
+
+    public void setListOrdenCompraDetalles(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
+        this.listOrdenCompraDetalles = listOrdenCompraDetalles;
     }
     
 }

@@ -8,14 +8,17 @@
             <column name="idordencompra" />
             <generator class="increment" />
         </id>
+        <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacendestino" />
+        </many-to-one>
+        <many-to-one name="proveedor" class="org.siga.be.Proveedor" fetch="select">
+            <column name="id_proveedor" />
+        </many-to-one>
         <property name="numero" type="long">
             <column name="numero" not-null="true" />
         </property>
         <property name="fecha" type="date">
             <column name="fecha" length="13" not-null="true" />
-        </property>
-        <property name="idProveedor" type="int">
-            <column name="id_proveedor" not-null="true" />
         </property>
         <property name="fechaEntrega" type="date">
             <column name="fecha_entrega" length="13" not-null="true" />
@@ -36,9 +39,6 @@
         </property>
         <property name="fechaRecepcion" type="date">
             <column name="fecha_recepcion" length="13" />
-        </property>
-        <property name="idAlmacenDestino" type="int">
-            <column name="id_almacendestino"  />
         </property>
         <property name="idMoneda" type="int">
             <column name="id_moneda"  />

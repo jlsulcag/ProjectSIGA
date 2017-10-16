@@ -139,7 +139,7 @@ public class NotaIngresoBean {
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-
+        listOrdenCompraDetalle = new LinkedList<>();
     }
 
     private long maxNumero() {

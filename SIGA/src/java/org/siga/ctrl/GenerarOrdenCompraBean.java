@@ -28,7 +28,7 @@ public class GenerarOrdenCompraBean {
         getOrdenCompra().setIdordencompra(0);
         getOrdenCompra().setNumero(maxNumero()+1);
         getOrdenCompra().setFecha(null);
-        getOrdenCompra().setIdProveedor(0);
+        getOrdenCompra().setProveedor(null);
         getOrdenCompra().setFechaEntrega(null);
         getOrdenCompra().setLugarEntrega("");
         getOrdenCompra().setObservacion("");

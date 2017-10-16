@@ -18,7 +18,6 @@ public class OrdenCompra  implements java.io.Serializable {
      private long idordencompra;
      private long numero;
      private Date fecha;
-     private int idProveedor;
      private Date fechaEntrega;
      private String lugarEntrega;
      private String observacion;
@@ -26,7 +25,7 @@ public class OrdenCompra  implements java.io.Serializable {
      private String horaRegistro;
      private Proveedor proveedor;
      private Date fechaRecepcion;
-     private int idAlmacenDestino;
+     private Almacen almacenDestino;
      private int idMoneda;
      private String docReferencia;
      private BigDecimal valorBruto;
@@ -41,32 +40,11 @@ public class OrdenCompra  implements java.io.Serializable {
     public OrdenCompra() {
         this.idordencompra = 0;
         this.proveedor = new Proveedor();
+        this.almacenDestino = new Almacen();
     }
 
 	
-    public OrdenCompra(long idordencompra, long numero, Date fecha, int idProveedor, Date fechaEntrega, String lugarEntrega, String observacion, String estado) {
-        this.idordencompra = idordencompra;
-        this.numero = numero;
-        this.fecha = fecha;
-        this.idProveedor = idProveedor;
-        this.fechaEntrega = fechaEntrega;
-        this.lugarEntrega = lugarEntrega;
-        this.observacion = observacion;
-        this.estado = estado;
-    }
-    public OrdenCompra(long idordencompra, long numero, Date fecha, int idProveedor, Date fechaEntrega, String lugarEntrega, String observacion, String estado, Set<OrdenCompraDetalle> ordenCompraDetalles, Set<NotaEntrada> notaEntradas) {
-       this.idordencompra = idordencompra;
-       this.numero = numero;
-       this.fecha = fecha;
-       this.idProveedor = idProveedor;
-       this.fechaEntrega = fechaEntrega;
-       this.lugarEntrega = lugarEntrega;
-       this.observacion = observacion;
-       this.estado = estado;
-       this.ordenCompraDetalles = ordenCompraDetalles;
-       this.notaEntradas = notaEntradas;
-    }
-   
+    
     public long getIdordencompra() {
         return this.idordencompra;
     }
@@ -88,13 +66,7 @@ public class OrdenCompra  implements java.io.Serializable {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    public int getIdProveedor() {
-        return this.idProveedor;
-    }
     
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
-    }
     public Date getFechaEntrega() {
         return this.fechaEntrega;
     }
@@ -162,14 +134,6 @@ public class OrdenCompra  implements java.io.Serializable {
         this.fechaRecepcion = fechaRecepcion;
     }
 
-    public int getIdAlmacenDestino() {
-        return idAlmacenDestino;
-    }
-
-    public void setIdAlmacenDestino(int idAlmacenDestino) {
-        this.idAlmacenDestino = idAlmacenDestino;
-    }
-
     public int getIdMoneda() {
         return idMoneda;
     }
@@ -224,6 +188,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setMontoTotal(BigDecimal montoTotal) {
         this.montoTotal = montoTotal;
+    }
+
+    public Almacen getAlmacenDestino() {
+        return almacenDestino;
+    }
+
+    public void setAlmacenDestino(Almacen almacenDestino) {
+        this.almacenDestino = almacenDestino;
     }
 
 

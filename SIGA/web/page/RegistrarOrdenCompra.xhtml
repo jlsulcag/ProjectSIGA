@@ -66,15 +66,6 @@
                                     <f:setPropertyActionListener value="#{item}" target="#{ordenCompraBean.ordenCompra}" />
                                 </p:commandButton>                            
                             </p:column>
-                            <!--
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
-                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{claseBean.clase}" />           
-                                </p:commandButton>                                                        
-
-                            </p:column>
-                            -->
                         </p:dataTable>
                     </h:form>
 
@@ -95,7 +86,7 @@
 
 
                                 <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
-                                <p:selectOneMenu id="cbxProveedor" style="width: 380px;" value="#{ordenCompraBean.ordenCompra.idProveedor}" filter="true" filterMatchMode="contains">
+                                <p:selectOneMenu id="cbxProveedor" style="width: 380px;" value="#{ordenCompraBean.ordenCompra.proveedor.idproveedor}" filter="true" filterMatchMode="contains">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                 </p:selectOneMenu>
@@ -109,11 +100,19 @@
                                 <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :"/>
                                 <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="text-transform: uppercase"
                                              value="#{ordenCompraBean.ordenCompra.lugarEntrega}"/>
-                                
+
+                                <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
+
+                                <p:selectOneMenu id="cbxAlmacen" value="#{ordenCompraBean.ordenCompra.almacenDestino.idalmacen}" 
+                                                 filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}" />
+                                </p:selectOneMenu>
+
                                 <h:outputLabel for="txfDocReferencia" value="Doc Referencia :"/>
                                 <p:inputText id="txfDocReferencia" label="Doc Referencia" style="text-transform: uppercase"
                                              value="#{ordenCompraBean.ordenCompra.docReferencia}"/>
-                                
+
                                 <h:outputLabel for="txfObservacion" value="Observación :"/>
                                 <p:inputText id="txfObservacion" label="Observación" style="text-transform: uppercase"
                                              value="#{ordenCompraBean.ordenCompra.observacion}"/>
@@ -136,7 +135,7 @@
                             <h:panelGrid columns="2" cellpadding="1">
                                 <h:inputHidden value="#{ordenCompraBean.ordenCompra.idordencompra}" />
                                 <h:inputHidden />
-                                
+
                                 <h:outputLabel for="txfNumeroEdit" value="Número :"/>
                                 <p:inputText id="txfNumeroEdit" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
                                              value="#{ordenCompraBean.ordenCompra.numero}"/>
@@ -148,7 +147,7 @@
                                 </p:calendar>
 
                                 <h:outputLabel for="cbxProveedorEdit" value="Proveedor :"/>
-                                <p:selectOneMenu id="cbxProveedorEdit" style="width: 380px;" value="#{ordenCompraBean.ordenCompra.idProveedor}" filter="true" filterMatchMode="contains">
+                                <p:selectOneMenu id="cbxProveedorEdit" style="width: 380px;" value="#{ordenCompraBean.ordenCompra.proveedor.idproveedor}" filter="true" filterMatchMode="contains">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                 </p:selectOneMenu>

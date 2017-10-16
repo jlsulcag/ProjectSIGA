@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Generar Orden de Compra">
+                    <h:form id="formNew">
+                        <p:fieldset legend="Datos de la Orden" style="margin-bottom:20px;">
+                            <h:panelGrid columns="6"  cellpadding="1">
+
+                                <h:outputLabel for="txfNumero" value="Número :"/>
+                                <p:inputText id="txfNumero" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
+                                             value="#{generarOrdenCompraBean.ordenCompra.numero}"/>
+
+                                <h:outputLabel for="txfFecha" value="Fecha de Emisión:"/>
+                                <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{generarOrdenCompraBean.ordenCompra.fecha}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </p:calendar>
+
+
+                                <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
+                                <p:selectOneMenu id="cbxProveedor" value="#{generarOrdenCompraBean.ordenCompra.idProveedor}" style="width: 350px"
+                                                 filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFechaEntrega" value="Fecha de entrega:"/>
+                                <p:calendar id="txfFechaEntrega" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{generarOrdenCompraBean.ordenCompra.fechaEntrega}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </p:calendar>
+
+                                <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :"/>
+                                <p:inputText id="txfLugarEntrega" label="Lugar de entrega" style="text-transform: uppercase"
+                                             value="#{generarOrdenCompraBean.ordenCompra.lugarEntrega}"/>
+
+                                <h:outputLabel for="txfObservacion" value="Observación :"/>
+                                <p:inputText id="txfObservacion" label="Observación" style="text-transform: uppercase"
+                                             value="#{generarOrdenCompraBean.ordenCompra.observacion}"/>
+
+
+                            </h:panelGrid>
+
+                        </p:fieldset>
+
+                        <p:fieldset legend="Detalles de la Orden" style="margin-bottom:20px;">
+
+                            <h:panelGrid columns="6" cellpadding="1">   
+                                <h:outputLabel for="cbxProducto" value="Producto :"/>
+                                <h:panelGrid>
+                                    <p:selectOneMenu id="cbxProducto" value="#{ordenCompraDetalleBean.ordenCompraDetalle.producto.idproducto}" 
+                                                     filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="SELECCIONE"/>
+                                        <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                        <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                        
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                                
+                                <h:outputLabel for="txfFraccion" value="Fracción por Unidad :"/>
+                                <p:inputText id="txfFraccion" label="Fracción" readonly="true"
+                                             value="#{ordenCompraDetalleBean.producto.fraccion}"/>
+
+                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true"
+                                             value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
+                                
+                                <h:outputLabel for="txfCompraxUnidad" value=" Compra por unidad ?:"/>
+                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{ordenCompraDetalleBean.compraxUnidad}">
+                                    <p:ajax update="txfTotalproductos" listener="#{ordenCompraDetalleBean.setIsCompraUnitaria()}" />
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputLabel for="txfCantidad" value="Cantidad :"/>
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}">
+                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{ordenCompraDetalleBean.calcularTotalProductos()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
+                                <p:inputText id="txfTotalproductos" label="Cantidad"
+                                             value="#{ordenCompraDetalleBean.totalProductos}"/>
+
+                                <h:outputLabel for="txfLote" value="Lote:"/>
+                                <p:inputText id="txfLote" label="Lote"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
+
+
+
+                                <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
+                                <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{ordenCompraDetalleBean.ordenCompraDetalle.fechaVencimiento}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputLabel for="txfValorCompra" value="Valor Unitario :"/>
+                                <p:inputText id="txfValorCompra" label="Valor de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.valorCompra}">
+                                    <p:ajax event="keyup" update="txfPrecioCompra" listener="#{ordenCompraDetalleBean.calcularPrecioCompra()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfPrecioCompra" value="Precio Unitario :"/>
+                                <p:inputText id="txfPrecioCompra" label="Precio de compra"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.precioCompra}">
+                                    <p:ajax event="keyup" update="txfValorCompra" listener="#{ordenCompraDetalleBean.calcularValorCompra()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
+                                <p:inputText id="txfDesc1" label="Descuento 1"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc1}"/>
+
+                                <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
+                                <p:inputText id="txfDesc2" label="Descuento 2"
+                                             value="#{ordenCompraDetalleBean.ordenCompraDetalle.desc2}"/>                                
+
+                            </h:panelGrid>
+                        </p:fieldset>
+
+                    </h:form>
+
+                    <h:form id="formTool">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                 oncomplete="PF('dlgNew').hide();" actionListener="#{ordenCompraDetalleBean.agregar()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                    <h:form id="formDataTable" style="padding-top: 5px; padding-bottom: 5px">
+                        <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Orden Compra Detalle</f:facet>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idordencompradetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{item.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+
+                            <p:column headerText="V/Compra">
+                                <h:outputText value="#{item.valorCompra}"/>
+                            </p:column>
+
+                            <p:column headerText="Descuento">
+                                <h:outputText value="#{item.montoDescitem}"/>
+                            </p:column>
+
+                            <p:column headerText="Sub Total">
+                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                            </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Total :" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" />
+                                    <p:column colspan="2"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnEdit"  
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />
+                                </p:commandButton>                            
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />           
+                                </p:commandButton>                                                        
+
+                            </p:column>
+
+                            <p:summaryRow>
+                                <p:column colspan="3" style="text-align:right">
+                                    <h:outputText value="Sub Total:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText >
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:summaryRow>
+
+                        </p:dataTable>                        
+
+                    </h:form> 
+
+                    <h:form id="formTool2">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                                 actionListener="#{generarOrdenCompraBean.registrarOrdenCompra()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

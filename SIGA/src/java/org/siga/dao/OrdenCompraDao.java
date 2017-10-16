@@ -92,7 +92,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     }
 
     public List<OrdenCompra> listarFull(String string) {
-        string = "from OrdenCompra a order by a.numero desc";
+        string = "from OrdenCompra a left join fetch a.proveedor b order by a.numero desc";
         return listar(string);
     }
 
@@ -118,7 +118,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     }
 
     public List<OrdenCompra> listOrdenCompraXEstado(String estado) {
-        String hql = "from OrdenCompra a where a.estado = '"+estado+"'";
+        String hql = "from OrdenCompra a left join fetch a.proveedor b where a.estado = '"+estado+"'";
         return listar(hql);
     }
 
