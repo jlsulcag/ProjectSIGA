@@ -28,7 +28,7 @@ import org.siga.util.Utilitarios;
 
 @ManagedBean
 @ViewScoped
-public class OrdenCompraBean2 {
+public class MisOrdenesCompraBean {
     @ManagedProperty(value = "#{ordenCompra}")
     private OrdenCompra ordenCompra;    
     @ManagedProperty(value = "#{ordenCompraBl}")
@@ -59,7 +59,7 @@ public class OrdenCompraBean2 {
     private BigDecimal montoIgv;
     
     
-    public OrdenCompraBean2() {
+    public MisOrdenesCompraBean() {
     }
     
     @PostConstruct

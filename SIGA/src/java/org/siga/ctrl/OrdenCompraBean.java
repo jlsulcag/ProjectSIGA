@@ -13,9 +13,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.siga.be.Almacen;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
+import org.siga.be.Proveedor;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
@@ -40,7 +42,8 @@ public class OrdenCompraBean {
     private OrdenCompraBl ordenCompraBl;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
-    private long res;
+    private long res = -1;
+    private long res2 = -1;
     private boolean compraxUnidad;
     private int totalProductos;
     //variables temporales
@@ -62,6 +65,9 @@ public class OrdenCompraBean {
         ordenCompra.setFechaEntrega(null);
         ordenCompra.setLugarEntrega("");
         ordenCompra.setObservacion("");
+        ordenCompra.setProveedor(new Proveedor());
+        ordenCompra.setAlmacenDestino(new Almacen());
+        listOrdenCompraDetalles.clear();
         //invalidarSesionOrdenCompra();
     }
 
@@ -76,7 +82,7 @@ public class OrdenCompraBean {
 //        if (httpSession.getAttribute("idOrdenCompra") != null) {
 //            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
 //        }
-        System.out.println("producto ... "+producto);
+        System.out.println("producto ... " + producto);
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setObservacion("");
@@ -107,7 +113,13 @@ public class OrdenCompraBean {
         res = registrarOrdenCompra();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             obj.setOrdenCompra(ordenCompra);
-            ordenCompraDetalleBl.registrar(obj);
+            res2 = ordenCompraDetalleBl.registrar(obj);
+        }
+        if (res2 == 0) {
+            MensajeView.registroCorrecto();
+            inicio();
+        } else {
+            MensajeView.registroError();
         }
 //        //actualizar montos de la orden de compra
 //        OrdenCompra ocTemp = new OrdenCompra();
@@ -138,10 +150,9 @@ public class OrdenCompraBean {
         ordenCompra.setValorNeto(valorNeto);
         ordenCompra.setMontoIgv(montoIgv);
         ordenCompra.setMontoTotal(totalTemp);
-        
-        
+
         return ordenCompraBl.registrar(ordenCompra);
-        
+
     }
 
     public void inicioNew() {

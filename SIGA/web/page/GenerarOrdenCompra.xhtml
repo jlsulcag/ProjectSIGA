@@ -229,7 +229,7 @@
                                 </p:calendar>
 
                                 <h:outputLabel for="txfValorCompra" value="Valor Unitario :"/>
-                                <p:inputText id="txfValorCompra" label="Valor de compra"
+                                <p:inputText id="txfValorCompra" label="Valor de compra" required="true" 
                                              value="#{ordenCompraBean.ordenCompraDetalle.valorCompra}">
                                     <p:ajax event="keyup" update="txfPrecioCompra" listener="#{ordenCompraBean.calcularPrecioCompra()}"/>
                                 </p:inputText>
