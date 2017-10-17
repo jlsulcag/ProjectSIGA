@@ -1,4 +1,3 @@
-
 package org.siga.ctrl;
 
 import java.math.BigDecimal;
@@ -11,41 +10,35 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
-import org.siga.be.Proveedor;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
-import org.siga.bl.ProveedorBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
 @ManagedBean
 @ViewScoped
 public class OrdenCompraBean {
+
     @ManagedProperty(value = "#{ordenCompra}")
-    private OrdenCompra ordenCompra;    
-    @ManagedProperty(value = "#{ordenCompraBl}")
-    private OrdenCompraBl ordenCompraBl;    
+    private OrdenCompra ordenCompra;
     @ManagedProperty(value = "#{ordenCompraDetalle}")
-    private OrdenCompraDetalle ordenCompraDetalle;    
+    private OrdenCompraDetalle ordenCompraDetalle;
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
-    private OrdenCompraDetalleBl ordenCompraDetalleBl; ;
-    @ManagedProperty(value = "#{proveedorBl}")
-    private ProveedorBl proveedorBl;
+    private OrdenCompraDetalleBl ordenCompraDetalleBl;
     @ManagedProperty(value = "#{producto}")
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
-    
-    private List<SelectItem> selectOneItemsOrdenCompra;
-    private List<OrdenCompra> listOrdenCompra;
+    @ManagedProperty(value = "#{ordenCompraBl}")
+    private OrdenCompraBl ordenCompraBl;
+
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private long res;
     private boolean compraxUnidad;
@@ -57,60 +50,33 @@ public class OrdenCompraBean {
     private BigDecimal totalDescuento;
     private BigDecimal valorNeto;
     private BigDecimal montoIgv;
-    
-    
+
     public OrdenCompraBean() {
     }
-    
+
     @PostConstruct
-    public void listarOrdenCompra(){
-        inicio();
-        listOrdenCompra = new ArrayList<>();
-        for (OrdenCompra obj : ordenCompraBl.listarFull("")) {
-            listOrdenCompra.add(obj);
-        }
-        setListOrdenCompra(listOrdenCompra);
+    public void inicio() {
+        ordenCompra.setIdordencompra(0);
+        ordenCompra.setNumero(maxNumero() + 1);
+        ordenCompra.setFecha(new Date());
+        ordenCompra.setFechaEntrega(null);
+        ordenCompra.setLugarEntrega("");
+        ordenCompra.setObservacion("");
+        //invalidarSesionOrdenCompra();
     }
-    
-    public void buscarProducto() {
-        producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
-        System.out.println("Fraccion ---- "+producto.getFraccion());
+
+    public long maxNumero() {
+        return ordenCompraBl.buscarUltimoNumero();
     }
-    
-    public void setIsCompraUnitaria() {
-        System.out.println("metodo compra uni8taria ");
-        setCompraxUnidad(compraxUnidad);
-        if (ordenCompraDetalle.getCantidad() > 0) {
-            calcularTotalProductos();
-        }
-    }
-    
-    public void calcularTotalProductos() {
-        
-        System.out.println("Descripcion producto = "+producto);
-        System.out.println("Fraccion producto = "+producto.getFraccion());
-        if (compraxUnidad) {
-            setTotalProductos(ordenCompraDetalle.getCantidad());
-        } else {
-            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-        }
-    }
-    
-    public void calcularValorCompra() {
-        ordenCompraDetalle.setValorCompra((ordenCompraDetalle.getPrecioCompra().divide(MensajeView.IGV_DIV, 2, RoundingMode.HALF_UP)));
-    }
-    
-     public void calcularPrecioCompra() {
-        ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
-    }
-    
+
     public void agregar() {
         OrdenCompraDetalle temp = new OrdenCompraDetalle();
 //        temp = this.ordenCompraDetalle;
-        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        if (httpSession.getAttribute("idOrdenCompra") != null) {
-            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
-        }
+//        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+//        if (httpSession.getAttribute("idOrdenCompra") != null) {
+//            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
+//        }
+        System.out.println("producto ... "+producto);
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setObservacion("");
@@ -135,139 +101,132 @@ public class OrdenCompraBean {
         listOrdenCompraDetalles.add(temp);
         calcularTotal(listOrdenCompraDetalles);
     }
-    
-     private double calcularDescItem(double desc1, double desc2) {
-        return ((desc1 + desc2) - ((desc1 * desc2) / 100));
-    }
-     
-     private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
-        totalTemp = new BigDecimal(BigInteger.ZERO);
-        valorBruto = new BigDecimal(BigInteger.ZERO);
-        totalDescuento = new BigDecimal(BigInteger.ZERO);
-        valorNeto = new BigDecimal(BigInteger.ZERO);
-        montoIgv = new BigDecimal(BigInteger.ZERO);
-        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
-            //Realizar todos los calculos de moneda
-            valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
-            totalDescuento = totalDescuento.add(obj.getMontoDescitem());
-            valorNeto = valorBruto.subtract(totalDescuento);
-            System.out.println("valor total = " + valorNeto);
-            montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
-            if (httpSession.getAttribute("idOrdenCompra") != null) {
-                totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
-            } else {
-                //totalTemp = totalTemp.add(obj.getSubTotal());//Antes
-                totalTemp = valorNeto.subtract(montoIgv);
-            }
 
+    public void registrar() {
+
+        res = registrarOrdenCompra();
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            obj.setOrdenCompra(ordenCompra);
+            ordenCompraDetalleBl.registrar(obj);
         }
+//        //actualizar montos de la orden de compra
+//        OrdenCompra ocTemp = new OrdenCompra();
+//        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+//        if (httpSession.getAttribute("idOrdenCompra") != null) {
+//            ocTemp = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
+//            if (ocTemp != null) {
+//                ocTemp.setValorBruto(valorBruto);
+//                System.out.println("valor bruto  " + valorBruto);
+//                ocTemp.setMontoDesc(totalDescuento);
+//                ocTemp.setValorNeto(valorNeto);
+//                ocTemp.setMontoIgv(montoIgv);
+//                ocTemp.setMontoTotal(totalTemp);
+//                System.out.println("id orden compra a a actualizar " + ocTemp.getIdordencompra());
+//                ordenCompraBl.actualizar(ocTemp);
+//            }
+
+//        }
     }
-    
-    public void registrar(){
-        //buscar  proveedor por razon social
-        //System.out.println("proveedor "+ordenCompra.getProveedor().getRazonSocial());
-        //ordenCompra.setProveedor(proveedorBl.buscarXNombre(proveedor.getRazonSocial()));
-        //ordenCompra.setIdProveedor((int) proveedor.getIdproveedor());
+
+    public long registrarOrdenCompra() {
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
+        ordenCompra.setDocReferencia(ordenCompra.getObservacion().toUpperCase());
         ordenCompra.setEstado("APROBADO");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
-        ordenCompra.setValorBruto(BigDecimal.ZERO);
-        ordenCompra.setMontoDesc(BigDecimal.ZERO);
-        ordenCompra.setValorNeto(BigDecimal.ZERO);
-        ordenCompra.setMontoIgv(BigDecimal.ZERO);
-        ordenCompra.setMontoTotal(BigDecimal.ZERO);
-        res = ordenCompraBl.registrar(ordenCompra);
-        if (res == 0) {
-            MensajeView.registroCorrecto();
-        } else {
-            MensajeView.registroError();
-        }
-        listarOrdenCompra();
+        ordenCompra.setValorBruto(valorBruto);
+        ordenCompra.setMontoDesc(totalDescuento);
+        ordenCompra.setValorNeto(valorNeto);
+        ordenCompra.setMontoIgv(montoIgv);
+        ordenCompra.setMontoTotal(totalTemp);
+        
+        
+        return ordenCompraBl.registrar(ordenCompra);
+        
     }
-    
-    public void actualizar(){
-        OrdenCompra temp = new OrdenCompra();
+
+    public void inicioNew() {
+        ordenCompraDetalle.setIdordencompradetalle(0);
+        ordenCompraDetalle.setOrdenCompra(new OrdenCompra());
+        ordenCompraDetalle.setProducto(new Producto());
+        ordenCompraDetalle.setCantidad(0);
+        ordenCompraDetalle.setObservacion("");
+        ordenCompraDetalle.setLote("");
+        ordenCompraDetalle.setFechaVencimiento(null);
+        ordenCompraDetalle.setValorCompra(BigDecimal.ZERO);
+        ordenCompraDetalle.setPrecioCompra(BigDecimal.ZERO);
+        ordenCompraDetalle.setDesc1(0);
+        ordenCompraDetalle.setDesc2(0);
+    }
+
+    public void listar() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if (httpSession.getAttribute("idOrdenCompra") != null) {
+            setListOrdenCompraDetalles(ordenCompraDetalleBl.listarXIdOrdenCompra(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
+            calcularTotal(getListOrdenCompraDetalles());
+        } else {
+            setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
+        }
+        //calcularTotal(getListOrdenCompraDetalles());
+        //setListOrdenCompraDetalles(ordenCompraDetalleBl.listar());
+    }
+
+    public void actualizar() {
+        OrdenCompraDetalle temp = new OrdenCompraDetalle();
         temp = buscarId();
-        temp.setFecha(ordenCompra.getFecha());
-        temp.setProveedor(ordenCompra.getProveedor());
-        temp.setFechaEntrega(ordenCompra.getFechaEntrega());
-        temp.setLugarEntrega(ordenCompra.getLugarEntrega().toUpperCase());
-        temp.setObservacion(ordenCompra.getObservacion().toUpperCase());
-        res = ordenCompraBl.actualizar(temp);
+        temp.setLote(ordenCompraDetalle.getLote().toUpperCase());
+        temp.setProducto(ordenCompraDetalle.getProducto());
+        temp.setCantidad(ordenCompraDetalle.getCantidad());
+        temp.setFechaVencimiento(ordenCompraDetalle.getFechaVencimiento());
+        temp.setValorCompra(ordenCompraDetalle.getValorCompra());
+        temp.setPrecioCompra(ordenCompraDetalle.getPrecioCompra());
+        temp.setDesc1(ordenCompraDetalle.getDesc1());
+        temp.setDesc2(ordenCompraDetalle.getDesc2());
+        res = ordenCompraDetalleBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
         } else {
             MensajeView.actError();
         }
-        listarOrdenCompra();
-    }
-    
-    public void inicio(){
-        ordenCompra.setIdordencompra(0);
-        ordenCompra.setNumero(maxNumero()+1);
-        ordenCompra.setFecha(new Date());
-        ordenCompra.setFechaEntrega(null);
-        ordenCompra.setLugarEntrega("");
-        ordenCompra.setObservacion("");
-        //invalidarSesionOrdenCompra();
-    }
-    
-    public long maxNumero(){
-        return ordenCompraBl.buscarUltimoNumero();
-    }
-    
-    public String redirigir() {
-        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
-        return "RegistrarOrdenCompraDetalle";
-    }
-    
-    public List<Proveedor> listProveedoresRef(String ref){
-        return getProveedorBl().buscarRef(ref.toUpperCase());
-    }
-    public List<Producto> listProductosRef(String ref){
-        return getProductoBl().listarRef(ref.toUpperCase());
-    }
-    
-    public Producto getProducto() {
-        return producto;
+        listar();
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void eliminar() {
+        OrdenCompraDetalle temp = new OrdenCompraDetalle();
+        temp = buscarId();
+        res = ordenCompraDetalleBl.eliminar(temp);
+        if (res == 0) {
+            MensajeView.eliminacionCorrecta();
+        } else {
+            MensajeView.eliminacionErronea();
+        }
+        listar();
     }
 
-    public ProductoBl getProductoBl() {
-        return productoBl;
+    public void buscarProducto() {
+        producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
     }
 
-    public void setProductoBl(ProductoBl productoBl) {
-        this.productoBl = productoBl;
+    public void setIsCompraUnitaria() {
+        setCompraxUnidad(compraxUnidad);
+        if (ordenCompraDetalle.getCantidad() > 0) {
+            calcularTotalProductos();
+        }
     }
 
-    public ProveedorBl getProveedorBl() {
-        return proveedorBl;
+    public void calcularTotalProductos() {
+        if (compraxUnidad) {
+            setTotalProductos(ordenCompraDetalle.getCantidad());
+        } else {
+            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
+        }
     }
 
-    public void setProveedorBl(ProveedorBl proveedorBl) {
-        this.proveedorBl = proveedorBl;
+    public void calcularPrecioCompra() {
+        ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }
 
-    public OrdenCompra getOrdenCompra() {
-        return ordenCompra;
-    }
-
-    public void setOrdenCompra(OrdenCompra ordenCompra) {
-        this.ordenCompra = ordenCompra;
-    }
-
-    public OrdenCompraBl getOrdenCompraBl() {
-        return ordenCompraBl;
-    }
-
-    public void setOrdenCompraBl(OrdenCompraBl ordenCompraBl) {
-        this.ordenCompraBl = ordenCompraBl;
+    public void calcularValorCompra() {
+        ordenCompraDetalle.setValorCompra((ordenCompraDetalle.getPrecioCompra().divide(MensajeView.IGV_DIV, 2, RoundingMode.HALF_UP)));
     }
 
     public OrdenCompraDetalle getOrdenCompraDetalle() {
@@ -286,56 +245,20 @@ public class OrdenCompraBean {
         this.ordenCompraDetalleBl = ordenCompraDetalleBl;
     }
 
-    public List<OrdenCompra> getListOrdenCompra() {
-        return listOrdenCompra;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setListOrdenCompra(List<OrdenCompra> listOrdenCompra) {
-        this.listOrdenCompra = listOrdenCompra;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    private OrdenCompra buscarId() {
-        return ordenCompraBl.buscar(ordenCompra.getIdordencompra());
+    public ProductoBl getProductoBl() {
+        return productoBl;
     }
 
-    public List<SelectItem> getSelectOneItemsOrdenCompra() {
-        this.selectOneItemsOrdenCompra= new LinkedList<SelectItem>();
-        for (OrdenCompra obj : listOrdenCompraXEstado("APROBADO")) {
-            this.setOrdenCompra(obj);
-            SelectItem selectItem = new SelectItem(ordenCompra.getIdordencompra(), ordenCompra.getNumero()+"");
-            this.selectOneItemsOrdenCompra.add(selectItem);
-        }
-        return selectOneItemsOrdenCompra;
-    }
-    
-    private List<OrdenCompra> listOrdenCompraXEstado(String estado){
-        return ordenCompraBl.listOrdenCompraXEstado(estado);
-    }
-
-    public void setSelectOneItemsOrdenCompra(List<SelectItem> selectOneItemsOrdenCompra) {
-        this.selectOneItemsOrdenCompra = selectOneItemsOrdenCompra;
-    }
-
-    private void invalidarSesionOrdenCompra() {
-        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        httpSession.getAttribute("idOrdenCompra");
-        httpSession.invalidate();
-    }
-    
-    public void limpiarNew() {
-        ordenCompraDetalle.setIdordencompradetalle(0);
-        //ordenCompraDetalle.setOrdenCompra(new OrdenCompra());
-        ordenCompraDetalle.setProducto(new Producto());
-        ordenCompraDetalle.setCantidad(0);
-        ordenCompraDetalle.setObservacion("");
-        ordenCompraDetalle.setLote("");
-        ordenCompraDetalle.setFechaVencimiento(null);
-        ordenCompraDetalle.setValorCompra(BigDecimal.ZERO);
-        ordenCompraDetalle.setPrecioCompra(BigDecimal.ZERO);
-        ordenCompraDetalle.setDesc1(0);
-        ordenCompraDetalle.setDesc2(0);
-//        producto.setFraccion(0);
-//        producto.getUnidadMedida().setDescripcion("");
+    public void setProductoBl(ProductoBl productoBl) {
+        this.productoBl = productoBl;
     }
 
     public List<OrdenCompraDetalle> getListOrdenCompraDetalles() {
@@ -344,6 +267,18 @@ public class OrdenCompraBean {
 
     public void setListOrdenCompraDetalles(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
         this.listOrdenCompraDetalles = listOrdenCompraDetalles;
+    }
+
+    public OrdenCompraBl getOrdenCompraBl() {
+        return ordenCompraBl;
+    }
+
+    public void setOrdenCompraBl(OrdenCompraBl ordenCompraBl) {
+        this.ordenCompraBl = ordenCompraBl;
+    }
+
+    private OrdenCompraDetalle buscarId() {
+        return ordenCompraDetalleBl.buscar(ordenCompraDetalle.getIdordencompradetalle());
     }
 
     public boolean isCompraxUnidad() {
@@ -370,12 +305,44 @@ public class OrdenCompraBean {
         this.subTotalItem = subTotalItem;
     }
 
+    private double calcularDescItem(double desc1, double desc2) {
+        return ((desc1 + desc2) - ((desc1 * desc2) / 100));
+    }
+
+    private void listarTemp() {
+
+    }
+
     public BigDecimal getTotalTemp() {
         return totalTemp;
     }
 
     public void setTotalTemp(BigDecimal totalTemp) {
         this.totalTemp = totalTemp;
+    }
+
+    private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
+        totalTemp = new BigDecimal(BigInteger.ZERO);
+        valorBruto = new BigDecimal(BigInteger.ZERO);
+        totalDescuento = new BigDecimal(BigInteger.ZERO);
+        valorNeto = new BigDecimal(BigInteger.ZERO);
+        montoIgv = new BigDecimal(BigInteger.ZERO);
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            //Realizar todos los calculos de moneda
+            valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+            totalDescuento = totalDescuento.add(obj.getMontoDescitem());
+            valorNeto = valorBruto.subtract(totalDescuento);
+            System.out.println("valor total = " + valorNeto);
+            montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
+            if (httpSession.getAttribute("idOrdenCompra") != null) {
+                totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+            } else {
+                //totalTemp = totalTemp.add(obj.getSubTotal());//Antes
+                totalTemp = valorNeto.subtract(montoIgv);
+            }
+
+        }
     }
 
     public BigDecimal getValorBruto() {
@@ -409,5 +376,13 @@ public class OrdenCompraBean {
     public void setMontoIgv(BigDecimal montoIgv) {
         this.montoIgv = montoIgv;
     }
-    
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
+    }
+
 }

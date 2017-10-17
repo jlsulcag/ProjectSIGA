@@ -51,7 +51,7 @@
                                     <p:selectOneMenu id="cbxOrden" value="#{notaIngresoBean.notaEntrada.ordenCompra.idordencompra}" 
                                                      filter="true" filterMatchMode="contains" required="true" label="Orden de compra">                                        
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
-                                        <f:selectItems value="#{ordenCompraBean.selectOneItemsOrdenCompra}"/>
+                                        <f:selectItems value="#{ordenCompraBean2.selectOneItemsOrdenCompra}"/>
                                         <p:ajax listener="#{notaIngresoBean.listarDetalleOrdenCompra()}" update="formDataTable" />
                                     </p:selectOneMenu>
                                 </div>
