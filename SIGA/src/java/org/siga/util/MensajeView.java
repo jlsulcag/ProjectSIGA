@@ -34,4 +34,8 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al eliminar el registro");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    public static void listVacia() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existen items");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }

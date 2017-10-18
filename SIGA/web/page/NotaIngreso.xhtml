@@ -11,7 +11,7 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <p:growl id="msg" showDetail="false"/>
+                <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Nota de Ingreso">
                     <h:form id="formP">
                         <div class="ui-fluid">
@@ -85,9 +85,10 @@
                                     <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#{generarOrdenCompraBean.ordenCompra.proveedor.idproveedor}" 
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{notaIngresoBean.notaEntrada.almacenDestino.idalmacen}" 
                                                      filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="SELECCIONE"/>
+                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
                                     </p:selectOneMenu>
                                 </div>
                             </div>                            

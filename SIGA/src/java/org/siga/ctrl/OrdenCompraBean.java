@@ -109,35 +109,22 @@ public class OrdenCompraBean {
     }
 
     public void registrar() {
-
-        res = registrarOrdenCompra();
-        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
-            obj.setOrdenCompra(ordenCompra);
-            res2 = ordenCompraDetalleBl.registrar(obj);
-        }
-        if (res2 == 0) {
-            MensajeView.registroCorrecto();
-            inicio();
+        if (!listOrdenCompraDetalles.isEmpty()) {
+            res = registrarOrdenCompra();
+            for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+                obj.setOrdenCompra(ordenCompra);
+                res2 = ordenCompraDetalleBl.registrar(obj);
+            }
+            if (res2 == 0) {
+                MensajeView.registroCorrecto();
+                inicio();
+            } else {
+                MensajeView.registroError();
+            }
         } else {
-            MensajeView.registroError();
+            MensajeView.listVacia();
         }
-//        //actualizar montos de la orden de compra
-//        OrdenCompra ocTemp = new OrdenCompra();
-//        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-//        if (httpSession.getAttribute("idOrdenCompra") != null) {
-//            ocTemp = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
-//            if (ocTemp != null) {
-//                ocTemp.setValorBruto(valorBruto);
-//                System.out.println("valor bruto  " + valorBruto);
-//                ocTemp.setMontoDesc(totalDescuento);
-//                ocTemp.setValorNeto(valorNeto);
-//                ocTemp.setMontoIgv(montoIgv);
-//                ocTemp.setMontoTotal(totalTemp);
-//                System.out.println("id orden compra a a actualizar " + ocTemp.getIdordencompra());
-//                ordenCompraBl.actualizar(ocTemp);
-//            }
 
-//        }
     }
 
     public long registrarOrdenCompra() {

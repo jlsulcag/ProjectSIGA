@@ -70,11 +70,13 @@ public class NotaIngresoBean {
 
     public void registrar() {
         int r = -1;
-
+        System.out.println("Proveedor "+getOrdenCompra().getProveedor().getRazonSocial());
         if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
             notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+            notaEntrada.setProveedor(getOrdenCompra().getProveedor());
         }else{
             notaEntrada.setOrdenCompra(null);
+            notaEntrada.setProveedor(null);
         }
         //notaEntrada.setIdAlmacendestino(0);
         notaEntrada.setIdUserReg(0);
