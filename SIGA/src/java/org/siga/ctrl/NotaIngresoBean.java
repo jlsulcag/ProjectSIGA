@@ -14,6 +14,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.RowEditEvent;
+import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
@@ -110,6 +111,7 @@ public class NotaIngresoBean {
         notaEntrada.setTipoIngreso("");
         ordenCompra.setEstado("");
         notaEntrada.setProveedor(new Proveedor());
+        notaEntrada.setAlmacenDestino(new Almacen());
         listNotaEntradaDetalle.clear();
     }
 
@@ -442,7 +444,11 @@ public class NotaIngresoBean {
 
             r = notaIngresoBl.registrar(notaEntrada);
         } else {
-            r = 0;
+            notaEntrada.setOrdenCompra(null);
+            notaEntrada.setIdUserReg(0);
+            notaEntrada.setObservacion("");
+
+            r = notaIngresoBl.registrar(notaEntrada);
         }
         return r;
     }
