@@ -11,14 +11,14 @@
         <many-to-one name="pedido" class="org.siga.be.Pedido" fetch="select">
             <column name="id_pedido" not-null="true" />
         </many-to-one>
-        <property name="idProducto" type="int">
+        <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
             <column name="id_producto" not-null="true" />
-        </property>
+        </many-to-one>
         <property name="cantidadSolicitada" type="int">
             <column name="cantidad_solicitada" not-null="true" />
         </property>
-        <property name="idUnidadMedida" type="java.lang.Integer">
-            <column name="id_unidad_medida" />
+        <property name="unidadMedida" type="string">
+            <column length="30" name="unidad_medida"/>
         </property>
         <property name="cantidadAutorizada" type="int">
             <column name="cantidad_autorizada" not-null="true" />

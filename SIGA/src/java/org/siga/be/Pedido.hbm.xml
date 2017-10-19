@@ -8,7 +8,7 @@
             <column name="idpedido" />
             <generator class="increment" />
         </id>
-        <property name="numero" type="int">
+        <property name="numero" type="long">
             <column name="numero" not-null="true" />
         </property>
         <property name="fechaPedido" type="date">
@@ -40,6 +40,12 @@
         </property>
         <property name="horaPedido" type="string">
             <column name="hora_pedido" length="15" not-null="true" />
+        </property>
+        <property name="fechaEntrega" type="date">
+            <column name="fecha_entrega" length="13" not-null="true" />
+        </property>
+        <property name="lugarEntrega" type="string">
+            <column name="lugar_entrega" length="80" not-null="true" />
         </property>
         <set name="pedidoDetalles" table="pedido_detalle" inverse="true" lazy="true" fetch="select">
             <key>

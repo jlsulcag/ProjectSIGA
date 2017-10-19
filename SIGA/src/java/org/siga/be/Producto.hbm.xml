@@ -56,5 +56,11 @@
             </key>
             <one-to-many class="org.siga.be.AlmacenProducto" />
         </set>
+        <set name="pedidoDetalle" table="pedido_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_producto" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.PedidoDetalle" />
+        </set>
     </class>
 </hibernate-mapping>

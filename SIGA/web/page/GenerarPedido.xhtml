@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Generar pedido">
+                    <h:form id="formP">
+                        <div class="ui-fluid">
+                            <div class="ui-g">
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Numero :" for="txfNumero"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true" disabled="true"
+                                                 value="#{pedidoBean.pedido.numero}"/>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Fecha de pedido:"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                                value="#{pedidoBean.pedido.fechaPedido}" required="true">
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfObservacion" value="Observacion :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfObservacion" label="Observacion" 
+                                                 value="#{pedidoBean.pedido.observacion}" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfJustificacion" value="Justificacion :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfJustificacion" label="Justificacion" 
+                                                 value="#{pedidoBean.pedido.justificacionUso}" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfFechaEntrega" value="Fecha Entrega :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:calendar id="txfFechaEntrega" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                                value="#{pedidoBean.pedido.fechaEntrega}" required="true" label="Fecha de entrega">
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfLugarEntrega" label="Lugar de entrega" 
+                                                 value="#{pedidoBean.pedido.lugarEntrega}" />
+                                </div>
+
+                            </div>                            
+                        </div> 
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                 update="formNew" actionListener="#{pedidoBean.inicioNew()}" oncomplete="PF('dlgNew').show();"/>
+                            </f:facet>
+                            <f:facet name="right">
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
+                                                 actionListener="#"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#"
+                                                 update="formP, :formDataTable"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form> 
+
+                     <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{pedidoBean.listPedidoDetalle}" var="item"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Productos</f:facet>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idpedidodetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{item.cantidadSolicitada}"/>
+                            </p:column>
+
+
+                        </p:dataTable>                
+
+                    </h:form>
+
+                     <h:form id="formNew">
+                        <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                                  resizable="false" closable="true">
+
+                            <h:panelGrid columns="4" cellpadding="1">                            
+
+                                <h:outputLabel for="cbxProducto" value="Producto :"/>
+                                <p:selectOneMenu id="cbxProducto" value="#{pedidoBean.pedidoDetalle.producto.idproducto}" 
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                    <p:ajax listener="#{pedidoBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
+                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
+                                             value="#{pedidoBean.producto.fraccion}"/>
+
+                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
+                                             value="#{pedidoBean.producto.unidadMedida.descripcion}"/>
+                                
+                                <h:outputLabel for="txfPedidoxUnidad" value=" Pedido por unidad ?:"/>
+                                <p:selectBooleanCheckbox  id="txfPedidoxUnidad" value="#{pedidoBean.pedidoxUnidad}">
+                                    <p:ajax update="txfTotalproductos" listener="#{pedidoBean.setIsPedidoUnitario}" />
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputLabel for="txfCantidad" value="Cantidad :"/>
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                             value="#{pedidoBean.pedidoDetalle.cantidadSolicitada}">
+                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{pedidoBean.calcularTotalProductos()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
+                                <p:inputText id="txfTotalproductos" label="Cantidad"
+                                             value="#{pedidoBean.totalProductos}"/>
+                                <f:facet name="footer">
+                                    <p:separator/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+
+                                    <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{pedidoBean.agregar()}"/>
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="formEdit">
+
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
