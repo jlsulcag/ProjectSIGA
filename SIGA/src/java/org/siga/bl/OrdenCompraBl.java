@@ -88,5 +88,9 @@ public class OrdenCompraBl extends AbstractBL<OrdenCompra>{
     public List<OrdenCompra> listOrdenCompraXEstado(String estado) {
         return dao.listOrdenCompraXEstado(estado);
     }
+
+    public OrdenCompra buscarXId(long idordencompra) {
+        return dao.buscarXId(idordencompra);
+    }
     
 }

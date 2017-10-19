@@ -73,29 +73,11 @@
                                     <p:inputText id="txfProveedor" label="Proveedor"  readonly="true" disabled="true"/>
                                 </div>
 
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfDoc" value="Doc Ref :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfDoc" label="Documento de referencia" style="text-transform: uppercase"
-                                                 value="#{notaIngresoBean.notaEntrada.nroDocref}"/>
-                                </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#{notaIngresoBean.notaEntrada.almacenDestino.idalmacen}" 
-                                                     filter="true" filterMatchMode="contains">
-                                        <f:selectItem itemLabel="SELECCIONE"/>
-                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
-                                    </p:selectOneMenu>
-                                </div>
                             </div>                            
                         </div> 
                         <p:toolbar>
                             <f:facet name="right">
-                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, formP"
                                                  actionListener="#{notaIngresoBean.registrar()}"/>
                                 <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{notaIngresoBean.iniciar()}"
                                                  update="formP, :formDataTable"/>

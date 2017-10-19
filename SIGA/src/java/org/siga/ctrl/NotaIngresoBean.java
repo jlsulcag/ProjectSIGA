@@ -9,10 +9,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.RowEditEvent;
-import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
@@ -29,7 +30,7 @@ import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class NotaIngresoBean {
 
     @ManagedProperty(value = "#{notaEntrada}")
@@ -70,38 +71,25 @@ public class NotaIngresoBean {
 
     public void registrar() {
         int r = -1;
-        System.out.println("Proveedor "+getOrdenCompra().getProveedor().getRazonSocial());
-        if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
-            notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
-            notaEntrada.setProveedor(getOrdenCompra().getProveedor());
-        }else{
-            notaEntrada.setOrdenCompra(null);
-            notaEntrada.setProveedor(null);
-        }
-        //notaEntrada.setIdAlmacendestino(0);
-        notaEntrada.setIdUserReg(0);
-        notaEntrada.setObservacion("");
-        //notaEntrada.setTipoIngreso("");
-
-        res = notaIngresoBl.registrar(notaEntrada);
+        res = registrarNotaEntrada();
         //Registrar Nota Entrada Detalle
         if (res == 0) {
             for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
                 obj.setNotaEntrada(notaEntrada);
                 notaIngresoDetalleBl.registrar(obj);
             }
-        }
-        //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
-        if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
-            long res = -1;
-            res = actualizarEstadoOrdenCompra();
-        }
-        //Actualizar el stock de almacen segun las cantidades ingresadas
-        r = actualizarStockAlmacen();
-        if (r == 1) {
-            MensajeView.registroCorrecto();
-        } else {
-            MensajeView.registroError();
+            //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
+            if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
+                long res = -1;
+                res = actualizarEstadoOrdenCompra();
+            }
+            //Actualizar el stock de almacen segun las cantidades ingresadas
+            r = actualizarStockAlmacen();
+            if (r == 1) {
+                MensajeView.registroCorrecto();
+            } else {
+                MensajeView.registroError();
+            }
         }
         iniciar();
 
@@ -109,27 +97,23 @@ public class NotaIngresoBean {
 
     @PostConstruct
     public void iniciar() {
+        //remover:
+        //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("NotaIngresoBean");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("NotaIngresoBean", null);
         notaEntrada.setIdnotaentrada(0);
+        notaEntrada.setOrdenCompra(new OrdenCompra());
         notaEntrada.setNumero(maxNumero() + 1);
         notaEntrada.setFechaReg(new Date());
-        //notaEntrada.setOrdenCompra(new OrdenCompra());
         notaEntrada.setFechaDocref(null);
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
         notaEntrada.setTipoIngreso("");
         ordenCompra.setEstado("");
-        //notaEntrada.setAlmacenDestino(new Almacen());
         notaEntrada.setProveedor(new Proveedor());
-        if (listNotaEntradaDetalle == null) {
-
-        } else {
-            listNotaEntradaDetalle.clear();
-        }
-
+        listNotaEntradaDetalle.clear();
     }
 
     public void limpiarNew() {
-        System.out.println("Aqui .................... ");
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
@@ -152,7 +136,7 @@ public class NotaIngresoBean {
         //Obtener la lista de DetalleOrdenCompra
         long id = notaEntrada.getOrdenCompra().getIdordencompra();
         listOrdenCompraDetalle = ordenCompraDetalleBl.listarXIdOrdenCompra(id);
-        listNotaEntradaDetalle = new ArrayList<>();
+        //listNotaEntradaDetalle = new ArrayList<>();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalle) {
             //notaEntradaDetalle.setNotaEntrada(notaEntrada);
             NotaEntradaDetalle notaED = new NotaEntradaDetalle();
@@ -398,7 +382,7 @@ public class NotaIngresoBean {
 
     private int actualizarStockAlmacen() {
         int res = -1;
-        System.out.println("lista  tamaño = "+listNotaEntradaDetalle.size());
+        System.out.println("lista  tamaño = " + listNotaEntradaDetalle.size());
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
             AlmacenProducto temp = new AlmacenProducto();
             almacenProducto.setProducto(obj.getProducto());
@@ -409,7 +393,7 @@ public class NotaIngresoBean {
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
             if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
                 almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
-                almacenProducto.setStockActual(obj.getCantIngreso()+temp.getStockActual());
+                almacenProducto.setStockActual(obj.getCantIngreso() + temp.getStockActual());
                 almacenProductoBl.actualizar(almacenProducto);
                 res = 1;
             } else {//Registrar nuevo
@@ -436,5 +420,30 @@ public class NotaIngresoBean {
 
     public void setAlmacenProductoBl(AlmacenProductoBl almacenProductoBl) {
         this.almacenProductoBl = almacenProductoBl;
+    }
+
+    private long registrarNotaEntrada() {
+        long r = -1;
+        //BUSCAR ORDEN COMPRA PARA OBTENER SU PROVEEDOR  Y ALMACEN DESTINNO REGISTRADO
+        //POR ALGUNA  RAZON NO PERSISTE ESOS OBJETOS -> VERIFICAR
+        OrdenCompra temp = ordenCompraBl.buscarXId(notaEntrada.getOrdenCompra().getIdordencompra());
+        if (temp != null) {
+            if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
+                notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+                notaEntrada.setProveedor(temp.getProveedor());
+                notaEntrada.setAlmacenDestino(temp.getAlmacenDestino());
+            } else {
+                notaEntrada.setOrdenCompra(null);
+                notaEntrada.setProveedor(null);
+                notaEntrada.setAlmacenDestino(null);
+            }
+            notaEntrada.setIdUserReg(0);
+            notaEntrada.setObservacion("");
+
+            r = notaIngresoBl.registrar(notaEntrada);
+        } else {
+            r = 0;
+        }
+        return r;
     }
 }
