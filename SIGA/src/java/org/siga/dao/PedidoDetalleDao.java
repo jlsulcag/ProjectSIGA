@@ -8,31 +8,21 @@ import org.siga.util.AbstractDA;
 import org.springframework.stereotype.Repository;
 
 @Repository("pedidoDetalleDao")
-public class PedidoDetalleDao extends AbstractBL<PedidoDetalle>{
-
-    @Override
-    public AbstractDA getDAO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setDA(AbstractDA dao) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class PedidoDetalleDao extends AbstractDA<PedidoDetalle>{
 
     @Override
     public long registrar(PedidoDetalle bean) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return save(bean);
     }
 
     @Override
     public long actualizar(PedidoDetalle bean) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return update(bean);
     }
 
     @Override
     public long eliminar(PedidoDetalle bean) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return delete(bean);
     }
 
     @Override
@@ -64,5 +54,7 @@ public class PedidoDetalleDao extends AbstractBL<PedidoDetalle>{
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+   
     
 }

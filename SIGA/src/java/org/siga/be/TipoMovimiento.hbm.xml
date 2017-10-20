@@ -20,5 +20,12 @@
             </key>
             <one-to-many class="org.siga.be.NotaEntrada" />
         </set>
+        
+        <set name="pedidos" table="pedido" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_tipomov" />
+            </key>
+            <one-to-many class="org.siga.be.TipoMovimiento" />
+        </set>
     </class>
 </hibernate-mapping>

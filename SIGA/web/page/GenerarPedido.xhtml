@@ -12,7 +12,7 @@
 
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
-                <p:panel header="Generar pedido">
+                <p:panel header="Nota de Pedido">
                     <h:form id="formP">
                         <div class="ui-fluid">
                             <div class="ui-g">
@@ -42,32 +42,8 @@
                                     <p:inputText id="txfObservacion" label="Observacion" 
                                                  value="#{pedidoBean.pedido.observacion}" />
                                 </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfJustificacion" value="Justificacion :" />
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfJustificacion" label="Justificacion" 
-                                                 value="#{pedidoBean.pedido.justificacionUso}" />
-                                </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfFechaEntrega" value="Fecha Entrega :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:calendar id="txfFechaEntrega" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                                value="#{pedidoBean.pedido.fechaEntrega}" required="true" label="Fecha de entrega">
-                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                    </p:calendar>
-                                </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfLugarEntrega" value="Lugar de entrega :" />
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfLugarEntrega" label="Lugar de entrega" 
-                                                 value="#{pedidoBean.pedido.lugarEntrega}" />
-                                </div>
+                                
+                                
 
                             </div>                            
                         </div> 
@@ -78,8 +54,8 @@
                             </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
-                                                 actionListener="#"/>
-                                <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#"
+                                                 actionListener="#{pedidoBean.registrar()}"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{pedidoBean.inicio()}"
                                                  update="formP, :formDataTable"/>
                             </f:facet>
                         </p:toolbar>

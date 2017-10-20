@@ -1,6 +1,7 @@
 
 package org.siga.ctrl;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -110,11 +111,21 @@ public class DependenciaBean {
     }
 
     public List<SelectItem> getSelectOneItemsDependencia() {
+        this.selectOneItemsDependencia = new LinkedList<SelectItem>();
+        for (Dependencia obj : listarDependencia()) {
+            this.setDependencia(obj);
+            SelectItem selectItem = new SelectItem(dependencia.getIddependencia(), dependencia.getDescripcion());
+            this.selectOneItemsDependencia.add(selectItem);
+        }
         return selectOneItemsDependencia;
     }
 
     public void setSelectOneItemsDependencia(List<SelectItem> selectOneItemsDependencia) {
         this.selectOneItemsDependencia = selectOneItemsDependencia;
+    }
+
+    private List<Dependencia> listarDependencia() {
+        return dependenciaBl.listar();
     }
     
 }

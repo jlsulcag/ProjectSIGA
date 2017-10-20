@@ -15,58 +15,24 @@ public class Pedido implements java.io.Serializable {
     private long idpedido;
     private long numero;
     private Date fechaPedido;
-    private Integer idAlmacenSolicitante;
-    private int idCentroGasto;
-    private String observacion;
-    private String justificacionUso;
-    private int idAlmacenOrigen;
-    private String estado;
-    private int idUserReg;
-    private int idUserAprueba;
+    private String observacion;    
+    private String estado;    
+    private int idUseraprueba;
     private Date fechaEntrega;
-    private String lugarEntrega;
     private String horaPedido;
+    private int idUserconformidad;
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<PedidoDetalle>(0);
-
+    
     public Pedido() {
-    }
-
-    public Pedido(long idpedido, int numero, Date fechaPedido, int idCentroGasto, String observacion, String justificacionUso, int idAlmacenOrigen, String estado, int idUserReg, int idUserAprueba, Date fechaEntrega, String lugarEntrega, String horaPedido) {
-        this.idpedido = idpedido;
-        this.numero = numero;
-        this.fechaPedido = fechaPedido;
-        this.idCentroGasto = idCentroGasto;
-        this.observacion = observacion;
-        this.justificacionUso = justificacionUso;
-        this.idAlmacenOrigen = idAlmacenOrigen;
-        this.estado = estado;
-        this.idUserReg = idUserReg;
-        this.idUserAprueba = idUserAprueba;
-        this.horaPedido = horaPedido;
-        this.fechaEntrega = fechaEntrega;
-        this.lugarEntrega = lugarEntrega;
-    }
-
-    public Pedido(long idpedido, int numero, Date fechaPedido, Integer idAlmacenSolicitante, int idCentroGasto, String observacion, String justificacionUso, int idAlmacenOrigen, String estado, int idUserReg, int idUserAprueba, String horaPedido, Set<PedidoDetalle> pedidoDetalles, Date fechaEntrega, String lugarEntrega) {
-        this.idpedido = idpedido;
-        this.numero = numero;
-        this.fechaPedido = fechaPedido;
-        this.idAlmacenSolicitante = idAlmacenSolicitante;
-        this.idCentroGasto = idCentroGasto;
-        this.observacion = observacion;
-        this.justificacionUso = justificacionUso;
-        this.idAlmacenOrigen = idAlmacenOrigen;
-        this.estado = estado;
-        this.idUserReg = idUserReg;
-        this.idUserAprueba = idUserAprueba;
-        this.horaPedido = horaPedido;
-        this.pedidoDetalles = pedidoDetalles;
-        this.fechaEntrega = fechaEntrega;
-        this.lugarEntrega = lugarEntrega;
+        this.idpedido = 0;
+//        this.dependencia = new  Dependencia();
+//        this.almacenOrigen = new Almacen();
+//        this.userreg = new Usuario();
+//        this.tipoMovimiento = new TipoMovimiento();
     }
 
     public long getIdpedido() {
-        return this.idpedido;
+        return idpedido;
     }
 
     public void setIdpedido(long idpedido) {
@@ -74,7 +40,7 @@ public class Pedido implements java.io.Serializable {
     }
 
     public long getNumero() {
-        return this.numero;
+        return numero;
     }
 
     public void setNumero(long numero) {
@@ -82,91 +48,67 @@ public class Pedido implements java.io.Serializable {
     }
 
     public Date getFechaPedido() {
-        return this.fechaPedido;
+        return fechaPedido;
     }
 
     public void setFechaPedido(Date fechaPedido) {
         this.fechaPedido = fechaPedido;
     }
 
-    public Integer getIdAlmacenSolicitante() {
-        return this.idAlmacenSolicitante;
-    }
+//    public Dependencia getDependencia() {
+//        return dependencia;
+//    }
+//
+//    public void setDependencia(Dependencia dependencia) {
+//        this.dependencia = dependencia;
+//    }
 
-    public void setIdAlmacenSolicitante(Integer idAlmacenSolicitante) {
-        this.idAlmacenSolicitante = idAlmacenSolicitante;
-    }
-
-    public int getIdCentroGasto() {
-        return this.idCentroGasto;
-    }
-
-    public void setIdCentroGasto(int idCentroGasto) {
-        this.idCentroGasto = idCentroGasto;
-    }
+//    public Almacen getAlmacenOrigen() {
+//        return almacenOrigen;
+//    }
+//
+//    public void setAlmacenOrigen(Almacen almacenOrigen) {
+//        this.almacenOrigen = almacenOrigen;
+//    }
+//
+//    public Usuario getUserreg() {
+//        return userreg;
+//    }
+//
+//    public void setUserreg(Usuario userreg) {
+//        this.userreg = userreg;
+//    }
+//
+//    public TipoMovimiento getTipoMovimiento() {
+//        return tipoMovimiento;
+//    }
+//
+//    public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
+//        this.tipoMovimiento = tipoMovimiento;
+//    }
 
     public String getObservacion() {
-        return this.observacion;
+        return observacion;
     }
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
 
-    public String getJustificacionUso() {
-        return this.justificacionUso;
-    }
-
-    public void setJustificacionUso(String justificacionUso) {
-        this.justificacionUso = justificacionUso;
-    }
-
-    public int getIdAlmacenOrigen() {
-        return this.idAlmacenOrigen;
-    }
-
-    public void setIdAlmacenOrigen(int idAlmacenOrigen) {
-        this.idAlmacenOrigen = idAlmacenOrigen;
-    }
-
     public String getEstado() {
-        return this.estado;
+        return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    public int getIdUserReg() {
-        return this.idUserReg;
+    public int getIdUseraprueba() {
+        return idUseraprueba;
     }
 
-    public void setIdUserReg(int idUserReg) {
-        this.idUserReg = idUserReg;
-    }
-
-    public int getIdUserAprueba() {
-        return this.idUserAprueba;
-    }
-
-    public void setIdUserAprueba(int idUserAprueba) {
-        this.idUserAprueba = idUserAprueba;
-    }
-
-    public String getHoraPedido() {
-        return this.horaPedido;
-    }
-
-    public void setHoraPedido(String horaPedido) {
-        this.horaPedido = horaPedido;
-    }
-
-    public Set<PedidoDetalle> getPedidoDetalles() {
-        return this.pedidoDetalles;
-    }
-
-    public void setPedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
-        this.pedidoDetalles = pedidoDetalles;
+    public void setIdUseraprueba(int idUseraprueba) {
+        this.idUseraprueba = idUseraprueba;
     }
 
     public Date getFechaEntrega() {
@@ -177,12 +119,30 @@ public class Pedido implements java.io.Serializable {
         this.fechaEntrega = fechaEntrega;
     }
 
-    public String getLugarEntrega() {
-        return lugarEntrega;
+    public String getHoraPedido() {
+        return horaPedido;
     }
 
-    public void setLugarEntrega(String lugarEntrega) {
-        this.lugarEntrega = lugarEntrega;
+    public void setHoraPedido(String horaPedido) {
+        this.horaPedido = horaPedido;
     }
+
+    public int getIdUserconformidad() {
+        return idUserconformidad;
+    }
+
+    public void setIdUserconformidad(int idUserconformidad) {
+        this.idUserconformidad = idUserconformidad;
+    }
+
+    public Set<PedidoDetalle> getPedidoDetalles() {
+        return pedidoDetalles;
+    }
+
+    public void setPedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
+        this.pedidoDetalles = pedidoDetalles;
+    }
+
+   
 
 }

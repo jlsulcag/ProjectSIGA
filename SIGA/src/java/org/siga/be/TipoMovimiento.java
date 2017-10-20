@@ -17,6 +17,7 @@ public class TipoMovimiento  implements java.io.Serializable {
      private String descripcion;
      private String estado;
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
+     private Set<Pedido> pedidos = new HashSet<Pedido>(0);
 
     public TipoMovimiento() {
     }
@@ -61,6 +62,14 @@ public class TipoMovimiento  implements java.io.Serializable {
     
     public void setNotaEntradas(Set<NotaEntrada> notaEntradas) {
         this.notaEntradas = notaEntradas;
+    }
+
+    public Set<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(Set<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
 

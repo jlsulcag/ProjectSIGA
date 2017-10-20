@@ -75,7 +75,7 @@ public class PedidoBl extends AbstractBL<Pedido> {
         return dao.listarFull(string);
     }
 
-    public long buscarUltimoNumero() {
-        return dao.buscarUltimoNumero();
+    public long buscarMaxNumero() {
+        return dao.buscarMaxNumero();
     }
 }

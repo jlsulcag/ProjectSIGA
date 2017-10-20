@@ -62,7 +62,7 @@ public class PedidoDao extends AbstractDA<Pedido> {
         return listar(string);
     }
 
-    public long buscarUltimoNumero() {
+    public long buscarMaxNumero() {
         Session s = getSession();
         Transaction t = s.beginTransaction();
         long num = 0;

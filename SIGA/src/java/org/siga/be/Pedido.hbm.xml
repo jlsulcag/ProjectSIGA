@@ -14,38 +14,23 @@
         <property name="fechaPedido" type="date">
             <column name="fecha_pedido" length="13" not-null="true" />
         </property>
-        <property name="idAlmacenSolicitante" type="java.lang.Integer">
-            <column name="id_almacen_solicitante" />
-        </property>
-        <property name="idCentroGasto" type="int">
-            <column name="id_centro_gasto" not-null="true" />
-        </property>
         <property name="observacion" type="string">
-            <column name="observacion" length="300" not-null="true" />
-        </property>
-        <property name="justificacionUso" type="string">
-            <column name="justificacion_uso" length="300" not-null="true" />
-        </property>
-        <property name="idAlmacenOrigen" type="int">
-            <column name="id_almacen_origen" not-null="true" />
+            <column name="observacion" length="300"/>
         </property>
         <property name="estado" type="string">
-            <column name="estado" length="10" not-null="true" />
+            <column name="estado" length="20" not-null="true"/>
         </property>
-        <property name="idUserReg" type="int">
-            <column name="id_user_reg" not-null="true" />
+        <property name="idUseraprueba" type="int">
+            <column name="id_useraprueba"/>
         </property>
-        <property name="idUserAprueba" type="int">
-            <column name="id_user_aprueba" not-null="true" />
+        <property name="fechaEntrega" type="date">
+            <column name="fecha_entrega" length="13"/>
         </property>
         <property name="horaPedido" type="string">
             <column name="hora_pedido" length="15" not-null="true" />
-        </property>
-        <property name="fechaEntrega" type="date">
-            <column name="fecha_entrega" length="13" not-null="true" />
-        </property>
-        <property name="lugarEntrega" type="string">
-            <column name="lugar_entrega" length="80" not-null="true" />
+        </property>        
+        <property name="idUserconformidad" type="int">
+            <column name="id_userconformidad" />
         </property>
         <set name="pedidoDetalles" table="pedido_detalle" inverse="true" lazy="true" fetch="select">
             <key>
