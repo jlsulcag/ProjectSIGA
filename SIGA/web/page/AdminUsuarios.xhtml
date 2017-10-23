@@ -15,12 +15,10 @@
                 <p:panel header="Administrar Usuarios">
                     <h:form id="formP">
                         <p:toolbar>
-
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
                                                  update="formNew" oncomplete="PF('dlgNew').show();"/>
                             </f:facet>
-
                         </p:toolbar>
                     </h:form>
 
@@ -43,10 +41,10 @@
                         <p:dialog header="Registrar Usuario" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
                             <h:panelGrid columns="3" cellpadding="1">
-                                <h:outputLabel for="cbxDependencia" value="Dependencia :"/>
-                                <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true">
+                                <h:outputLabel for="cbxDependencia" value="Dependencia :" />
+                                <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
-                                    <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}" />
+                                    <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
                                 </p:selectOneMenu>
                                 <p:message for="cbxDependencia" display="icon" />
                                 <div class="flabel" style="width:  150px;">Nombres :</div>
@@ -108,13 +106,12 @@
                             </h:panelGrid>
 
                             <f:facet name="footer">
-                                <p:separator/>
                                 <div style="width: 100%;text-align: left;">
-                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" update="gridMisDatos" process="@this" style="float: right; margin-right: .3em;">
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
                                         <p:resetInput target="msg2" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-disk" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
-                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="gridMisDatos,msg"/> 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="msg"/> 
                                 </div>
                             </f:facet>
 
