@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class PersonaBl extends AbstractBL<Persona>{
     
     @Autowired
-    @Qualifier("PersonaDao")
+    @Qualifier("personaDao")
     private PersonaDao dao;
     
     @Override
