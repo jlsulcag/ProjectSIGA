@@ -113,6 +113,10 @@ public class ProductoBean {
         setListaProductos(productoBl.listarRef(getTxtBusqueda().toUpperCase()));
     }
     
+    public void buscarProducto(long idproducto) {
+        producto = getProductoBl().buscarxID(idproducto);
+    }
+    
     public List<Clase> listarClasesXFamilia(){
         return claseBl.listarClasePorFamilia(producto.getFamilia().getIdfamilia());        
     }

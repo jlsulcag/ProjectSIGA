@@ -1,21 +1,20 @@
 
 package org.siga.ctrl;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 import org.siga.be.Almacen;
 import org.siga.bl.AlmacenBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
-public class AlmacenBean implements Serializable{
+public class AlmacenBean{
     
     @ManagedProperty(value = "#{almacenBl}")
     private AlmacenBl almacenBl;

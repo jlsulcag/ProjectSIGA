@@ -10,135 +10,96 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class NotaSalida  implements java.io.Serializable {
-
-
+    
      private long idnotasalida;
      private int numero;
      private Date fechaReg;
-     private Integer idTiposalida;
-     private Integer idPedido;
+     private Pedido pedido;
      private int idUserReg;
-     private Integer idTipomovimiento;
-     private int idAlmacenOrigen;
-     private Integer idAlmacenDestino;
-     private int idCentrogasto;
+     private TipoMovimiento tipomovimiento;
+     private Almacen almacenOrigen;
+     private Almacen almacenDestino;
      private String observacion;
-     private Integer idComprobante;
 
     public NotaSalida() {
+        this.idnotasalida = 0;
+        this.pedido = new Pedido();
+        this.tipomovimiento = new TipoMovimiento();
+        this.almacenOrigen = new Almacen();
+        this.almacenDestino = new Almacen();
     }
 
-	
-    public NotaSalida(long idnotasalida, int numero, int idUserReg, int idAlmacenOrigen, int idCentrogasto, String observacion) {
-        this.idnotasalida = idnotasalida;
-        this.numero = numero;
-        this.idUserReg = idUserReg;
-        this.idAlmacenOrigen = idAlmacenOrigen;
-        this.idCentrogasto = idCentrogasto;
-        this.observacion = observacion;
-    }
-    public NotaSalida(long idnotasalida, int numero, Date fechaReg, Integer idTiposalida, Integer idPedido, int idUserReg, Integer idTipomovimiento, int idAlmacenOrigen, Integer idAlmacenDestino, int idCentrogasto, String observacion, Integer idComprobante) {
-       this.idnotasalida = idnotasalida;
-       this.numero = numero;
-       this.fechaReg = fechaReg;
-       this.idTiposalida = idTiposalida;
-       this.idPedido = idPedido;
-       this.idUserReg = idUserReg;
-       this.idTipomovimiento = idTipomovimiento;
-       this.idAlmacenOrigen = idAlmacenOrigen;
-       this.idAlmacenDestino = idAlmacenDestino;
-       this.idCentrogasto = idCentrogasto;
-       this.observacion = observacion;
-       this.idComprobante = idComprobante;
-    }
-   
     public long getIdnotasalida() {
-        return this.idnotasalida;
+        return idnotasalida;
     }
-    
+
     public void setIdnotasalida(long idnotasalida) {
         this.idnotasalida = idnotasalida;
     }
+
     public int getNumero() {
-        return this.numero;
+        return numero;
     }
-    
+
     public void setNumero(int numero) {
         this.numero = numero;
     }
+
     public Date getFechaReg() {
-        return this.fechaReg;
+        return fechaReg;
     }
-    
+
     public void setFechaReg(Date fechaReg) {
         this.fechaReg = fechaReg;
     }
-    public Integer getIdTiposalida() {
-        return this.idTiposalida;
+
+    public Pedido getPedido() {
+        return pedido;
     }
-    
-    public void setIdTiposalida(Integer idTiposalida) {
-        this.idTiposalida = idTiposalida;
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
-    public Integer getIdPedido() {
-        return this.idPedido;
-    }
-    
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
+
     public int getIdUserReg() {
-        return this.idUserReg;
+        return idUserReg;
     }
-    
+
     public void setIdUserReg(int idUserReg) {
         this.idUserReg = idUserReg;
     }
-    public Integer getIdTipomovimiento() {
-        return this.idTipomovimiento;
+
+    public Almacen getAlmacenOrigen() {
+        return almacenOrigen;
     }
-    
-    public void setIdTipomovimiento(Integer idTipomovimiento) {
-        this.idTipomovimiento = idTipomovimiento;
+
+    public void setAlmacenOrigen(Almacen almacenOrigen) {
+        this.almacenOrigen = almacenOrigen;
     }
-    public int getIdAlmacenOrigen() {
-        return this.idAlmacenOrigen;
+
+    public Almacen getAlmacenDestino() {
+        return almacenDestino;
     }
-    
-    public void setIdAlmacenOrigen(int idAlmacenOrigen) {
-        this.idAlmacenOrigen = idAlmacenOrigen;
+
+    public void setAlmacenDestino(Almacen almacenDestino) {
+        this.almacenDestino = almacenDestino;
     }
-    public Integer getIdAlmacenDestino() {
-        return this.idAlmacenDestino;
-    }
-    
-    public void setIdAlmacenDestino(Integer idAlmacenDestino) {
-        this.idAlmacenDestino = idAlmacenDestino;
-    }
-    public int getIdCentrogasto() {
-        return this.idCentrogasto;
-    }
-    
-    public void setIdCentrogasto(int idCentrogasto) {
-        this.idCentrogasto = idCentrogasto;
-    }
+
     public String getObservacion() {
-        return this.observacion;
+        return observacion;
     }
-    
+
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-    public Integer getIdComprobante() {
-        return this.idComprobante;
-    }
-    
-    public void setIdComprobante(Integer idComprobante) {
-        this.idComprobante = idComprobante;
+
+    public TipoMovimiento getTipomovimiento() {
+        return tipomovimiento;
     }
 
-
-
+    public void setTipomovimiento(TipoMovimiento tipomovimiento) {
+        this.tipomovimiento = tipomovimiento;
+    }
 
 }
 

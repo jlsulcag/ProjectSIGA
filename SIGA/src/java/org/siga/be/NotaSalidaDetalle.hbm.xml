@@ -8,14 +8,14 @@
             <column name="idnotasalidadetalle" />
             <generator class="increment" />
         </id>
-        <property name="idProducto" type="int">
+        <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
             <column name="id_producto" not-null="true" />
-        </property>
-        <property name="idUnidadmedida" type="java.lang.Integer">
-            <column name="id_unidadmedida" />
-        </property>
-        <property name="idNotasalida" type="int">
+        </many-to-one>
+        <many-to-one name="notasalida" class="org.siga.be.NotaSalida" fetch="select">
             <column name="id_notasalida" not-null="true" />
+        </many-to-one>
+        <property name="unidadmedida" type="string">
+            <column length="30" name="unidad_medida"/>
         </property>
         <property name="cantidad" type="int">
             <column name="cantidad" not-null="true" />

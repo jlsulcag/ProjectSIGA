@@ -14,29 +14,25 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
 
 
      private long idnotasalidadetalle;
-     private int idProducto;
-     private Integer idUnidadmedida;
-     private int idNotasalida;
+     private Producto producto;
+     private String unidadmedida;
+     private NotaSalida notasalida;
      private int cantidad;
 
     public NotaSalidaDetalle() {
+        this.idnotasalidadetalle = 0;
+        this.producto = new Producto();
+        this.notasalida = new NotaSalida();
     }
 
-	
-    public NotaSalidaDetalle(long idnotasalidadetalle, int idProducto, int idNotasalida, int cantidad) {
+    public NotaSalidaDetalle(long idnotasalidadetalle, Producto producto, String unidadmedida, NotaSalida notasalida, int cantidad) {
         this.idnotasalidadetalle = idnotasalidadetalle;
-        this.idProducto = idProducto;
-        this.idNotasalida = idNotasalida;
+        this.producto = producto;
+        this.unidadmedida = unidadmedida;
+        this.notasalida = notasalida;
         this.cantidad = cantidad;
     }
-    public NotaSalidaDetalle(long idnotasalidadetalle, int idProducto, Integer idUnidadmedida, int idNotasalida, int cantidad) {
-       this.idnotasalidadetalle = idnotasalidadetalle;
-       this.idProducto = idProducto;
-       this.idUnidadmedida = idUnidadmedida;
-       this.idNotasalida = idNotasalida;
-       this.cantidad = cantidad;
-    }
-   
+    
     public long getIdnotasalidadetalle() {
         return this.idnotasalidadetalle;
     }
@@ -44,33 +40,36 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
     public void setIdnotasalidadetalle(long idnotasalidadetalle) {
         this.idnotasalidadetalle = idnotasalidadetalle;
     }
-    public int getIdProducto() {
-        return this.idProducto;
-    }
-    
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-    public Integer getIdUnidadmedida() {
-        return this.idUnidadmedida;
-    }
-    
-    public void setIdUnidadmedida(Integer idUnidadmedida) {
-        this.idUnidadmedida = idUnidadmedida;
-    }
-    public int getIdNotasalida() {
-        return this.idNotasalida;
-    }
-    
-    public void setIdNotasalida(int idNotasalida) {
-        this.idNotasalida = idNotasalida;
-    }
     public int getCantidad() {
         return this.cantidad;
     }
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public String getUnidadmedida() {
+        return unidadmedida;
+    }
+
+    public void setUnidadmedida(String unidadmedida) {
+        this.unidadmedida = unidadmedida;
+    }
+
+    public NotaSalida getNotasalida() {
+        return notasalida;
+    }
+
+    public void setNotasalida(NotaSalida notasalida) {
+        this.notasalida = notasalida;
     }
 
 

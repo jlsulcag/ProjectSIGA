@@ -13,33 +13,25 @@
         </property>
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" />
-        </property>
-        <property name="idTiposalida" type="java.lang.Integer">
-            <column name="id_tiposalida" />
-        </property>
-        <property name="idPedido" type="java.lang.Integer">
+        </property> 
+        <many-to-one name="pedido" class="org.siga.be.Pedido" fetch="select">
             <column name="id_pedido" />
-        </property>
+        </many-to-one>  
+        <many-to-one name="tipomovimiento" class="org.siga.be.TipoMovimiento" fetch="select">
+            <column name="id_tipomovimiento" />
+        </many-to-one> 
+        <many-to-one name="almacenOrigen" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacen_origen" />
+        </many-to-one> 
+        <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacen_destino" />
+        </many-to-one> 
         <property name="idUserReg" type="int">
             <column name="id_user_reg" not-null="true" />
-        </property>
-        <property name="idTipomovimiento" type="java.lang.Integer">
-            <column name="id_tipomovimiento" />
-        </property>
-        <property name="idAlmacenOrigen" type="int">
-            <column name="id_almacen_origen" not-null="true" />
-        </property>
-        <property name="idAlmacenDestino" type="java.lang.Integer">
-            <column name="id_almacen_destino" />
-        </property>
-        <property name="idCentrogasto" type="int">
-            <column name="id_centrogasto" not-null="true" />
-        </property>
+        </property>       
         <property name="observacion" type="string">
             <column name="observacion" length="300" not-null="true" />
         </property>
-        <property name="idComprobante" type="java.lang.Integer">
-            <column name="id_comprobante" />
-        </property>
+       
     </class>
 </hibernate-mapping>
