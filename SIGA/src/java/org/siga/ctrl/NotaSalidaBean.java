@@ -8,12 +8,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.siga.be.Almacen;
 import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.Producto;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
 import org.siga.bl.ProductoBl;
+import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
@@ -45,6 +47,10 @@ public class NotaSalidaBean {
     public void inicio(){
         notaSalida.setNumero(maxNumero()+1);
         notaSalida.setFechaReg(new Date());
+        listNotaSalidas.clear();
+        notaSalida.setObservacion("");
+        notaSalida.setAlmacenOrigen(new Almacen());
+        notaSalida.setAlmacenDestino(new Almacen());
     }
     
     public int maxNumero(){
@@ -81,6 +87,48 @@ public class NotaSalidaBean {
         }
         getListNotaSalidas().add(temp);
 
+    }
+    
+    public void registrar() {
+        //REGISTRAR PEDIDO
+        long id = -1;
+        long id2 = -1;
+        if (!listNotaSalidas.isEmpty()) {
+            id = registrarNotaSalida();
+            if (id > 0) {
+                id2 = registrarNotaSalidaDetalle();
+                if (id2 > 0) {
+                    MensajeView.registroCorrecto();
+                    inicio();
+                } else {
+                    MensajeView.registroError();
+                }
+            } else {
+                MensajeView.registroError();
+            }
+        } else {
+            MensajeView.listVacia();
+        }
+
+    }
+    
+    public long registrarNotaSalida() {
+        notaSalida.setIdUserReg(0);
+        notaSalida.setTipomovimiento(null);
+        notaSalida.setPedido(null);
+        notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+        notaSalidaBl.registrar(notaSalida);
+        return notaSalida.getIdnotasalida();
+    }
+    
+    private long registrarNotaSalidaDetalle() {
+        long id = -1;
+        for (NotaSalidaDetalle obj : listNotaSalidas) {
+            obj.setNotasalida(notaSalida);
+            notaSalidaDetalleBl.registrar(obj);
+            id = obj.getIdnotasalidadetalle();
+        }
+        return id;
     }
     
     public void inicioNew() {

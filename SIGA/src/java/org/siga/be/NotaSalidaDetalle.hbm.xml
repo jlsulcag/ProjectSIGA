@@ -15,7 +15,7 @@
             <column name="id_notasalida" not-null="true" />
         </many-to-one>
         <property name="unidadmedida" type="string">
-            <column length="30" name="unidad_medida"/>
+            <column length="30" name="unidadmedida"/>
         </property>
         <property name="cantidad" type="int">
             <column name="cantidad" not-null="true" />
