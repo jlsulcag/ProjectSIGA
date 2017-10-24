@@ -34,6 +34,27 @@
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Por Pedido? :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneRadio id="console" >
+                                        <f:selectItem itemLabel="Si" itemValue="S" />
+                                        <f:selectItem itemLabel="No" itemValue="N" />
+                                    </p:selectOneRadio>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxPedido" value="Pedido :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxPedido" filter="true" filterMatchMode="contains" label="Pedido"
+                                                     value="#{notaSalidaBean.notaSalida.pedido.idpedido}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxAlmacenO" value="Almacen Origen :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
