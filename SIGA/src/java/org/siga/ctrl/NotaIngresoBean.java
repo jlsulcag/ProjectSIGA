@@ -381,7 +381,6 @@ public class NotaIngresoBean {
 
     private int actualizarStockAlmacen() {
         int res = -1;
-        System.out.println("lista  tamaño = " + listNotaEntradaDetalle.size());
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
             AlmacenProducto temp = new AlmacenProducto();
             almacenProducto.setProducto(obj.getProducto());

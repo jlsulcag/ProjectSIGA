@@ -9,9 +9,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.siga.be.Almacen;
+import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.Producto;
+import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
 import org.siga.bl.ProductoBl;
@@ -35,6 +37,11 @@ public class NotaSalidaBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
+    
+    @ManagedProperty(value = "#{almacenProducto}")
+    private AlmacenProducto almacenProducto;
+    @ManagedProperty(value = "#{almacenProductoBl}")
+    private AlmacenProductoBl almacenProductoBl;
     
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private boolean pedidoxUnidad;
@@ -90,7 +97,6 @@ public class NotaSalidaBean {
     }
     
     public void registrar() {
-        //REGISTRAR PEDIDO
         long id = -1;
         long id2 = -1;
         if (!listNotaSalidas.isEmpty()) {
@@ -99,6 +105,8 @@ public class NotaSalidaBean {
                 id2 = registrarNotaSalidaDetalle();
                 if (id2 > 0) {
                     MensajeView.registroCorrecto();
+//                    actualizarStock();
+                    //actuyalizar el estado del pedido si fuese el caso
                     inicio();
                 } else {
                     MensajeView.registroError();
@@ -139,7 +147,34 @@ public class NotaSalidaBean {
         notaSalidaDetalle.setCantidad(0);
         setTotalProductos(0);
     }
-
+    /*
+    public int actualizarStock(){
+        System.out.println("pedido    "+notaSalida);
+        System.out.println("Detalle    "+listNotaSalidas);
+        int res = -1;
+        for (NotaSalidaDetalle obj : listNotaSalidas) {
+            AlmacenProducto temp = new AlmacenProducto();
+            almacenProducto.setProducto(obj.getProducto());
+            almacenProducto.setAlmacen(obj.getNotasalida().getAlmacenOrigen());
+            almacenProducto.setLote(obj.getProducto().get);
+            almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
+            almacenProducto.setValor(obj.getValorCompra());
+            temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
+            if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
+                almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
+                almacenProducto.setStockActual(obj.getCantIngreso() + temp.getStockActual());
+                almacenProductoBl.actualizar(almacenProducto);
+                res = 1;
+            } else {//Registrar nuevo
+                almacenProducto.setProducto(obj.getProducto());
+                almacenProducto.setStockActual(obj.getCantIngreso());
+                almacenProductoBl.registrar(almacenProducto);
+                res = 1;
+            }
+        }
+        return res;
+    }
+*/
     public NotaSalida getNotaSalida() {
         return notaSalida;
     }
@@ -210,6 +245,22 @@ public class NotaSalidaBean {
 
     public void setListNotaSalidas(List<NotaSalidaDetalle> listNotaSalidas) {
         this.listNotaSalidas = listNotaSalidas;
+    }
+
+    public AlmacenProducto getAlmacenProducto() {
+        return almacenProducto;
+    }
+
+    public void setAlmacenProducto(AlmacenProducto almacenProducto) {
+        this.almacenProducto = almacenProducto;
+    }
+
+    public AlmacenProductoBl getAlmacenProductoBl() {
+        return almacenProductoBl;
+    }
+
+    public void setAlmacenProductoBl(AlmacenProductoBl almacenProductoBl) {
+        this.almacenProductoBl = almacenProductoBl;
     }
     
 }

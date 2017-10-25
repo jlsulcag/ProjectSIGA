@@ -83,11 +83,8 @@ public class ProductoBean {
         temp.setEstado(producto.getEstado());
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
-        temp.setClase(producto.getClase());        
-        //temp.setIdFamilia(idFamiliaTemp);
+        temp.setClase(producto.getClase()); 
         temp.setFraccion(producto.getFraccion());
-        System.out.println("id familia recuperado .... "+temp.getFamilia().getIdfamilia());
-        System.out.println("id clase recuperado .... "+temp.getClase().getIdclase());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
