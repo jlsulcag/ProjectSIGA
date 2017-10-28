@@ -8,6 +8,9 @@
             <column name="iddependencia" />
             <generator class="increment" />
         </id>
+        <many-to-one name="almacen" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacen" />
+        </many-to-one>
         <property name="descripcion" type="string">
             <column name="descripcion" length="160" not-null="true" />
         </property>

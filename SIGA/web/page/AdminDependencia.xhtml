@@ -63,7 +63,13 @@
                         <p:dialog header="Registrar Dependencia" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
-
+                                
+                                <h:outputLabel for="cbxAlmacen" value="Almacen :" />
+                                <p:selectOneMenu id="cbxAlmacen" style="width: 300px" value="#{dependenciaBean.dependencia.almacen.idalmacen}">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
+                                    <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="txtDependencia" value="Dependencia :"/>
                                 <p:inputText id="txtDependencia" label="Dependencia" value="#{dependenciaBean.dependencia.descripcion}" style="width: 400px; text-transform: uppercase"/>
 
@@ -82,6 +88,12 @@
                         <p:dialog header="Actualizar registro" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
+                                
+                                <h:outputLabel for="cbxAlmacenEdit" value="Almacen :" />
+                                <p:selectOneMenu id="cbxAlmacenEdit" style="width: 300px" value="#{dependenciaBean.dependencia.almacen.idalmacen}">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
+                                    <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="txtDependenciaEdit" value="Dependencia :"/>
                                 <p:inputText id="txtDependenciaEdit" label="Dependencia" value="#{dependenciaBean.dependencia.descripcion}" style="width: 400px; text-transform: uppercase"/>

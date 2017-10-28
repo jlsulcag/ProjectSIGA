@@ -42,7 +42,8 @@
                                   resizable="false" closable="true">
                             <h:panelGrid columns="3" cellpadding="1">
                                 <h:outputLabel for="cbxDependencia" value="Dependencia :" />
-                                <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px">
+                                <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px"
+                                                 >
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
                                 </p:selectOneMenu>
@@ -107,10 +108,10 @@
 
                             <f:facet name="footer">
                                 <div style="width: 100%;text-align: left;">
-                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
+                                    <p:commandButton icon="ui-icon-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
                                         <p:resetInput target="msg2" />
                                     </p:commandButton>
-                                    <p:commandButton icon="ui-icon-disk" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
+                                    <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="msg"/> 
                                 </div>
                             </f:facet>

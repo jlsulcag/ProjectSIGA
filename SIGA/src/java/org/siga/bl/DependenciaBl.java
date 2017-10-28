@@ -9,7 +9,7 @@ import org.siga.util.AbstractDA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-@Service
+@Service(value = "dependenciaBl")
 public class DependenciaBl extends AbstractBL<Dependencia>{
     @Autowired
     @Qualifier("dependenciaDao")
@@ -72,6 +72,14 @@ public class DependenciaBl extends AbstractBL<Dependencia>{
 
     public List<Dependencia> listarRef(String toUpperCase) {
         return dao.listarRef(toUpperCase);
+    }
+
+    public List<Dependencia> listarFull() {
+        return dao.listarFull();
+    }
+
+    public Dependencia buscarXId(long iddependencia) {
+        return dao.buscarXId(iddependencia);
     }
     
 }

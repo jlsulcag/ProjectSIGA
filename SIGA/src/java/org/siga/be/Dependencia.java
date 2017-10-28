@@ -14,10 +14,13 @@ public class Dependencia  implements java.io.Serializable {
 
 
      private long iddependencia;
+     private Almacen almacen;//hace referencia a la agencia que pertenece dicha dependencia
      private String descripcion;
      private String estado;
 
     public Dependencia() {
+        this.iddependencia = 0;
+        this.almacen = new Almacen();
     }
 
     public Dependencia(long iddependencia, String descripcion, String estado) {
@@ -46,6 +49,14 @@ public class Dependencia  implements java.io.Serializable {
     
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Almacen getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
     }
 
 

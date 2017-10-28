@@ -29,7 +29,7 @@ public class DependenciaBean {
     
     @PostConstruct
     public void listar(){
-        setListDependencia(dependenciaBl.listar());
+        setListDependencia(dependenciaBl.listarFull());
     }
     public void registrar(){
         dependencia.setDescripcion(dependencia.getDescripcion().toUpperCase());
@@ -67,7 +67,7 @@ public class DependenciaBean {
         listar();
     }
     public Dependencia buscarId(){
-        return dependenciaBl.buscar(dependencia.getIddependencia());
+        return dependenciaBl.buscarXId(dependencia.getIddependencia());
     }
     public void limpiar(){
         dependencia.setIddependencia(0);
@@ -125,7 +125,7 @@ public class DependenciaBean {
     }
 
     private List<Dependencia> listarDependencia() {
-        return dependenciaBl.listar();
+        return dependenciaBl.listarFull();
     }
     
 }

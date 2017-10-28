@@ -6,7 +6,7 @@ import org.siga.be.Dependencia;
 import org.siga.util.AbstractDA;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository(value = "dependenciaDao")
 public class DependenciaDao extends AbstractDA<Dependencia>{
 
     @Override
@@ -55,9 +55,19 @@ public class DependenciaDao extends AbstractDA<Dependencia>{
     }
 
     public List<Dependencia> listarRef(String toUpperCase) {
-        String hql = "From Dependencia d where d.descripcion like '%"+toUpperCase+"%'";
+        String hql = "From Dependencia d left join fecth d.almacen b where d.descripcion like '%"+toUpperCase+"%' order by d.descripcion asc";
         return listar(hql);
         
+    }
+
+    public List<Dependencia> listarFull() {
+        String hql = "From Dependencia d left join fecth d.almacen b order by d.descripcion asc";
+        return listar(hql);
+    }
+
+    public Dependencia buscarXId(long iddependencia) {
+        String hql = "From Dependencia d left join fecth d.almacen b where d.iddependencia = "+ iddependencia+" order by d.descripcion asc";
+        return buscar(hql);
     }
     
 }
