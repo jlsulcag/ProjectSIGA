@@ -82,13 +82,6 @@
                                 <h:outputLabel for="txtDireccion" value="Dirección :"/>
                                 <p:inputText id="txtDireccion" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
 
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{almacenBean.almacen.estado}">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
-                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
-                                </p:selectOneMenu>
-
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
@@ -116,7 +109,7 @@
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{almacenBean.almacen.estado}">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
                                 </p:selectOneMenu>

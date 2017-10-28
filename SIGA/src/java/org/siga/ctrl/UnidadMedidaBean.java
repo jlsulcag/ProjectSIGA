@@ -31,7 +31,7 @@ public class UnidadMedidaBean {
     
     public void registrar(){
         unidadMedida.setDescripcion(unidadMedida.getDescripcion().toUpperCase());
-        unidadMedida.setEstado(unidadMedida.getEstado().toUpperCase());
+        unidadMedida.setEstado("ACT");
         res = getUnidadMedidaBl().registrar(getUnidadMedida());
         if(res == 0){
             MensajeView.registroCorrecto();

@@ -64,13 +64,7 @@
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
                                 <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{familiaBean.familia.descripcion}" />
 
-                                <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{familiaBean.familia.estado}">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="ACTIVO" itemValue="ACT" />
-                                    <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
-                                </p:selectOneMenu>
-
+                                
                                 <f:facet name="footer">
                                     <p:separator/>
                                     <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"

@@ -35,7 +35,7 @@ public class FamiliaBean {
     
     public void registrar(){
         familia.setDescripcion(familia.getDescripcion().toUpperCase());
-        familia.setEstado(familia.getEstado().toUpperCase());
+        familia.setEstado("ACT");
         res = familiaBl.registrar(familia);
         if (res == 0) {
             MensajeView.registroCorrecto();

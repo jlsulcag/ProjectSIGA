@@ -74,14 +74,7 @@
 
                             <h:outputLabel for="txtUnidadMedida" value="Unidad de Medida :"/>
                             <p:inputText id="txtUnidadMedida" label="Unidad de Medida" value="#{unidadMedidaBean.unidadMedida.descripcion}" style="width: 400px"/>
-
-                            <h:outputLabel for="cbxEstado" value="Estado:" />
-                            <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{unidadMedidaBean.unidadMedida.estado}">
-                                <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
-                                <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
-                                <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
-                            </p:selectOneMenu>
-
+                            
                             <f:facet name="footer">
                                 <p:separator/>
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"

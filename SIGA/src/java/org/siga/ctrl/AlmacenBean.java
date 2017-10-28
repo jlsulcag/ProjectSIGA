@@ -33,6 +33,7 @@ public class AlmacenBean{
     public void registrar(){
         almacen.setNombre(almacen.getNombre().toUpperCase());
         almacen.setDireccion(almacen.getDireccion().toUpperCase());
+        almacen.setEstado("ACT");
         res = almacenBl.registrar(almacen);
         if (res == 0) {
             MensajeView.registroCorrecto();

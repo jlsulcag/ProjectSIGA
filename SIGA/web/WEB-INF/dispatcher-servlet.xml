@@ -27,7 +27,7 @@
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="siga/page/"
-          p:suffix=".xhtml" />
+          p:suffix=".cacsmm" />
 
     <!--
     The index controller.
