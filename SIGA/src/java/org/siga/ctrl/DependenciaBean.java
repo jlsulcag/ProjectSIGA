@@ -45,6 +45,7 @@ public class DependenciaBean {
     public void actualizar(){
         Dependencia temp = new Dependencia();
         temp = buscarId();
+        temp.setAlmacen(dependencia.getAlmacen());
         temp.setDescripcion(dependencia.getDescripcion().toUpperCase());
         temp.setEstado(dependencia.getEstado().toUpperCase());
         res = dependenciaBl.actualizar(temp);
@@ -55,6 +56,7 @@ public class DependenciaBean {
         }
         listar();
     }
+    
     public void eliminar(){
         Dependencia temp = new Dependencia();
         temp = buscarId();

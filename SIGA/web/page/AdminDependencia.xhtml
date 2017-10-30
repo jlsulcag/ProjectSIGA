@@ -37,11 +37,15 @@
                                 Dependencia
                             </f:facet>
                             
-                            <p:column style="width:15px;text-align: center" headerText="Nº">
+                            <p:column style="width:15px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.iddependencia}"/>
                             </p:column>
                             <p:column headerText="Dependencia" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Almacen" style=" width: 250px">
+                                <h:outputText value="#{item.almacen.nombre}"/>
                             </p:column>
 
                             <p:column headerText="Estado" style="width:50px;text-align: center">
@@ -97,6 +101,8 @@
 
                                 <h:outputLabel for="txtDependenciaEdit" value="Dependencia :"/>
                                 <p:inputText id="txtDependenciaEdit" label="Dependencia" value="#{dependenciaBean.dependencia.descripcion}" style="width: 400px; text-transform: uppercase"/>
+                                
+                                
 
                                 <h:outputLabel for="cbxEstadoEdit" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstadoEdit" style="width: 300px" value="#{dependenciaBean.dependencia.estado}">
