@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
@@ -28,7 +28,7 @@ import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class NotaIngresoBean {
 
     @ManagedProperty(value = "#{notaEntrada}")
@@ -69,28 +69,31 @@ public class NotaIngresoBean {
 
     public void registrar() {
         int r = -1;
-        res = registrarNotaEntrada();
-        //Registrar Nota Entrada Detalle
-        if (res == 0) {
-            for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-                obj.setNotaEntrada(notaEntrada);
-                notaIngresoDetalleBl.registrar(obj);
+        if (!listNotaEntradaDetalle.isEmpty()) {
+            res = registrarNotaEntrada();
+            //Registrar Nota Entrada Detalle
+            if (res == 0) {
+                for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+                    obj.setNotaEntrada(notaEntrada);
+                    notaIngresoDetalleBl.registrar(obj);
+                }
+                //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
+                if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
+                    long res = -1;
+                    res = actualizarEstadoOrdenCompra();
+                }
+                //Actualizar el stock de almacen segun las cantidades ingresadas
+                r = actualizarStockAlmacen();
+                if (r == 1) {
+                    MensajeView.registroCorrecto();
+                } else {
+                    MensajeView.registroError();
+                }
             }
-            //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
-            if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
-                long res = -1;
-                res = actualizarEstadoOrdenCompra();
-            }
-            //Actualizar el stock de almacen segun las cantidades ingresadas
-            r = actualizarStockAlmacen();
-            if (r == 1) {
-                MensajeView.registroCorrecto();
-            } else {
-                MensajeView.registroError();
-            }
+            iniciar();
+        } else {
+            MensajeView.listVacia();
         }
-        iniciar();
-
     }
 
     @PostConstruct
@@ -113,6 +116,7 @@ public class NotaIngresoBean {
     }
 
     public void limpiarNew() {
+        System.out.println("metodo limpia  neww  ");
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
@@ -124,7 +128,7 @@ public class NotaIngresoBean {
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-        listOrdenCompraDetalle = new LinkedList<>();
+//        listOrdenCompraDetalle = new LinkedList<>();
     }
 
     private long maxNumero() {
@@ -132,6 +136,7 @@ public class NotaIngresoBean {
     }
 
     public void listarDetalleOrdenCompra() {
+        listNotaEntradaDetalle.clear();
         //Obtener la lista de DetalleOrdenCompra
         long id = notaEntrada.getOrdenCompra().getIdordencompra();
         listOrdenCompraDetalle = ordenCompraDetalleBl.listarXIdOrdenCompra(id);
@@ -189,18 +194,10 @@ public class NotaIngresoBean {
 
     public void setIsCompraUnitaria() {
         setCompraxUnidad(compraxUnidad);
-//        if (notaEntradaDetalle.getCantIngreso() > 0) {
-//            calcularTotalProductos();
-//        }
+        if (notaEntradaDetalle.getCantIngreso() > 0) {
+            calcularTotalProductos();
+        }
     }
-
-//    public void calcularTotalProductos() {
-//        if (compraxUnidad) {
-//            setTotalProductos(ordenCompraDetalle.getCantidad());
-//        } else {
-//            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-//        }
-//    }
     public void calcularTotalProductos() {
         if (compraxUnidad) {
             setTotalProductos(notaEntradaDetalle.getCantIngreso());
