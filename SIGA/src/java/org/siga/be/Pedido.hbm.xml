@@ -8,6 +8,15 @@
             <column name="idpedido" />
             <generator class="increment" />
         </id>
+        <many-to-one name="dependencia" class="org.siga.be.Dependencia" fetch="select">
+            <column name="id_dependencia" />
+        </many-to-one> 
+        <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacendestino" />
+        </many-to-one> 
+        <property name="idUserreg" type="int">
+            <column name="id_userreg"/>
+        </property>      
         <property name="numero" type="long">
             <column name="numero" not-null="true" />
         </property>
@@ -20,17 +29,8 @@
         <property name="estado" type="string">
             <column name="estado" length="20" not-null="true"/>
         </property>
-        <property name="idUseraprueba" type="int">
-            <column name="id_useraprueba"/>
-        </property>
-        <property name="fechaEntrega" type="date">
-            <column name="fecha_entrega" length="13"/>
-        </property>
         <property name="horaPedido" type="string">
             <column name="hora_pedido" length="15" not-null="true" />
-        </property>        
-        <property name="idUserconformidad" type="int">
-            <column name="id_userconformidad" />
         </property>
         <set name="pedidoDetalles" table="pedido_detalle" inverse="true" lazy="true" fetch="select">
             <key>

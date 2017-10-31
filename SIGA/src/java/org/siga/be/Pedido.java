@@ -13,22 +13,20 @@ import org.springframework.stereotype.Component;
 public class Pedido implements java.io.Serializable {
 
     private long idpedido;
+    private Dependencia dependencia;
+    private Almacen almacenDestino;
     private long numero;
     private Date fechaPedido;
     private String observacion;    
-    private String estado;    
-    private int idUseraprueba;
-    private Date fechaEntrega;
+    private String estado;
     private String horaPedido;
-    private int idUserconformidad;
+    private int idUserreg;
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<PedidoDetalle>(0);
     
     public Pedido() {
         this.idpedido = 0;
-//        this.dependencia = new  Dependencia();
-//        this.almacenOrigen = new Almacen();
-//        this.userreg = new Usuario();
-//        this.tipoMovimiento = new TipoMovimiento();
+        this.dependencia = new Dependencia();
+        this.almacenDestino = new Almacen();
     }
 
     public long getIdpedido() {
@@ -103,22 +101,7 @@ public class Pedido implements java.io.Serializable {
         this.estado = estado;
     }
 
-    public int getIdUseraprueba() {
-        return idUseraprueba;
-    }
-
-    public void setIdUseraprueba(int idUseraprueba) {
-        this.idUseraprueba = idUseraprueba;
-    }
-
-    public Date getFechaEntrega() {
-        return fechaEntrega;
-    }
-
-    public void setFechaEntrega(Date fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
-    }
-
+    
     public String getHoraPedido() {
         return horaPedido;
     }
@@ -127,20 +110,36 @@ public class Pedido implements java.io.Serializable {
         this.horaPedido = horaPedido;
     }
 
-    public int getIdUserconformidad() {
-        return idUserconformidad;
-    }
-
-    public void setIdUserconformidad(int idUserconformidad) {
-        this.idUserconformidad = idUserconformidad;
-    }
-
     public Set<PedidoDetalle> getPedidoDetalles() {
         return pedidoDetalles;
     }
 
     public void setPedidoDetalles(Set<PedidoDetalle> pedidoDetalles) {
         this.pedidoDetalles = pedidoDetalles;
+    }
+
+    public Almacen getAlmacenDestino() {
+        return almacenDestino;
+    }
+
+    public void setAlmacenDestino(Almacen almacenDestino) {
+        this.almacenDestino = almacenDestino;
+    }
+
+    public int getIdUserreg() {
+        return idUserreg;
+    }
+
+    public void setIdUserreg(int idUserreg) {
+        this.idUserreg = idUserreg;
+    }
+
+    public Dependencia getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(Dependencia dependencia) {
+        this.dependencia = dependencia;
     }
 
    

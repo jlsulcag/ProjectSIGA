@@ -50,6 +50,8 @@ public class PedidoBean {
         pedido.setFechaPedido(new Date());
         listPedidoDetalle.clear();
         pedido.setObservacion("");
+        pedido.setDependencia(new Dependencia());
+        pedido.setAlmacenDestino(new Almacen());
     }
 
     private long maxNumero() {

@@ -12,7 +12,9 @@ import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
+import org.siga.be.Pedido;
 import org.siga.be.Producto;
+import org.siga.be.TipoMovimiento;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
@@ -58,6 +60,8 @@ public class NotaSalidaBean {
         notaSalida.setObservacion("");
         notaSalida.setAlmacenOrigen(new Almacen());
         notaSalida.setAlmacenDestino(new Almacen());
+        notaSalida.setTipomovimiento(new TipoMovimiento());
+        notaSalida.setPedido(new Pedido());
     }
     
     public int maxNumero(){

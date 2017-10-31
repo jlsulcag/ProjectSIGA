@@ -34,6 +34,28 @@
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxDependencia" value="Dependencia Solicitante :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxDependencia" value="#{pedidoBean.pedido.dependencia.iddependencia}" 
+                                                     filter="true" filterMatchMode="contains" required="true" label="Almacen solicitante">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxAlmacen" value="Almacen :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{pedidoBean.pedido.almacenDestino.idalmacen}" 
+                                                     filter="true" filterMatchMode="contains" required="true" label="Almacen">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                    </p:selectOneMenu>
+                                </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfObservacion" value="Observacion :" />
@@ -42,9 +64,6 @@
                                     <p:inputText id="txfObservacion" label="Observacion" 
                                                  value="#{pedidoBean.pedido.observacion}" />
                                 </div>
-                                
-                                
-
                             </div>                            
                         </div> 
                         <p:toolbar>
@@ -80,7 +99,10 @@
                                 <h:outputText value="#{item.cantidadSolicitada}"/>
                             </p:column>
 
-
+                            <p:column headerText="Unidad">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+                            
                         </p:dataTable>                
 
                     </h:form>
