@@ -126,7 +126,6 @@ public class NotaSalidaBean {
     
     public long registrarNotaSalida() {
         notaSalida.setIdUserReg(0);
-        notaSalida.setTipomovimiento(null);
         notaSalida.setPedido(null);
         notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
         notaSalidaBl.registrar(notaSalida);

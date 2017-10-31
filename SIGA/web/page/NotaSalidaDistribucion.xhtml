@@ -32,28 +32,7 @@
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel value="Por Pedido? :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneRadio id="console" >
-                                        <f:selectItem itemLabel="Si" itemValue="S" />
-                                        <f:selectItem itemLabel="No" itemValue="N" />
-                                    </p:selectOneRadio>
-                                </div>
-                                
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="cbxPedido" value="Pedido :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxPedido" filter="true" filterMatchMode="contains" label="Pedido"
-                                                     value="#{notaSalidaBean.notaSalida.pedido.idpedido}">
-                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
-                                        <f:selectItems />
-                                    </p:selectOneMenu>
-                                </div>
-
+                               
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxAlmacenO" value="Almacen Origen :"/>
                                 </div>
@@ -70,7 +49,7 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfResponsable" disabled="true" readonly="true" label="Responsable origen" 
-                                                 value="#" />
+                                                  />
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -89,16 +68,28 @@
                                     <h:outputLabel for="txfResponsableDest" value="Responsable Destino:" />
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfResponsableDest" disabled="true" readonly="true" label="Responsable destino" 
-                                                 value="#" />
+                                    <p:inputText id="txfResponsableDest" label="Responsable destino" 
+                                                  />
                                 </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxTipoMov" value="Tipo Movimiento :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxTipoMov" required="true" label="Tipo Movimiento"
+                                                     value="#{notaSalidaBean.notaSalida.tipomovimiento.idtipomov}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{tipoMovimientoBean.selectOneItemsTipoMovimiento}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDocRef" value="Doc Ref:" />
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfDocRef" label="Documento de referencia" 
-                                                 value="#" />
+                                                 />
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">

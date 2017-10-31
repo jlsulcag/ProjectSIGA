@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Nota de Salida">
+                    <h:form id="formP">
+                        <div class="ui-fluid">
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Numero :" for="txfNumero"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfNumero" label="Numero" required="true" readonly="true" disabled="true"
+                                                 value="#{notaSalidaBean.notaSalida.numero}"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Fecha :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                                value="#{notaSalidaBean.notaSalida.fechaReg}">
+                                        <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </p:calendar>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Por Pedido? :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneRadio id="console" required="true" label="Pedido?">
+                                        <f:selectItem itemLabel="Si" itemValue="S" />
+                                        <f:selectItem itemLabel="No" itemValue="N" />
+                                    </p:selectOneRadio>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxPedido" value="Pedido :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxPedido" filter="true" filterMatchMode="contains" label="Pedido"
+                                                     value="#{notaSalidaBean.notaSalida.pedido.idpedido}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxAlmacenO" value="Almacen Origen :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxAlmacenO" filter="true" filterMatchMode="contains" required="true" label="Almacen origen"
+                                                     value="#{notaSalidaBean.notaSalida.almacenOrigen.idalmacen}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfResponsable" value="Responsable Origen:" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfResponsable" disabled="true" readonly="true" label="Responsable origen" 
+                                                  />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxAlmacenD" value="Almacen Destino :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxAlmacenD" filter="true" filterMatchMode="contains" required="true" label="Almacen destino"
+                                                     value="#{notaSalidaBean.notaSalida.almacenDestino.idalmacen}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfResponsableDest" value="Responsable Destino:" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfResponsableDest" label="Responsable destino" 
+                                                  />
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxTipoMov" value="Tipo Movimiento :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxTipoMov" required="true" label="Tipo Movimiento"
+                                                     value="#{notaSalidaBean.notaSalida.tipomovimiento.idtipomov}">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{tipomo}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfDocRef" value="Doc Ref:" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfDocRef" label="Documento de referencia" 
+                                                 />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfObservacion" value="Observación:" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfObservacion" label="Observación" 
+                                                 value="#{notaSalidaBean.notaSalida.observacion}" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                 update="formNew" actionListener="#{notaSalidaBean.inicioNew()}" oncomplete="PF('dlgNew').show();"/>
+                            </f:facet>
+                            <f:facet name="right">
+                                <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
+                                                 actionListener="#{notaSalidaBean.registrar()}"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                 update="formP, formDataTable" actionListener="#{notaSalidaBean.inicio()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                    <h:form id="formDataTable" style="margin-top: 2px">
+                        <p:dataTable id="lista" value="#{notaSalidaBean.listNotaSalidas}" var="item" reflow="true"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Productos</f:facet>
+
+                            <p:ajax event="rowEdit"  update=":msg"/>
+                            <p:ajax event="rowEditCancel"  update=":msg"/>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idnotasalidadetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadmedida}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Ingreso">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantidad}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{item.cantidad}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnDelete" update=""  
+                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
+                                    <f:setPropertyActionListener value="#" target="#" />           
+                                </p:commandButton>                                                        
+
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+
+                    <h:form id="formNew">
+                        <p:dialog header="" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                                  resizable="false" closable="true">
+                            <h:panelGrid columns="4" cellpadding="1">                            
+
+                                <h:outputLabel for="cbxProducto" value="Producto :"/>
+                                <p:selectOneMenu id="cbxProducto" value="#{notaSalidaBean.notaSalidaDetalle.producto.idproducto}" 
+                                                 filter="true" filterMatchMode="contains" >
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                    <p:ajax listener="#{notaSalidaBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
+                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
+                                             value="#{notaSalidaBean.producto.fraccion}"/>
+
+                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
+                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
+                                             value="#{notaSalidaBean.producto.unidadMedida.descripcion}"/>
+
+                                <h:outputLabel for="txfPedidoxUnidad" value=" Pedido por unidad ?:"/>
+                                <p:selectBooleanCheckbox  id="txfPedidoxUnidad" value="#{notaSalidaBean.pedidoxUnidad}">
+                                    <p:ajax update="txfTotalproductos" listener="#{notaSalidaBean.setIsPedidoUnitario}" />
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputLabel for="txfCantidad" value="Cantidad :"/>
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                             value="#{notaSalidaBean.notaSalidaDetalle.cantidad}">
+                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{notaSalidaBean.calcularTotalProductos()}"/>
+                                </p:inputText>
+
+                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
+                                <p:inputText id="txfTotalproductos" label="Cantidad"
+                                             value="#{notaSalidaBean.totalProductos}"/>
+                                <f:facet name="footer">
+                                    <p:separator/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+
+                                    <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{notaSalidaBean.agregar()}"/>
+                                </f:facet>
+
+                            </h:panelGrid>
+
+                        </p:dialog>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
