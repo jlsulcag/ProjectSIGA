@@ -6,7 +6,7 @@
     <class name="org.siga.be.PedidoSeguimiento" table="pedido_seguimiento" schema="siga" optimistic-lock="version">
         <id name="idpedidoseguimiento" type="long">
             <column name="idpedidoseguimiento" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <many-to-one name="pedido" class="org.siga.be.Pedido" fetch="select">
             <column name="id_pedido" not-null="true" />

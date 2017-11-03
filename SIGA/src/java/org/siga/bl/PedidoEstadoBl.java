@@ -74,4 +74,8 @@ public class PedidoEstadoBl extends AbstractBL<PedidoEstados>{
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public PedidoEstados buscarRef(String registrado) {
+        return dao.buscarRef(registrado);
+    }
 }

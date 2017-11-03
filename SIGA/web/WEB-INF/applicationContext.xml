@@ -73,6 +73,8 @@
                 <value>/org/siga/be/Producto.hbm.xml</value>  
                 <value>/org/siga/be/UnidadMedida.hbm.xml</value>  
                 <value>/org/siga/be/PedidoDetalle.hbm.xml</value>  
+                <value>/org/siga/be/PedidoEstados.hbm.xml</value>  
+                <value>/org/siga/be/PedidoSeguimiento.hbm.xml</value>  
             </list>
         </property>        
     </bean>

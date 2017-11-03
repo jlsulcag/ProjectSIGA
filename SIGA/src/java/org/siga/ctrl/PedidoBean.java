@@ -12,10 +12,13 @@ import org.siga.be.Almacen;
 import org.siga.be.Dependencia;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
+import org.siga.be.PedidoSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Usuario;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
+import org.siga.bl.PedidoEstadoBl;
+import org.siga.bl.PedidoSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
@@ -36,6 +39,14 @@ public class PedidoBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
+    
+    @ManagedProperty(value = "#{pedidoSeguimientoBl}")
+    private PedidoSeguimientoBl pedidoSeguimientoBl;
+    @ManagedProperty(value = "#{pedidoSeguimiento}")
+    private PedidoSeguimiento pedidoSeguimiento;
+    
+    @ManagedProperty(value = "#{pedidoEstadoBl}")
+    private PedidoEstadoBl pedidoEstadoBl;
 
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private boolean pedidoxUnidad;
@@ -81,6 +92,8 @@ public class PedidoBean {
         if (!listPedidoDetalle.isEmpty()) {
             id = registrarPedido();
             if (id > 0) {
+                //registrar detalle movimiento
+                registrarPedidoMovimiento(id);
                 id2 = registrarPedidoDetalle();
                 if (id2 > 0) {
                     MensajeView.registroCorrecto();
@@ -215,6 +228,43 @@ public class PedidoBean {
 
     public void setPedidoDetalleBl(PedidoDetalleBl pedidoDetalleBl) {
         this.pedidoDetalleBl = pedidoDetalleBl;
+    }
+
+    public PedidoSeguimientoBl getPedidoSeguimientoBl() {
+        return pedidoSeguimientoBl;
+    }
+
+    public void setPedidoSeguimientoBl(PedidoSeguimientoBl pedidoSeguimientoBl) {
+        this.pedidoSeguimientoBl = pedidoSeguimientoBl;
+    }
+
+    public PedidoEstadoBl getPedidoEstadoBl() {
+        return pedidoEstadoBl;
+    }
+
+    public void setPedidoEstadoBl(PedidoEstadoBl pedidoEstadoBl) {
+        this.pedidoEstadoBl = pedidoEstadoBl;
+    }
+    
+    private void registrarPedidoMovimiento(long id) {
+        pedidoSeguimiento.setPedido(pedidoBl.buscar(id));
+        pedidoSeguimiento.setPedidoEstados(pedidoEstadoBl.buscarRef("REGISTRADO"));
+        pedidoSeguimiento.setFecha(new Date());
+        pedidoSeguimiento.setHora(Utilitarios.horaActual());
+        pedidoSeguimiento.setObservacion("");
+        pedidoSeguimiento.setEstado(true);
+        pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero()+1);
+        
+        pedidoSeguimientoBl.registrar(pedidoSeguimiento);
+        
+    }
+
+    public PedidoSeguimiento getPedidoSeguimiento() {
+        return pedidoSeguimiento;
+    }
+
+    public void setPedidoSeguimiento(PedidoSeguimiento pedidoSeguimiento) {
+        this.pedidoSeguimiento = pedidoSeguimiento;
     }
 
 }

@@ -6,7 +6,7 @@
     <class name="org.siga.be.PedidoEstados" table="pedido_estados" schema="siga" optimistic-lock="version">
         <id name="idpedidoestado" type="long">
             <column name="idpedidoestado" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="descripcion" type="string">
             <column name="descripcion" length="60" not-null="true" />

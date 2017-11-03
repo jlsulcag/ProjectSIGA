@@ -46,12 +46,17 @@ public class PedidoEstadoDao extends AbstractDA<PedidoEstados>{
 
     @Override
     public PedidoEstados buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public PedidoEstados buscarRef(String registrado) {
+        String hql = "from PedidoEstados a where a.descripcion = '"+ registrado +"'";
+        return buscar(hql);
     }
     
 }

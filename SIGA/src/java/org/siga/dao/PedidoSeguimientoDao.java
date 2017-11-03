@@ -2,6 +2,10 @@
 package org.siga.dao;
 
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.siga.be.PedidoSeguimiento;
 import org.siga.util.AbstractDA;
 import org.springframework.stereotype.Repository;
@@ -52,6 +56,27 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int maxNumero() {
+        Session s = getSession();
+        Transaction t = s.beginTransaction();
+        int num = 0;
+        try {
+            String hql = "select max(a.numero) from PedidoSeguimiento a";
+            Query query = s.createQuery(hql);
+            if (query.uniqueResult() == null) {
+                num = 0;
+            } else {
+                num = (int) query.uniqueResult();
+            }
+            t.commit();
+            s.close();
+            return num;
+        } catch (HibernateException e) {
+            t.rollback();
+            return 0;
+        }
     }
     
 }
