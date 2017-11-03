@@ -33,5 +33,7 @@
     <mapping resource="org/siga/be/Producto.hbm.xml"/>
     <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
     <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoEstados.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoSeguimiento.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

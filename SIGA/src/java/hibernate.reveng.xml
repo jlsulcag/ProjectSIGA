@@ -26,4 +26,6 @@
   <table-filter match-name="unidad_medida"/>
   <table-filter match-name="estado_civil"/>
   <table-filter match-name="pedido"/>
+  <table-filter match-name="pedido_estados"/>
+  <table-filter match-name="pedido_seguimiento"/>
 </hibernate-reverse-engineering>
