@@ -93,7 +93,7 @@ public class PedidoBean {
             id = registrarPedido();
             if (id > 0) {
                 //registrar detalle movimiento
-                registrarPedidoMovimiento(id);
+                //registrarPedidoMovimiento(id);//agregar dicha funcionalidad  posteriormente, conocer cuando cambiara d estados el pedido
                 id2 = registrarPedidoDetalle();
                 if (id2 > 0) {
                     MensajeView.registroCorrecto();

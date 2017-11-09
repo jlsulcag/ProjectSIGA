@@ -138,6 +138,7 @@ public class NotaSalidaBean {
             obj.setNotasalida(notaSalida);
             notaSalidaDetalleBl.registrar(obj);
             id = obj.getIdnotasalidadetalle();
+            //Actualizar stock almacen
         }
         return id;
     }

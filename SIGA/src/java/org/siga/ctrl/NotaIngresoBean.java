@@ -161,6 +161,15 @@ public class NotaIngresoBean {
             notaED.setCantIngreso(notaED.getCantPendiente());
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
+            
+            //buscar stock disponible en el inventario
+            AlmacenProducto temp = new AlmacenProducto();
+            temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenDestino().getIdalmacen(), notaED.getProducto());
+            if(temp == null){
+                notaED.setCantDisponible(0);
+            }else{
+                notaED.setCantDisponible(temp.getStockActual());
+            }
             listNotaEntradaDetalle.add(notaED);
             //}
         }
