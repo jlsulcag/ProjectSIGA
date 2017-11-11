@@ -68,6 +68,7 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
+        //validar  que el stock de los productos existan en almacen
         int r = -1;
         if (!listNotaEntradaDetalle.isEmpty()) {
             res = registrarNotaEntrada();
