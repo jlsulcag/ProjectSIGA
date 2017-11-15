@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import org.siga.be.Almacen;
 import org.siga.be.Dependencia;
 import org.siga.bl.DependenciaBl;
 import org.siga.util.MensajeView;
@@ -73,6 +74,7 @@ public class DependenciaBean {
     }
     public void limpiar(){
         dependencia.setIddependencia(0);
+        dependencia.setAlmacen(new Almacen());
         dependencia.setDescripcion("");
         dependencia.setEstado("");
     }

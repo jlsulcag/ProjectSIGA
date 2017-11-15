@@ -18,6 +18,7 @@ import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
+import org.siga.be.UnidadMedida;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
@@ -68,6 +69,7 @@ public class OrdenCompraBean {
         ordenCompra.setProveedor(new Proveedor());
         ordenCompra.setAlmacenDestino(new Almacen());
         listOrdenCompraDetalles.clear();
+        totalTemp = new BigDecimal("0.00");
         //invalidarSesionOrdenCompra();
     }
 
@@ -82,7 +84,6 @@ public class OrdenCompraBean {
 //        if (httpSession.getAttribute("idOrdenCompra") != null) {
 //            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
 //        }
-        System.out.println("producto ... " + producto);
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setObservacion("");
@@ -154,6 +155,8 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setPrecioCompra(BigDecimal.ZERO);
         ordenCompraDetalle.setDesc1(0);
         ordenCompraDetalle.setDesc2(0);
+        producto.setFraccion(0);
+        producto.setUnidadMedida(new UnidadMedida());
     }
 
     public void listar() {
@@ -331,7 +334,6 @@ public class OrdenCompraBean {
             valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             totalDescuento = totalDescuento.add(obj.getMontoDescitem());
             valorNeto = valorBruto.subtract(totalDescuento);
-            System.out.println("valor total = " + valorNeto);
             montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
             if (httpSession.getAttribute("idOrdenCompra") != null) {
                 totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));

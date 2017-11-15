@@ -104,6 +104,8 @@ public class ProductoBean {
         producto.setEstado("");
         producto.setFechaReg(null);
         producto.setClase(new Clase());
+        producto.setFamilia(new Familia());
+        producto.setFraccion(0);
     }
     
     public void buscarRef(){
