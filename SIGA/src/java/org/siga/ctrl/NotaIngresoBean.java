@@ -450,7 +450,7 @@ public class NotaIngresoBean {
             notaEntrada.setOrdenCompra(null);
             notaEntrada.setIdUserReg(0);
             notaEntrada.setObservacion("");
-
+            notaEntrada.setProveedor(notaEntrada.getProveedor().getIdproveedor() >0 ? notaEntrada.getProveedor():null);
             r = notaIngresoBl.registrar(notaEntrada);
         }
         return r;
