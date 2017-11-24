@@ -18,6 +18,7 @@ import org.siga.be.TipoMovimiento;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
+import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
@@ -45,7 +46,12 @@ public class NotaSalidaBean {
     private AlmacenProducto almacenProducto;
     @ManagedProperty(value = "#{almacenProductoBl}")
     private AlmacenProductoBl almacenProductoBl;
-
+    
+    @ManagedProperty(value = "#{pedido}")
+    private Pedido pedido;
+    @ManagedProperty(value = "#{pedidoBl}")
+    private PedidoBl pedidoBl;
+    
     @ManagedProperty(value = "#{pedidoDetalleBl}")
     private PedidoDetalleBl pedidoDetalleBl;
 
@@ -106,13 +112,13 @@ public class NotaSalidaBean {
     }
 
     public void registrar() {
-        long id = -1;
-        long id2 = -1;
+        long res = -1;
+        long res2 = -1;
         if (!listNotaSalidas.isEmpty()) {
-            id = registrarNotaSalida();
-            if (id > 0) {
-                id2 = registrarNotaSalidaDetalle();
-                if (id2 > 0) {
+            res = registrarNotaSalida();
+            if (res == 0) {
+                res2 = registrarNotaSalidaDetalle();
+                if (res2 > 0) {
                     MensajeView.registroCorrecto();
 //                    actualizarStock();
                     //actualizar el estado del pedido si fuese el caso
@@ -131,11 +137,22 @@ public class NotaSalidaBean {
 
     public long registrarNotaSalida() {
         notaSalida.setIdUserReg(0);
-        notaSalida.setPedido(null);
+        notaSalida.setPedido(notaSalida.getPedido());
         notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
-        notaSalidaBl.registrar(notaSalida);
+        notaSalida.setFechaReg(new Date());
+        //Obtener todos los datos del pedido para determinar  origen y destino 
+        pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
+        if(pedido.getIdpedido() > 0){
+            
+        }
+        notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
+        notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
+        System.out.println("almacen origen ........... "+notaSalida.getAlmacenOrigen().getNombre());
+        System.out.println("almacen destino ........... "+notaSalida.getAlmacenDestino().getNombre());
         
-        return notaSalida.getIdnotasalida();
+        return notaSalidaBl.registrar(notaSalida);
+        
+        //return notaSalida.getIdnotasalida();
     }
 
     private long registrarNotaSalidaDetalle() {
@@ -305,6 +322,22 @@ public class NotaSalidaBean {
 
     public void setListPedidoDetalle(List<PedidoDetalle> listPedidoDetalle) {
         this.listPedidoDetalle = listPedidoDetalle;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public PedidoBl getPedidoBl() {
+        return pedidoBl;
+    }
+
+    public void setPedidoBl(PedidoBl pedidoBl) {
+        this.pedidoBl = pedidoBl;
     }
 
 }

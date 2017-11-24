@@ -82,4 +82,8 @@ public class PedidoBl extends AbstractBL<Pedido> {
     public List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
         return dao.listOrdenPedidoXEstado(no_atendido);
     }
+
+    public Pedido buscarXid(long idpedido) {
+        return dao.buscarXid(idpedido);
+    }
 }
