@@ -32,7 +32,7 @@ public class PedidoDetalleDao extends AbstractDA<PedidoDetalle>{
 
     @Override
     public List<PedidoDetalle> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -53,6 +53,11 @@ public class PedidoDetalleDao extends AbstractDA<PedidoDetalle>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<PedidoDetalle> listarxIdPedido(long id) {
+        String hql = "from PedidoDetalle a left join fetch a.pedido b left join fetch a.producto c where b.idpedido = "+id;
+        return listar(hql);
     }
     
    

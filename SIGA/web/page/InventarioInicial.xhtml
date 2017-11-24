@@ -141,19 +141,13 @@
                                     <p:ajax listener="#{notaIngresoBean.buscarProducto()}"/>
                                 </p:selectOneMenu>                                
                                 
-                                <h:outputLabel for="txfCompraxUnidad" value="Unitario :"/>
-                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{notaIngresoBean.compraxUnidad}">
-                                    <p:ajax listener="#{notaIngresoBean.setIsCompraUnitaria()}" />
-                                </p:selectBooleanCheckbox>
-
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
                                              value="#{notaIngresoBean.notaEntradaDetalle.cantIngreso}">
-                                    <p:ajax event="keyup" listener="#{notaIngresoBean.calcularTotalProductos()}"/>
                                 </p:inputText>
                                 
-                                <h:outputLabel for="txfValor" value="Valor:"/>
-                                <p:inputText id="txfValor" label="Valor"
+                                <h:outputLabel for="txfValorUnitario" value="Valor Unitario:"/>
+                                <p:inputText id="txfValorUnitario" label="Valor"
                                              value="#{notaIngresoBean.notaEntradaDetalle.valorCompra}"/>
 
                                 <h:outputLabel for="txfLote" value="Lote:"/>

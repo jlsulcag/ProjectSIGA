@@ -84,5 +84,9 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
         return dao.listarRef(ref, idalmacen);
     }
 
+    public int obtenerUltimoNumero(long idproducto) {
+        return dao.obtenerUltimoNumero(idproducto);
+    }
+
     
 }

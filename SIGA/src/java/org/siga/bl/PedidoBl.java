@@ -78,4 +78,8 @@ public class PedidoBl extends AbstractBL<Pedido> {
     public long buscarMaxNumero() {
         return dao.buscarMaxNumero();
     }
+
+    public List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
+        return dao.listOrdenPedidoXEstado(no_atendido);
+    }
 }

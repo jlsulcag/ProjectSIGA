@@ -108,7 +108,7 @@
                     </h:form>
 
                      <h:form id="formNew">
-                        <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                        <p:dialog header="Detalles" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
 
                             <h:panelGrid columns="4" cellpadding="1">                            
@@ -118,31 +118,19 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{pedidoBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
-                                </p:selectOneMenu>
-
-                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
-                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
-                                             value="#{pedidoBean.producto.fraccion}"/>
-
-                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
-                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
-                                             value="#{pedidoBean.producto.unidadMedida.descripcion}"/>
+                                    <p:ajax listener="#{pedidoBean.buscarProducto()}"/>
+                                </p:selectOneMenu>                                
                                 
                                 <h:outputLabel for="txfPedidoxUnidad" value=" Pedido por unidad ?:"/>
                                 <p:selectBooleanCheckbox  id="txfPedidoxUnidad" value="#{pedidoBean.pedidoxUnidad}">
-                                    <p:ajax update="txfTotalproductos" listener="#{pedidoBean.setIsPedidoUnitario}" />
+                                    <p:ajax listener="#{pedidoBean.setIsPedidoUnitario}" />
                                 </p:selectBooleanCheckbox>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
                                              value="#{pedidoBean.pedidoDetalle.cantidadSolicitada}">
-                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{pedidoBean.calcularTotalProductos()}"/>
                                 </p:inputText>
-
-                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
-                                <p:inputText id="txfTotalproductos" label="Cantidad"
-                                             value="#{pedidoBean.totalProductos}"/>
+                                
                                 <f:facet name="footer">
                                     <p:separator/>
 

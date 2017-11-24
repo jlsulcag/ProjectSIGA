@@ -1,30 +1,35 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 09/10/2017 11:11:06 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.AlmacenProducto" table="almacen_producto" schema="siga" optimistic-lock="version">
-        <id name="idalmacenproducto" type="long">
-            <column name="idalmacenproducto" />
-            <generator class="increment" />
-        </id>
-        <many-to-one name="almacen" class="org.siga.be.Almacen" fetch="select">
-            <column name="id_almacen" not-null="true" />
-        </many-to-one>
-        <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
-            <column name="id_producto" not-null="true" />
-        </many-to-one>
-        <property name="stockActual" type="int">
-            <column name="stock_actual" not-null="true" />
-        </property>
-        <property name="lote" type="string">
-            <column name="lote" length="20" not-null="true" />
-        </property>
-        <property name="fechaVencimiento" type="date">
-            <column name="fecha_vencimiento" length="13" />
-        </property>
-        <property name="valor" type="big_decimal">
-            <column name="valor" precision="18" />
-        </property>
-    </class>
+  <class name="org.siga.be.AlmacenProducto" optimistic-lock="version" schema="siga" table="almacen_producto">
+    <id name="idalmacenproducto" type="long">
+      <column name="idalmacenproducto"/>
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="org.siga.be.Almacen" fetch="select" name="almacen">
+      <column name="id_almacen" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="org.siga.be.Producto" fetch="select" name="producto">
+      <column name="id_producto" not-null="true"/>
+    </many-to-one>
+    <property name="stockActual" type="int">
+      <column name="stock_actual" not-null="true"/>
+    </property>
+    <property name="lote" type="string">
+      <column length="20" name="lote" not-null="true"/>
+    </property>
+    <property name="fechaVencimiento" type="date">
+      <column length="13" name="fecha_vencimiento"/>
+    </property>
+    <property name="valorCompraUnitario" type="big_decimal">
+      <column name="valor_compra_unitario" precision="18"/>
+    </property>
+    <property name="ordenIngreso" type="int">
+      <column name="orden_ingreso" />
+    </property>
+    <property name="unidad" type="string">
+      <column length="30" name="unidad"/>
+    </property>
+  </class>
 </hibernate-mapping>

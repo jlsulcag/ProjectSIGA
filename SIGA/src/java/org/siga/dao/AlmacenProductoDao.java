@@ -2,6 +2,10 @@
 package org.siga.dao;
 
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.Producto;
@@ -68,6 +72,27 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
     public List<AlmacenProducto> listarRef(String ref, long idalmacen) {
         String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e where b.descripcion like '%"+ref+"%' and c.idalmacen = "+idalmacen;
         return listar(hql);
+    }
+
+    public int obtenerUltimoNumero(long idproducto) {
+        Session s = getSession();
+        Transaction t = s.beginTransaction();
+        int num = 0;
+        try {
+            String hql = "select max(a.ordenIngreso) from AlmacenProducto a where a.producto.idproducto = "+idproducto;
+            Query query = s.createQuery(hql);
+            if (query.uniqueResult() == null) {
+                num = 0;
+            } else {
+                num = (int) query.uniqueResult();
+            }
+            t.commit();
+            s.close();
+            return num;
+        } catch (HibernateException e) {
+            t.rollback();
+            return 0;
+        }
     }
     
 }

@@ -19,7 +19,10 @@ public class AlmacenProducto  implements java.io.Serializable {
      private int stockActual;
      private String lote;
      private Date fechaVencimiento;
-     private BigDecimal valor;
+     private BigDecimal valorCompraUnitario;
+     private int ordenIngreso;
+     private String unidad;
+     
 
     public AlmacenProducto() {
     }
@@ -39,7 +42,7 @@ public class AlmacenProducto  implements java.io.Serializable {
        this.stockActual = stockActual;
        this.lote = lote;
        this.fechaVencimiento = fechaVencimiento;
-       this.valor = valor;
+       this.valorCompraUnitario = valor;
     }
    
     public long getIdalmacenproducto() {
@@ -84,12 +87,28 @@ public class AlmacenProducto  implements java.io.Serializable {
     public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
-    public BigDecimal getValor() {
-        return this.valor;
+    public BigDecimal getValorCompraUnitario() {
+        return this.valorCompraUnitario;
     }
     
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
+    public void setValorCompraUnitario(BigDecimal valorCompraUnitario) {
+        this.valorCompraUnitario = valorCompraUnitario;
+    }
+
+    public int getOrdenIngreso() {
+        return ordenIngreso;
+    }
+
+    public void setOrdenIngreso(int ordenIngreso) {
+        this.ordenIngreso = ordenIngreso;
+    }
+
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
     }
 
 

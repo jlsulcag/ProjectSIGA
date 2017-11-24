@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.hibernate.HibernateException;
 import org.siga.be.Almacen;
 import org.siga.be.Dependencia;
@@ -51,6 +52,8 @@ public class PedidoBean {
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private boolean pedidoxUnidad;
     private int totalProductos;
+    
+    private List<SelectItem> selectOneItemsPedido;
 
     public PedidoBean() {
     }
@@ -143,19 +146,19 @@ public class PedidoBean {
 
     public void setIsPedidoUnitario() {
         setPedidoxUnidad(pedidoxUnidad);
-        if (pedidoDetalle.getCantidadSolicitada() > 0) {
-            calcularTotalProductos();
-        }
+//        if (pedidoDetalle.getCantidadSolicitada() > 0) {
+//            calcularTotalProductos();
+//        }
     }
 
-    public void calcularTotalProductos() {
-        if (pedidoxUnidad) {
-
-            setTotalProductos(pedidoDetalle.getCantidadSolicitada());
-        } else {
-            setTotalProductos(pedidoDetalle.getCantidadSolicitada() * producto.getFraccion());
-        }
-    }
+//    public void calcularTotalProductos() {
+//        if (pedidoxUnidad) {
+//
+//            setTotalProductos(pedidoDetalle.getCantidadSolicitada());
+//        } else {
+//            setTotalProductos(pedidoDetalle.getCantidadSolicitada() * producto.getFraccion());
+//        }
+//    }
 
     /*get and set*/
     public Pedido getPedido() {
@@ -265,6 +268,24 @@ public class PedidoBean {
 
     public void setPedidoSeguimiento(PedidoSeguimiento pedidoSeguimiento) {
         this.pedidoSeguimiento = pedidoSeguimiento;
+    }
+
+    public List<SelectItem> getSelectOneItemsPedido() {
+        this.selectOneItemsPedido= new LinkedList<SelectItem>();
+        for (Pedido obj : listOrdenPedidoXEstado("NO ATENDIDO")) {
+            this.setPedido(obj);
+            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero()+"");
+            this.selectOneItemsPedido.add(selectItem);
+        }
+        return selectOneItemsPedido;
+    }
+
+    public void setSelectOneItemsPedido(List<SelectItem> selectOneItemsPedido) {
+        this.selectOneItemsPedido = selectOneItemsPedido;
+    }
+
+    private List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
+        return pedidoBl.listOrdenPedidoXEstado(no_atendido);
     }
 
 }

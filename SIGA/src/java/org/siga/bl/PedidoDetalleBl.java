@@ -2,6 +2,7 @@
 package org.siga.bl;
 
 import java.util.List;
+import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.PedidoDetalle;
 import org.siga.dao.PedidoDao;
 import org.siga.dao.PedidoDetalleDao;
@@ -70,6 +71,10 @@ public class PedidoDetalleBl extends AbstractBL<PedidoDetalle>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<PedidoDetalle> listarxIdPedido(long id) {
+        return dao.listarxIdPedido(id);
     }
     
 }

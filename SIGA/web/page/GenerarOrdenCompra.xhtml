@@ -182,37 +182,17 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}"/>
                                 </p:selectOneMenu>
-
-                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
-                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
-                                             value="#{ordenCompraBean.producto.fraccion}"/>
-
-                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
-                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
-                                             value="#{ordenCompraBean.producto.unidadMedida.descripcion}"/>
-
-                                <h:outputLabel for="txfCompraxUnidad" value=" Compra por unidad ?:"/>
-                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{ordenCompraBean.compraxUnidad}">
-                                    <p:ajax update="txfTotalproductos" listener="#{ordenCompraBean.setIsCompraUnitaria()}" />
-                                </p:selectBooleanCheckbox>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
                                              value="#{ordenCompraBean.ordenCompraDetalle.cantidad}">
-                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{ordenCompraBean.calcularTotalProductos()}"/>
                                 </p:inputText>
-
-                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
-                                <p:inputText id="txfTotalproductos" label="Cantidad"
-                                             value="#{ordenCompraBean.totalProductos}"/>
 
                                 <h:outputLabel for="txfLote" value="Lote: "/>
                                 <p:inputText id="txfLote" label="Lote"
                                              value="#{ordenCompraBean.ordenCompraDetalle.lote}"/>
-
-
 
                                 <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
                                 <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"

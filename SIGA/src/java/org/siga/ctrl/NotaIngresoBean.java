@@ -141,7 +141,7 @@ public class NotaIngresoBean {
         //Obtener la lista de DetalleOrdenCompra
         long id = notaEntrada.getOrdenCompra().getIdordencompra();
         listOrdenCompraDetalle = ordenCompraDetalleBl.listarXIdOrdenCompra(id);
-        //listNotaEntradaDetalle = new ArrayList<>();
+        //listNotaEnlistOrdenCompraDetalletradaDetalle = new ArrayList<>();
         for (OrdenCompraDetalle obj : listOrdenCompraDetalle) {
             //notaEntradaDetalle.setNotaEntrada(notaEntrada);
             NotaEntradaDetalle notaED = new NotaEntradaDetalle();
@@ -162,13 +162,13 @@ public class NotaIngresoBean {
             notaED.setCantIngreso(notaED.getCantPendiente());
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
-            
+
             //buscar stock disponible en el inventario
             AlmacenProducto temp = new AlmacenProducto();
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenDestino().getIdalmacen(), notaED.getProducto());
-            if(temp == null){
+            if (temp == null) {
                 notaED.setCantDisponible(0);
-            }else{
+            } else {
                 notaED.setCantDisponible(temp.getStockActual());
             }
             listNotaEntradaDetalle.add(notaED);
@@ -208,6 +208,7 @@ public class NotaIngresoBean {
             calcularTotalProductos();
         }
     }
+
     public void calcularTotalProductos() {
         if (compraxUnidad) {
             setTotalProductos(notaEntradaDetalle.getCantIngreso());
@@ -221,17 +222,13 @@ public class NotaIngresoBean {
         ned.setProducto(producto);
         ned.setLote(notaEntradaDetalle.getLote());
         ned.setFechaVencimiento(notaEntradaDetalle.getFechaVencimiento());
-        ned.setValorCompra(BigDecimal.ZERO);
+        ned.setValorCompra(notaEntradaDetalle.getValorCompra());
         ned.setPrecioCompra(BigDecimal.ZERO);
         ned.setDesc1(0);
         ned.setDesc2(0);
-        if (compraxUnidad) {
-            ned.setUnidadMedida("UNIDAD");
-        } else {
-            ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        }
+        ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         ned.setMontoDescitem(BigDecimal.ZERO);
-        ned.setCantIngreso(totalProductos);
+        ned.setCantIngreso(notaEntradaDetalle.getCantIngreso());
         ned.setCantSolicitada(0);
         ned.setCantPendiente(0);
         ned.setCantRecibida(0);
@@ -394,7 +391,11 @@ public class NotaIngresoBean {
             almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
             almacenProducto.setLote(obj.getLote());
             almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
-            almacenProducto.setValor(obj.getValorCompra());
+            almacenProducto.setValorCompraUnitario(obj.getValorCompra());
+            //registrar el orden de ingreso para cumplir con FIFO
+            int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
+            almacenProducto.setOrdenIngreso(numOrden+1);
+            almacenProducto.setUnidad(obj.getUnidadMedida());
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
             if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
                 almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
@@ -450,7 +451,7 @@ public class NotaIngresoBean {
             notaEntrada.setOrdenCompra(null);
             notaEntrada.setIdUserReg(0);
             notaEntrada.setObservacion("");
-            notaEntrada.setProveedor(notaEntrada.getProveedor().getIdproveedor() >0 ? notaEntrada.getProveedor():null);
+            notaEntrada.setProveedor(notaEntrada.getProveedor().getIdproveedor() > 0 ? notaEntrada.getProveedor() : null);
             r = notaIngresoBl.registrar(notaEntrada);
         }
         return r;

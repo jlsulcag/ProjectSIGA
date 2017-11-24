@@ -82,4 +82,9 @@ public class PedidoDao extends AbstractDA<Pedido> {
             return 0;
         }
     }
+
+    public List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
+        String Hql = "from Pedido p where p.estado = '"+no_atendido+"'";
+        return listar(Hql);
+    }
 }

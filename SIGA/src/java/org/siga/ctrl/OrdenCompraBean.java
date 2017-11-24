@@ -93,11 +93,7 @@ public class OrdenCompraBean {
         temp.setPrecioCompra(ordenCompraDetalle.getPrecioCompra());
         temp.setDesc1(ordenCompraDetalle.getDesc1());
         temp.setDesc2(ordenCompraDetalle.getDesc2());
-        if (compraxUnidad) {
-            temp.setUnidadMedida("UNIDAD");
-        } else {
-            temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        }
+        temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
         temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
