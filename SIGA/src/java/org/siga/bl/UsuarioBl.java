@@ -70,5 +70,17 @@ public class UsuarioBl extends AbstractBL<Usuario>{
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public List<Usuario> listarRef(String txtBusqueda) {
+        return dao.listarRef(txtBusqueda);
+    }
+
+    public List<Usuario> listarFull() {
+        return dao.listarFull();
+    }
+
+    public List<Usuario> listarxNombres(String txtBusqueda) {
+        return dao.listarxNombres(txtBusqueda);
+    }
     
 }

@@ -19,18 +19,36 @@
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
                                                  update="formNew" oncomplete="PF('dlgNew').show();"/>
                             </f:facet>
+                            <f:facet name="right">
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 150px; text-transform: uppercase" value="#{adminUsuarioBean.txtBusqueda}" placeholder="USUARIO">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{adminUsuarioBean.listarRef()}" />
+                                </p:inputText>
+                                <p:inputText id="txtBusqueda2" style="width: 300px; text-transform: uppercase" value="#{adminUsuarioBean.txtBusqueda}" placeholder="APELLIDOS Y NOMBRES">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="#{adminUsuarioBean.listarxNombres()}" />
+                                </p:inputText>
+                            </f:facet>
                         </p:toolbar>
                     </h:form>
 
                     <h:form id="formDataTable" style="margin-top: 2px">
-                        <p:dataTable id="lista" var="item"
+                        <p:dataTable id="lista" var="item" value="#{adminUsuarioBean.listUsuarios}"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Usuarios del Sistema</f:facet>
 
                             <p:column style="width:15px;text-align: center" headerText="Nº">
-                                <h:outputText value="#"/>
+                                <h:outputText value="#{item.idusuario}"/>
+                            </p:column>
+                            <p:column style="width:15px;text-align: center" headerText="Apellidos y Nombres">
+                                <h:outputText value="#{item.persona.apellidoPaterno} #{item.persona.apellidoMaterno} #{item.persona.nombre}"/>
+                            </p:column>
+                            <p:column style="width:15px;text-align: center" headerText="Usuario">
+                                <h:outputText value="#{item.nombre}"/>
+                            </p:column>
+                            <p:column style="width:15px;text-align: center" headerText="Dependencia">
+                                <h:outputText value="#{item.dependencia.descripcion}"/>
                             </p:column>
                         </p:dataTable>
 
@@ -43,7 +61,7 @@
                             <h:panelGrid columns="3" cellpadding="1">
                                 <h:outputLabel for="cbxDependencia" value="Dependencia :" />
                                 <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px"
-                                                 >
+                                                 value="#{adminUsuarioBean.usuario.dependencia.iddependencia}">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
                                 </p:selectOneMenu>
@@ -99,7 +117,7 @@
                                 <p:message for="txt_clave" display="icon" />
 
                                 <h:outputLabel for="cbx_tu" value="Tipo de Usuario :" />
-                                <p:selectOneMenu id="cbx_tu" value="#{adminUsuarioBean.usuarioRol.idRol}" style="width: 245px">
+                                <p:selectOneMenu id="cbx_tu" value="#{adminUsuarioBean.usuarioRol.rol.idrol}" style="width: 245px">
                                     <f:selectItem itemLabel="SELECCIONE" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{rolBean.selectOneItemsRol}"/>
                                 </p:selectOneMenu>  
@@ -112,7 +130,7 @@
                                         <p:resetInput target="msg2" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
-                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="msg"/> 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="msg" actionListener="#{adminUsuarioBean.registrar()}"/> 
                                 </div>
                             </f:facet>
 

@@ -30,7 +30,7 @@ public class UsuarioDao extends AbstractDA<Usuario>{
 
     @Override
     public List<Usuario> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -51,6 +51,21 @@ public class UsuarioDao extends AbstractDA<Usuario>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Usuario> listarRef(String txtBusqueda) {
+        String hql = "from Usuario a left join fetch a.persona b left join fetch a.dependencia c where a.nombre like '%"+txtBusqueda+"%'";
+        return listar(hql);
+    }
+
+    public List<Usuario> listarFull() {
+        String hql = "from Usuario a left join fetch a.persona b left join fetch a.dependencia c";
+        return listar(hql);
+    }
+
+    public List<Usuario> listarxNombres(String txtBusqueda) {
+        String hql = "from Usuario a left join fetch a.persona b left join fetch a.dependencia c where (b.apellidoPaterno || ' ' || b.apellidoMaterno || ' ' ||b.nombre) like '%"+txtBusqueda+"%'";
+        return listar(hql);
     }
     
 }

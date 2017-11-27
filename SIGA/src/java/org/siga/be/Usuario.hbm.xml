@@ -8,6 +8,12 @@
             <column name="idusuario" />
             <generator class="increment" />
         </id>
+        <many-to-one name="persona" class="org.siga.be.Persona" fetch="select">
+            <column name="id_persona" />
+        </many-to-one>
+        <many-to-one name="dependencia" class="org.siga.be.Dependencia" fetch="select">
+            <column name="id_dependencia" />
+        </many-to-one>
         <property name="nombre" type="string">
             <column name="nombre" length="15" not-null="true" />
         </property>
@@ -19,9 +25,6 @@
         </property>
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
-        </property>
-        <property name="idPersona" type="int">
-            <column name="id_persona" not-null="true" />
         </property>
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" />

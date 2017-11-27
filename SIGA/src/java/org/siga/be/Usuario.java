@@ -17,10 +17,14 @@ public class Usuario  implements java.io.Serializable {
      private String descripcion;
      private String contrasenia;
      private String estado;
-     private int idPersona;
+     private Persona persona;
      private Date fechaReg;
+     private Dependencia dependencia;
 
     public Usuario() {
+        this.idusuario = 0;
+        persona = new Persona();
+        dependencia = new Dependencia();
     }
 
 	
@@ -30,7 +34,6 @@ public class Usuario  implements java.io.Serializable {
         this.descripcion = descripcion;
         this.contrasenia = contrasenia;
         this.estado = estado;
-        this.idPersona = idPersona;
     }
     public Usuario(long idusuario, String nombre, String descripcion, String contrasenia, String estado, int idPersona, Date fechaReg) {
        this.idusuario = idusuario;
@@ -38,7 +41,6 @@ public class Usuario  implements java.io.Serializable {
        this.descripcion = descripcion;
        this.contrasenia = contrasenia;
        this.estado = estado;
-       this.idPersona = idPersona;
        this.fechaReg = fechaReg;
     }
    
@@ -77,19 +79,28 @@ public class Usuario  implements java.io.Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    public int getIdPersona() {
-        return this.idPersona;
-    }
-    
-    public void setIdPersona(int idPersona) {
-        this.idPersona = idPersona;
-    }
     public Date getFechaReg() {
         return this.fechaReg;
     }
     
     public void setFechaReg(Date fechaReg) {
         this.fechaReg = fechaReg;
+    }
+
+    public Dependencia getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(Dependencia dependencia) {
+        this.dependencia = dependencia;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 
 

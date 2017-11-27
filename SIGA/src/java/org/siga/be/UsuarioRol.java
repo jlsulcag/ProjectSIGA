@@ -13,13 +13,16 @@ public class UsuarioRol  implements java.io.Serializable {
 
 
      private long idusuariorol;
-     private Integer idUsuario;
-     private Integer idRol;
+     private Usuario usuario;
+     private Rol rol;
      private Date fechaReg;
      private String descripcion;
      private Boolean estado;
 
     public UsuarioRol() {
+        this.idusuariorol = 0;
+        usuario = new Usuario();
+        rol = new Rol();
     }
 
 	
@@ -27,10 +30,8 @@ public class UsuarioRol  implements java.io.Serializable {
         this.idusuariorol = idusuariorol;
         this.descripcion = descripcion;
     }
-    public UsuarioRol(long idusuariorol, Integer idUsuario, Integer idRol, Date fechaReg, String descripcion, Boolean estado) {
+    public UsuarioRol(long idusuariorol, Date fechaReg, String descripcion, Boolean estado) {
        this.idusuariorol = idusuariorol;
-       this.idUsuario = idUsuario;
-       this.idRol = idRol;
        this.fechaReg = fechaReg;
        this.descripcion = descripcion;
        this.estado = estado;
@@ -43,20 +44,7 @@ public class UsuarioRol  implements java.io.Serializable {
     public void setIdusuariorol(long idusuariorol) {
         this.idusuariorol = idusuariorol;
     }
-    public Integer getIdUsuario() {
-        return this.idUsuario;
-    }
-    
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-    public Integer getIdRol() {
-        return this.idRol;
-    }
-    
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
-    }
+   
     public Date getFechaReg() {
         return this.fechaReg;
     }
@@ -77,6 +65,22 @@ public class UsuarioRol  implements java.io.Serializable {
     
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
 

@@ -8,12 +8,12 @@
             <column name="idusuariorol" />
             <generator class="increment" />
         </id>
-        <property name="idUsuario" type="java.lang.Integer">
+        <many-to-one name="usuario" class="org.siga.be.Usuario" fetch="select">
             <column name="id_usuario" />
-        </property>
-        <property name="idRol" type="java.lang.Integer">
+        </many-to-one>
+        <many-to-one name="rol" class="org.siga.be.Rol" fetch="select">
             <column name="id_rol" />
-        </property>
+        </many-to-one>
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" />
         </property>
