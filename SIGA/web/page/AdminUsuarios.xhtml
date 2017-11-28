@@ -67,23 +67,23 @@
                                 </p:selectOneMenu>
                                 <p:message for="cbxDependencia" display="icon" />
                                 <div class="flabel" style="width:  150px;">Nombres :</div>
-                                <p:inputText id="txt_nombres" required="true" label="NOMBRES" style=" width: 240px;text-transform: uppercase;"
-                                             placeholder="NOMBRES" value="#{adminUsuarioBean.persona.nombre}"/>
+                                <p:inputText id="txt_nombres" required="true" label="Nombres" style=" width: 240px;text-transform: uppercase;"
+                                             value="#{adminUsuarioBean.persona.nombre}"/>
                                 <p:message for="txt_nombres" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Apellido Paterno :</div>
-                                <p:inputText id="txt_apellido_paterno" required="true" label="APELLIDO PATERNO" style=" width: 240px;text-transform: uppercase;"
-                                             placeholder="APELLIDO PATERNO" value="#{adminUsuarioBean.persona.apellidoPaterno}"/>
+                                <p:inputText id="txt_apellido_paterno" required="true" label="Apellido Paterno" style=" width: 240px;text-transform: uppercase;"
+                                             value="#{adminUsuarioBean.persona.apellidoPaterno}"/>
                                 <p:message for="txt_apellido_paterno" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Apellido Materno :</div>
-                                <p:inputText id="txt_apellido_materno" required="true" label="APELLIDO MATERNO" style=" width: 240px;text-transform: uppercase;"
-                                             placeholder="APELLIDO MATERNO" value="#{adminUsuarioBean.persona.apellidoMaterno}"/>
+                                <p:inputText id="txt_apellido_materno" required="true" label="Apellido Materno" style=" width: 240px;text-transform: uppercase;"
+                                             value="#{adminUsuarioBean.persona.apellidoMaterno}"/>
                                 <p:message for="txt_apellido_materno" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Dni :</div>
                                 <p:inputMask id="txt_dni" required="true" label="DNI" style=" width: 240px;"
-                                             placeholder="DNI" mask="99999999" value="#{adminUsuarioBean.persona.numeroDocumento}"/>
+                                             mask="99999999" value="#{adminUsuarioBean.persona.numeroDocumento}"/>
                                 <p:message for="txt_dni" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Sexo :</div>
@@ -95,25 +95,25 @@
                                 <p:message for="txt_dni" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Telefono :</div>
-                                <p:inputMask id="txt_telefono" required="true" label="TELEFONO" style=" width: 240px;"
-                                             placeholder="TELEFONO" mask="999-999999" value="#{adminUsuarioBean.persona.telefono}"/>
+                                <p:inputMask id="txt_telefono" required="true" label="Telefono" style=" width: 240px;"
+                                             mask="999-999-999" value="#{adminUsuarioBean.persona.telefono}"/>
                                 <p:message for="txt_telefono" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Correo :</div>
-                                <p:inputText id="txt_correo" required="true" label="CORREO" style=" width: 240px;text-transform: uppercase;"
-                                             placeholder="CORREO" value="#{adminUsuarioBean.persona.correoElectronico}">
+                                <p:inputText id="txt_correo" required="true" label="Correo" style=" width: 240px;text-transform: uppercase;"
+                                             value="#{adminUsuarioBean.persona.correoElectronico}">
                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                 </p:inputText>
                                 <p:message for="txt_correo" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Nombre de Usuario :</div>
-                                <p:inputText id="txt_usuario" required="false" label="NOMBRE DE USUARIO" style=" width: 240px;text-transform: uppercase;"
-                                             placeholder="NOMBRE DE USUARIO" value="#{adminUsuarioBean.usuario.nombre}"/>
+                                <p:inputText id="txt_usuario" required="false" label="Usuario" style=" width: 240px;text-transform: uppercase;"
+                                             value="#{adminUsuarioBean.usuario.nombre}"/>
                                 <p:message for="txt_usuario" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Clave de Usuario :</div>
-                                <p:password id="txt_clave" required="false" label="CLAVE DE USUARIO" style=" width: 240px;text-transform: uppercase;"
-                                            placeholder="CLAVE DE USUARIO" value="#{adminUsuarioBean.usuario.contrasenia}"/>
+                                <p:password id="txt_clave" required="false" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
+                                            value="#{adminUsuarioBean.usuario.contrasenia}"/>
                                 <p:message for="txt_clave" display="icon" />
 
                                 <h:outputLabel for="cbx_tu" value="Tipo de Usuario :" />
