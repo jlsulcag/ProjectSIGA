@@ -34,7 +34,7 @@ public class PersonaDao extends AbstractDA<Persona>{
 
     @Override
     public List<Persona> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -55,6 +55,16 @@ public class PersonaDao extends AbstractDA<Persona>{
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Persona> listarAll() {
+        String hql = "from Persona a";
+        return listar(hql);
+    }
+
+    public List<Persona> listarRef(String txtBusqueda) {
+        String hql = "from Persona a where (a.apellidoPaterno || ' ' || a.apellidoMaterno || ' ' || a.nombre) like '%"+txtBusqueda+"%'";
+        return listar(hql);
     }
     
 }

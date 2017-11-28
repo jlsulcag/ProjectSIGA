@@ -48,6 +48,7 @@ public class AdminUsuarioBean {
         res = personaBl.registrar(persona);
         if(res == 0){
             long res2 = -1;
+            usuario.setNombre(usuario.getNombre().trim().toUpperCase());
             usuario.setDescripcion("");
             usuario.setEstado("ACT");
             usuario.setPersona(persona);

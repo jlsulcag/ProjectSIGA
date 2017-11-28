@@ -58,32 +58,38 @@
                         <p:growl id="msgNew" sticky="true" showDetail="true" life="2000"/>
                         <p:dialog header="Registrar Usuario" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
-                            <h:panelGrid columns="3" cellpadding="1">
+                            <h:panelGrid columns="4" cellpadding="1">
                                 <h:outputLabel for="cbxDependencia" value="Dependencia :" />
                                 <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px"
                                                  value="#{adminUsuarioBean.usuario.dependencia.iddependencia}">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
                                 </p:selectOneMenu>
+                                <h:inputHidden />
                                 <p:message for="cbxDependencia" display="icon" />
                                 <div class="flabel" style="width:  150px;">Nombres :</div>
                                 <p:inputText id="txt_nombres" required="true" label="Nombres" style=" width: 240px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.persona.nombre}"/>
+                                <p:commandButton id="btnPerson" icon="ui-icon-search"
+                                                 update="formPersonas" oncomplete="PF('dlgPersonas').show();"/> 
                                 <p:message for="txt_nombres" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Apellido Paterno :</div>
                                 <p:inputText id="txt_apellido_paterno" required="true" label="Apellido Paterno" style=" width: 240px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.persona.apellidoPaterno}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_apellido_paterno" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Apellido Materno :</div>
                                 <p:inputText id="txt_apellido_materno" required="true" label="Apellido Materno" style=" width: 240px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.persona.apellidoMaterno}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_apellido_materno" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Dni :</div>
                                 <p:inputMask id="txt_dni" required="true" label="DNI" style=" width: 240px;"
                                              mask="99999999" value="#{adminUsuarioBean.persona.numeroDocumento}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_dni" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Sexo :</div>
@@ -92,11 +98,13 @@
                                     <f:selectItem itemLabel="MASCULINO" itemValue="M"/>
                                     <f:selectItem itemLabel="FEMENINO" itemValue="F"/>
                                 </p:selectOneMenu>  
+                                <h:inputHidden />
                                 <p:message for="txt_dni" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Telefono :</div>
                                 <p:inputMask id="txt_telefono" required="true" label="Telefono" style=" width: 240px;"
                                              mask="999-999-999" value="#{adminUsuarioBean.persona.telefono}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_telefono" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Correo :</div>
@@ -104,16 +112,19 @@
                                              value="#{adminUsuarioBean.persona.correoElectronico}">
                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                 </p:inputText>
+                                <h:inputHidden />
                                 <p:message for="txt_correo" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Nombre de Usuario :</div>
                                 <p:inputText id="txt_usuario" required="false" label="Usuario" style=" width: 240px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.usuario.nombre}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_usuario" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Clave de Usuario :</div>
                                 <p:password id="txt_clave" required="false" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
                                             value="#{adminUsuarioBean.usuario.contrasenia}"/>
+                                <h:inputHidden />
                                 <p:message for="txt_clave" display="icon" />
 
                                 <h:outputLabel for="cbx_tu" value="Tipo de Usuario :" />
@@ -121,6 +132,7 @@
                                     <f:selectItem itemLabel="SELECCIONE" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{rolBean.selectOneItemsRol}"/>
                                 </p:selectOneMenu>  
+                                <h:inputHidden />
                                 <p:message for="cbx_tu" display="icon" />
                             </h:panelGrid>
 
@@ -136,6 +148,43 @@
 
                         </p:dialog>
 
+
+                    </h:form>
+
+                    <h:form id="formPersonas" style="width: 500px">
+                        <p:dialog header="personas" widgetVar="dlgPersonas" id="dlgPersonas" modal="false" 
+                                  resizable="false" closable="true">
+                            <h:form id="formBusqueda">
+                                <p:toolbar>
+                                    <f:facet name="left">
+                                        <h:outputText value="Busqueda: " />
+                                        <p:inputText id="txtBusqueda" style="width: 300px; text-transform: uppercase" value="#{personaBean.txtBusqueda}">
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:toolbar>
+
+                            </h:form>
+                            <h:form id="formDataPersonas">
+                                <p:dataTable id="lista" value="#{personaBean.listPersonas}" var="item"
+                                             paginator="true" rows="10" paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20" editable="true">
+
+                                    <p:column headerText="Nº">
+                                        <h:outputText value="#{item.idpersona}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Apellidos y Nombres">
+                                        <h:outputText value="#{item.apellidoPaterno} #{item.apellidoMaterno} #{item.nombre}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="DNI">
+                                        <h:outputText value="#{item.numeroDocumento}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </p:dialog>
 
                     </h:form>
 
