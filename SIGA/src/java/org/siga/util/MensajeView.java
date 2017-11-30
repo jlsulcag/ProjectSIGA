@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 public class MensajeView {
     public static final BigDecimal IGV = new BigDecimal("0.18");
     public static final BigDecimal IGV_DIV = new BigDecimal("1.18");
+    public static final int ENTRADA = 1, SALIDA = 2;
     String mensaje = "";
 
     public static void registroCorrecto() {

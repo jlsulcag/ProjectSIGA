@@ -59,7 +59,7 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
 
     @Override
     public AlmacenProducto buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(id);
     }
 
     @Override

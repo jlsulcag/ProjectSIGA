@@ -49,12 +49,12 @@ public class NotaSalidaBean {
     private AlmacenProducto almacenProducto;
     @ManagedProperty(value = "#{almacenProductoBl}")
     private AlmacenProductoBl almacenProductoBl;
-    
+
     @ManagedProperty(value = "#{pedido}")
     private Pedido pedido;
     @ManagedProperty(value = "#{pedidoBl}")
     private PedidoBl pedidoBl;
-    
+
     @ManagedProperty(value = "#{pedidoDetalleBl}")
     private PedidoDetalleBl pedidoDetalleBl;
 
@@ -65,13 +65,13 @@ public class NotaSalidaBean {
 
     public NotaSalidaBean() {
     }
-    
-    public void buscarAlmacenProducto(){
+
+    public void buscarAlmacenProducto() {
         almacenProducto = almacenProductoBl.buscarxId(almacenProducto.getIdalmacenproducto());
     }
-    
+
     public void viewAlmacenProducto() {
-        Map<String,Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<String, Object>();
         options.put("resizable", false);
         RequestContext.getCurrentInstance().openDialog("AlmacenProducto", options, null);
     }
@@ -115,6 +115,7 @@ public class NotaSalidaBean {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
         temp.setProducto(almacenProducto.getProducto());
         temp.setCantidad(notaSalidaDetalle.getCantidad());
+        temp.setIdAlmacenProducto(almacenProducto.getIdalmacenproducto());
         if (pedidoxUnidad) {
             temp.setUnidadmedida("UNIDAD");
         } else {
@@ -132,8 +133,11 @@ public class NotaSalidaBean {
             if (res == 0) {
                 res2 = registrarNotaSalidaDetalle();
                 if (res2 > 0) {
+                    for (NotaSalidaDetalle nsd : listNotaSalidas) {
+                        actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantidad());
+                    }                    
                     MensajeView.registroCorrecto();
-//                    actualizarStock();
+
                     //actualizar el estado del pedido si fuese el caso
                     inicio();
                 } else {
@@ -149,22 +153,26 @@ public class NotaSalidaBean {
     }
 
     public long registrarNotaSalida() {
-        notaSalida.setIdUserReg(0);
-        notaSalida.setPedido(notaSalida.getPedido());
-        notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+
         notaSalida.setFechaReg(new Date());
+        notaSalida.setIdUserReg(0);
+        notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
+        notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
+        notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+
         //Obtener todos los datos del pedido para determinar  origen y destino 
         pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
-        if(pedido.getIdpedido() > 0){
-            
+
+        if (pedido != null && pedido.getIdpedido() > 0) {
+            notaSalida.setPedido(notaSalida.getPedido());
+            notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
+            notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
+        } else {
+            notaSalida.setPedido(null);
         }
-        notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
-        notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
-        System.out.println("almacen origen ........... "+notaSalida.getAlmacenOrigen().getNombre());
-        System.out.println("almacen destino ........... "+notaSalida.getAlmacenDestino().getNombre());
-        
+
         return notaSalidaBl.registrar(notaSalida);
-        
+
         //return notaSalida.getIdnotasalida();
     }
 
@@ -351,6 +359,19 @@ public class NotaSalidaBean {
 
     public void setPedidoBl(PedidoBl pedidoBl) {
         this.pedidoBl = pedidoBl;
+    }
+
+    
+
+    private void actualizarStock(int op, long idAlmacenProducto, int cantidad) {
+        AlmacenProducto temp = new AlmacenProducto();
+        temp = almacenProductoBl.buscar(idAlmacenProducto);
+        if(op == MensajeView.SALIDA){
+            temp.setStockActual(temp.getStockActual()-cantidad);
+        }else if(op == MensajeView.ENTRADA){
+            temp.setStockActual(temp.getStockActual()+cantidad);
+        }
+        almacenProductoBl.actualizar(temp);
     }
 
 }

@@ -18,6 +18,7 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
      private String unidadmedida;
      private NotaSalida notasalida;
      private int cantidad;
+     private long idAlmacenProducto;
 
     public NotaSalidaDetalle() {
         this.idnotasalidadetalle = 0;
@@ -70,6 +71,14 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
 
     public void setNotasalida(NotaSalida notasalida) {
         this.notasalida = notasalida;
+    }
+
+    public long getIdAlmacenProducto() {
+        return idAlmacenProducto;
+    }
+
+    public void setIdAlmacenProducto(long idAlmacenProducto) {
+        this.idAlmacenProducto = idAlmacenProducto;
     }
 
 

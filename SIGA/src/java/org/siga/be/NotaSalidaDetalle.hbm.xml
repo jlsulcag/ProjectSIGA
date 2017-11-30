@@ -20,5 +20,8 @@
         <property name="cantidad" type="int">
             <column name="cantidad" not-null="true" />
         </property>
+        <property name="idAlmacenProducto" type="long">
+            <column name="id_almacenproducto" />
+        </property>
     </class>
 </hibernate-mapping>
