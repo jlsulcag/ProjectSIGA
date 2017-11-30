@@ -32,7 +32,7 @@
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
-                               
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxAlmacenO" value="Almacen Origen :"/>
                                 </div>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfResponsable" disabled="true" readonly="true" label="Responsable origen" 
-                                                  />
+                                                 />
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -69,9 +69,9 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfResponsableDest" label="Responsable destino" 
-                                                  />
+                                                 />
                                 </div>
-                                
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxTipoMov" value="Tipo Movimiento :" />
                                 </div>
@@ -82,7 +82,7 @@
                                         <f:selectItems value="#{tipoMovimientoBean.selectOneItemsTipoMovimiento}"/>
                                     </p:selectOneMenu>
                                 </div>
-                                
+
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDocRef" value="Doc Ref:" />
@@ -106,8 +106,6 @@
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
                                                  update="formNew" actionListener="#{notaSalidaBean.inicioNew()}" oncomplete="PF('dlgNew').show();"/>
-                                <p:commandButton id="btnAdd2" icon="ui-icon-plus" value="Agregar2" title="Agregar2" 
-                                                 update="formProd" oncomplete="PF('dlgProd').show();"/>
                             </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
@@ -135,12 +133,8 @@
                             <p:column headerText="Producto">
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
-
-                            <p:column headerText="Unidad Medida">
-                                <h:outputText value="#{item.unidadmedida}"/>
-                            </p:column>
-
-                            <p:column headerText="Cant Ingreso">
+                            
+                            <p:column headerText="Cantidad">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantidad}" /></f:facet>
                                     <f:facet name="input">
@@ -148,6 +142,12 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
+
+                            <p:column headerText="Unidad">
+                                <h:outputText value="#{item.unidadmedida}"/>
+                            </p:column>
+
+                            
 
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update=""  
@@ -163,38 +163,32 @@
                     <h:form id="formNew">
                         <p:dialog header="" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
-                            <h:panelGrid columns="4" cellpadding="1">                            
-
+                            
+                            
+                            <h:panelGrid columns="4" cellpadding="1"> 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
-                                <p:selectOneMenu id="cbxProducto" value="#{notaSalidaBean.notaSalidaDetalle.producto.idproducto}" 
+                                <p:selectOneMenu id="cbxProducto" value="#{notaSalidaBean.almacenProducto.idalmacenproducto}" 
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{notaSalidaBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                    <f:selectItems value="#{almacenProductoBean.selectOneItemsAlmacenProducto}"/>
+                                    <p:ajax listener="#{notaSalidaBean.buscarAlmacenProducto()}" update="txfStock"/>
                                 </p:selectOneMenu>
+                                
+                                <h:outputLabel for="txfStock" value="Stock :"/>
+                                <p:inputText id="txfStock" label="Stock" 
+                                             value="#{notaSalidaBean.almacenProducto.stockActual}">
+                                </p:inputText>
 
-                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
-                                <p:inputText id="txfFraccion" label="Fracción" readonly="true" disabled="true"
-                                             value="#{notaSalidaBean.producto.fraccion}"/>
-
-                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
-                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true" disabled="true"
-                                             value="#{notaSalidaBean.producto.unidadMedida.descripcion}"/>
-
-                                <h:outputLabel for="txfPedidoxUnidad" value=" Pedido por unidad ?:"/>
+                                <h:outputLabel for="txfPedidoxUnidad" value="Unidad ?:"/>
                                 <p:selectBooleanCheckbox  id="txfPedidoxUnidad" value="#{notaSalidaBean.pedidoxUnidad}">
-                                    <p:ajax update="txfTotalproductos" listener="#{notaSalidaBean.setIsPedidoUnitario}" />
+                                    <p:ajax listener="#{notaSalidaBean.setIsPedidoUnitario}" />
                                 </p:selectBooleanCheckbox>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
                                              value="#{notaSalidaBean.notaSalidaDetalle.cantidad}">
-                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{notaSalidaBean.calcularTotalProductos()}"/>
                                 </p:inputText>
-
-                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
-                                <p:inputText id="txfTotalproductos" label="Cantidad"
-                                             value="#{notaSalidaBean.totalProductos}"/>
+                                
                                 <f:facet name="footer">
                                     <p:separator/>
 
@@ -208,16 +202,22 @@
 
                         </p:dialog>
                     </h:form>
-                    
+
                     <h:form id="formProd">
                         <p:dialog header="" widgetVar="dlgProd" id="dlgProd" modal="false" 
-                                  resizable="false" closable="true">
-                            <p:dataTable id="productoDT">
-                                <f:facet name="header">Productos</f:facet>
-                                <p:column headerText="ID">
-                                    <h:outputText />
-                                </p:column>
-                            </p:dataTable>
+                                  resizable="false" closable="true" responsive="true"> 
+                            <h:panelGrid columns="1" cellpadding="1">
+                                <p:dataTable id="productoDT" value="#{almacenProductoBean.listInventario}" var="item" paginator="true">
+                                    <f:facet name="header">Productos</f:facet>
+                                    <p:column headerText="ID">
+                                        <h:outputText value="#{item.idalmacenproducto}"/>
+                                    </p:column>
+                                    <p:column headerText="Producto">
+                                        <h:outputText value="#{item.producto.descripcion}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+
                         </p:dialog>
                     </h:form>
                 </p:panel>

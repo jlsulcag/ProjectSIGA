@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
@@ -33,6 +34,7 @@ public class AlmacenProductoBean {
     
     private List<AlmacenProducto> listInventario;
     private String txtBusqueda;
+    private List<SelectItem> selectOneItemsAlmacenProducto;
     
     public AlmacenProductoBean() {
     }
@@ -41,6 +43,12 @@ public class AlmacenProductoBean {
     public void inicio(){
         almacenProducto.setAlmacen(defaultAlmacen());
         listarProductos(almacenProducto.getAlmacen().getIdalmacen());
+    }
+    
+    public void buscarAlmacenProducto(){
+        System.out.println("id alamcen producto .. "+almacenProducto.getIdalmacenproducto());
+        almacenProducto = almacenProductoBl.buscarxId(almacenProducto.getIdalmacenproducto());
+        System.out.println("producto ...  "+almacenProducto.getProducto().getDescripcion());
     }
     
     public void listarRef(){
@@ -117,6 +125,24 @@ public class AlmacenProductoBean {
 
     public void setTxtBusqueda(String txtBusqueda) {
         this.txtBusqueda = txtBusqueda;
+    }
+
+    public List<SelectItem> getSelectOneItemsAlmacenProducto() {
+        this.selectOneItemsAlmacenProducto= new LinkedList<SelectItem>();
+        for (AlmacenProducto obj : listarAlmacenProducto()) {
+            this.setAlmacenProducto(obj);
+            SelectItem selectItem = new SelectItem(almacenProducto.getIdalmacenproducto(), almacenProducto.getProducto().getDescripcion());
+            this.selectOneItemsAlmacenProducto.add(selectItem);
+        }
+        return selectOneItemsAlmacenProducto;
+    }
+
+    public void setSelectOneItemsAlmacenProducto(List<SelectItem> selectOneItemsAlmacenProducto) {
+        this.selectOneItemsAlmacenProducto = selectOneItemsAlmacenProducto;
+    }
+
+    private List<AlmacenProducto> listarAlmacenProducto() {
+        return almacenProductoBl.listarFull();
     }
     
 }

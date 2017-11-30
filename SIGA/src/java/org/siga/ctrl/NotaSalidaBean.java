@@ -1,12 +1,15 @@
 package org.siga.ctrl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaSalida;
@@ -62,6 +65,16 @@ public class NotaSalidaBean {
 
     public NotaSalidaBean() {
     }
+    
+    public void buscarAlmacenProducto(){
+        almacenProducto = almacenProductoBl.buscarxId(almacenProducto.getIdalmacenproducto());
+    }
+    
+    public void viewAlmacenProducto() {
+        Map<String,Object> options = new HashMap<String, Object>();
+        options.put("resizable", false);
+        RequestContext.getCurrentInstance().openDialog("AlmacenProducto", options, null);
+    }
 
     @PostConstruct
     public void inicio() {
@@ -85,9 +98,9 @@ public class NotaSalidaBean {
 
     public void setIsPedidoUnitario() {
         setPedidoxUnidad(pedidoxUnidad);
-        if (notaSalidaDetalle.getCantidad() > 0) {
-            calcularTotalProductos();
-        }
+//        if (notaSalidaDetalle.getCantidad() > 0) {
+//            calcularTotalProductos();
+//        }
     }
 
     public void calcularTotalProductos() {
@@ -100,12 +113,12 @@ public class NotaSalidaBean {
 
     public void agregar() {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
-        temp.setProducto(producto);
+        temp.setProducto(almacenProducto.getProducto());
         temp.setCantidad(notaSalidaDetalle.getCantidad());
         if (pedidoxUnidad) {
             temp.setUnidadmedida("UNIDAD");
         } else {
-            temp.setUnidadmedida(producto.getUnidadMedida().getDescripcion());
+            temp.setUnidadmedida(almacenProducto.getProducto().getUnidadMedida().getDescripcion());
         }
         getListNotaSalidas().add(temp);
 

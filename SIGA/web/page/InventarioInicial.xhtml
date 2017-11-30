@@ -100,17 +100,19 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Unidad Medida">
-                                <h:outputText value="#{item.unidadMedida}"/>
-                            </p:column>
+                            
 
-                            <p:column headerText="Cant Ingreso">
+                            <p:column headerText="Cantidad">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantIngreso}" /></f:facet>
                                     <f:facet name="input">
                                         <p:inputText id="txtCantIngreso" label="Cantidad" value="#{item.cantIngreso}"/>
                                     </f:facet>
                                 </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column headerText="Unidad">
+                                <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
                             <p:column style="width:30px;text-align: center">

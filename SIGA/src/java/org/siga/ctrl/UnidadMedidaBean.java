@@ -96,7 +96,7 @@ public class UnidadMedidaBean {
 
     public List<SelectItem> getSelectOneItemsUnidadMedida() {
         this.selectOneItemsUnidadMedida= new LinkedList<SelectItem>();
-        for (UnidadMedida obj : listaUnidadMedidas) {
+        for (UnidadMedida obj : unidadMedidaBl.listar()) {
             this.setUnidadMedida(obj);
             SelectItem selectItem = new SelectItem(unidadMedida.getIdunidadmedida(), unidadMedida.getDescripcion());
             this.selectOneItemsUnidadMedida.add(selectItem);

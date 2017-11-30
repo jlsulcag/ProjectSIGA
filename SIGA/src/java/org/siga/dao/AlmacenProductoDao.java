@@ -65,12 +65,12 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
     }
 
     public List<AlmacenProducto> listarXAlmacen(long idalmacen) {
-        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e where c.idalmacen = "+idalmacen;
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where c.idalmacen = "+idalmacen;
         return listar(hql);
     }
 
     public List<AlmacenProducto> listarRef(String ref, long idalmacen) {
-        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e where b.descripcion like '%"+ref+"%' and c.idalmacen = "+idalmacen;
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where b.descripcion like '%"+ref+"%' and c.idalmacen = "+idalmacen;
         return listar(hql);
     }
 
@@ -93,6 +93,16 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
             t.rollback();
             return 0;
         }
+    }
+
+    public List<AlmacenProducto> listarFull() {
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g ";
+        return listar(hql);
+    }
+
+    public AlmacenProducto buscarxId(long idalmacenproducto) {
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where a.idalmacenproducto = "+idalmacenproducto;
+        return buscar(hql);
     }
     
 }
