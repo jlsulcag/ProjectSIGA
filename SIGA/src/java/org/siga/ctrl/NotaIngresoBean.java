@@ -117,10 +117,10 @@ public class NotaIngresoBean {
     }
 
     public void limpiarNew() {
-        System.out.println("metodo limpia  neww  ");
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
+        notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
         //notaEntradaDetalle.getProducto().setFraccion(0);
         producto.setFraccion(0);
         producto.getUnidadMedida().setDescripcion("");
@@ -387,24 +387,24 @@ public class NotaIngresoBean {
         int res = -1;
         for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
             AlmacenProducto temp = new AlmacenProducto();
-            almacenProducto.setProducto(obj.getProducto());
-            almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
-            almacenProducto.setLote(obj.getLote());
-            almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
-            almacenProducto.setValorCompraUnitario(obj.getValorCompra());
-            //registrar el orden de ingreso para cumplir con FIFO
-            int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
-            almacenProducto.setOrdenIngreso(numOrden+1);
-            almacenProducto.setUnidad(obj.getUnidadMedida());
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
             if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
-                almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
-                almacenProducto.setStockActual(obj.getCantIngreso() + temp.getStockActual());
-                almacenProductoBl.actualizar(almacenProducto);
+                //temp.setIdalmacenproducto(temp.getIdalmacenproducto());
+                temp.setStockActual(obj.getCantIngreso() + temp.getStockActual());
+                almacenProductoBl.actualizar(temp);
                 res = 1;
             } else {//Registrar nuevo
                 almacenProducto.setProducto(obj.getProducto());
                 almacenProducto.setStockActual(obj.getCantIngreso());
+                almacenProducto.setProducto(obj.getProducto());
+                almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
+                almacenProducto.setLote(obj.getLote());
+                almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
+                almacenProducto.setValorCompraUnitario(obj.getValorCompra());
+                //registrar el orden de ingreso para cumplir con FIFO
+                int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
+                almacenProducto.setOrdenIngreso(numOrden + 1);
+                almacenProducto.setUnidad(obj.getUnidadMedida());
                 almacenProductoBl.registrar(almacenProducto);
                 res = 1;
             }

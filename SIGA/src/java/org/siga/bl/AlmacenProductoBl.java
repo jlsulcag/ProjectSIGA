@@ -96,5 +96,13 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
         return dao.buscarxId(idalmacenproducto);
     }
 
+    public long buscarMinNumeroOrdenxProducto(long idproducto) {
+        return dao.buscarMinNumeroOrdenxProducto(idproducto);
+    }
+
+    public int buscarStockxProducto(long idproducto) {
+        return dao.buscarStockxProducto(idproducto);
+    }
+
     
 }

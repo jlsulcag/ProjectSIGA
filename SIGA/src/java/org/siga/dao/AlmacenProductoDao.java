@@ -104,5 +104,47 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
         String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where a.idalmacenproducto = "+idalmacenproducto;
         return buscar(hql);
     }
+
+    public long buscarMinNumeroOrdenxProducto(long idproducto) {
+        Session s = getSession();
+        Transaction t = s.beginTransaction();
+        long num = 0;
+        try {
+            String hql = "select a.idalmacenproducto from AlmacenProducto a where a.ordenIngreso = (select min(b.ordenIngreso) from AlmacenProducto b where b.producto.idproducto = "+idproducto+" and b.stockActual > 0) and a.producto.idproducto = "+idproducto+" and a.stockActual>0";
+            Query query = s.createQuery(hql);
+            if (query.uniqueResult() == null) {
+                num = 0;
+            } else {
+                num = (long) query.uniqueResult();
+            }
+            t.commit();
+            s.close();
+            return num;
+        } catch (HibernateException e) {
+            t.rollback();
+            return 0;
+        }
+    }
+
+    public int buscarStockxProducto(long idproducto) {
+        Session s = getSession();
+        Transaction t = s.beginTransaction();
+        int num = 0;
+        try {
+            String hql = "select a.stockActual from AlmacenProducto a where a.ordenIngreso = (select min(b.ordenIngreso) from AlmacenProducto b where b.producto.idproducto = "+idproducto+" and b.stockActual > 0) and a.producto.idproducto = "+idproducto+" and a.stockActual>0";
+            Query query = s.createQuery(hql);
+            if (query.uniqueResult() == null) {
+                num = 0;
+            } else {
+                num = (int) query.uniqueResult();
+            }
+            t.commit();
+            s.close();
+            return num;
+        } catch (HibernateException e) {
+            t.rollback();
+            return 0;
+        }
+    }
     
 }

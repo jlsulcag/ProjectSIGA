@@ -118,6 +118,10 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
+                            
+                            <p:column headerText="Stock">
+                                <h:outputText value="#{item.stock}"/>
+                            </p:column>
 
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update=""  

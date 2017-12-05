@@ -62,6 +62,7 @@ public class NotaSalidaBean {
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private boolean pedidoxUnidad;
     private int totalProductos;
+    private int stock;
 
     public NotaSalidaBean() {
     }
@@ -132,12 +133,12 @@ public class NotaSalidaBean {
             res = registrarNotaSalida();
             if (res == 0) {
                 res2 = registrarNotaSalidaDetalle();
-                if (res2 > 0) {
+                if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
+                        System.out.println("nota salida detalle "+nsd.getIdnotasalidadetalle());
                         actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantidad());
                     }                    
                     MensajeView.registroCorrecto();
-
                     //actualizar el estado del pedido si fuese el caso
                     inicio();
                 } else {
@@ -180,8 +181,7 @@ public class NotaSalidaBean {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
             obj.setNotasalida(notaSalida);
-            notaSalidaDetalleBl.registrar(obj);
-            id = obj.getIdnotasalidadetalle();
+            id = notaSalidaDetalleBl.registrar(obj);
             //Actualizar stock almacen
         }
         return id;
@@ -201,13 +201,15 @@ public class NotaSalidaBean {
         //obtener la lista con los detalles del pedido
         long id = notaSalida.getPedido().getIdpedido();
         listPedidoDetalle = pedidoDetalleBl.listarxIdPedido(id);
-        System.out.println("list tamaño " + listPedidoDetalle.size());
         for (PedidoDetalle obj : listPedidoDetalle) {
             NotaSalidaDetalle nsd = new NotaSalidaDetalle();
             nsd.setProducto(obj.getProducto());
             nsd.setUnidadmedida(obj.getUnidadMedida());
             nsd.setNotasalida(notaSalida);
             nsd.setCantidad(obj.getCantidadSolicitada());
+            //buscar el producto en el almacen  para realizar  la actualizacion de stock de acuerdo al orden de ingreso  y stock disponible
+            nsd.setIdAlmacenProducto(almacenProductoBl.buscarMinNumeroOrdenxProducto(nsd.getProducto().getIdproducto()));
+            nsd.setStock(almacenProductoBl.buscarStockxProducto(nsd.getProducto().getIdproducto()));
 
             listNotaSalidas.add(nsd);
         }
@@ -367,11 +369,22 @@ public class NotaSalidaBean {
         AlmacenProducto temp = new AlmacenProducto();
         temp = almacenProductoBl.buscar(idAlmacenProducto);
         if(op == MensajeView.SALIDA){
+            //System.out.println("almacen producto ... "+temp.getIdalmacenproducto());
+            System.out.println("cantidad ... "+cantidad);
             temp.setStockActual(temp.getStockActual()-cantidad);
         }else if(op == MensajeView.ENTRADA){
             temp.setStockActual(temp.getStockActual()+cantidad);
         }
+        almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
         almacenProductoBl.actualizar(temp);
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
 }
