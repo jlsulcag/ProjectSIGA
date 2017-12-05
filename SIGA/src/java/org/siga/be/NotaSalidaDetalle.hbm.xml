@@ -17,8 +17,17 @@
         <property name="unidadmedida" type="string">
             <column length="30" name="unidadmedida"/>
         </property>
-        <property name="cantidad" type="int">
-            <column name="cantidad" not-null="true" />
+        <property name="cantSolicitada" type="int">
+            <column name="cant_solicitada"/>
+        </property>
+        <property name="cantAtendida" type="int">
+            <column name="cant_atendida" not-null="true"/>
+        </property>
+        <property name="cantPendiente" type="int">
+            <column name="cant_pendiente" not-null="true"/>
+        </property>
+        <property name="cantSalida" type="int">
+            <column name="cant_salida" not-null="true"/>
         </property>
         <property name="idAlmacenProducto" type="long">
             <column name="id_almacenproducto" />

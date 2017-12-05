@@ -6,10 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.NotaSalida;
@@ -64,6 +67,8 @@ public class NotaSalidaBean {
     private int totalProductos;
     private int stock;
 
+    private NotaSalidaDetalle NotaSalidaDetalleTemp;
+
     public NotaSalidaBean() {
     }
 
@@ -106,16 +111,16 @@ public class NotaSalidaBean {
 
     public void calcularTotalProductos() {
         if (pedidoxUnidad) {
-            setTotalProductos(notaSalidaDetalle.getCantidad());
+            setTotalProductos(notaSalidaDetalle.getCantSolicitada());
         } else {
-            setTotalProductos(notaSalidaDetalle.getCantidad() * producto.getFraccion());
+            setTotalProductos(notaSalidaDetalle.getCantSolicitada() * producto.getFraccion());
         }
     }
 
     public void agregar() {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
         temp.setProducto(almacenProducto.getProducto());
-        temp.setCantidad(notaSalidaDetalle.getCantidad());
+        temp.setCantSolicitada(notaSalidaDetalle.getCantSolicitada());
         temp.setIdAlmacenProducto(almacenProducto.getIdalmacenproducto());
         if (pedidoxUnidad) {
             temp.setUnidadmedida("UNIDAD");
@@ -135,9 +140,11 @@ public class NotaSalidaBean {
                 res2 = registrarNotaSalidaDetalle();
                 if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
-                        System.out.println("nota salida detalle "+nsd.getIdnotasalidadetalle());
-                        actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantidad());
-                    }                    
+                        if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
+                            System.out.println("nota salida detalle " + nsd.getIdnotasalidadetalle());
+                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantSalida());
+                        }
+                    }
                     MensajeView.registroCorrecto();
                     //actualizar el estado del pedido si fuese el caso
                     inicio();
@@ -180,8 +187,11 @@ public class NotaSalidaBean {
     private long registrarNotaSalidaDetalle() {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
-            obj.setNotasalida(notaSalida);
-            id = notaSalidaDetalleBl.registrar(obj);
+            if (obj.getStock() >= obj.getCantSolicitada()) {
+                obj.setNotasalida(notaSalida);
+                id = notaSalidaDetalleBl.registrar(obj);
+            }
+
             //Actualizar stock almacen
         }
         return id;
@@ -192,7 +202,10 @@ public class NotaSalidaBean {
         producto.setFraccion(0);
         producto.setUnidadMedida(null);
         setPedidoxUnidad(false);
-        notaSalidaDetalle.setCantidad(0);
+        notaSalidaDetalle.setCantSolicitada(0);
+        notaSalidaDetalle.setCantAtendida(0);
+        notaSalidaDetalle.setCantPendiente(0);
+        notaSalidaDetalle.setCantSalida(0);
         setTotalProductos(0);
     }
 
@@ -206,13 +219,39 @@ public class NotaSalidaBean {
             nsd.setProducto(obj.getProducto());
             nsd.setUnidadmedida(obj.getUnidadMedida());
             nsd.setNotasalida(notaSalida);
-            nsd.setCantidad(obj.getCantidadSolicitada());
+            nsd.setCantSolicitada(obj.getCantidadSolicitada());
             //buscar el producto en el almacen  para realizar  la actualizacion de stock de acuerdo al orden de ingreso  y stock disponible
             nsd.setIdAlmacenProducto(almacenProductoBl.buscarMinNumeroOrdenxProducto(nsd.getProducto().getIdproducto()));
             nsd.setStock(almacenProductoBl.buscarStockxProducto(nsd.getProducto().getIdproducto()));
 
             listNotaSalidas.add(nsd);
         }
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        NotaSalidaDetalleTemp = new NotaSalidaDetalle();
+        String msg = "";
+        NotaSalidaDetalleTemp.setProducto(((NotaSalidaDetalle) event.getObject()).getProducto());
+        NotaSalidaDetalleTemp.setCantSalida(((NotaSalidaDetalle) event.getObject()).getCantSalida());
+        for (NotaSalidaDetalle obj : listNotaSalidas) {
+            //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
+            if (obj.getProducto() == NotaSalidaDetalleTemp.getProducto()) {
+
+                if (NotaSalidaDetalleTemp.getCantSalida() > obj.getCantPendiente()) {
+                    //la cantidad ingresa se debe mantener
+                    obj.setCantSalida(obj.getCantPendiente());
+                    msg = "La cantidad ingresada supera a la cantidad pendiente";
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                }
+            }
+        }
+
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edicion cancelada", null);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     /*
      public int actualizarStock(){
@@ -363,17 +402,15 @@ public class NotaSalidaBean {
         this.pedidoBl = pedidoBl;
     }
 
-    
-
     private void actualizarStock(int op, long idAlmacenProducto, int cantidad) {
         AlmacenProducto temp = new AlmacenProducto();
         temp = almacenProductoBl.buscar(idAlmacenProducto);
-        if(op == MensajeView.SALIDA){
+        if (op == MensajeView.SALIDA) {
             //System.out.println("almacen producto ... "+temp.getIdalmacenproducto());
-            System.out.println("cantidad ... "+cantidad);
-            temp.setStockActual(temp.getStockActual()-cantidad);
-        }else if(op == MensajeView.ENTRADA){
-            temp.setStockActual(temp.getStockActual()+cantidad);
+            System.out.println("cantidad ... " + cantidad);
+            temp.setStockActual(temp.getStockActual() - cantidad);
+        } else if (op == MensajeView.ENTRADA) {
+            temp.setStockActual(temp.getStockActual() + cantidad);
         }
         almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
         almacenProductoBl.actualizar(temp);
@@ -385,6 +422,14 @@ public class NotaSalidaBean {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public NotaSalidaDetalle getNotaSalidaDetalleTemp() {
+        return NotaSalidaDetalleTemp;
+    }
+
+    public void setNotaSalidaDetalleTemp(NotaSalidaDetalle NotaSalidaDetalleTemp) {
+        this.NotaSalidaDetalleTemp = NotaSalidaDetalleTemp;
     }
 
 }

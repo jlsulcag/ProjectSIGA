@@ -17,7 +17,10 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
      private Producto producto;
      private String unidadmedida;
      private NotaSalida notasalida;
-     private int cantidad;
+     private int cantSolicitada;
+    private int cantAtendida;
+    private int cantPendiente;
+    private int cantSalida;
      private long idAlmacenProducto;
      private int stock;
 
@@ -27,12 +30,11 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
         this.notasalida = new NotaSalida();
     }
 
-    public NotaSalidaDetalle(long idnotasalidadetalle, Producto producto, String unidadmedida, NotaSalida notasalida, int cantidad) {
+    public NotaSalidaDetalle(long idnotasalidadetalle, Producto producto, String unidadmedida, NotaSalida notasalida) {
         this.idnotasalidadetalle = idnotasalidadetalle;
         this.producto = producto;
         this.unidadmedida = unidadmedida;
         this.notasalida = notasalida;
-        this.cantidad = cantidad;
     }
     
     public long getIdnotasalidadetalle() {
@@ -41,13 +43,6 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
     
     public void setIdnotasalidadetalle(long idnotasalidadetalle) {
         this.idnotasalidadetalle = idnotasalidadetalle;
-    }
-    public int getCantidad() {
-        return this.cantidad;
-    }
-    
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
     }
 
     public Producto getProducto() {
@@ -88,6 +83,38 @@ public class NotaSalidaDetalle  implements java.io.Serializable {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public int getCantSolicitada() {
+        return cantSolicitada;
+    }
+
+    public void setCantSolicitada(int cantSolicitada) {
+        this.cantSolicitada = cantSolicitada;
+    }
+
+    public int getCantAtendida() {
+        return cantAtendida;
+    }
+
+    public void setCantAtendida(int cantAtendida) {
+        this.cantAtendida = cantAtendida;
+    }
+
+    public int getCantPendiente() {
+        return cantPendiente;
+    }
+
+    public void setCantPendiente(int cantPendiente) {
+        this.cantPendiente = cantPendiente;
+    }
+
+    public int getCantSalida() {
+        return cantSalida;
+    }
+
+    public void setCantSalida(int cantSalida) {
+        this.cantSalida = cantSalida;
     }
 
 
