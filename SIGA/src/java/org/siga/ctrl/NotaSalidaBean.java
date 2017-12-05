@@ -121,6 +121,7 @@ public class NotaSalidaBean {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
         temp.setProducto(almacenProducto.getProducto());
         temp.setCantSolicitada(notaSalidaDetalle.getCantSolicitada());
+        temp.setStock(almacenProducto.getStockActual());
         temp.setIdAlmacenProducto(almacenProducto.getIdalmacenproducto());
         if (pedidoxUnidad) {
             temp.setUnidadmedida("UNIDAD");
@@ -134,6 +135,7 @@ public class NotaSalidaBean {
     public void registrar() {
         long res = -1;
         long res2 = -1;
+        int cont = 0;//Contador de items no atendidos
         if (!listNotaSalidas.isEmpty()) {
             res = registrarNotaSalida();
             if (res == 0) {
@@ -141,10 +143,18 @@ public class NotaSalidaBean {
                 if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
                         if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
-                            System.out.println("nota salida detalle " + nsd.getIdnotasalidadetalle());
-                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantSalida());
+                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantSolicitada());
+                        } else {
+                            cont++;
                         }
                     }
+                    if (pedido != null) {
+                        if (cont == 0) {//Actualizar estado del pedido para ya no mostrar en la lista
+                            pedido.setEstado("CERRADO");
+                            pedidoBl.actualizar(pedido);
+                        }
+                    }
+
                     MensajeView.registroCorrecto();
                     //actualizar el estado del pedido si fuese el caso
                     inicio();
@@ -406,8 +416,6 @@ public class NotaSalidaBean {
         AlmacenProducto temp = new AlmacenProducto();
         temp = almacenProductoBl.buscar(idAlmacenProducto);
         if (op == MensajeView.SALIDA) {
-            //System.out.println("almacen producto ... "+temp.getIdalmacenproducto());
-            System.out.println("cantidad ... " + cantidad);
             temp.setStockActual(temp.getStockActual() - cantidad);
         } else if (op == MensajeView.ENTRADA) {
             temp.setStockActual(temp.getStockActual() + cantidad);
