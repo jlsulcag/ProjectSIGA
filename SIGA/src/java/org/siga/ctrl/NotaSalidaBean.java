@@ -247,7 +247,7 @@ public class NotaSalidaBean {
             //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
             if (obj.getProducto() == NotaSalidaDetalleTemp.getProducto()) {
 
-                if (NotaSalidaDetalleTemp.getCantSalida() > obj.getCantPendiente()) {
+                if (NotaSalidaDetalleTemp.getCantSalida() > obj.getCantSolicitada()) {
                     //la cantidad ingresa se debe mantener
                     obj.setCantSalida(obj.getCantPendiente());
                     msg = "La cantidad ingresada supera a la cantidad pendiente";

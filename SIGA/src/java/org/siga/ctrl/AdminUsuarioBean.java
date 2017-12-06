@@ -45,10 +45,16 @@ public class AdminUsuarioBean {
     
     public void registrar(){
         long res = -1;
+        persona.setNombre(persona.getNombre().toUpperCase());
+        persona.setApellidoPaterno(persona.getApellidoPaterno().toUpperCase());
+        persona.setApellidoMaterno(persona.getApellidoMaterno().toUpperCase());
+        persona.setSexo(persona.getSexo().toUpperCase());
+        persona.setCorreoElectronico(persona.getCorreoElectronico().toUpperCase());
         res = personaBl.registrar(persona);
         if(res == 0){
             long res2 = -1;
             usuario.setNombre(usuario.getNombre().trim().toUpperCase());
+            usuario.setContrasenia(usuario.getContrasenia().toUpperCase());
             usuario.setDescripcion("");
             usuario.setEstado("ACT");
             usuario.setPersona(persona);
@@ -70,8 +76,24 @@ public class AdminUsuarioBean {
                 }
             }
         }
+        listarFull();
         
         
+    }
+    
+    public void limpiarNew(){
+        usuario.setIdusuario(0);
+        //usuario.setDependencia(null);        
+        persona.setNombre("");
+        persona.setApellidoPaterno("");
+        persona.setApellidoMaterno("");
+        persona.setNumeroDocumento("");
+        persona.setSexo("");
+        persona.setTelefono("");
+        persona.setCorreoElectronico("");
+        usuario.setNombre("");
+        usuario.setContrasenia("");
+        //usuarioRol.setRol(null);
     }
     
     @PostConstruct
@@ -80,11 +102,11 @@ public class AdminUsuarioBean {
     }
     
     public void listarRef(){
-        setListUsuarios(usuarioBl.listarRef(txtBusqueda));
+        setListUsuarios(usuarioBl.listarRef(txtBusqueda.toUpperCase()));
     }
     
     public void listarxNombres(){
-        setListUsuarios(usuarioBl.listarxNombres(txtBusqueda));
+        setListUsuarios(usuarioBl.listarxNombres(txtBusqueda.toUpperCase()));
     }
 
     public Persona getPersona() {

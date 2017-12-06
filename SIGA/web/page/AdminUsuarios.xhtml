@@ -17,7 +17,7 @@
                         <p:toolbar>
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
-                                                 update="formNew" oncomplete="PF('dlgNew').show();"/>
+                                                 update="formNew" oncomplete="PF('dlgNew').show();" actionListener="#{adminUsuarioBean.limpiarNew()}"/>
                             </f:facet>
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
@@ -41,13 +41,13 @@
                             <p:column style="width:15px;text-align: center" headerText="Nº">
                                 <h:outputText value="#{item.idusuario}"/>
                             </p:column>
-                            <p:column style="width:15px;text-align: center" headerText="Apellidos y Nombres">
+                            <p:column style="width:300px" headerText="Apellidos y Nombres">
                                 <h:outputText value="#{item.persona.apellidoPaterno} #{item.persona.apellidoMaterno} #{item.persona.nombre}"/>
                             </p:column>
-                            <p:column style="width:15px;text-align: center" headerText="Usuario">
+                            <p:column style="width:100px" headerText="Usuario">
                                 <h:outputText value="#{item.nombre}"/>
                             </p:column>
-                            <p:column style="width:15px;text-align: center" headerText="Dependencia">
+                            <p:column style="width:100px" headerText="Dependencia">
                                 <h:outputText value="#{item.dependencia.descripcion}"/>
                             </p:column>
                         </p:dataTable>
@@ -55,10 +55,10 @@
                     </h:form>
 
                     <h:form id="formNew">
-                        <p:growl id="msgNew" sticky="true" showDetail="true" life="2000"/>
+                        <p:growl id="msgNew" sticky="true" showDetail="true"/>
                         <p:dialog header="Registrar Usuario" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
-                            <h:panelGrid columns="4" cellpadding="1">
+                            <h:panelGrid id="gridMisDatos" columns="4" cellpadding="1">
                                 <h:outputLabel for="cbxDependencia" value="Dependencia :" />
                                 <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px"
                                                  value="#{adminUsuarioBean.usuario.dependencia.iddependencia}">
@@ -116,13 +116,13 @@
                                 <p:message for="txt_correo" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Nombre de Usuario :</div>
-                                <p:inputText id="txt_usuario" required="false" label="Usuario" style=" width: 240px;text-transform: uppercase;"
+                                <p:inputText id="txt_usuario" required="true" label="Usuario" style=" width: 240px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.usuario.nombre}"/>
                                 <h:inputHidden />
                                 <p:message for="txt_usuario" display="icon" />
 
                                 <div class="flabel" style="width:  150px;">Clave de Usuario :</div>
-                                <p:password id="txt_clave" required="false" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
+                                <p:password id="txt_clave" required="true" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
                                             value="#{adminUsuarioBean.usuario.contrasenia}"/>
                                 <h:inputHidden />
                                 <p:message for="txt_clave" display="icon" />
@@ -142,7 +142,7 @@
                                         <p:resetInput target="msg2" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
-                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgMisDatos').hide()}" update="msg" actionListener="#{adminUsuarioBean.registrar()}"/> 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" update="msgNew, gridMisDatos, formDataTable" actionListener="#{adminUsuarioBean.registrar()}"/> 
                                 </div>
                             </f:facet>
 
