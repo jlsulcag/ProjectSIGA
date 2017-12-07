@@ -121,7 +121,7 @@
                                 <h:inputHidden />
                                 <p:message for="txt_usuario" display="icon" />
 
-                                <div class="flabel" style="width:  150px;">Clave de Usuario :</div>
+                                <div class="flabel" style="width:  150px;">Contraseña :</div>
                                 <p:password id="txt_clave" required="true" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
                                             value="#{adminUsuarioBean.usuario.contrasenia}"/>
                                 <h:inputHidden />
@@ -142,7 +142,8 @@
                                         <p:resetInput target="msg2" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
-                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" update="msgNew, gridMisDatos, formDataTable" actionListener="#{adminUsuarioBean.registrar()}"/> 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
+                                                     update="msgNew, gridMisDatos, formDataTable" actionListener="#{adminUsuarioBean.registrar()}"/> 
                                 </div>
                             </f:facet>
 

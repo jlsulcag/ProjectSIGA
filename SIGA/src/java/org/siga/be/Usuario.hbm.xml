@@ -29,5 +29,11 @@
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" />
         </property>
+        <set name="roles" table="rol" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_rol" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.UsuarioRol" />
+        </set>
     </class>
 </hibernate-mapping>

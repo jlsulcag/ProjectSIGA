@@ -1,10 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
 
         <h:outputStylesheet name="./css/bootstrap.css"/>
@@ -22,23 +20,27 @@
             <div class="row" style="margin-top:120px">
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
                     <p:panel>
-                        <form role="form">
+                        <p:growl id="growl" showDetail="true" life="3000" showSummary="true"/>
+                        <h:form id="formLogin">
                             <fieldset>
-                                <center><h2>login SIGA</h2></center>
+                                <center><h2>SIGA</h2></center>
                                 <div class="form-group">
-                                    <input type="" name="email" id="email" class="form-control input-lg" placeholder="Usuario"/>
+                                    <p:inputText id="txf_usuario" class="form-control input-lg" required="true" label="Usuario" placeholder="USUARIO"
+                                                 value="#{loginBean.nombreUsuario}"/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Contraseña"/>
+                                     <p:password id="password" class="form-control input-lg" required="true" label="Contraseña" placeholder="CONTRASEÑA"
+                                                 value="#{loginBean.contrasenia}"/>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <input type="submit" class="btn btn-lg btn-warning btn-block" value="Iniciar sesion"/>
+                                        <p:commandButton value="Iniciar Sesion" class="btn btn-lg btn-warning btn-block" update=":growl"
+                                                         action="#{loginBean.login()}"/> 
                                     </div>
                                 </div>
 
                             </fieldset>
-                        </form>
+                        </h:form>
                     </p:panel>
 
 

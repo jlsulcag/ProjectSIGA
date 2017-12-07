@@ -46,12 +46,17 @@ public class UsuarioRolDao extends AbstractDA<UsuarioRol>{
 
     @Override
     public UsuarioRol buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public UsuarioRol buscarxIdUsuario(long idusuario) {
+        String hql = "from UsuarioRol a left join fetch a.usuario b left join fetch a.rol c where b.idusuario = "+idusuario;
+        return buscar(hql);
     }
     
 }

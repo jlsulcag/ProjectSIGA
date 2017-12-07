@@ -52,5 +52,9 @@ public class RolDao extends AbstractDA<Rol>{
     public long id() {
         return maxId(Rol.class);
     }
+
+    public Rol buscarxIdRol(long idrol) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

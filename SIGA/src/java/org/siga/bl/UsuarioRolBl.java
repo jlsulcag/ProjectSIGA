@@ -70,4 +70,8 @@ public class UsuarioRolBl extends AbstractBL<UsuarioRol>{
     public long id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public UsuarioRol buscarxIdUsuario(long idusuario) {
+        return dao.buscarxIdUsuario(idusuario);
+    }
 }

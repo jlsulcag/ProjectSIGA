@@ -17,6 +17,7 @@ import org.siga.be.UsuarioRol;
 import org.siga.bl.PersonaBl;
 import org.siga.bl.UsuarioBl;
 import org.siga.bl.UsuarioRolBl;
+import org.siga.util.Encrypt;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -54,7 +55,7 @@ public class AdminUsuarioBean {
         if(res == 0){
             long res2 = -1;
             usuario.setNombre(usuario.getNombre().trim().toUpperCase());
-            usuario.setContrasenia(usuario.getContrasenia().toUpperCase());
+            usuario.setContrasenia(Encrypt.sha512(usuario.getContrasenia().toUpperCase()));
             usuario.setDescripcion("");
             usuario.setEstado("ACT");
             usuario.setPersona(persona);

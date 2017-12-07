@@ -3,6 +3,8 @@ package org.siga.be;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +22,7 @@ public class Usuario  implements java.io.Serializable {
      private Persona persona;
      private Date fechaReg;
      private Dependencia dependencia;
+     private Set<Rol> roles = new HashSet<Rol>(0);
 
     public Usuario() {
         this.idusuario = 0;
@@ -101,6 +104,14 @@ public class Usuario  implements java.io.Serializable {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
+    }
+
+    public Set<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
     }
 
 

@@ -70,5 +70,9 @@ public class RolBl extends AbstractBL<Rol>{
     public long id() {
         return maxId();
     }
+
+    public Rol buscarxIdRol(long idrol) {
+        return dao.buscarxIdRol(idrol);
+    }
     
 }
