@@ -70,16 +70,15 @@ public class LoginBean implements Serializable{
                         //FacesContext.getCurrentInstance().addMessage(null, message);
                         //rol = rolBl.buscar(usuarioRol.getRol().getIdrol());
                         if(usuarioRol.getRol().getIdrol()>0){
-                            switch (usuarioRol.getRol().getRol()) {
+                            switch (usuarioRol.getRol().getRol().trim()) {
                             case "ALMACEN":
-                                url = "/page/AdminClase";
+                                url = "/page/InicioAlmacen";
                                 break;
                             case "SISTEMAS":
-                                System.out.println("aqiuiii........");
-                                url = "/page/AdminClase";
+                                url = "/page/InicioAlmacen";
                                 break;
                             case "ADMINISTRADOR":
-                                url = "/page/AdminClase";
+                                url = "/page/InicioAlmacen";
                                 break;
                         }
                         }else{
@@ -87,14 +86,15 @@ public class LoginBean implements Serializable{
                         }
                         
                     } else {
+                        System.out.println("Contraseña incorrecta ..........");
                         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
                         FacesContext.getCurrentInstance().addMessage(null, message);
-                        url = "/page/Login";
+                        url = "/page/login_1";
                     }
                 } else {
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Su cuenta aún no esta activada, pongase en contacto con el administrador");
                     FacesContext.getCurrentInstance().addMessage(null, message);
-                    url = "/page/Login";
+                    url = "/page/login_1";
                 }
             }else{
                 System.out.println(".........");
@@ -103,7 +103,7 @@ public class LoginBean implements Serializable{
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            url = "/page/Login";
+            url = "/page/login_1";
         }
         return url + "?faces-redirect=true";
     }

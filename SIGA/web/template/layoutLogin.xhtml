@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/style.css"/>
+        <title>.:SIGA:.</title>
+        <link rel="shortcut icon" type="image/x-icon" href="resources/img/favicon.png"/> 
+    </h:head>
+    <h:body class="public_body">   
+        <ui:insert name="status">
+            <p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+                <f:facet name="start">
+                    <p:graphicImage name="img/loader.gif" />
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="notificacion" effectSpeed="fast">
+            <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
+        </p:notificationBar>
+        <div class="background">
+            <div class="cabecera">
+                <a href="./index.xhtml">
+                    <div class="banner">
+                        <div class="logo">
+                            <div class="logo_unsch_banner" style="width: 80px;height: 100px;"></div>                       
+                        </div>
+                    </div>
+                </a>                
+            </div>            
+            <div class="cuerpo_login" > 
+                <div style=" margin: 40px auto 10px auto;
+                            width: 500px;">
+                    <p:panel>
+                        <f:facet name="header">      
+                            <span class="ui-icon ui-icon-person" style="float: right; margin-right: .3em;"></span>
+                            AUTENTICACION DE USUARIO
+                            <span class="ui-icon ui-icon-circle-triangle-e" style="float: left; margin-right: .3em;"></span>
+                        </f:facet>
+                        <div id="content" style="height: 170px;">                            
+                            <ui:insert name="content">
+
+                            </ui:insert>
+                        </div>
+                    </p:panel>
+                </div> 
+
+            </div>
+            <div class="pie_login">
+                <div class="info_pie">                    
+                    copyright &copy; 2017 | 
+                    <a href="#" target="_black">
+                        CACSMM 
+                    </a>     
+                </div> 
+            </div>
+        </div>
+    </h:body>
+</html>

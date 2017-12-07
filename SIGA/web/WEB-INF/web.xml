@@ -35,7 +35,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>siga/index.xhtml</welcome-file>
+        <welcome-file>siga/page/login_1.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.THEME</param-name>
