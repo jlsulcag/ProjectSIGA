@@ -11,7 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import org.siga.be.Rol;
 import org.siga.be.Usuario;
 import org.siga.be.UsuarioRol;
@@ -22,7 +24,7 @@ import org.siga.util.Encrypt;
 
 @ManagedBean
 @SessionScoped
-public class LoginBean implements Serializable{
+public class LoginBean{
 
     @ManagedProperty(value = "#{usuarioBl}")
     private UsuarioBl usuarioBl;
@@ -48,6 +50,8 @@ public class LoginBean implements Serializable{
     }
 
     public String login() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg = null;
         String url = "";
         //Obtenemos los datos del usuario
         Usuario temp = getUsuarioBl().buscarxUsuario(this.getNombreUsuario().trim().toUpperCase());
@@ -87,24 +91,25 @@ public class LoginBean implements Serializable{
                         
                     } else {
                         System.out.println("Contraseña incorrecta ..........");
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
-                        FacesContext.getCurrentInstance().addMessage(null, message);
+                        msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
                         url = "/page/login_1";
                     }
                 } else {
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Su cuenta aún no esta activada, pongase en contacto con el administrador");
-                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Su cuenta aún no esta activada, pongase en contacto con el administrador");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
                     url = "/page/login_1";
                 }
             }else{
                 System.out.println(".........");
             }
-
+            
         } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             url = "/page/login_1";
         }
+        
         return url + "?faces-redirect=true";
     }
 
@@ -113,7 +118,7 @@ public class LoginBean implements Serializable{
         this.contrasenia = null;
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.invalidate();
-        return "/page/Login?faces-redirect=true";
+        return "/page/login_1?faces-redirect=true";
     }
 
     public UsuarioBl getUsuarioBl() {

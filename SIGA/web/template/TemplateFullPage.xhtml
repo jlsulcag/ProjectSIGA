@@ -28,8 +28,8 @@
                                     <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w"/>
                                     <p:menuitem value="Información" icon="fa fa-user"/>
                                 </p:menuButton>
-                                <p:commandButton id="btnCancelarRegistro"  action="#"
-                                                 icon="fa fa-power-off" value="Cerrar Sesión" title="Cerrar Sesión"/>
+                                <p:commandButton id="btnCancelarRegistro"  action="#{loginBean.cerrarSesion()}"
+                                                 icon="ui-icon-power" value="Cerrar Sesión" title="Cerrar Sesión"/>
                             </f:facet>
                         </p:menubar>
                     </h:form>

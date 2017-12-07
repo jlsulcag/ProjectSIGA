@@ -12,11 +12,11 @@
         <ui:composition template="./../template/layoutLogin.xhtml">
 
             <ui:define name="content">
-
+                <p:growl id="growl" showDetail="true" life="3000" showSummary="true"/>
                 <div class="contenedor">
                     <div class="panel">
                         <div class="box">
-                            <p:growl id="growl" showDetail="true" life="3000" showSummary="true"/>
+                            
                             <h:form id="formLogin">
                                 <h:panelGrid columns="2" cellpadding="5" style="width: 100%;text-align: right;">
                                     <h:outputLabel for="txf_usuario" value="USUARIO: " />
