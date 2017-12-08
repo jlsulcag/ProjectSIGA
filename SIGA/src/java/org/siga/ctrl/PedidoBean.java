@@ -50,6 +50,7 @@ public class PedidoBean {
     private PedidoEstadoBl pedidoEstadoBl;
 
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
+    private List<Pedido> listPedido= new LinkedList<>();
     private boolean pedidoxUnidad;
     private int totalProductos;
     

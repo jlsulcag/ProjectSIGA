@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel>
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     rowsPerPageTemplate="10,15,20">
+                            <f:facet name="header">Pedidos</f:facet>
+
+                            <p:column headerText="ID" style="width: 15px">
+                                <h:outputText value="#{item.idordencompra}"/>
+                            </p:column>
+                            <p:column headerText="Número" style="width: 80px">
+                                <h:outputText value="#{item.numero}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha" style="width: 80px">
+                                <h:outputText value="#{item.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Dependencia Solicitante">
+                                <h:outputText value="#{item.proveedor.razonSocial}"/>
+                            </p:column>
+
+                            <p:column headerText="Almacen">
+                                <h:outputText value="#{item.fechaEntrega}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Estado" style="width: 80px">
+                                <h:outputText value="#{item.estado}"/>
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                </p:commandButton>                           
+                            </p:column>
+
+                            <p:column style="width:10px;text-align: center">
+                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                </p:commandButton>                            
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <h:form id="formEdit">
+                        <p:dialog header="Actualizar Datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
+                                  resizable="false" closable="false">
+                            <h:panelGrid columns="2" cellpadding="1">
+
+                                <h:inputHidden value="#{misOrdenesCompraBean.ordenCompra.idordencompra}"   />
+                                <h:inputHidden />
+
+                                <h:outputLabel for="txfNumeroEdit" value="Número :"/>
+                                <p:inputText id="txfNumeroEdit" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
+                                             value= "#{misOrdenesCompraBean.ordenCompra.numero}"/>
+
+                                <h:outputLabel for="txfFechaEdit" value="Fecha de Emisión :"/>
+                                <p:calendar id="txfFechaEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{misOrdenesCompraBean.ordenCompra.fecha}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputLabel for="cbxProveedorEdit" value="Proveedor :"/>
+                                <p:selectOneMenu id="cbxProveedorEdit" style="width: 380px;" value="#{misOrdenesCompraBean.ordenCompra.proveedor.idproveedor}" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="txfFechaEntregaEdit" value="Fecha de entrega:"/>
+                                <p:calendar id="txfFechaEntregaEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                            value="#{misOrdenesCompraBean.ordenCompra.fechaEntrega}">
+                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputLabel for="txfLugarEntregaEdit" value="Lugar de entrega :"/>
+                                <p:inputText id="txfLugarEntregaEdit" label="Lugar de entrega" style="text-transform: uppercase"
+                                             value="#{misOrdenesCompraBean.ordenCompra.lugarEntrega}"/>
+
+                                <h:outputLabel for="txfObservacionEdit" value="Observación :"/>
+                                <p:inputText id="txfObservacionEdit" label="Observación" style="text-transform: uppercase"
+                                             value="#{misOrdenesCompraBean.ordenCompra.observacion}"/>
+
+                                <f:facet name="footer">
+                                    <p:separator/>
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgEdit').hide())" actionListener="#{misOrdenesCompraBean.actualizar()}"/>
+
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />
+                                </f:facet>
+
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
