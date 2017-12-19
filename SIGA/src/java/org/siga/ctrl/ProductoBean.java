@@ -9,10 +9,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import org.siga.be.Clase;
+import org.siga.be.Equivalencia;
 import org.siga.be.Familia;
 import org.siga.be.Producto;
 import org.siga.be.UnidadMedida;
 import org.siga.bl.ClaseBl;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.FamiliaBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
@@ -33,7 +35,11 @@ public class ProductoBean {
     private FamiliaBl familiaBl;
     @ManagedProperty(value = "#{familia}")
     private Familia familia;
-    
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
+
     private List<SelectItem> selectOneItemsFamilia;
     private List<SelectItem> selectOneItemsClase;
     private List<SelectItem> selectOneItemsProducto;
@@ -49,7 +55,7 @@ public class ProductoBean {
     public void listar() {
         setListaProductos(productoBl.listarFull(""));
     }
-    
+
     public List<Familia> listarFamilia() {
         setListFamilias(familiaBl.listar());
         return getListFamilias();
@@ -63,16 +69,23 @@ public class ProductoBean {
         producto.setEstado("ACT");
         res = productoBl.registrar(producto);
         if (res == 0) {
-            MensajeView.registroCorrecto();
+            //registrar equivalencia para el producto
+            long res2 = registrarEquivalencia();
+            if (res2 == 0) {
+                MensajeView.registroCorrecto();
+            } else {
+                MensajeView.registroError();
+            }
+
         } else {
             MensajeView.registroError();
         }
         producto = new Producto();
         listar();
-        
+
     }
-    
-    public void actualizar(){
+
+    public void actualizar() {
         Producto temp = new Producto();
         temp = buscarId();
         temp.setDescripcion(producto.getDescripcion().toUpperCase());
@@ -83,7 +96,7 @@ public class ProductoBean {
         temp.setEstado(producto.getEstado());
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
-        temp.setClase(producto.getClase()); 
+        temp.setClase(producto.getClase());
         temp.setFraccion(producto.getFraccion());
         res = productoBl.actualizar(temp);
         if (res == 0) {
@@ -93,8 +106,8 @@ public class ProductoBean {
         }
         listar();
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         producto.setIdproducto(0);
         producto.setDescripcion("");
         producto.setCodigo("");
@@ -107,22 +120,21 @@ public class ProductoBean {
         producto.setFamilia(new Familia());
         producto.setFraccion(0);
     }
-    
-    public void buscarRef(){
+
+    public void buscarRef() {
         setListaProductos(productoBl.listarRef(getTxtBusqueda().toUpperCase()));
     }
-    
+
     public void buscarProducto(long idproducto) {
         producto = getProductoBl().buscarxID(idproducto);
     }
-    
-    public List<Clase> listarClasesXFamilia(){
-        return claseBl.listarClasePorFamilia(producto.getFamilia().getIdfamilia());        
+
+    public List<Clase> listarClasesXFamilia() {
+        return claseBl.listarClasePorFamilia(producto.getFamilia().getIdfamilia());
     }
-    
-    
+
     public List<SelectItem> getSelectOneItemsFamilia() {
-       this.selectOneItemsFamilia= new LinkedList<SelectItem>();
+        this.selectOneItemsFamilia = new LinkedList<SelectItem>();
         for (Familia fam : listarFamilia()) {
             this.setFamilia(fam);
             SelectItem selectItem = new SelectItem(getFamilia().getIdfamilia(), getFamilia().getDescripcion());
@@ -224,7 +236,7 @@ public class ProductoBean {
     }
 
     public List<SelectItem> getSelectOneItemsClase() {
-        this.selectOneItemsClase= new LinkedList<SelectItem>();
+        this.selectOneItemsClase = new LinkedList<SelectItem>();
         for (Clase obj : listarClasesXFamilia()) {
             this.setClase(obj);
             SelectItem selectItem = new SelectItem(getClase().getIdclase(), getClase().getDescripcion());
@@ -246,7 +258,7 @@ public class ProductoBean {
     }
 
     public List<SelectItem> getSelectOneItemsProducto() {
-        this.selectOneItemsProducto= new LinkedList<SelectItem>();
+        this.selectOneItemsProducto = new LinkedList<SelectItem>();
         for (Producto obj : listarProducto()) {
             this.setProducto(obj);
             SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
@@ -262,6 +274,31 @@ public class ProductoBean {
     private Iterable<Producto> listarProducto() {
         setListaProductos(productoBl.listar());
         return getListaProductos();
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
+    }
+
+    private long registrarEquivalencia() {
+        equivalencia.setUnidadMedida(producto.getUnidadMedida());
+        equivalencia.setUnidadEquivalente(producto.getUnidadMedida());
+        equivalencia.setFactor(1);
+        equivalencia.setInterpretacion("");
+        equivalencia.setEstado(Boolean.TRUE);
+        return equivalenciaBl.registrar(equivalencia);
     }
 
 }

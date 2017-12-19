@@ -28,4 +28,5 @@
   <table-filter match-name="pedido"/>
   <table-filter match-name="pedido_estados"/>
   <table-filter match-name="pedido_seguimiento"/>
+  <table-filter match-name="equivalencia"/>
 </hibernate-reverse-engineering>

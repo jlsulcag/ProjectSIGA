@@ -13,26 +13,73 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel id="pnlPrincipal" header="Administrar Equivalencias">
-                    <h:form id="formtools">
+
+                    <h:form id="formP">
+                        <div class="ui-fluid">
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Unidad de medida :" for="cbxUnidadMedida"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxUnidadMedida" value="#{adminEquivalenciaBean.equivalencia.unidadMedida.idunidadmedida}" required="true"
+                                                     filter="true" filterMatchMode="contains" label="Proveedor">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Unidad equivalente :" for="cbxUnidadMedidaEqui"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxUnidadMedidaEqui" value="#{adminEquivalenciaBean.equivalencia.unidadEquivalente.idunidadmedida}" required="true"
+                                                     filter="true" filterMatchMode="contains" label="Proveedor">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Factor :" for="txFactor"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txFactor" label="Factor" required="true"
+                                                 value="#{adminEquivalenciaBean.equivalencia.factor}"/>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel value="Interpretación :" for="txfInterpretacion"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfInterpretacion" label="Interpretacion" readonly="true" disabled="true"
+                                                 value="#{adminEquivalenciaBean.equivalencia.interpretacion}"/>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <p:toolbar>
-                            <f:facet  name="left">
-                                <p:commandButton id="btnNew" icon="ui.icon.plus" value="Nuevo" title="Nuevo">
-                                    
+                            <f:facet  name="right">
+                                <p:commandButton id="btnSave" icon="ui-icon-disk" value="Guardar" title="Guardar"
+                                                 actionListener="#{adminEquivalenciaBean.registrar()}" update="msg, formTabla, formP">
                                 </p:commandButton>
-                                <f:facet name="right">
-                                    <h:outputText value="Búsqueda : "/>
-                                    <p:inputText id="txtBusqueda" style="width: 300px" value="">
-                                        
-                                    </p:inputText>
-                                </f:facet>
                             </f:facet>
+
                         </p:toolbar>
                     </h:form>
                     <h:form id="formTabla">
-                        <p:dataTable id="lista">
+                        <p:dataTable id="lista" value="#{adminEquivalenciaBean.listEquivalencias}" var="item">
                             <f:facet name="header">Equivalencias</f:facet>
                             <p:column style="width: 15px; text-align: center" headerText="ID">
-                                
+                                <h:outputText value="#{item.idequivalencia}"/>
+                            </p:column>
+
+                            <p:column  headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadMedida.descripcion}"/>
+                            </p:column>
+                            
+                            <p:column  headerText="Unidad Equivalente">
+                                <h:outputText value="#{item.unidadEquivalente.descripcion}"/>
                             </p:column>
                         </p:dataTable>
                     </h:form>

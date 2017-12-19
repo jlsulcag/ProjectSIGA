@@ -35,5 +35,6 @@
     <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
     <mapping resource="org/siga/be/PedidoEstados.hbm.xml"/>
     <mapping resource="org/siga/be/PedidoSeguimiento.hbm.xml"/>
+    <mapping resource="org/siga/be/Equivalencia.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
