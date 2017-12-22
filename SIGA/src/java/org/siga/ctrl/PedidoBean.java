@@ -11,11 +11,13 @@ import javax.faces.model.SelectItem;
 import org.hibernate.HibernateException;
 import org.siga.be.Almacen;
 import org.siga.be.Dependencia;
+import org.siga.be.Equivalencia;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
 import org.siga.be.PedidoSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Usuario;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PedidoEstadoBl;
@@ -48,13 +50,20 @@ public class PedidoBean {
     
     @ManagedProperty(value = "#{pedidoEstadoBl}")
     private PedidoEstadoBl pedidoEstadoBl;
+    
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
 
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private List<Pedido> listPedido= new LinkedList<>();
     private boolean pedidoxUnidad;
     private int totalProductos;
+    private List<Equivalencia> listEquivalencias;
     
     private List<SelectItem> selectOneItemsPedido;
+    private List<SelectItem> selectOneItemsEquivalencia;
 
     public PedidoBean() {
     }
@@ -287,6 +296,49 @@ public class PedidoBean {
 
     private List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
         return pedidoBl.listOrdenPedidoXEstado(no_atendido);
+    }
+
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+            this.setEquivalencia(obj);
+            SelectItem selectItem = new SelectItem(getEquivalencia().getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+            this.selectOneItemsEquivalencia.add(selectItem);
+        }
+        return selectOneItemsEquivalencia;
+    }
+
+    public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
+        this.selectOneItemsEquivalencia = selectOneItemsEquivalencia;
+    }
+    
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        listEquivalencias = getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida);
+        return getListEquivalencias();
+    }
+
+    public List<Equivalencia> getListEquivalencias() {
+        return listEquivalencias;
+    }
+
+    public void setListEquivalencias(List<Equivalencia> listEquivalencias) {
+        this.listEquivalencias = listEquivalencias;
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
     }
 
 }

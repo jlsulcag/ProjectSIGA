@@ -1,10 +1,12 @@
 
 package org.siga.ctrl;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import org.siga.be.Equivalencia;
 import org.siga.be.UnidadMedida;
@@ -22,6 +24,7 @@ public class AdminEquivalenciaBean {
     
     
     private List<Equivalencia> listEquivalencias;
+    private List<SelectItem> selectOneItemsEquivalencia;
     
     public AdminEquivalenciaBean() {
     }
@@ -56,6 +59,26 @@ public class AdminEquivalenciaBean {
 
     public Equivalencia getEquivalencia() {
         return equivalencia;
+    }
+    
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        return selectOneItemsEquivalencia;
+    }
+    
+    public List<SelectItem> listarEquivalencias(long idUnidadMedida) {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        for (Equivalencia obj : listarEquivalenciaxUnidadMedida(idUnidadMedida)) {
+            this.setEquivalencia(obj);
+            SelectItem selectItem = new SelectItem(equivalencia.getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+            this.selectOneItemsEquivalencia.add(selectItem);
+        }
+        return selectOneItemsEquivalencia;
+    }
+    
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        listEquivalencias = new LinkedList<>();
+        listEquivalencias = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
+        return listEquivalencias;
     }
 
     public void setEquivalencia(Equivalencia equivalencia) {
