@@ -241,6 +241,7 @@ public class NotaIngresoBean {
         ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         ned.setMontoDescitem(BigDecimal.ZERO);
         ned.setCantIngreso(notaEntradaDetalle.getCantIngreso());
+        ned.setTotalProductos((int) (notaEntradaDetalle.getCantIngreso()*equivalencia.getFactor()));
         ned.setCantSolicitada(0);
         ned.setCantPendiente(0);
         ned.setCantRecibida(0);
@@ -404,12 +405,12 @@ public class NotaIngresoBean {
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
             if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
                 //temp.setIdalmacenproducto(temp.getIdalmacenproducto());
-                temp.setStockActual(obj.getCantIngreso() + temp.getStockActual());
+                temp.setStockActual(obj.getTotalProductos() + temp.getStockActual());
                 almacenProductoBl.actualizar(temp);
                 res = 1;
             } else {//Registrar nuevo
                 almacenProducto.setProducto(obj.getProducto());
-                almacenProducto.setStockActual(obj.getCantIngreso());
+                almacenProducto.setStockActual(obj.getTotalProductos());
                 almacenProducto.setProducto(obj.getProducto());
                 almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
                 almacenProducto.setLote(obj.getLote());

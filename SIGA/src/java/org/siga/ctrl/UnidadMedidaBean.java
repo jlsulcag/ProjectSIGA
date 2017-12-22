@@ -83,7 +83,8 @@ public class UnidadMedidaBean {
     public void limpiar() {
         unidadMedida.setIdunidadmedida(0);
         unidadMedida.setDescripcion("");
-
+        equivalencia.setIdequivalencia(0);
+        equivalencia.setFactor(0);
     }
 
     public void listarRef() {
@@ -98,7 +99,6 @@ public class UnidadMedidaBean {
     private long registrarEquivalencia() {
         equivalencia.setUnidadMedida(unidadMedida);
         equivalencia.setUnidadEquivalente(unidadMedida);
-        equivalencia.setFactor(1);
         equivalencia.setInterpretacion("");
         equivalencia.setEstado(Boolean.TRUE);
         return equivalenciaBl.registrar(equivalencia);

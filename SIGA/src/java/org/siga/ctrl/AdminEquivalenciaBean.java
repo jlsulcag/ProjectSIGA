@@ -2,6 +2,7 @@
 package org.siga.ctrl;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
@@ -23,6 +24,12 @@ public class AdminEquivalenciaBean {
     private List<Equivalencia> listEquivalencias;
     
     public AdminEquivalenciaBean() {
+    }
+    
+    @PostConstruct
+    public void listarFull(){
+        setListEquivalencias(equivalenciaBl.listarFull());
+        limpiar();
     }
     
     public void registrar(){

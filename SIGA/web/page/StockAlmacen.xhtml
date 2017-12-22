@@ -46,7 +46,7 @@
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Productos</f:facet>
                             
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 25px">
                                 <h:outputText value="#{item.producto.idproducto}"/>
                             </p:column>
                             
@@ -60,23 +60,19 @@
                             
                             <p:column headerText="Familia">
                                 <h:outputText value="#{item.producto.familia.descripcion}"/>
-                            </p:column>
+                            </p:column>                            
                             
-                            <p:column headerText="Unidad Medida">
-                                <h:outputText value="#{item.producto.familia.descripcion}"/>
-                            </p:column>
-                            
-                            <p:column headerText="Vencimiento">
+                            <p:column headerText="Vencimiento" style="width: 80px">
                                 <h:outputText value="#{item.fechaVencimiento}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
                             </p:column>
                             
-                            <p:column headerText="Lote">
+                            <p:column headerText="Lote"  style="width: 80px">
                                 <h:outputText value="#{item.lote}"/>
                             </p:column>
                             
-                            <p:column headerText="Stock Disponible">
+                            <p:column headerText="Stock" style="width: 60px; text-align: right">
                                 <h:outputText value="#{item.stockActual}"/>
                             </p:column>
                             

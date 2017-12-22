@@ -69,16 +69,17 @@
                             </div>                            
                         </div> 
                         <p:toolbar>
-                            <f:facet name="left">
-                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
-                                                 update="formNew" actionListener="#{notaIngresoBean.limpiarNew()}" oncomplete="PF('dlgNew').show();"/>
-                            </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
                                                  actionListener="#{notaIngresoBean.registrar()}"/>
                                 <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{notaIngresoBean.iniciar()}"
                                                  update="formP, :formDataTable"/>
                             </f:facet>
+                            <f:facet name="left">
+                                <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
+                                                 update="formNew" actionListener="#{notaIngresoBean.limpiarNew()}" oncomplete="PF('dlgNew').show();"/>
+                            </f:facet>
+                            
                         </p:toolbar>
                     </h:form>                        
 

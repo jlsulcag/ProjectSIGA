@@ -82,4 +82,8 @@ public class EquivalenciaBl extends AbstractBL<Equivalencia>{
     public List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         return dao.listarXidUnidadMedida(idunidadmedida);
     }
+
+    public List<Equivalencia> listarFull() {
+        return dao.listarFull();
+    }
 }

@@ -28,6 +28,7 @@ public class NotaEntradaDetalle implements java.io.Serializable {
     private int cantPendiente;
     private int cantIngreso;
     private int cantDisponible;
+    private int totalProductos;
 
     public NotaEntradaDetalle() {
         this.idnotaentradadetalle = 0;
@@ -169,6 +170,14 @@ public class NotaEntradaDetalle implements java.io.Serializable {
 
     public void setCantDisponible(int cantDisponible) {
         this.cantDisponible = cantDisponible;
+    }
+
+    public int getTotalProductos() {
+        return totalProductos;
+    }
+
+    public void setTotalProductos(int totalProductos) {
+        this.totalProductos = totalProductos;
     }
 
 }

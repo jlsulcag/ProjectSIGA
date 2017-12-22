@@ -57,5 +57,10 @@ public class EquivalenciaDao extends AbstractDA<Equivalencia>{
         String hql = "from Equivalencia a left join fetch a.unidadMedida b left join fetch a.unidadEquivalente c where b.idunidadmedida = "+idunidadmedida;
         return listar(hql);
     }
+
+    public List<Equivalencia> listarFull() {
+        String hql = "from Equivalencia a left join fetch a.unidadMedida b left join fetch a.unidadEquivalente c order by b.descripcion asc";
+        return listar(hql);
+    }
     
 }
