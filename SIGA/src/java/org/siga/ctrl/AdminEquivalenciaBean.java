@@ -19,6 +19,7 @@ public class AdminEquivalenciaBean {
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
     
+    
     private List<Equivalencia> listEquivalencias;
     
     public AdminEquivalenciaBean() {

@@ -10,9 +10,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Equivalencia;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
@@ -20,6 +22,7 @@ import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.bl.AlmacenProductoBl;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
@@ -53,6 +56,15 @@ public class NotaIngresoBean {
     private AlmacenProducto almacenProducto;
     @ManagedProperty(value = "#{almacenProductoBl}")
     private AlmacenProductoBl almacenProductoBl;
+    
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
+    
+    private List<Equivalencia> listEquivalencia;
+    private List<SelectItem> selectOneItemsEquivalencia;
+    
 
     private NotaEntradaDetalle notaEntradaDetalleTemp;
 
@@ -238,6 +250,8 @@ public class NotaIngresoBean {
 
     public void buscarProducto() {
         producto = getProductoBl().buscarxID(notaEntradaDetalle.getProducto().getIdproducto());
+        //buscar  equivalencias  de la unidad base del producto seleccionado
+        //listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
     }
 
     public NotaEntrada getNotaEntrada() {
@@ -456,4 +470,48 @@ public class NotaIngresoBean {
         }
         return r;
     }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
+    }
+
+    public List<Equivalencia> getListEquivalencia() {
+        return listEquivalencia;
+    }
+
+    public void setListEquivalencia(List<Equivalencia> listEquivalencia) {
+        this.listEquivalencia = listEquivalencia;
+    }
+
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+            this.setEquivalencia(obj);
+            SelectItem selectItem = new SelectItem(equivalencia.getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+            this.selectOneItemsEquivalencia.add(selectItem);
+        }
+        return selectOneItemsEquivalencia;
+    }
+
+    public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
+        this.selectOneItemsEquivalencia = selectOneItemsEquivalencia;
+    }
+
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        listEquivalencia = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
+        return listEquivalencia;
+    }
+    
 }

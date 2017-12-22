@@ -35,10 +35,6 @@ public class ProductoBean {
     private FamiliaBl familiaBl;
     @ManagedProperty(value = "#{familia}")
     private Familia familia;
-    @ManagedProperty(value = "#{equivalencia}")
-    private Equivalencia equivalencia;
-    @ManagedProperty(value = "#{equivalenciaBl}")
-    private EquivalenciaBl equivalenciaBl;
 
     private List<SelectItem> selectOneItemsFamilia;
     private List<SelectItem> selectOneItemsClase;
@@ -69,14 +65,7 @@ public class ProductoBean {
         producto.setEstado("ACT");
         res = productoBl.registrar(producto);
         if (res == 0) {
-            //registrar equivalencia para el producto
-            long res2 = registrarEquivalencia();
-            if (res2 == 0) {
-                MensajeView.registroCorrecto();
-            } else {
-                MensajeView.registroError();
-            }
-
+            MensajeView.registroCorrecto();
         } else {
             MensajeView.registroError();
         }
@@ -274,31 +263,6 @@ public class ProductoBean {
     private Iterable<Producto> listarProducto() {
         setListaProductos(productoBl.listar());
         return getListaProductos();
-    }
-
-    public Equivalencia getEquivalencia() {
-        return equivalencia;
-    }
-
-    public void setEquivalencia(Equivalencia equivalencia) {
-        this.equivalencia = equivalencia;
-    }
-
-    public EquivalenciaBl getEquivalenciaBl() {
-        return equivalenciaBl;
-    }
-
-    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
-        this.equivalenciaBl = equivalenciaBl;
-    }
-
-    private long registrarEquivalencia() {
-        equivalencia.setUnidadMedida(producto.getUnidadMedida());
-        equivalencia.setUnidadEquivalente(producto.getUnidadMedida());
-        equivalencia.setFactor(1);
-        equivalencia.setInterpretacion("");
-        equivalencia.setEstado(Boolean.TRUE);
-        return equivalenciaBl.registrar(equivalencia);
     }
 
 }
