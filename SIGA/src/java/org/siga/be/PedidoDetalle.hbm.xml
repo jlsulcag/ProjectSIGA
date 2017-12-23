@@ -26,5 +26,8 @@
         <property name="cantidadSurtida" type="int">
             <column name="cantidad_surtida" not-null="true" />
         </property>
+        <property name="idEquivalencia" type="long">
+            <column name="id_equivalencia"  />
+        </property>
     </class>
 </hibernate-mapping>

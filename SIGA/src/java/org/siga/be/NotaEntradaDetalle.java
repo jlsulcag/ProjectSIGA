@@ -29,6 +29,7 @@ public class NotaEntradaDetalle implements java.io.Serializable {
     private int cantIngreso;
     private int cantDisponible;
     private int totalProductos;
+    private long idEquivalencia;
 
     public NotaEntradaDetalle() {
         this.idnotaentradadetalle = 0;
@@ -178,6 +179,14 @@ public class NotaEntradaDetalle implements java.io.Serializable {
 
     public void setTotalProductos(int totalProductos) {
         this.totalProductos = totalProductos;
+    }
+
+    public long getIdEquivalencia() {
+        return idEquivalencia;
+    }
+
+    public void setIdEquivalencia(long idEquivalencia) {
+        this.idEquivalencia = idEquivalencia;
     }
 
 }

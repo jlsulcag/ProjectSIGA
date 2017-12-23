@@ -32,5 +32,8 @@
         <property name="idAlmacenProducto" type="long">
             <column name="id_almacenproducto" />
         </property>
+        <property name="idEquivalencia" type="long">
+            <column name="id_equivalencia"  />
+        </property>
     </class>
 </hibernate-mapping>

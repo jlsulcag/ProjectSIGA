@@ -24,6 +24,7 @@ public class PedidoDetalle implements java.io.Serializable {
     private String unidadMedida;
     private int cantidadAutorizada;
     private int cantidadSurtida;
+    private long idEquivalencia;
 
     public PedidoDetalle() {
         this.idpedidodetalle = 0;
@@ -95,6 +96,14 @@ public class PedidoDetalle implements java.io.Serializable {
 
     public void setUnidadMedida(String unidadMedida) {
         this.unidadMedida = unidadMedida;
+    }
+
+    public long getIdEquivalencia() {
+        return idEquivalencia;
+    }
+
+    public void setIdEquivalencia(long idEquivalencia) {
+        this.idEquivalencia = idEquivalencia;
     }
 
 }

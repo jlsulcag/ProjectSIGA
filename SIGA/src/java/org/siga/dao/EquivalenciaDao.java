@@ -40,7 +40,7 @@ public class EquivalenciaDao extends AbstractDA<Equivalencia>{
 
     @Override
     public Equivalencia buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(Equivalencia.class, id);
     }
 
     @Override

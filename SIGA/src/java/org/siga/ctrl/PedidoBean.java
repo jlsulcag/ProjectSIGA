@@ -85,6 +85,7 @@ public class PedidoBean {
     public void agregar() {
         PedidoDetalle temp = new PedidoDetalle();
         temp.setProducto(producto);
+        temp.setIdEquivalencia(equivalencia.getIdequivalencia());
         temp.setCantidadSolicitada(pedidoDetalle.getCantidadSolicitada());
         System.out.println("cantidad " + temp.getCantidadSolicitada());
 //        temp.setCantidadSurtida(pedidoDetalle.getCantidadSurtida());

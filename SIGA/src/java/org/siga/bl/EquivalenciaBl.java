@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  *
  * @author JSULCAG
  */
-@Service(value="equivalenciaBl")
+@Service("equivalenciaBl")
 public class EquivalenciaBl extends AbstractBL<Equivalencia>{
     @Autowired
     @Qualifier("equivalenciaDao")
@@ -62,7 +62,7 @@ public class EquivalenciaBl extends AbstractBL<Equivalencia>{
 
     @Override
     public Equivalencia buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(id);
     }
 
     @Override

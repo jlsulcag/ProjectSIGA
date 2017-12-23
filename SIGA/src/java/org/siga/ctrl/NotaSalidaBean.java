@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Equivalencia;
 import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.Pedido;
@@ -22,6 +23,7 @@ import org.siga.be.PedidoDetalle;
 import org.siga.be.Producto;
 import org.siga.be.TipoMovimiento;
 import org.siga.bl.AlmacenProductoBl;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
 import org.siga.bl.PedidoBl;
@@ -143,7 +145,10 @@ public class NotaSalidaBean {
                 if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
                         if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
-                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), nsd.getCantSolicitada());
+                            EquivalenciaBl equivalenciaBl = new EquivalenciaBl();
+                            Equivalencia e = equivalenciaBl.buscar(nsd.getIdEquivalencia());
+                            System.out.println(" eee .......  "+e.getFactor());
+                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSolicitada()*e.getFactor()));
                         } else {
                             cont++;
                         }
@@ -227,6 +232,7 @@ public class NotaSalidaBean {
         for (PedidoDetalle obj : listPedidoDetalle) {
             NotaSalidaDetalle nsd = new NotaSalidaDetalle();
             nsd.setProducto(obj.getProducto());
+            nsd.setIdEquivalencia(obj.getIdEquivalencia());
             nsd.setUnidadmedida(obj.getUnidadMedida());
             nsd.setNotasalida(notaSalida);
             nsd.setCantSolicitada(obj.getCantidadSolicitada());
