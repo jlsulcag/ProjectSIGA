@@ -62,6 +62,11 @@ public class NotaSalidaBean {
 
     @ManagedProperty(value = "#{pedidoDetalleBl}")
     private PedidoDetalleBl pedidoDetalleBl;
+    
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;    
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
@@ -145,10 +150,8 @@ public class NotaSalidaBean {
                 if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
                         if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
-                            EquivalenciaBl equivalenciaBl = new EquivalenciaBl();
-                            Equivalencia e = equivalenciaBl.buscar(nsd.getIdEquivalencia());
-                            System.out.println(" eee .......  "+e.getFactor());
-                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSolicitada()*e.getFactor()));
+                            equivalencia = equivalenciaBl.buscaxId(nsd.getIdEquivalencia());
+                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSolicitada()*equivalencia.getFactor()));
                         } else {
                             cont++;
                         }
@@ -444,6 +447,22 @@ public class NotaSalidaBean {
 
     public void setNotaSalidaDetalleTemp(NotaSalidaDetalle NotaSalidaDetalleTemp) {
         this.NotaSalidaDetalleTemp = NotaSalidaDetalleTemp;
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
     }
 
 }

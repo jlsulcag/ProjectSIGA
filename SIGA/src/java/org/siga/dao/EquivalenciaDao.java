@@ -45,7 +45,7 @@ public class EquivalenciaDao extends AbstractDA<Equivalencia>{
 
     @Override
     public Equivalencia buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -61,6 +61,11 @@ public class EquivalenciaDao extends AbstractDA<Equivalencia>{
     public List<Equivalencia> listarFull() {
         String hql = "from Equivalencia a left join fetch a.unidadMedida b left join fetch a.unidadEquivalente c order by b.descripcion asc";
         return listar(hql);
+    }
+
+    public Equivalencia buscaxId(long idEquivalencia) {
+        String hql = "from Equivalencia a left join fetch a.unidadMedida b left join fetch a.unidadEquivalente c where a.idequivalencia = "+idEquivalencia;
+        return buscar(hql);
     }
     
 }

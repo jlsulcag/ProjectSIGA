@@ -86,4 +86,8 @@ public class EquivalenciaBl extends AbstractBL<Equivalencia>{
     public List<Equivalencia> listarFull() {
         return dao.listarFull();
     }
+
+    public Equivalencia buscaxId(long idEquivalencia) {
+        return dao.buscaxId(idEquivalencia);
+    }
 }
