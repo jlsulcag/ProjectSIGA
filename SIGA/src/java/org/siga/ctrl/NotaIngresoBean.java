@@ -56,15 +56,14 @@ public class NotaIngresoBean {
     private AlmacenProducto almacenProducto;
     @ManagedProperty(value = "#{almacenProductoBl}")
     private AlmacenProductoBl almacenProductoBl;
-    
+
     @ManagedProperty(value = "#{equivalencia}")
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     private List<Equivalencia> listEquivalencia;
     private List<SelectItem> selectOneItemsEquivalencia;
-    
 
     private NotaEntradaDetalle notaEntradaDetalleTemp;
 
@@ -133,7 +132,6 @@ public class NotaIngresoBean {
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
         notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
-        //notaEntradaDetalle.getProducto().setFraccion(0);
         producto.setFraccion(0);
         producto.getUnidadMedida().setDescripcion("");
         setCompraxUnidad(false);
@@ -141,7 +139,7 @@ public class NotaIngresoBean {
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-//        listOrdenCompraDetalle = new LinkedList<>();
+        this.producto = null;
     }
 
     private long maxNumero() {
@@ -241,7 +239,7 @@ public class NotaIngresoBean {
         ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         ned.setMontoDescitem(BigDecimal.ZERO);
         ned.setCantIngreso(notaEntradaDetalle.getCantIngreso());
-        ned.setTotalProductos((int) (notaEntradaDetalle.getCantIngreso()*equivalencia.getFactor()));
+        ned.setTotalProductos((int) (notaEntradaDetalle.getCantIngreso() * equivalencia.getFactor()));
         ned.setCantSolicitada(0);
         ned.setCantPendiente(0);
         ned.setCantRecibida(0);
@@ -498,12 +496,17 @@ public class NotaIngresoBean {
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
-        for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
-            this.setEquivalencia(obj);
-            SelectItem selectItem = new SelectItem(equivalencia.getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
-            this.selectOneItemsEquivalencia.add(selectItem);
+        if (producto != null) {
+            for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+                this.setEquivalencia(obj);
+                SelectItem selectItem = new SelectItem(equivalencia.getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+                this.selectOneItemsEquivalencia.add(selectItem);
+            }
+            return selectOneItemsEquivalencia;
+        }else{
+            return null;
         }
-        return selectOneItemsEquivalencia;
+
     }
 
     public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
@@ -514,5 +517,5 @@ public class NotaIngresoBean {
         listEquivalencia = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
         return listEquivalencia;
     }
-    
+
 }

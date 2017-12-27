@@ -165,24 +165,32 @@
                                   resizable="false" closable="true">
                             
                             
-                            <h:panelGrid columns="4" cellpadding="1"> 
+                            <h:panelGrid columns="2" cellpadding="1"> 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
                                 <p:selectOneMenu id="cbxProducto" value="#{notaSalidaBean.almacenProducto.idalmacenproducto}" 
-                                                 filter="true" filterMatchMode="contains" >
+                                                 filter="true" filterMatchMode="contains" style="width: 300px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{almacenProductoBean.selectOneItemsAlmacenProducto}"/>
-                                    <p:ajax listener="#{notaSalidaBean.buscarAlmacenProducto()}" update="txfStock"/>
+                                    <p:ajax listener="#{notaSalidaBean.buscarAlmacenProducto()}" update="txfUnidad, txfUnidadIngreso, txfStock"/>
+                                </p:selectOneMenu>
+                                
+                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
+                                    <f:selectItem itemLabel="#{notaSalidaBean.almacenProducto.producto.unidadMedida.descripcion}"/>
+                                </p:selectOneMenu>
+                                
+                                
+                                <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Distribución:"/>
+                                <p:selectOneMenu id="txfUnidadIngreso" value="#{notaIngresoBean.notaEntradaDetalle.unidadMedida}" 
+                                                 filter="true" filterMatchMode="contains" style="width: 118px">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{notaSalidaBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfStock" value="Stock :"/>
-                                <p:inputText id="txfStock" label="Stock" 
+                                <p:inputText id="txfStock" label="Stock" disabled="true" readonly="true"
                                              value="#{notaSalidaBean.almacenProducto.stockActual}">
-                                </p:inputText>
-
-                                <h:outputLabel for="txfPedidoxUnidad" value="Unidad ?:"/>
-                                <p:selectBooleanCheckbox  id="txfPedidoxUnidad" value="#{notaSalidaBean.pedidoxUnidad}">
-                                    <p:ajax listener="#{notaSalidaBean.setIsPedidoUnitario}" />
-                                </p:selectBooleanCheckbox>
+                                </p:inputText>                                
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"

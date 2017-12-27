@@ -138,20 +138,20 @@
 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
                                 <p:selectOneMenu id="cbxProducto" value="#{notaIngresoBean.notaEntradaDetalle.producto.idproducto}" 
-                                                 filter="true" filterMatchMode="contains" >
+                                                 filter="true" filterMatchMode="contains" style="width: 300px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
                                     <p:ajax listener="#{notaIngresoBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
                                 </p:selectOneMenu> 
                                 
                                 <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
-                                <p:selectOneMenu id="txfUnidad" disabled="true">
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
                                     <f:selectItem itemLabel="#{notaIngresoBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
                                 <p:selectOneMenu id="txfUnidadIngreso" value="#{notaIngresoBean.notaEntradaDetalle.unidadMedida}" 
-                                                 filter="true" filterMatchMode="contains" >
+                                                 filter="true" filterMatchMode="contains" style="width: 118px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{notaIngresoBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>

@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
@@ -70,6 +71,8 @@ public class NotaSalidaBean {
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
+    private List<Equivalencia> listEquivalencia;
+    private List<SelectItem> selectOneItemsEquivalencia;
     private boolean pedidoxUnidad;
     private int totalProductos;
     private int stock;
@@ -463,6 +466,29 @@ public class NotaSalidaBean {
 
     public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
         this.equivalenciaBl = equivalenciaBl;
+    }
+
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        if (almacenProducto.getProducto() != null) {
+            for (Equivalencia obj : listarEquivalenciaxUnidadMedida(almacenProducto.getProducto().getUnidadMedida().getIdunidadmedida())) {
+                this.setEquivalencia(obj);
+                SelectItem selectItem = new SelectItem(equivalencia.getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+                this.selectOneItemsEquivalencia.add(selectItem);
+            }
+            return selectOneItemsEquivalencia;
+        }else{
+            return null;
+        }
+    }
+
+    public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
+        this.selectOneItemsEquivalencia = selectOneItemsEquivalencia;
+    }
+
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        listEquivalencia = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
+        return listEquivalencia;
     }
 
 }
