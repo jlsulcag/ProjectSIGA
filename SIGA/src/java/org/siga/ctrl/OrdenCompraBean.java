@@ -14,11 +14,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.siga.be.Almacen;
+import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.UnidadMedida;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
@@ -41,6 +43,10 @@ public class OrdenCompraBean {
     private ProductoBl productoBl;
     @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private long res = -1;
@@ -94,6 +100,7 @@ public class OrdenCompraBean {
         temp.setDesc1(ordenCompraDetalle.getDesc1());
         temp.setDesc2(ordenCompraDetalle.getDesc2());
         temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
+        temp.setIdEquivalencia(equivalencia.getIdequivalencia());
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
         temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
@@ -201,6 +208,7 @@ public class OrdenCompraBean {
 
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
+        equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
     }
 
     public void setIsCompraUnitaria() {
@@ -379,6 +387,22 @@ public class OrdenCompraBean {
 
     public void setOrdenCompra(OrdenCompra ordenCompra) {
         this.ordenCompra = ordenCompra;
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
     }
 
 }

@@ -90,4 +90,8 @@ public class EquivalenciaBl extends AbstractBL<Equivalencia>{
     public Equivalencia buscaxId(long idEquivalencia) {
         return dao.buscaxId(idEquivalencia);
     }
+
+    public Equivalencia buscarxIdUnidadMedida(long idunidadmedida) {
+        return dao.buscarxIdUnidadMedida(idunidadmedida);
+    }
 }

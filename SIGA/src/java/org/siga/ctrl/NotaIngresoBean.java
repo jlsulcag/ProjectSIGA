@@ -169,10 +169,24 @@ public class NotaIngresoBean {
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
             notaED.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
             notaED.setCantPendiente(notaED.getCantSolicitada() - notaED.getCantRecibida());
-            notaED.setCantIngreso(notaED.getCantPendiente());
+            //
+            if(notaEntradaDetalleTemp != null){
+                notaED.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
+                System.out.println("sadsd....");
+            }else{
+                notaED.setCantIngreso(notaED.getCantPendiente());
+                System.out.println("sadsd....falso  ... ");
+            }            
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
-
+            //
+            notaED.setIdEquivalencia(obj.getIdEquivalencia());
+            //buscar la equivalencia  utiliza para la orden de compra 
+            equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
+            if(equivalencia != null){
+                notaED.setTotalProductos((int) (notaED.getCantIngreso()*equivalencia.getFactor()));
+            }
+            
             //buscar stock disponible en el inventario
             AlmacenProducto temp = new AlmacenProducto();
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenDestino().getIdalmacen(), notaED.getProducto());
@@ -191,19 +205,31 @@ public class NotaIngresoBean {
         String msg = "";
         notaEntradaDetalleTemp.setProducto(((NotaEntradaDetalle) event.getObject()).getProducto());
         notaEntradaDetalleTemp.setCantIngreso(((NotaEntradaDetalle) event.getObject()).getCantIngreso());
-        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-            //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
-            if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
-
-                if (notaEntradaDetalleTemp.getCantIngreso() > obj.getCantPendiente()) {
-                    //la cantidad ingresa se debe mantener
-                    obj.setCantIngreso(obj.getCantPendiente());
-                    msg = "La cantidad ingresada supera a la cantidad pendiente";
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
-                    FacesContext.getCurrentInstance().addMessage(null, message);
-                }
+        System.out.println("cantidad ingrresada .. "+notaEntradaDetalleTemp.getCantIngreso());
+        
+        for (int i = 0; i < listNotaEntradaDetalle.size(); i++) {
+            NotaEntradaDetalle ned = new NotaEntradaDetalle();
+            ned = listNotaEntradaDetalle.get(i);
+            if (ned.getProducto() == notaEntradaDetalleTemp.getProducto()) {
+//                ned.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
+                listNotaEntradaDetalle.get(i).setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
             }
+            
         }
+        
+//        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+//            //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
+//            if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
+//                //obj.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
+//                if (notaEntradaDetalleTemp.getCantIngreso() > obj.getCantPendiente()) {
+//                    //la cantidad ingresa se debe mantener
+//                    obj.setCantIngreso(obj.getCantPendiente());
+//                    msg = "La cantidad ingresada supera a la cantidad pendiente";
+//                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
+//                    FacesContext.getCurrentInstance().addMessage(null, message);
+//                }
+//            }
+//        }
 
     }
 

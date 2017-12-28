@@ -182,7 +182,12 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}"/>
+                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfUnidad"/>
+                                </p:selectOneMenu>
+                                
+                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
+                                    <f:selectItem itemLabel="#{ordenCompraBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
