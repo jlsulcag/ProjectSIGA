@@ -69,6 +69,8 @@ public class NotaIngresoBean {
 
     //private List<NotaEntrada> listNotaEntrada;
     private List<NotaEntradaDetalle> listNotaEntradaDetalle = new LinkedList<>();
+    private List<NotaEntradaDetalle> listNotaEntradaDetalleTemp;
+    ;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
     private boolean compraxUnidad;
     private int totalProductos;
@@ -169,24 +171,17 @@ public class NotaIngresoBean {
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
             notaED.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
             notaED.setCantPendiente(notaED.getCantSolicitada() - notaED.getCantRecibida());
-            //
-            if(notaEntradaDetalleTemp != null){
-                notaED.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
-                System.out.println("sadsd....");
-            }else{
-                notaED.setCantIngreso(notaED.getCantPendiente());
-                System.out.println("sadsd....falso  ... ");
-            }            
+            notaED.setCantIngreso(notaED.getCantPendiente());
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
             //
             notaED.setIdEquivalencia(obj.getIdEquivalencia());
             //buscar la equivalencia  utiliza para la orden de compra 
             equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
-            if(equivalencia != null){
-                notaED.setTotalProductos((int) (notaED.getCantIngreso()*equivalencia.getFactor()));
+            if (equivalencia != null) {
+                notaED.setTotalProductos((int) (notaED.getCantIngreso() * equivalencia.getFactor()));
             }
-            
+
             //buscar stock disponible en el inventario
             AlmacenProducto temp = new AlmacenProducto();
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenDestino().getIdalmacen(), notaED.getProducto());
@@ -200,37 +195,32 @@ public class NotaIngresoBean {
         }
     }
 
-    public void onRowEdit(RowEditEvent event) {
+     public void onRowEdit(RowEditEvent event) {
+         listNotaEntradaDetalleTemp = new LinkedList<>();
         notaEntradaDetalleTemp = new NotaEntradaDetalle();
         String msg = "";
         notaEntradaDetalleTemp.setProducto(((NotaEntradaDetalle) event.getObject()).getProducto());
         notaEntradaDetalleTemp.setCantIngreso(((NotaEntradaDetalle) event.getObject()).getCantIngreso());
-        System.out.println("cantidad ingrresada .. "+notaEntradaDetalleTemp.getCantIngreso());
-        
+
         for (int i = 0; i < listNotaEntradaDetalle.size(); i++) {
             NotaEntradaDetalle ned = new NotaEntradaDetalle();
             ned = listNotaEntradaDetalle.get(i);
-            if (ned.getProducto() == notaEntradaDetalleTemp.getProducto()) {
-//                ned.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
-                listNotaEntradaDetalle.get(i).setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
+            if (listNotaEntradaDetalle.get(i).getProducto() == notaEntradaDetalleTemp.getProducto()) {
+                if (notaEntradaDetalleTemp.getCantIngreso() > ned.getCantPendiente()) {
+                    //la cantidad ingresa se debe mantener
+                    ned.setCantIngreso(ned.getCantPendiente());
+                    msg = "La cantidad ingresada supera a la cantidad pendiente";
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                }else{
+                    ned.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
+                }             
+                equivalencia = equivalenciaBl.buscaxId(ned.getIdEquivalencia());
+                ned.setTotalProductos((int) (ned.getCantIngreso()*equivalencia.getFactor()));                
             }
-            
+            listNotaEntradaDetalleTemp.add(ned);
         }
-        
-//        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-//            //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
-//            if (obj.getProducto() == notaEntradaDetalleTemp.getProducto()) {
-//                //obj.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
-//                if (notaEntradaDetalleTemp.getCantIngreso() > obj.getCantPendiente()) {
-//                    //la cantidad ingresa se debe mantener
-//                    obj.setCantIngreso(obj.getCantPendiente());
-//                    msg = "La cantidad ingresada supera a la cantidad pendiente";
-//                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
-//                    FacesContext.getCurrentInstance().addMessage(null, message);
-//                }
-//            }
-//        }
-
+        setListNotaEntradaDetalle(listNotaEntradaDetalleTemp);
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -529,7 +519,7 @@ public class NotaIngresoBean {
                 this.selectOneItemsEquivalencia.add(selectItem);
             }
             return selectOneItemsEquivalencia;
-        }else{
+        } else {
             return null;
         }
 
@@ -542,6 +532,14 @@ public class NotaIngresoBean {
     private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         listEquivalencia = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
         return listEquivalencia;
+    }
+
+    public List<NotaEntradaDetalle> getListNotaEntradaDetalleTemp() {
+        return listNotaEntradaDetalleTemp;
+    }
+
+    public void setListNotaEntradaDetalleTemp(List<NotaEntradaDetalle> listNotaEntradaDetalleTemp) {
+        this.listNotaEntradaDetalleTemp = listNotaEntradaDetalleTemp;
     }
 
 }
