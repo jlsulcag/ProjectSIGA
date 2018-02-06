@@ -58,7 +58,7 @@ public class PedidoDao extends AbstractDA<Pedido> {
     }
 
     public List<Pedido> listarFull(String string) {
-        string = "from Pedido a order by a.numero desc";
+        string = "from Pedido a left join fetch a.dependencia b left join fetch a.almacenDestino c order by a.numero desc";
         return listar(string);
     }
 

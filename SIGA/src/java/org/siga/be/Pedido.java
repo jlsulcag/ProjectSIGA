@@ -20,7 +20,7 @@ public class Pedido implements java.io.Serializable {
     private String observacion;    
     private String estado;
     private String horaPedido;
-    private int idUserreg;
+    private long idUserreg;
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<PedidoDetalle>(0);
     
     public Pedido() {
@@ -126,11 +126,11 @@ public class Pedido implements java.io.Serializable {
         this.almacenDestino = almacenDestino;
     }
 
-    public int getIdUserreg() {
+    public long getIdUserreg() {
         return idUserreg;
     }
 
-    public void setIdUserreg(int idUserreg) {
+    public void setIdUserreg(long idUserreg) {
         this.idUserreg = idUserreg;
     }
 

@@ -7,7 +7,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 import org.hibernate.HibernateException;
 import org.siga.be.Almacen;
 import org.siga.be.Dependencia;
@@ -42,26 +44,26 @@ public class PedidoBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
-    
+
     @ManagedProperty(value = "#{pedidoSeguimientoBl}")
     private PedidoSeguimientoBl pedidoSeguimientoBl;
     @ManagedProperty(value = "#{pedidoSeguimiento}")
     private PedidoSeguimiento pedidoSeguimiento;
-    
+
     @ManagedProperty(value = "#{pedidoEstadoBl}")
     private PedidoEstadoBl pedidoEstadoBl;
-    
+
     @ManagedProperty(value = "#{equivalencia}")
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
 
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
-    private List<Pedido> listPedido= new LinkedList<>();
+    private List<Pedido> listPedido = new LinkedList<>();
     private boolean pedidoxUnidad;
     private int totalProductos;
     private List<Equivalencia> listEquivalencias;
-    
+
     private List<SelectItem> selectOneItemsPedido;
     private List<SelectItem> selectOneItemsEquivalencia;
 
@@ -76,6 +78,7 @@ public class PedidoBean {
         pedido.setObservacion("");
         pedido.setDependencia(new Dependencia());
         pedido.setAlmacenDestino(new Almacen());
+        setProducto(null);
     }
 
     private long maxNumero() {
@@ -105,11 +108,12 @@ public class PedidoBean {
         long id2 = -1;
         if (!listPedidoDetalle.isEmpty()) {
             id = registrarPedido();
-            if (id > 0) {
-                //registrar detalle movimiento
+            if (id == 0) {
+                //registrar detalle movimiento                
                 //registrarPedidoMovimiento(id);//agregar dicha funcionalidad  posteriormente, conocer cuando cambiara d estados el pedido
                 id2 = registrarPedidoDetalle();
                 if (id2 > 0) {
+                    registrarPedidoSeguimiento(pedido);
                     MensajeView.registroCorrecto();
                     inicio();
                 } else {
@@ -126,10 +130,16 @@ public class PedidoBean {
 
     public long registrarPedido() {
         pedido.setObservacion(pedido.getObservacion().toUpperCase().trim());
-        pedido.setEstado("NO ATENDIDO");
+        pedido.setEstado("REG");
         pedido.setHoraPedido(Utilitarios.horaActual());
-        pedidoBl.registrar(pedido);
-        return pedido.getIdpedido();
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if(sesionUser.getAttribute("idUsuario") != null){
+            pedido.setIdUserreg(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+        }else{
+            pedido.setIdUserreg(0);
+        }
+        
+        return pedidoBl.registrar(pedido);        
     }
 
     private long registrarPedidoDetalle() {
@@ -144,8 +154,8 @@ public class PedidoBean {
 
     public void inicioNew() {
         pedidoDetalle.setProducto(new Producto());
-        producto.setFraccion(0);
-        producto.setUnidadMedida(null);
+//        producto.setFraccion(0);
+//        producto.setUnidadMedida(null);
         setPedidoxUnidad(false);
         pedidoDetalle.setCantidadSolicitada(0);
         setTotalProductos(0);
@@ -259,19 +269,6 @@ public class PedidoBean {
     public void setPedidoEstadoBl(PedidoEstadoBl pedidoEstadoBl) {
         this.pedidoEstadoBl = pedidoEstadoBl;
     }
-    
-    private void registrarPedidoMovimiento(long id) {
-        pedidoSeguimiento.setPedido(pedidoBl.buscar(id));
-        pedidoSeguimiento.setPedidoEstados(pedidoEstadoBl.buscarRef("REGISTRADO"));
-        pedidoSeguimiento.setFecha(new Date());
-        pedidoSeguimiento.setHora(Utilitarios.horaActual());
-        pedidoSeguimiento.setObservacion("");
-        pedidoSeguimiento.setEstado(true);
-        pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero()+1);
-        
-        pedidoSeguimientoBl.registrar(pedidoSeguimiento);
-        
-    }
 
     public PedidoSeguimiento getPedidoSeguimiento() {
         return pedidoSeguimiento;
@@ -282,10 +279,10 @@ public class PedidoBean {
     }
 
     public List<SelectItem> getSelectOneItemsPedido() {
-        this.selectOneItemsPedido= new LinkedList<SelectItem>();
+        this.selectOneItemsPedido = new LinkedList<SelectItem>();
         for (Pedido obj : listOrdenPedidoXEstado("NO ATENDIDO")) {
             this.setPedido(obj);
-            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero()+"");
+            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
             this.selectOneItemsPedido.add(selectItem);
         }
         return selectOneItemsPedido;
@@ -301,18 +298,23 @@ public class PedidoBean {
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
-        for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
-            this.setEquivalencia(obj);
-            SelectItem selectItem = new SelectItem(getEquivalencia().getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
-            this.selectOneItemsEquivalencia.add(selectItem);
+        if (producto != null) {
+            for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+                this.setEquivalencia(obj);
+                SelectItem selectItem = new SelectItem(getEquivalencia().getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+                this.selectOneItemsEquivalencia.add(selectItem);
+            }
+            return selectOneItemsEquivalencia;
+        } else {
+            return null;
         }
-        return selectOneItemsEquivalencia;
+
     }
 
     public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
         this.selectOneItemsEquivalencia = selectOneItemsEquivalencia;
     }
-    
+
     private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         listEquivalencias = getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida);
         return getListEquivalencias();
@@ -340,6 +342,23 @@ public class PedidoBean {
 
     public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
         this.equivalenciaBl = equivalenciaBl;
+    }
+
+    private void registrarPedidoSeguimiento(Pedido pedido) {
+        pedidoSeguimiento.setPedido(pedido);
+        pedidoSeguimiento.setFecha(new Date());
+        pedidoSeguimiento.setHora(Utilitarios.horaActual());
+        pedidoSeguimiento.setObservacion(pedido.getObservacion());
+        pedidoSeguimiento.setEstado("REGISTRADO");
+        pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero() + 1);
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if(sesionUser.getAttribute("idUsuario") != null){
+            pedidoSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+        }else{
+            pedidoSeguimiento.setIdUser(0);
+        }
+
+        pedidoSeguimientoBl.registrar(pedidoSeguimiento);
     }
 
 }

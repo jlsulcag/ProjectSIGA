@@ -60,7 +60,7 @@ public class LoginBean{
             //guardamos en sesion usuario
             HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             sesionUser.setAttribute("idUsuario", temp.getIdusuario());
-            sesionUser.setAttribute("usuario", temp);
+            //sesionUser.setAttribute("usuario", temp);
             //Obtenemos los datos del usuario vinculado al rol
             usuarioRol = usuarioRolBl.buscarxIdUsuario(temp.getIdusuario());
             //Obtenemos el rol del usuario que ingresa, para establecer las paginas de acceso

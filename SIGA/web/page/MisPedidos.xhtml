@@ -14,102 +14,84 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel>
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
+                        <p:dataTable id="lista" value="#{misPedidosBean.listPedidos}" var="item" selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Pedidos</f:facet>
-
+                            <p:ajax event="rowSelect" listener="#{misPedidosBean.onRowSelect}" update=":msg,:formDataTableDetalle" />
+                            <p:ajax event="rowUnselect" listener="#{misPedidosBean.onRowUnselect}" update=":msg" />
                             <p:column headerText="ID" style="width: 15px">
-                                <h:outputText value="#{item.idordencompra}"/>
+                                <h:outputText value="#{item.idpedido}"/>
                             </p:column>
+
+                            <p:column headerText="Dependencia">
+                                <h:outputText value="#{item.dependencia.descripcion}"/>
+                            </p:column>
+
                             <p:column headerText="Número" style="width: 80px">
                                 <h:outputText value="#{item.numero}"/>
                             </p:column>
 
                             <p:column headerText="Fecha" style="width: 80px">
-                                <h:outputText value="#{item.fecha}">
+                                <h:outputText value="#{item.fechaPedido}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Dependencia Solicitante">
-                                <h:outputText value="#{item.proveedor.razonSocial}"/>
-                            </p:column>
-
-                            <p:column headerText="Almacen">
-                                <h:outputText value="#{item.fechaEntrega}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                </h:outputText>
-                            </p:column>
-
-                            <p:column headerText="Estado" style="width: 80px">
+                            <p:column headerText="Estado" style="width: 100px">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
-                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                    <f:setPropertyActionListener value="#{item}" target="#" />
                                 </p:commandButton>                           
-                            </p:column>
-
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
-                                                 icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
-                                </p:commandButton>                            
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
-                    <h:form id="formEdit">
-                        <p:dialog header="Actualizar Datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
-                                  resizable="false" closable="false">
-                            <h:panelGrid columns="2" cellpadding="1">
+                    <h:form id="formDataTableDetalle" style="margin-top: 20px">
+                        <p:dataTable id="dtPedidos" value="#{misPedidosBean.listPedidoDetalle}" var="item" editable="true" editMode="cell" widgetVar="cellPedidos"
+                                     selectionMode="single" selection="#{misPedidosBean.selectPedidoDetalle}" rowKey="#{item.idpedidodetalle}"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     rowsPerPageTemplate="10,15,20">
+                            <f:facet name="header">Detalle del Pedido</f:facet>
 
-                                <h:inputHidden value="#{misOrdenesCompraBean.ordenCompra.idordencompra}"   />
-                                <h:inputHidden />
+                            <p:ajax event="cellEdit" listener="#{misPedidosBean.onCellEdit}" update=":msg" />
 
-                                <h:outputLabel for="txfNumeroEdit" value="Número :"/>
-                                <p:inputText id="txfNumeroEdit" label="Numero" style="text-transform: uppercase" required="true" readonly="true"
-                                             value= "#{misOrdenesCompraBean.ordenCompra.numero}"/>
+                            <p:column headerText="ID" style="width: 15px">
+                                <h:outputText value="#{item.idpedidodetalle}"/>
+                            </p:column>
 
-                                <h:outputLabel for="txfFechaEdit" value="Fecha de Emisión :"/>
-                                <p:calendar id="txfFechaEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                            value="#{misOrdenesCompraBean.ordenCompra.fecha}">
-                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
-                                </p:calendar>
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
 
-                                <h:outputLabel for="cbxProveedorEdit" value="Proveedor :"/>
-                                <p:selectOneMenu id="cbxProveedorEdit" style="width: 380px;" value="#{misOrdenesCompraBean.ordenCompra.proveedor.idproveedor}" filter="true" filterMatchMode="contains">
-                                    <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
-                                </p:selectOneMenu>
+                            <p:column headerText="Cant Solicitada">
+                                <h:outputText value="#{item.cantidadSolicitada}"/>
+                            </p:column>
 
-                                <h:outputLabel for="txfFechaEntregaEdit" value="Fecha de entrega:"/>
-                                <p:calendar id="txfFechaEntregaEdit" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
-                                            value="#{misOrdenesCompraBean.ordenCompra.fechaEntrega}">
-                                    <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
-                                </p:calendar>
+                            <p:column headerText="Cant Autorizada">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.cantidadAutorizada}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{item.cantidadAutorizada}" style="width: 96%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <h:outputLabel for="txfLugarEntregaEdit" value="Lugar de entrega :"/>
-                                <p:inputText id="txfLugarEntregaEdit" label="Lugar de entrega" style="text-transform: uppercase"
-                                             value="#{misOrdenesCompraBean.ordenCompra.lugarEntrega}"/>
+                            <p:column headerText="Unidad">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
 
-                                <h:outputLabel for="txfObservacionEdit" value="Observación :"/>
-                                <p:inputText id="txfObservacionEdit" label="Observación" style="text-transform: uppercase"
-                                             value="#{misOrdenesCompraBean.ordenCompra.observacion}"/>
+                        </p:dataTable>
 
-                                <f:facet name="footer">
-                                    <p:separator/>
-                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
-                                                     oncomplete="PF('dlgEdit').hide())" actionListener="#{misOrdenesCompraBean.actualizar()}"/>
+                        <p:contextMenu for="dtPedidos" widgetVar="cMenu">   
+                            <p:menuitem value="Editar" icon="ui-icon-search" onclick="PF('cellPedidos').showCellEditor();
+                                    return false;"/>  
+                            <p:menuitem value="Cerrar" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
+                        </p:contextMenu>
 
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />
-                                </f:facet>
-
-                            </h:panelGrid>
-                        </p:dialog>
                     </h:form>
+
                 </p:panel>
             </ui:define>
 

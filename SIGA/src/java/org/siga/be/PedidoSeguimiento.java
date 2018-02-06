@@ -14,36 +14,18 @@ public class PedidoSeguimiento  implements java.io.Serializable {
 
      private long idpedidoseguimiento;
      private Pedido pedido;
-     private PedidoEstados pedidoEstados;
      private Date fecha;
      private String hora;
      private String observacion;
      private int numero;
-     private boolean estado;
+     private String estado;
+     private long idUser;
 
     public PedidoSeguimiento() {
     }
 
 	
-    public PedidoSeguimiento(long idpedidoseguimiento, Pedido pedido, PedidoEstados pedidoEstados, Date fecha, String hora, int numero, boolean estado) {
-        this.idpedidoseguimiento = idpedidoseguimiento;
-        this.pedido = pedido;
-        this.pedidoEstados = pedidoEstados;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.numero = numero;
-        this.estado = estado;
-    }
-    public PedidoSeguimiento(long idpedidoseguimiento, Pedido pedido, PedidoEstados pedidoEstados, Date fecha, String hora, String observacion, int numero, boolean estado) {
-       this.idpedidoseguimiento = idpedidoseguimiento;
-       this.pedido = pedido;
-       this.pedidoEstados = pedidoEstados;
-       this.fecha = fecha;
-       this.hora = hora;
-       this.observacion = observacion;
-       this.numero = numero;
-       this.estado = estado;
-    }
+   
    
     public long getIdpedidoseguimiento() {
         return this.idpedidoseguimiento;
@@ -59,13 +41,7 @@ public class PedidoSeguimiento  implements java.io.Serializable {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
-    public PedidoEstados getPedidoEstados() {
-        return this.pedidoEstados;
-    }
     
-    public void setPedidoEstados(PedidoEstados pedidoEstados) {
-        this.pedidoEstados = pedidoEstados;
-    }
     public Date getFecha() {
         return this.fecha;
     }
@@ -94,13 +70,23 @@ public class PedidoSeguimiento  implements java.io.Serializable {
     public void setNumero(int numero) {
         this.numero = numero;
     }
-    public boolean isEstado() {
-        return this.estado;
+
+    public String getEstado() {
+        return estado;
     }
-    
-    public void setEstado(boolean estado) {
+
+    public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+    
 
 
 
