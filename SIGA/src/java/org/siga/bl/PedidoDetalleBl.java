@@ -35,7 +35,7 @@ public class PedidoDetalleBl extends AbstractBL<PedidoDetalle>{
 
     @Override
     public long actualizar(PedidoDetalle bean) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return update(bean);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PedidoDetalleBl extends AbstractBL<PedidoDetalle>{
 
     @Override
     public PedidoDetalle buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -75,6 +75,10 @@ public class PedidoDetalleBl extends AbstractBL<PedidoDetalle>{
 
     public List<PedidoDetalle> listarxIdPedido(long id) {
         return dao.listarxIdPedido(id);
+    }
+
+    public PedidoDetalle buscarxID(long idpedidodetalle) {
+        return dao.buscarxID(idpedidodetalle);
     }
     
 }

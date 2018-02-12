@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <p:growl id="msg" showDetail="true"/>
+
+                    <p:dataTable id="lista" value="#{misPedidosBean.listPedidos}" var="item" selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
+                                 paginator="true" rows="10" paginatorPosition="bottom"
+                                 rowsPerPageTemplate="10,15,20">
+                        <f:facet name="header">Pedidos</f:facet>
+
+                        <p:ajax event="rowSelect" listener="#{misPedidosBean.onRowSelect}" update="form" />
+                        <p:ajax event="rowUnselect" listener="#{misPedidosBean.onRowUnselect}" update="form"/>
+
+                        <!--
+                        <p:ajax event="rowEdit" listener="{misPedidosBean.onRowEdit}" update=":form:msg"/>
+                        <p:ajax event="rowEditCancel" listener="{misPedidosBean.onRowCancel}" update=":form:msg"/>
+                        -->
+                        <p:column headerText="ID" style="width: 15px">
+                            <h:outputText value="#{item.idpedido}"/>
+                        </p:column>
+
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{item.dependencia.descripcion}"/>
+                        </p:column>
+
+                        <p:column headerText="Número" style="width: 80px">
+                            <h:outputText value="#{item.numero}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha" style="width: 80px">
+                            <h:outputText value="#{item.fechaPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Estado" style="width: 100px">
+                            <h:outputText value="#{item.estado}"/>
+                            <!--
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="{item.estado}"/></f:facet>
+                                <f:facet name="input">
+                                <h:selectOneMenu value="{misPedidosBean.pedido.estado}">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="REGISTRADO" itemValue="REGISTRADO"/>
+                                    <f:selectItem itemLabel="ANULADO" itemValue="REGISTRADO"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                            </p:cellEditor>                            
+                            -->
+                        </p:column>
+
+                        <p:column style="width:30px;text-align: center">
+                            <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misPedidosBean.redirigir()}">
+                                <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                            </p:commandButton>                           
+                        </p:column>
+                        <!--
+                        <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
+                            <p:rowEditor />
+                        </p:column>
+                        -->
+                    </p:dataTable>                   
+                </h:form>            
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

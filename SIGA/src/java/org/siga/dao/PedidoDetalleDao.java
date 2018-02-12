@@ -47,7 +47,7 @@ public class PedidoDetalleDao extends AbstractDA<PedidoDetalle>{
 
     @Override
     public PedidoDetalle buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -58,6 +58,11 @@ public class PedidoDetalleDao extends AbstractDA<PedidoDetalle>{
     public List<PedidoDetalle> listarxIdPedido(long id) {
         String hql = "from PedidoDetalle a left join fetch a.pedido b left join fetch a.producto c where b.idpedido = "+id;
         return listar(hql);
+    }
+
+    public PedidoDetalle buscarxID(long idpedidodetalle) {
+        String hql = "from PedidoDetalle a left join fetch a.pedido b left join fetch a.producto c where a.idpedidodetalle = "+idpedidodetalle;
+        return buscar(hql);
     }
     
    

@@ -44,7 +44,7 @@
 
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
-                                    <f:setPropertyActionListener value="#{item}" target="#" />
+                                    <f:setPropertyActionListener value="#{item}" target="" />
                                 </p:commandButton>                           
                             </p:column>
                         </p:dataTable>
@@ -89,6 +89,16 @@
                                     return false;"/>  
                             <p:menuitem value="Cerrar" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
                         </p:contextMenu>
+
+                    </h:form>
+
+                    <h:form id="formTools" style="margin-top: 10px">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton id="btnReg" value="Guardar" title="Guardar" 
+                                                 actionListener="#{productoBean.limpiar()}"/>
+                            </f:facet>
+                        </p:toolbar>
 
                     </h:form>
 
