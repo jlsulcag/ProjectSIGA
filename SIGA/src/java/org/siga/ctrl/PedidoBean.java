@@ -66,6 +66,7 @@ public class PedidoBean {
 
     private List<SelectItem> selectOneItemsPedido;
     private List<SelectItem> selectOneItemsEquivalencia;
+    private List<SelectItem> pedidosPorEstado;
 
     public PedidoBean() {
     }
@@ -130,7 +131,6 @@ public class PedidoBean {
 
     public long registrarPedido() {
         pedido.setObservacion(pedido.getObservacion().toUpperCase().trim());
-        pedido.setEstado("REG");
         pedido.setHoraPedido(Utilitarios.horaActual());
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(sesionUser.getAttribute("idUsuario") != null){
@@ -280,20 +280,22 @@ public class PedidoBean {
 
     public List<SelectItem> getSelectOneItemsPedido() {
         this.selectOneItemsPedido = new LinkedList<SelectItem>();
-        for (Pedido obj : listOrdenPedidoXEstado("NO ATENDIDO")) {
+        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
             this.setPedido(obj);
             SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
             this.selectOneItemsPedido.add(selectItem);
         }
         return selectOneItemsPedido;
     }
+    
+    
 
     public void setSelectOneItemsPedido(List<SelectItem> selectOneItemsPedido) {
         this.selectOneItemsPedido = selectOneItemsPedido;
     }
 
-    private List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
-        return pedidoBl.listOrdenPedidoXEstado(no_atendido);
+    private List<Pedido> listOrdenPedidoXEstado(String estado) {
+        return pedidoBl.listOrdenPedidoXEstado(estado);
     }
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
@@ -350,7 +352,7 @@ public class PedidoBean {
         pedidoSeguimiento.setHora(Utilitarios.horaActual());
         pedidoSeguimiento.setObservacion(pedido.getObservacion());
         pedidoSeguimiento.setEstado("REGISTRADO");
-        pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero() + 1);
+        pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido()) + 1);
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if(sesionUser.getAttribute("idUsuario") != null){
             pedidoSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
@@ -359,6 +361,21 @@ public class PedidoBean {
         }
 
         pedidoSeguimientoBl.registrar(pedidoSeguimiento);
+    }
+
+    public List<SelectItem> getPedidosPorEstado() {
+        this.pedidosPorEstado = new LinkedList<SelectItem>();
+        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
+            System.out.println("objeto ... "+obj.getNumero());
+            this.setPedido(obj);
+            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
+            this.selectOneItemsPedido.add(selectItem);
+        }        
+        return pedidosPorEstado;
+    }
+
+    public void setPedidosPorEstado(List<SelectItem> pedidosPorEstado) {
+        this.pedidosPorEstado = pedidosPorEstado;
     }
 
 }

@@ -44,22 +44,6 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Estado" style="width: 100px">
-                            <h:outputText value="#{item.estado}"/>
-                            <!--
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="{item.estado}"/></f:facet>
-                                <f:facet name="input">
-                                <h:selectOneMenu value="{misPedidosBean.pedido.estado}">
-                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="REGISTRADO" itemValue="REGISTRADO"/>
-                                    <f:selectItem itemLabel="ANULADO" itemValue="REGISTRADO"/>
-                                </h:selectOneMenu>
-                            </f:facet>
-                            </p:cellEditor>                            
-                            -->
-                        </p:column>
-
                         <p:column style="width:30px;text-align: center">
                             <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misPedidosBean.redirigir()}">
                                 <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />

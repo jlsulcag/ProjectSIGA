@@ -17,8 +17,7 @@ public class Pedido implements java.io.Serializable {
     private Almacen almacenDestino;
     private long numero;
     private Date fechaPedido;
-    private String observacion;    
-    private String estado;
+    private String observacion;
     private String horaPedido;
     private long idUserreg;
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<PedidoDetalle>(0);
@@ -92,15 +91,6 @@ public class Pedido implements java.io.Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     
     public String getHoraPedido() {
         return horaPedido;

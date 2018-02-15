@@ -58,12 +58,13 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int maxNumero() {
+  
+    public int maxNumero(long idpedido) {
         Session s = getSession();
         Transaction t = s.beginTransaction();
         int num = 0;
         try {
-            String hql = "select max(a.numero) from PedidoSeguimiento a";
+            String hql = "select max(a.numero) from PedidoSeguimiento a left join fetch a.pedido b where b.idpedido = "+idpedido;
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
                 num = 0;

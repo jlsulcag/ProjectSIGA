@@ -95,7 +95,8 @@ public class PedidoDetalleBean {
             pedidoSeguimiento.setPedido(pedido);
             pedidoSeguimiento.setFecha(new Date());
             pedidoSeguimiento.setHora(Utilitarios.horaActual());
-            pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero() + 1);
+            System.out.println("id pedido " +pedido.getIdpedido());
+            pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido())+ 1);
             pedidoSeguimiento.setObservacion(pedidoSeguimiento.getObservacion().toUpperCase().trim());
             HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             if (sesionUser.getAttribute("idUsuario") != null) {

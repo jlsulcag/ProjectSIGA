@@ -71,8 +71,9 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int maxNumero() {
-        return dao.maxNumero();
+
+    public int maxNumero(long idpedido) {
+        return dao.maxNumero(idpedido);
     }
     
     

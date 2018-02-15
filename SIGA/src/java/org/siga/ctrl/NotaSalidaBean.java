@@ -161,7 +161,7 @@ public class NotaSalidaBean {
                     }
                     if (pedido != null) {
                         if (cont == 0) {//Actualizar estado del pedido para ya no mostrar en la lista
-                            pedido.setEstado("CERRADO");
+                            //pedido.setEstado("CERRADO");
                             pedidoBl.actualizar(pedido);
                         }
                     }

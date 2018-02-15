@@ -26,9 +26,6 @@
         <property name="observacion" type="string">
             <column name="observacion" length="300"/>
         </property>
-        <property name="estado" type="string">
-            <column name="estado" length="20" not-null="true"/>
-        </property>
         <property name="horaPedido" type="string">
             <column name="hora_pedido" length="15" not-null="true" />
         </property>

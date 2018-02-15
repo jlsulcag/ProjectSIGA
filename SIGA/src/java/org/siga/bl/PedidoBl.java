@@ -79,8 +79,8 @@ public class PedidoBl extends AbstractBL<Pedido> {
         return dao.buscarMaxNumero();
     }
 
-    public List<Pedido> listOrdenPedidoXEstado(String no_atendido) {
-        return dao.listOrdenPedidoXEstado(no_atendido);
+    public List<Pedido> listOrdenPedidoXEstado(String estado) {
+        return dao.listOrdenPedidoXEstado(estado);
     }
 
     public Pedido buscarXid(long idpedido) {
