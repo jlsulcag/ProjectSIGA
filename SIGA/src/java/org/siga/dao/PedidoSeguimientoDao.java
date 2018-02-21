@@ -35,7 +35,7 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
 
     @Override
     public List<PedidoSeguimiento> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
         Transaction t = s.beginTransaction();
         int num = 0;
         try {
-            String hql = "select max(a.numero) from PedidoSeguimiento a left join fetch a.pedido b where b.idpedido = "+idpedido;
+            String hql = "select max(a.numero) from PedidoSeguimiento a where a.pedido.idpedido = "+idpedido;
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
                 num = 0;
@@ -78,6 +78,11 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
             t.rollback();
             return 0;
         }
+    }
+
+    public List<PedidoSeguimiento> listarxEstado(String aprobado) {
+        String hql = "from PedidoSeguimiento a where a.numero = (select max(b.numero) from PedidoSeguimiento b where b.pedido.idpedido = a.pedido.idpedido) and a.estado = '"+aprobado+"'";
+        return listar(hql);
     }
     
 }

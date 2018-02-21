@@ -21,6 +21,7 @@ public class Pedido implements java.io.Serializable {
     private String horaPedido;
     private long idUserreg;
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<PedidoDetalle>(0);
+    private Set<PedidoSeguimiento> pedidoSeguimientos = new HashSet<PedidoSeguimiento>(0);
     
     public Pedido() {
         this.idpedido = 0;
@@ -130,6 +131,14 @@ public class Pedido implements java.io.Serializable {
 
     public void setDependencia(Dependencia dependencia) {
         this.dependencia = dependencia;
+    }
+
+    public Set<PedidoSeguimiento> getPedidoSeguimientos() {
+        return pedidoSeguimientos;
+    }
+
+    public void setPedidoSeguimientos(Set<PedidoSeguimiento> pedidoSeguimientos) {
+        this.pedidoSeguimientos = pedidoSeguimientos;
     }
 
    

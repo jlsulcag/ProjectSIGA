@@ -67,6 +67,7 @@ public class PedidoBean {
     private List<SelectItem> selectOneItemsPedido;
     private List<SelectItem> selectOneItemsEquivalencia;
     private List<SelectItem> pedidosPorEstado;
+    private List<PedidoSeguimiento> listPedidoSeguimiento;
 
     public PedidoBean() {
     }
@@ -279,13 +280,24 @@ public class PedidoBean {
     }
 
     public List<SelectItem> getSelectOneItemsPedido() {
-        this.selectOneItemsPedido = new LinkedList<SelectItem>();
-        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
-            this.setPedido(obj);
+//        this.selectOneItemsPedido = new LinkedList<SelectItem>();
+//        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
+//            this.setPedido(obj);
+//            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
+//            this.selectOneItemsPedido.add(selectItem);
+//        }
+//        return selectOneItemsPedido;
+        
+        //Listar los seguimientos de pedido que se encuentren  en estado APROBADO
+        listPedidoSeguimiento = new LinkedList<>();
+        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado("APROBADO");
+        this.selectOneItemsPedido = new LinkedList<>();
+        for (PedidoSeguimiento pedidoSeg : listPedidoSeguimiento) {
+            pedido = pedidoBl.buscarXid(pedidoSeg.getPedido().getIdpedido());
             SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
             this.selectOneItemsPedido.add(selectItem);
         }
-        return selectOneItemsPedido;
+        return pedidosPorEstado;
     }
     
     
@@ -364,18 +376,38 @@ public class PedidoBean {
     }
 
     public List<SelectItem> getPedidosPorEstado() {
-        this.pedidosPorEstado = new LinkedList<SelectItem>();
-        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
-            System.out.println("objeto ... "+obj.getNumero());
-            this.setPedido(obj);
+        //Listar los seguimientos de pedido que se encuentren  en estado APROBADO
+        listPedidoSeguimiento = new LinkedList<>();
+        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado("APROBADO");
+        selectOneItemsPedido = new LinkedList<>();
+        for (PedidoSeguimiento pedidoSeg : listPedidoSeguimiento) {
+            pedido = pedidoBl.buscarXid(pedidoSeg.getPedido().getIdpedido());
             SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
             this.selectOneItemsPedido.add(selectItem);
-        }        
-        return pedidosPorEstado;
+        }
+        return selectOneItemsPedido;
+//        
+//        
+//        this.pedidosPorEstado = new LinkedList<SelectItem>();
+//        for (Pedido obj : listOrdenPedidoXEstado("APROBADO")) {
+//            System.out.println("objeto ... "+obj.getNumero());
+//            this.setPedido(obj);
+//            SelectItem selectItem = new SelectItem(pedido.getIdpedido(), pedido.getNumero() + "");
+//            this.selectOneItemsPedido.add(selectItem);
+//        }        
+//        return pedidosPorEstado;
     }
 
     public void setPedidosPorEstado(List<SelectItem> pedidosPorEstado) {
         this.pedidosPorEstado = pedidosPorEstado;
+    }
+
+    public List<PedidoSeguimiento> getListPedidoSeguimiento() {
+        return listPedidoSeguimiento;
+    }
+
+    public void setListPedidoSeguimiento(List<PedidoSeguimiento> listPedidoSeguimiento) {
+        this.listPedidoSeguimiento = listPedidoSeguimiento;
     }
 
 }

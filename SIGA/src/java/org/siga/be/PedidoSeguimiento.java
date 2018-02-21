@@ -22,6 +22,8 @@ public class PedidoSeguimiento  implements java.io.Serializable {
      private long idUser;
 
     public PedidoSeguimiento() {
+        this.idpedidoseguimiento = 0;
+        this.pedido = new Pedido();
     }
 
 	
