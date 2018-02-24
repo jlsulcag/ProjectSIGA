@@ -64,10 +64,7 @@ public class PedidoDetalleBean {
         getListPedidoDetalle().add(temp);
     }
 
-    public void limpiar() {
-        pedidoDetalle.setIdpedidodetalle(0);
-
-    }
+    
 
     @PostConstruct
     public void listar() {
@@ -104,7 +101,14 @@ public class PedidoDetalleBean {
                 pedidoSeguimiento.setIdUser(0);
             }
             pedidoSeguimientoBl.registrar(pedidoSeguimiento);
+            limpiar();
         }
+    }
+    
+    public void limpiar() {
+        pedidoSeguimiento.setIdpedidoseguimiento(0);
+        pedidoSeguimiento.setObservacion("");
+        pedidoSeguimiento.setEstado("");
     }
 
     public void onRowCancel(RowEditEvent event) {

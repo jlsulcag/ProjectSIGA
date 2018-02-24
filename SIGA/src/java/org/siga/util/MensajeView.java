@@ -39,4 +39,5 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existen items");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
 }

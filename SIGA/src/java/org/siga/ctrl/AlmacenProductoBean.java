@@ -15,6 +15,7 @@ import org.siga.be.Producto;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaIngresoBl;
+import org.siga.util.MensajeView;
 
 @ManagedBean
 @ViewScoped
@@ -42,7 +43,9 @@ public class AlmacenProductoBean {
     @PostConstruct
     public void inicio(){
         almacenProducto.setAlmacen(defaultAlmacen());
-        listarProductos(almacenProducto.getAlmacen().getIdalmacen());
+        if(almacenProducto.getAlmacen().getIdalmacen() != 0){
+            listarProductos(almacenProducto.getAlmacen().getIdalmacen());
+        }        
     }
     
     public void buscarAlmacenProducto(){
@@ -96,7 +99,7 @@ public class AlmacenProductoBean {
     }
 
     private Almacen defaultAlmacen() {
-        return almacenBl.buscarXNombre("ALMACEN CENTRAL");
+        return almacenBl.buscarXNombre("SEDE PRINCIPAL");
     }
 
     public AlmacenBl getAlmacenBl() {
