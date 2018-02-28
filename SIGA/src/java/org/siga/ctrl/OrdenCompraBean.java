@@ -72,10 +72,15 @@ public class OrdenCompraBean {
         ordenCompra.setFechaEntrega(null);
         ordenCompra.setLugarEntrega("");
         ordenCompra.setObservacion("");
+        ordenCompra.setDocReferencia("");
         ordenCompra.setProveedor(new Proveedor());
         ordenCompra.setAlmacenDestino(new Almacen());
         listOrdenCompraDetalles.clear();
         totalTemp = new BigDecimal("0.00");
+        valorBruto = new BigDecimal("0.00");
+        totalDescuento = new BigDecimal("0.00");
+        valorNeto = new BigDecimal("0.00");
+        montoIgv = new BigDecimal("0.00");
         //invalidarSesionOrdenCompra();
     }
 
@@ -85,11 +90,7 @@ public class OrdenCompraBean {
 
     public void agregar() {
         OrdenCompraDetalle temp = new OrdenCompraDetalle();
-//        temp = this.ordenCompraDetalle;
-//        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-//        if (httpSession.getAttribute("idOrdenCompra") != null) {
-//            temp.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
-//        }
+        
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setObservacion("");
@@ -103,7 +104,7 @@ public class OrdenCompraBean {
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
-        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
+        temp.setSubTotal((ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
@@ -335,10 +336,10 @@ public class OrdenCompraBean {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
-            valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
-            totalDescuento = totalDescuento.add(obj.getMontoDescitem());
-            valorNeto = valorBruto.subtract(totalDescuento);
-            montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
+            valorBruto = (valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
+            totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
+            valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
+            montoIgv = (valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP)).setScale(2, RoundingMode.HALF_UP);
             if (httpSession.getAttribute("idOrdenCompra") != null) {
                 totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             } else {

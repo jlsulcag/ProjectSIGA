@@ -40,7 +40,7 @@ public class UsuarioDao extends AbstractDA<Usuario>{
 
     @Override
     public Usuario buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(Usuario.class, id);
     }
 
     @Override
@@ -70,6 +70,11 @@ public class UsuarioDao extends AbstractDA<Usuario>{
 
     public Usuario buscarxUsuario(String usuario) {
         String hql = "from Usuario a left join fetch a.persona b left join fetch a.dependencia c where a.nombre like '%"+usuario+"%'";
+        return buscar(hql);
+    }
+
+    public Usuario buscarxIdUsuario(long id) {
+        String hql = "from Usuario a left join fetch a.persona b left join fetch a.dependencia c where a.idusuario = "+id;
         return buscar(hql);
     }
     

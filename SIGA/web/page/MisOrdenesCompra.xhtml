@@ -21,14 +21,14 @@
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Ordenes de Compra</f:facet>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idordencompra}"/>
                             </p:column>
-                            <p:column headerText="Número">
+                            <p:column headerText="Número" style="width: 50px">
                                 <h:outputText value="#{item.numero}"/>
                             </p:column>
 
-                            <p:column headerText="Fecha">
+                            <p:column headerText="Fecha" style="width: 60px">
                                 <h:outputText value="#{item.fecha}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
@@ -38,23 +38,23 @@
                                 <h:outputText value="#{item.proveedor.razonSocial}"/>
                             </p:column>
 
-                            <p:column headerText="Fecha Entrega">
+                            <p:column headerText="Fecha Entrega" style="width: 60px">
                                 <h:outputText value="#{item.fechaEntrega}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
                             </p:column>
                             
-                            <p:column headerText="Estado">
+                            <p:column headerText="Estado" style="width: 80px">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
                                     <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
                                 </p:commandButton>                           
                             </p:column>
 
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />

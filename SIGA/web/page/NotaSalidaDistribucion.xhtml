@@ -27,29 +27,35 @@
                                     <h:outputLabel value="Fecha :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" readonly="true" disabled="true"
                                                 value="#{notaSalidaBean.notaSalida.fechaReg}">
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="cbxAlmacenO" value="Almacen Origen :"/>
+                                    <h:outputLabel for="txfAlmacenOrigen" value="Almacen Origen :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfAlmacenOrigen"  readonly="true" disabled="true" label="Almacen origen" 
+                                                 value="#{notaSalidaBean.almacen.nombre}"/>
+                                </div>
+                                <!--
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:selectOneMenu id="cbxAlmacenO" filter="true" filterMatchMode="contains" required="true" label="Almacen origen"
-                                                     value="#{notaSalidaBean.notaSalida.almacenOrigen.idalmacen}">
+                                                     value="{notaSalidaBean.notaSalida.almacenOrigen.idalmacen}">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
-                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                        <f:selectItems value="{almacenBean.selectOneItemsAlmacen}"/>
                                     </p:selectOneMenu>
                                 </div>
+                                -->
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfResponsable" value="Responsable Origen:" />
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfResponsable" disabled="true" readonly="true" label="Responsable origen" 
-                                                 />
+                                    <p:inputText id="txfResponsable"  readonly="true" disabled="true" label="Responsable origen" 
+                                                 value="#{notaSalidaBean.persona.nombre.trim()} #{notaSalidaBean.persona.apellidoPaterno.trim()} #{notaSalidaBean.persona.apellidoMaterno.trim()}"/>
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -116,7 +122,7 @@
                         </p:toolbar>
                     </h:form>
 
-                    <h:form id="formDataTable" style="margin-top: 2px">
+                    <h:form id="formDataTable" style="margin-top: 10px">
                         <p:dataTable id="lista" value="#{notaSalidaBean.listNotaSalidas}" var="item" reflow="true"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -126,7 +132,7 @@
                             <p:ajax event="rowEdit"  update=":msg"/>
                             <p:ajax event="rowEditCancel"  update=":msg"/>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idnotasalidadetalle}"/>
                             </p:column>
 
@@ -134,7 +140,7 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
                             
-                            <p:column headerText="Cantidad">
+                            <p:column headerText="Cantidad" style="width: 50px">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantSolicitada}" /></f:facet>
                                     <f:facet name="input">
@@ -143,11 +149,9 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column headerText="Unidad">
+                            <p:column headerText="Unidad" style="width: 80px">
                                 <h:outputText value="#{item.unidadmedida}"/>
                             </p:column>
-
-                            
 
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update=""  
@@ -162,8 +166,7 @@
 
                     <h:form id="formNew">
                         <p:dialog header="" widgetVar="dlgNew" id="dlgNew" modal="false" 
-                                  resizable="false" closable="true">
-                            
+                                  resizable="false" closable="true">                            
                             
                             <h:panelGrid columns="2" cellpadding="1"> 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>

@@ -58,7 +58,7 @@ public class UsuarioBl extends AbstractBL<Usuario>{
 
     @Override
     public Usuario buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(id);
     }
 
     @Override
@@ -85,6 +85,10 @@ public class UsuarioBl extends AbstractBL<Usuario>{
 
     public Usuario buscarxUsuario(String usuario) {
         return dao.buscarxUsuario(usuario);
+    }
+
+    public Usuario buscarxIdUsuario(long id) {
+        return dao.buscarxIdUsuario(id);
     }
     
 }

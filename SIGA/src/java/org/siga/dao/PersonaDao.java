@@ -44,7 +44,7 @@ public class PersonaDao extends AbstractDA<Persona>{
 
     @Override
     public Persona buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(Persona.class, id);
     }
 
     @Override

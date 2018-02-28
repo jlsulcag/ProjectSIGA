@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrdenCompraDetalle  implements java.io.Serializable {
-
-
      private long idordencompradetalle;
      private OrdenCompra ordenCompra;
      private Producto producto;

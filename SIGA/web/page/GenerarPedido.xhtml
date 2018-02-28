@@ -87,7 +87,7 @@
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Productos</f:facet>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idpedidodetalle}"/>
                             </p:column>
 
@@ -95,11 +95,11 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cantidad">
+                            <p:column headerText="Cantidad" style="width: 50px">
                                 <h:outputText value="#{item.cantidadSolicitada}"/>
                             </p:column>
 
-                            <p:column headerText="Unidad">
+                            <p:column headerText="Unidad" style="width: 80px">
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
                             
@@ -122,7 +122,7 @@
                                 </p:selectOneMenu>                                
                                 
                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
-                                <p:selectOneMenu id="txfUnidad" disabled="true">
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
                                     <f:selectItem itemLabel="#{pedidoBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
                                 

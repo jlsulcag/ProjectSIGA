@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
@@ -21,15 +22,20 @@ import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
+import org.siga.be.Persona;
 import org.siga.be.Producto;
 import org.siga.be.TipoMovimiento;
+import org.siga.be.Usuario;
+import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
+import org.siga.bl.PersonaBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UsuarioBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -68,6 +74,21 @@ public class NotaSalidaBean {
     private Equivalencia equivalencia;    
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+    
+    @ManagedProperty(value = "#{usuarioBl}")
+    private UsuarioBl usuarioBl;    
+    @ManagedProperty(value = "#{usuario}")
+    private Usuario usuario;
+    
+    @ManagedProperty(value = "#{personaBl}")
+    private PersonaBl personaBl;    
+    @ManagedProperty(value = "#{persona}")
+    private Persona persona;
+    
+    @ManagedProperty(value = "#{almacenBl}")
+    private AlmacenBl almacenBl;    
+    @ManagedProperty(value = "#{almacen}")
+    private Almacen almacen;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
@@ -102,6 +123,8 @@ public class NotaSalidaBean {
         notaSalida.setAlmacenDestino(new Almacen());
         notaSalida.setTipomovimiento(new TipoMovimiento());
         notaSalida.setPedido(new Pedido());
+        //setear campos de origen nombre del usuario
+        buscarPersonaOrigen();
     }
 
     public int maxNumero() {
@@ -489,6 +512,63 @@ public class NotaSalidaBean {
     private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         listEquivalencia = equivalenciaBl.listarEquivalenciaxUnidadMedida(idunidadmedida);
         return listEquivalencia;
+    }
+
+    private void buscarPersonaOrigen() {
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if(sesionUser.getAttribute("idUsuario") != null){
+            usuario = usuarioBl.buscarxIdUsuario(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+            persona = personaBl.buscar(usuario.getPersona().getIdpersona());
+            almacen = almacenBl.buscar(usuario.getDependencia().getAlmacen().getIdalmacen());
+        }
+    }
+
+    public UsuarioBl getUsuarioBl() {
+        return usuarioBl;
+    }
+
+    public void setUsuarioBl(UsuarioBl usuarioBl) {
+        this.usuarioBl = usuarioBl;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public PersonaBl getPersonaBl() {
+        return personaBl;
+    }
+
+    public void setPersonaBl(PersonaBl personaBl) {
+        this.personaBl = personaBl;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public AlmacenBl getAlmacenBl() {
+        return almacenBl;
+    }
+
+    public void setAlmacenBl(AlmacenBl almacenBl) {
+        this.almacenBl = almacenBl;
+    }
+
+    public Almacen getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
     }
 
 }

@@ -78,7 +78,7 @@
                         </p:toolbar>
                     </h:form>                        
 
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 10px">
                         <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -88,7 +88,7 @@
                             <p:ajax event="rowEdit" listener="#{notaIngresoBean.onRowEdit}"  update=":msg"/>
                             <p:ajax event="rowEditCancel" listener="#{notaIngresoBean.onRowCancel}"  update=":msg"/>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idnotaentradadetalle}"/>
                             </p:column>
 
@@ -96,19 +96,19 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cant Solicitada">
+                            <p:column headerText="Cant Solicitada" style="width: 60px">
                                 <h:outputText value="#{item.cantSolicitada}"/>
                             </p:column>
 
-                            <p:column headerText="Cant Recibida">
+                            <p:column headerText="Cant Recibida" style="width: 60px">
                                 <h:outputText value="#{item.cantRecibida}"/>
                             </p:column>
 
-                            <p:column headerText="Cant Pendiente">
+                            <p:column headerText="Cant Pendiente" style="width: 60px">
                                 <h:outputText value="#{item.cantPendiente}"/>
                             </p:column>
 
-                            <p:column headerText="Cant Ingreso">
+                            <p:column headerText="Cant Ingreso" style="width: 60px">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantIngreso}" /></f:facet>
                                     <f:facet name="input">
@@ -117,14 +117,14 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column headerText="Unidad Medida">
+                            <p:column headerText="Unidad Medida" style="width: 80px">
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
                             <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
                                 <p:rowEditor />
                             </p:column>
-
+                            <!--
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update=""  
                                                  immediate="True" icon="ui-icon-trash" title="Eliminar">
@@ -132,7 +132,7 @@
                                 </p:commandButton>                                                        
 
                             </p:column>
-
+                            -->
                         </p:dataTable>                        
 
 

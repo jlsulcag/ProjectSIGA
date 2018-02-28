@@ -98,14 +98,14 @@
                         </p:toolbar>
                     </h:form> 
 
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 10px">
                         <p:dataTable id="lista" value="#{ordenCompraBean.listOrdenCompraDetalles}" var="item"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10,15,20" editable="true">
+                                     rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Productos</f:facet>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idordencompradetalle}"/>
                             </p:column>
 
@@ -113,59 +113,48 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cantidad">
+                            <p:column headerText="Cantidad" style="width: 50px">
                                 <h:outputText value="#{item.cantidad}"/>
                             </p:column>
 
-                            <p:column headerText="Unidad Medida">
+                            <p:column headerText="Unidad Medida" style="width: 100px">
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
-                            <p:column headerText="V/Compra">
+                            <p:column headerText="V/Compra" style="width: 80px; text-align: right">
                                 <h:outputText value="#{item.valorCompra}"/>
                             </p:column>
 
-                            <p:column headerText="Descuento">
+                            <p:column headerText="Descuento" style="width: 80px; text-align: right">
                                 <h:outputText value="#{item.montoDescitem}"/>
                             </p:column>
 
-                            <p:column headerText="Sub Total">
-                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                            <p:column headerText="Sub Total" style="width: 80px; text-align: right">
+                                <h:outputText value="#{item.subTotal}"/>
                             </p:column>
 
                             <p:columnGroup type="footer">
                                 <p:row>
-                                    <p:column colspan="6" style="text-align:right" footerText="Total :" />
-                                    <p:column footerText="#{ordenCompraBean.totalTemp}" />
-                                    <p:column colspan="2"/>
+                                    <p:column colspan="6" style="text-align:right" footerText="Valor Bruto :" />
+                                    <p:column footerText="#{ordenCompraBean.valorBruto}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Descuento :" />
+                                    <p:column footerText="#{ordenCompraBean.totalDescuento}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Valor Neto :"/>
+                                    <p:column footerText="#{ordenCompraBean.valorNeto}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="IGV :"/>
+                                    <p:column footerText="#{ordenCompraBean.montoIgv}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Total :"/>
+                                    <p:column footerText="#{ordenCompraBean.totalTemp}" style="text-align:right" />
                                 </p:row>
                             </p:columnGroup>
-
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
-                                                 icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraBean.ordenCompraDetalle}" />
-                                </p:commandButton>                            
-                            </p:column>
-
-                            <p:column style="width:10px;text-align: center">
-                                <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
-                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraBean.ordenCompraDetalle}" />           
-                                </p:commandButton>                                                        
-
-                            </p:column>
-
-                            <p:summaryRow>
-                                <p:column colspan="3" style="text-align:right">
-                                    <h:outputText value="Sub Total:" />
-                                </p:column>
-                                <p:column>
-                                    <h:outputText >
-                                        <f:convertNumber type="currency" currencySymbol="$" />
-                                    </h:outputText>
-                                </p:column>
-                            </p:summaryRow>
 
                         </p:dataTable>                        
 
