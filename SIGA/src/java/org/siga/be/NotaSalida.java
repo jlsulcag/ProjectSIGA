@@ -20,6 +20,7 @@ public class NotaSalida  implements java.io.Serializable {
      private Almacen almacenOrigen;
      private Almacen almacenDestino;
      private String observacion;
+     private Dependencia dependencia;
 
     public NotaSalida() {
         this.idnotasalida = 0;
@@ -27,6 +28,7 @@ public class NotaSalida  implements java.io.Serializable {
         this.tipomovimiento = new TipoMovimiento();
         this.almacenOrigen = new Almacen();
         this.almacenDestino = new Almacen();
+        this.dependencia = new Dependencia();
     }
 
     public long getIdnotasalida() {
@@ -99,6 +101,14 @@ public class NotaSalida  implements java.io.Serializable {
 
     public void setTipomovimiento(TipoMovimiento tipomovimiento) {
         this.tipomovimiento = tipomovimiento;
+    }
+
+    public Dependencia getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(Dependencia dependencia) {
+        this.dependencia = dependencia;
     }
 
 }

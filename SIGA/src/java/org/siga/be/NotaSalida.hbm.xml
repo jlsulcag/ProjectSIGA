@@ -31,7 +31,10 @@
         </property>       
         <property name="observacion" type="string">
             <column name="observacion" length="300" not-null="true" />
-        </property>
+        </property>        
+         <many-to-one name="dependencia" class="org.siga.be.Dependencia" fetch="select">
+            <column name="id_dependencia" />
+        </many-to-one> 
        
     </class>
 </hibernate-mapping>

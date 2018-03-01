@@ -69,5 +69,10 @@ public class DependenciaDao extends AbstractDA<Dependencia>{
         String hql = "From Dependencia d left join fetch d.almacen b where d.iddependencia = "+ iddependencia+" order by d.descripcion asc";
         return buscar(hql);
     }
+
+    public List<Dependencia> listarDependenciaxAlmacen(long idalmacen) {
+        String hql = "from Dependencia a left join fetch a.almacen b where b.idalmacen="+idalmacen;
+        return listar(hql);
+    }
     
 }

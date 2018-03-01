@@ -64,8 +64,20 @@
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:selectOneMenu id="cbxAlmacenD" filter="true" filterMatchMode="contains" required="true" label="Almacen destino"
                                                      value="#{notaSalidaBean.notaSalida.almacenDestino.idalmacen}">
+                                        <p:ajax listener="#{notaSalidaBean.listarDependenciaxAlmacen()}" update="cbxDependencia"/>
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxDependencia" value="Dependencia :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxDependencia" filter="true" filterMatchMode="contains" required="true" label="Dependencia"
+                                                     value="#{notaSalidaBean.notaSalida.dependencia.iddependencia}">                                        
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{notaSalidaBean.selectOneItemsDependencia}"/>
                                     </p:selectOneMenu>
                                 </div>
 

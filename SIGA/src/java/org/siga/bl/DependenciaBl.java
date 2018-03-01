@@ -81,5 +81,9 @@ public class DependenciaBl extends AbstractBL<Dependencia>{
     public Dependencia buscarXId(long iddependencia) {
         return dao.buscarXId(iddependencia);
     }
+
+    public List<Dependencia> listarDependenciaxAlmacen(long idalmacen) {
+        return dao.listarDependenciaxAlmacen(idalmacen);
+    }
     
 }

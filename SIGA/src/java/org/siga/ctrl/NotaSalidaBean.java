@@ -17,6 +17,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Dependencia;
 import org.siga.be.Equivalencia;
 import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
@@ -28,6 +29,7 @@ import org.siga.be.TipoMovimiento;
 import org.siga.be.Usuario;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
+import org.siga.bl.DependenciaBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
@@ -89,11 +91,17 @@ public class NotaSalidaBean {
     private AlmacenBl almacenBl;    
     @ManagedProperty(value = "#{almacen}")
     private Almacen almacen;
+    
+    @ManagedProperty(value = "#{dependenciaBl}")
+    private DependenciaBl dependenciaBl; 
+    @ManagedProperty(value = "#{dependencia}")
+    private Dependencia dependencia;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private List<Equivalencia> listEquivalencia;
     private List<SelectItem> selectOneItemsEquivalencia;
+    private List<SelectItem> selectOneItemsDependencia;
     private boolean pedidoxUnidad;
     private int totalProductos;
     private int stock;
@@ -569,6 +577,40 @@ public class NotaSalidaBean {
 
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
+    }
+    
+    public List<Dependencia> listarDependenciaxAlmacen(){
+        return dependenciaBl.listarDependenciaxAlmacen(notaSalida.getAlmacenDestino().getIdalmacen());
+    }
+
+    public DependenciaBl getDependenciaBl() {
+        return dependenciaBl;
+    }
+
+    public void setDependenciaBl(DependenciaBl dependenciaBl) {
+        this.dependenciaBl = dependenciaBl;
+    }
+
+    public Dependencia getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(Dependencia dependencia) {
+        this.dependencia = dependencia;
+    }
+
+    public List<SelectItem> getSelectOneItemsDependencia() {
+        this.selectOneItemsDependencia = new LinkedList<SelectItem>();
+        for (Dependencia obj : listarDependenciaxAlmacen()) {
+            this.setDependencia(obj);
+            SelectItem selectItem = new SelectItem(dependencia.getIddependencia(), dependencia.getDescripcion());
+            this.selectOneItemsDependencia.add(selectItem);
+        }
+        return selectOneItemsDependencia;
+    }
+
+    public void setSelectOneItemsDependencia(List<SelectItem> selectOneItemsDependencia) {
+        this.selectOneItemsDependencia = selectOneItemsDependencia;
     }
 
 }
