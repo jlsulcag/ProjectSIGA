@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/03/2018 11:27:37 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.Kardex" table="kardex" schema="siga" optimistic-lock="version">
+        <id name="idkardex" type="int">
+            <column name="idkardex" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="almacen" class="org.siga.be.Almacen" fetch="select">
+            <column name="id_almacen" />
+        </many-to-one>
+        <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
+            <column name="id_producto" not-null="true" />
+        </many-to-one>
+        <property name="fechaMov" type="date">
+            <column name="fecha_mov" length="13" not-null="true" />
+        </property>
+        <property name="movimiento" type="string">
+            <column name="movimiento" length="60" not-null="true" />
+        </property>
+        <property name="detalle" type="string">
+            <column name="detalle" length="120">
+                <comment>segun factura nro 001</comment>
+            </column>
+        </property>
+        <property name="cantidad" type="double">
+            <column name="cantidad" precision="17" scale="17" not-null="true" />
+        </property>
+        <property name="valorUnit" type="big_decimal">
+            <column name="valor_unit" precision="10" not-null="true" />
+        </property>
+        <property name="origen" type="string">
+            <column name="origen" length="150" />
+        </property>
+        <property name="destino" type="string">
+            <column name="destino" length="150" />
+        </property>
+        <property name="horaMov" type="string">
+            <column name="hora_mov" length="15" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="150" />
+        </property>
+        <property name="numero" type="long">
+            <column name="numero" not-null="true" />
+        </property>
+        <property name="nroOrden" type="long">
+            <column name="nro_orden" />
+        </property>
+    </class>
+</hibernate-mapping>

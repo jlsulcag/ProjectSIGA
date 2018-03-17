@@ -20,6 +20,7 @@ public class Almacen  implements java.io.Serializable {
      private String direccion;
      private String estado;
      private Set<AlmacenProducto> almacenProductos = new HashSet<AlmacenProducto>(0);
+     private Set<Kardex> kardexes = new HashSet<Kardex>(0);
 
     public Almacen() {
     }
@@ -66,6 +67,14 @@ public class Almacen  implements java.io.Serializable {
 
     public void setAlmacenProductos(Set<AlmacenProducto> almacenProductos) {
         this.almacenProductos = almacenProductos;
+    }
+
+    public Set<Kardex> getKardexes() {
+        return kardexes;
+    }
+
+    public void setKardexes(Set<Kardex> kardexes) {
+        this.kardexes = kardexes;
     }
 
 

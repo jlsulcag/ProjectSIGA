@@ -17,5 +17,6 @@
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
+        
     </class>
 </hibernate-mapping>

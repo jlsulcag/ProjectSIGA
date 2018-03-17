@@ -24,6 +24,9 @@
                                 <p:inputText id="txtBusqueda" style="width: 150px; text-transform: uppercase" value="#{adminUsuarioBean.txtBusqueda}" placeholder="USUARIO">
                                     <p:ajax event="keyup" update=":formDataTable" listener="#{adminUsuarioBean.listarRef()}" />
                                 </p:inputText>
+                                <p:selectOneMenu id="cbxAlamcen">
+                                    
+                                </p:selectOneMenu>
                                 <p:inputText id="txtBusqueda2" style="width: 300px; text-transform: uppercase" value="#{adminUsuarioBean.txtBusqueda}" placeholder="APELLIDOS Y NOMBRES">
                                     <p:ajax event="keyup" update=":formDataTable" listener="#{adminUsuarioBean.listarxNombres()}" />
                                 </p:inputText>

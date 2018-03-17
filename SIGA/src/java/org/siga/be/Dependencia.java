@@ -1,6 +1,8 @@
 package org.siga.be;
 // Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +12,7 @@ public class Dependencia  implements java.io.Serializable {
      private long iddependencia;
      private Almacen almacen;//hace referencia a la agencia que pertenece dicha dependencia
      private String descripcion;
-     private String estado;
+     private String estado;     
 
     public Dependencia() {
         this.iddependencia = 0;

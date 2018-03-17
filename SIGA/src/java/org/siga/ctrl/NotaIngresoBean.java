@@ -15,6 +15,7 @@ import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
 import org.siga.be.Equivalencia;
+import org.siga.be.Kardex;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
 import org.siga.be.OrdenCompra;
@@ -23,12 +24,14 @@ import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.EquivalenciaBl;
+import org.siga.bl.KardexBl;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
+import org.siga.util.Utilitarios;
 
 @ManagedBean
 @ViewScoped
@@ -61,6 +64,11 @@ public class NotaIngresoBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+    
+    @ManagedProperty(value = "#{kardex}")
+    private Kardex kardex;
+    @ManagedProperty(value = "#{kardexBl}")
+    private KardexBl kardexBl;
 
     private List<Equivalencia> listEquivalencia;
     private List<SelectItem> selectOneItemsEquivalencia;
@@ -90,6 +98,8 @@ public class NotaIngresoBean {
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
                     obj.setNotaEntrada(notaEntrada);
                     notaIngresoDetalleBl.registrar(obj);
+                    //RegistrarKardex
+                    long kx = registrarKardex(obj, notaEntrada);
                 }
                 //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
                 if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
@@ -98,7 +108,7 @@ public class NotaIngresoBean {
                 }
                 //Actualizar el stock de almacen segun las cantidades ingresadas
                 r = actualizarStockAlmacen();
-                if (r == 1) {
+                if (r == 1) {                    
                     MensajeView.registroCorrecto();
                 } else {
                     MensajeView.registroError();
@@ -540,6 +550,42 @@ public class NotaIngresoBean {
 
     public void setListNotaEntradaDetalleTemp(List<NotaEntradaDetalle> listNotaEntradaDetalleTemp) {
         this.listNotaEntradaDetalleTemp = listNotaEntradaDetalleTemp;
+    }
+
+   
+
+    public Kardex getKardex() {
+        return kardex;
+    }
+
+    public void setKardex(Kardex kardex) {
+        this.kardex = kardex;
+    }
+
+    public KardexBl getKardexBl() {
+        return kardexBl;
+    }
+
+    public void setKardexBl(KardexBl kardexBl) {
+        this.kardexBl = kardexBl;
+    }
+    
+    private long registrarKardex(NotaEntradaDetalle obj, NotaEntrada notaEntrada) {
+        kardex.setProducto(obj.getProducto());
+        kardex.setAlmacen(notaEntrada.getAlmacenDestino());
+        kardex.setFechaMov(new Date());
+        kardex.setMovimiento("INGRESO");
+        kardex.setDetalle("INVENTARIO INICIAL");
+        kardex.setCantidad(obj.getTotalProductos());
+        kardex.setValorUnit(obj.getValorCompra());
+        kardex.setOrigen("");
+        kardex.setDestino("");
+        kardex.setHoraMov(Utilitarios.horaActual());
+        kardex.setObservacion("");
+        kardex.setNumero(kardexBl.maxNumero()+1);
+        kardex.setNroOrden(kardexBl.maxNumeroxproducto(obj.getProducto().getIdproducto(), notaEntrada.getAlmacenDestino().getIdalmacen())+1);
+        
+        return kardexBl.registrar(kardex);
     }
 
 }

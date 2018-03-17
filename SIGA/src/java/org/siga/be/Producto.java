@@ -28,6 +28,7 @@ public class Producto  implements java.io.Serializable {
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
      private Set<AlmacenProducto> almacenProductos = new HashSet<AlmacenProducto>(0);
      private Set<PedidoDetalle> pedidoDetalle = new HashSet<PedidoDetalle>(0);
+     private Set<Kardex> kardexes = new HashSet<Kardex>(0);
 
     public Producto() {
         this.idproducto = 0;
@@ -169,6 +170,14 @@ public class Producto  implements java.io.Serializable {
 
     public void setPedidoDetalle(Set<PedidoDetalle> pedidoDetalle) {
         this.pedidoDetalle = pedidoDetalle;
+    }
+
+    public Set<Kardex> getKardexes() {
+        return kardexes;
+    }
+
+    public void setKardexes(Set<Kardex> kardexes) {
+        this.kardexes = kardexes;
     }
 
     

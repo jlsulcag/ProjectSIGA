@@ -7,7 +7,7 @@
         <id name="idproducto" type="long">
             <column name="idproducto" />
             <generator class="increment" />
-        </id>
+        </id>         
         <many-to-one name="familia" class="org.siga.be.Familia" fetch="select">
             <column name="id_familia" />
         </many-to-one>
@@ -61,6 +61,12 @@
                 <column name="id_producto" not-null="true" />
             </key>
             <one-to-many class="org.siga.be.PedidoDetalle" />
+        </set>
+        <set name="kardexes" table="kardex" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_producto" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.Kardex" />
         </set>
     </class>
 </hibernate-mapping>

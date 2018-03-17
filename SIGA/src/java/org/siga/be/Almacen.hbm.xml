@@ -23,5 +23,11 @@
             </key>
             <one-to-many class="org.siga.be.AlmacenProducto" />
         </set>
+        <set name="kardexes" table="kardex" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_almacen" />
+            </key>
+            <one-to-many class="org.siga.be.Kardex" />
+        </set>
     </class>
 </hibernate-mapping>
