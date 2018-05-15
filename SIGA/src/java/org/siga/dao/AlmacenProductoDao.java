@@ -99,6 +99,11 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
         String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g ";
         return listar(hql);
     }
+    
+    public List<AlmacenProducto> listarPeps() {
+        String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where a.stockActual > 0 and a.ordenIngreso=(select min(ap2.ordenIngreso) from AlmacenProducto ap2 where ap2.producto.idproducto = b.idproducto and ap2.stockActual >0)";
+        return listar(hql);
+    }
 
     public AlmacenProducto buscarxId(long idalmacenproducto) {
         String hql = "from AlmacenProducto a left join fetch a.producto b left join fetch a.almacen c left join fetch b.clase d left join fetch b.familia e left join fetch b.unidadMedida g where a.idalmacenproducto = "+idalmacenproducto;

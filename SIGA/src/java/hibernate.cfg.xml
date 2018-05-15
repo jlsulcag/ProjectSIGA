@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://192.168.32.33:5432/sigadb</property>
-        <property name="hibernate.connection.username">siga%admin</property>
-        <property name="hibernate.connection.password">siga%admin</property>
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.current_session_context_class">thread</property>
-        <mapping resource="org/siga/be/NotaSalida.hbm.xml"/>
-        <mapping resource="org/siga/be/TipoMovimiento.hbm.xml"/>
-        <mapping resource="org/siga/be/NotaEntrada.hbm.xml"/>
-        <mapping resource="org/siga/be/OrdenCompraDetalle.hbm.xml"/>
-        <mapping resource="org/siga/be/AlmacenProducto.hbm.xml"/>
-        <mapping resource="org/siga/be/PedidoEstados.hbm.xml"/>
-        <mapping resource="org/siga/be/Dependencia.hbm.xml"/>
-        <mapping resource="org/siga/be/NotaEntradaDetalle.hbm.xml"/>
-        <mapping resource="org/siga/be/Permiso.hbm.xml"/>
-        <mapping resource="org/siga/be/Almacen.hbm.xml"/>
-        <mapping resource="org/siga/be/Proveedor.hbm.xml"/>
-        <mapping resource="org/siga/be/UsuarioRol.hbm.xml"/>
-        <mapping resource="org/siga/be/EstadoCivil.hbm.xml"/>
-        <mapping resource="org/siga/be/PedidoSeguimiento.hbm.xml"/>
-        <mapping resource="org/siga/be/Persona.hbm.xml"/>
-        <mapping resource="org/siga/be/Clase.hbm.xml"/>
-        <mapping resource="org/siga/be/Pedido.hbm.xml"/>
-        <mapping resource="org/siga/be/Familia.hbm.xml"/>
-        <mapping resource="org/siga/be/Usuario.hbm.xml"/>
-        <mapping resource="org/siga/be/Rol.hbm.xml"/>
-        <mapping resource="org/siga/be/Equivalencia.hbm.xml"/>
-        <mapping resource="org/siga/be/NotaSalidaDetalle.hbm.xml"/>
-        <mapping resource="org/siga/be/Kardex.hbm.xml"/>
-        <mapping resource="org/siga/be/Moneda.hbm.xml"/>
-        <mapping resource="org/siga/be/Reporte.hbm.xml"/>
-        <mapping resource="org/siga/be/OrdenCompra.hbm.xml"/>
-        <mapping resource="org/siga/be/TipoDocIdentidad.hbm.xml"/>
-        <mapping resource="org/siga/be/Producto.hbm.xml"/>
-        <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
-        <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
-    </session-factory>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://192.168.32.33:5432/sigadb_desa</property>
+    <property name="hibernate.connection.username">siga%admin</property>
+    <property name="hibernate.connection.password">siga%admin</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <mapping resource="org/siga/be/NotaSalida.hbm.xml"/>
+    <mapping resource="org/siga/be/TipoMovimiento.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaEntrada.hbm.xml"/>
+    <mapping resource="org/siga/be/OrdenCompraDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/AlmacenProducto.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoEstados.hbm.xml"/>
+    <mapping resource="org/siga/be/Dependencia.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaEntradaDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/Permiso.hbm.xml"/>
+    <mapping resource="org/siga/be/Almacen.hbm.xml"/>
+    <mapping resource="org/siga/be/Proveedor.hbm.xml"/>
+    <mapping resource="org/siga/be/UsuarioRol.hbm.xml"/>
+    <mapping resource="org/siga/be/EstadoCivil.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoSeguimiento.hbm.xml"/>
+    <mapping resource="org/siga/be/Persona.hbm.xml"/>
+    <mapping resource="org/siga/be/Clase.hbm.xml"/>
+    <mapping resource="org/siga/be/Pedido.hbm.xml"/>
+    <mapping resource="org/siga/be/Familia.hbm.xml"/>
+    <mapping resource="org/siga/be/Usuario.hbm.xml"/>
+    <mapping resource="org/siga/be/Rol.hbm.xml"/>
+    <mapping resource="org/siga/be/Equivalencia.hbm.xml"/>
+    <mapping resource="org/siga/be/NotaSalidaDetalle.hbm.xml"/>
+    <mapping resource="org/siga/be/Kardex.hbm.xml"/>
+    <mapping resource="org/siga/be/Moneda.hbm.xml"/>
+    <mapping resource="org/siga/be/Reporte.hbm.xml"/>
+    <mapping resource="org/siga/be/OrdenCompra.hbm.xml"/>
+    <mapping resource="org/siga/be/TipoDocIdentidad.hbm.xml"/>
+    <mapping resource="org/siga/be/Producto.hbm.xml"/>
+    <mapping resource="org/siga/be/UnidadMedida.hbm.xml"/>
+    <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
+  </session-factory>
 </hibernate-configuration>

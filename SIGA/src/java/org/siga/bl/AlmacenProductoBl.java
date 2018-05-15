@@ -91,6 +91,10 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
     public List<AlmacenProducto> listarFull() {
         return dao.listarFull();
     }
+    
+    public List<AlmacenProducto> listarPeps() {
+        return dao.listarPeps();
+    }
 
     public AlmacenProducto buscarxId(long idalmacenproducto) {
         return dao.buscarxId(idalmacenproducto);

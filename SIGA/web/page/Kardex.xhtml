@@ -17,7 +17,7 @@
                         <p:toolbar>
                             <f:facet name="right">
                                 <h:outputText value="Almacen: " />
-                                <p:selectOneMenu id="cbxAlamcen" style="width: 300px;" value="#{almacenBean.almacen.idalmacen}">
+                                <p:selectOneMenu id="cbxAlamcen" style="width: 300px;" value="#{kardexBean.almacen.idalmacen}">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
                                 </p:selectOneMenu>
@@ -27,12 +27,15 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
                                 </p:selectOneMenu>
+                                
+                                <p:commandButton id="btnGeneraKardex" icon="ui-icon-transferthick-e-w" value="Generar Kardex" title="Generar Kardex" 
+                                                 actionListener="#{kardexBean.generarKardex()}" update="formDataTable"/>
 
                             </f:facet>
                         </p:toolbar>
                     </h:form>
 
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 10px">
                         <p:dataTable id="lista" value="#{kardexBean.listKardex}" var="item" 
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -71,19 +74,31 @@
                             </p:column>
 
                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.movimiento}" />
+                                <h:outputText value="#{item.detalle}" />
                             </p:column>
 
                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.cantidad}" />
+                                <h:outputText value="#{item.movimiento.equals('INGRESO')?item.cantidad:''}" />
                             </p:column>
 
                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.valorUnit}" />
+                                <h:outputText value="#{item.movimiento.equals('INGRESO')?item.valorUnit:''}" />
                             </p:column>
                             
                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.valorUnit}*#{item.cantidad}" />
+                                <h:outputText value="#{item.movimiento.equals('INGRESO')?item.valorUnit*item.cantidad:''}" />
+                            </p:column>
+                            
+                             <p:column style="width: 15px; text-align: center">
+                                <h:outputText value="#{item.movimiento.equals('SALIDA')?item.cantidad:''}" />
+                            </p:column>
+
+                            <p:column style="width: 15px; text-align: center">
+                                <h:outputText value="#{item.movimiento.equals('SALIDA')?item.valorUnit:''}" />
+                            </p:column>
+                            
+                            <p:column style="width: 15px; text-align: center">
+                                <h:outputText value="#{item.movimiento.equals('SALIDA')?item.valorUnit*item.cantidad:''}" />
                             </p:column>
                             
                              <p:column style="width: 15px; text-align: center">
@@ -95,19 +110,7 @@
                             </p:column>
                             
                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.valorUnit}*#{item.cantidad}" />
-                            </p:column>
-                            
-                             <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.cantidad}" />
-                            </p:column>
-
-                            <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.valorUnit}" />
-                            </p:column>
-                            
-                            <p:column style="width: 15px; text-align: center">
-                                <h:outputText value="#{item.valorUnit}*#{item.cantidad}" />
+                                <h:outputText value="#{item.valorUnit*item.cantidad}" />
                             </p:column>
                             
                         </p:dataTable>

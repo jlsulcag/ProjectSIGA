@@ -145,7 +145,7 @@ public class AlmacenProductoBean {
     }
 
     private List<AlmacenProducto> listarAlmacenProducto() {
-        return almacenProductoBl.listarFull();
+        return almacenProductoBl.listarPeps();
     }
     
 }

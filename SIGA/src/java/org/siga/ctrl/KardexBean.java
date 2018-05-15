@@ -42,6 +42,12 @@ public class KardexBean {
     
     public KardexBean() {
     }
+    
+    public void generarKardex(){
+        System.out.println("id producto : "+producto.getIdproducto());
+        System.out.println("id almacen : "+almacen.getIdalmacen());
+        setListKardex(kardexBl.generarKardex(producto.getIdproducto(), almacen.getIdalmacen()));
+    }
 
     public KardexBl getKardexBl() {
         return kardexBl;

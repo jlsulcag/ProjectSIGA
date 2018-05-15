@@ -103,5 +103,10 @@ public class KardexDao extends AbstractDA<Kardex>{
             return 0;
         }
     }
+
+    public List<Kardex> generarKardex(long idproducto, long idalmacen) {
+        String hql = "from Kardex a left join fetch a.producto b left join fetch a.almacen c where b.idproducto = "+idproducto+" and c.idalmacen = "+idalmacen;
+        return listar(hql);
+    }
     
 }

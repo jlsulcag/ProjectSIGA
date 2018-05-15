@@ -82,5 +82,9 @@ public class KardexBl extends AbstractBL<Kardex>{
     public long maxNumeroxproducto(long idproducto, long idalmacen) {
         return dao.maxNumeroxproducto(idproducto, idalmacen);
     }
+
+    public List<Kardex> generarKardex(long idproducto, long idalmacen) {
+        return dao.generarKardex(idproducto, idalmacen);
+    }
     
 }
