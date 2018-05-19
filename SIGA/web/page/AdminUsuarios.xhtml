@@ -17,7 +17,9 @@
                         <p:toolbar>
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
-                                                 update="formNew" oncomplete="PF('dlgNew').show();" actionListener="#{adminUsuarioBean.limpiarNew()}"/>
+                                                 actionListener="#{adminUsuarioBean.openLevel1()}">
+                                    <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="msg"/>
+                                </p:commandButton>
                             </f:facet>
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
@@ -58,7 +60,7 @@
                     </h:form>
 
                     <h:form id="formNew">
-                        <p:growl id="msgNew" sticky="true" showDetail="true"/>
+                        <p:growl id="msgNew" sticky="false" showDetail="true"/>
                         <p:dialog header="Registrar Usuario" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
                             <h:panelGrid id="gridMisDatos" columns="4" cellpadding="1">
@@ -142,7 +144,7 @@
                             <f:facet name="footer">
                                 <div style="width: 100%;text-align: left;">
                                     <p:commandButton icon="ui-icon-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
-                                        <p:resetInput target="msg2" />
+                                        <p:resetInput target="msgNew" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 

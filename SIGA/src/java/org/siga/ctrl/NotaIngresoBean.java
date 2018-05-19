@@ -64,7 +64,7 @@ public class NotaIngresoBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     @ManagedProperty(value = "#{kardex}")
     private Kardex kardex;
     @ManagedProperty(value = "#{kardexBl}")
@@ -96,6 +96,9 @@ public class NotaIngresoBean {
             //Registrar Nota Entrada Detalle
             if (res == 0) {
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+                    //Registrar o actualizar almacen stock
+                    long resp = actualizarStockAlmacen(obj);
+                    System.out.println("resp .......... "+resp);
                     obj.setNotaEntrada(notaEntrada);
                     notaIngresoDetalleBl.registrar(obj);
                     //RegistrarKardex
@@ -107,12 +110,12 @@ public class NotaIngresoBean {
                     res = actualizarEstadoOrdenCompra();
                 }
                 //Actualizar el stock de almacen segun las cantidades ingresadas
-                r = actualizarStockAlmacen();
-                if (r == 1) {                    
-                    MensajeView.registroCorrecto();
-                } else {
-                    MensajeView.registroError();
-                }
+                //r = actualizarStockAlmacen();
+//                if (r == 1) {
+//                    MensajeView.registroCorrecto();
+//                } else {
+//                    MensajeView.registroError();
+//                }
             }
             iniciar();
         } else {
@@ -205,8 +208,8 @@ public class NotaIngresoBean {
         }
     }
 
-     public void onRowEdit(RowEditEvent event) {
-         listNotaEntradaDetalleTemp = new LinkedList<>();
+    public void onRowEdit(RowEditEvent event) {
+        listNotaEntradaDetalleTemp = new LinkedList<>();
         notaEntradaDetalleTemp = new NotaEntradaDetalle();
         String msg = "";
         notaEntradaDetalleTemp.setProducto(((NotaEntradaDetalle) event.getObject()).getProducto());
@@ -222,11 +225,11 @@ public class NotaIngresoBean {
                     msg = "La cantidad ingresada supera a la cantidad pendiente";
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", msg);
                     FacesContext.getCurrentInstance().addMessage(null, message);
-                }else{
+                } else {
                     ned.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
-                }             
+                }
                 equivalencia = equivalenciaBl.buscaxId(ned.getIdEquivalencia());
-                ned.setTotalProductos((int) (ned.getCantIngreso()*equivalencia.getFactor()));                
+                ned.setTotalProductos((int) (ned.getCantIngreso() * equivalencia.getFactor()));
             }
             listNotaEntradaDetalleTemp.add(ned);
         }
@@ -422,34 +425,22 @@ public class NotaIngresoBean {
         this.totalProductos = totalProductos;
     }
 
-    private int actualizarStockAlmacen() {
-        int res = -1;
-        for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-            /*
-            AlmacenProducto temp = new AlmacenProducto();
-            temp = almacenProductoBl.buscarProductoxAlmacenyLote(obj.getLote(), obj.getNotaEntrada().getAlmacenDestino().getIdalmacen(), obj.getProducto());
-            if (temp != null && temp.getIdalmacenproducto() != 0) {//Actualizar registro existente
-                //temp.setIdalmacenproducto(temp.getIdalmacenproducto());
-                temp.setStockActual(obj.getTotalProductos() + temp.getStockActual());
-                almacenProductoBl.actualizar(temp);
-                res = 1;
-            } else {//Registrar nuevo*/
-                almacenProducto.setProducto(obj.getProducto());
-                almacenProducto.setStockActual(obj.getTotalProductos());
-                almacenProducto.setProducto(obj.getProducto());
-                almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
-                almacenProducto.setLote(obj.getLote());
-                almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
-                almacenProducto.setValorCompraUnitario(obj.getValorCompra());
-                //registrar el orden de ingreso para cumplir con FIFO
-                int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
-                almacenProducto.setOrdenIngreso(numOrden + 1);
-                almacenProducto.setUnidad(obj.getUnidadMedida());
-                almacenProductoBl.registrar(almacenProducto);
-                res = 1;
-            //}
-        }
-        return res;
+    private long actualizarStockAlmacen(NotaEntradaDetalle obj) {
+        almacenProducto.setProducto(obj.getProducto());
+        almacenProducto.setStockActual(obj.getTotalProductos());
+        almacenProducto.setProducto(obj.getProducto());
+        almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
+        almacenProducto.setLote(obj.getLote());
+        almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
+        almacenProducto.setValorCompraUnitario(obj.getValorCompra());
+        //registrar el orden de ingreso para cumplir con FIFO
+        int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
+        almacenProducto.setOrdenIngreso(numOrden + 1);
+        almacenProducto.setUnidad(obj.getUnidadMedida());
+        
+        almacenProductoBl.registrar(almacenProducto);
+        return almacenProducto.getIdalmacenproducto();
+        
     }
 
     public AlmacenProducto getAlmacenProducto() {
@@ -553,8 +544,6 @@ public class NotaIngresoBean {
         this.listNotaEntradaDetalleTemp = listNotaEntradaDetalleTemp;
     }
 
-   
-
     public Kardex getKardex() {
         return kardex;
     }
@@ -570,23 +559,22 @@ public class NotaIngresoBean {
     public void setKardexBl(KardexBl kardexBl) {
         this.kardexBl = kardexBl;
     }
-    
+
     private long registrarKardex(NotaEntradaDetalle obj, NotaEntrada notaEntrada) {
         kardex.setProducto(obj.getProducto());
         kardex.setAlmacen(notaEntrada.getAlmacenDestino());
         kardex.setFechaMov(new Date());
         kardex.setMovimiento("INGRESO");
-        //kardex.setDetalle("INVENTARIO INICIAL");
         kardex.setDetalle(notaEntrada.getTipoIngreso());
         kardex.setCantidad(obj.getTotalProductos());
         kardex.setValorUnit(obj.getValorCompra());
-        kardex.setOrigen("");
-        kardex.setDestino("");
         kardex.setHoraMov(Utilitarios.horaActual());
-        kardex.setObservacion("");
-        kardex.setNumero(kardexBl.maxNumero()+1);
-        kardex.setNroOrden(kardexBl.maxNumeroxproducto(obj.getProducto().getIdproducto(), notaEntrada.getAlmacenDestino().getIdalmacen())+1);
-        
+        kardex.setNumero(kardexBl.maxNumero() + 1);
+        kardex.setNroOrden(kardexBl.maxNumeroxproducto(obj.getProducto().getIdproducto(), notaEntrada.getAlmacenDestino().getIdalmacen()) + 1);
+
+        kardex.setComprobante("");
+        kardex.setNroComprobante("");
+
         return kardexBl.registrar(kardex);
     }
 

@@ -6,11 +6,15 @@
 package org.siga.ctrl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.siga.be.Persona;
 import org.siga.be.Usuario;
 import org.siga.be.UsuarioRol;
@@ -19,8 +23,10 @@ import org.siga.bl.UsuarioBl;
 import org.siga.bl.UsuarioRolBl;
 import org.siga.util.Encrypt;
 import org.siga.util.MensajeView;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
 
-@ManagedBean
+@ManagedBean(name = "adminUsuarioBean")
 @ViewScoped
 public class AdminUsuarioBean {
     @ManagedProperty(value = "#{persona}")
@@ -95,6 +101,17 @@ public class AdminUsuarioBean {
         usuario.setNombre("");
         usuario.setContrasenia("");
         //usuarioRol.setRol(null);
+    }
+    
+    public void openLevel1(){
+        Map<String,Object> options = new HashMap<String, Object>();
+        options.put("modal", true);
+        PrimeFaces.current().dialog().openDynamic("AdminUsuariosLevel1", options, null);
+        //PrimeFaces.current().dialog().openDynamic("AdminUsuariosLevel1", options, null);
+    }
+    
+    public void onReturnFromLevel1(SelectEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Data Returned", event.getObject().toString()));
     }
     
     @PostConstruct

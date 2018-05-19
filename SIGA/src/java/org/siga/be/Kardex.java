@@ -21,12 +21,12 @@ public class Kardex  implements java.io.Serializable {
      private String detalle;
      private double cantidad;
      private BigDecimal valorUnit;
-     private String origen;
-     private String destino;
      private String horaMov;
-     private String observacion;
      private long numero;
      private long nroOrden;
+     private long idAlamcenproducto;
+     private String comprobante;
+     private String nroComprobante;
 
     public Kardex() {
     }
@@ -92,20 +92,7 @@ public class Kardex  implements java.io.Serializable {
     public void setValorUnit(BigDecimal valorUnit) {
         this.valorUnit = valorUnit;
     }
-    public String getOrigen() {
-        return this.origen;
-    }
-    
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-    public String getDestino() {
-        return this.destino;
-    }
-    
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
+   
     public String getHoraMov() {
         return this.horaMov;
     }
@@ -113,13 +100,7 @@ public class Kardex  implements java.io.Serializable {
     public void setHoraMov(String horaMov) {
         this.horaMov = horaMov;
     }
-    public String getObservacion() {
-        return this.observacion;
-    }
     
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
     public long getNumero() {
         return this.numero;
     }
@@ -141,6 +122,30 @@ public class Kardex  implements java.io.Serializable {
 
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
+    }
+
+    public long getIdAlamcenproducto() {
+        return idAlamcenproducto;
+    }
+
+    public void setIdAlamcenproducto(long idAlamcenproducto) {
+        this.idAlamcenproducto = idAlamcenproducto;
+    }
+
+    public String getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(String comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public String getNroComprobante() {
+        return nroComprobante;
+    }
+
+    public void setNroComprobante(String nroComprobante) {
+        this.nroComprobante = nroComprobante;
     }
 
 

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <title>Level 1</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </head>
+    <body>
+        <h:form id="formNew">
+            <p:growl id="msgNew" sticky="false" showDetail="true"/>
+            <p:dialog header="Registrar Usuario" widgetVar="dlgNew" id="dlgNew" modal="false" 
+                      resizable="false" closable="true">
+                <h:panelGrid id="gridMisDatos" columns="4" cellpadding="1">
+                    <h:outputLabel for="cbxDependencia" value="Dependencia :" />
+                    <p:selectOneMenu id="cbxDependencia" label="Dependencia" required="true" style="width: 245px"
+                                     value="#{adminUsuarioBean.usuario.dependencia.iddependencia}">
+                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                        <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
+                    </p:selectOneMenu>
+                    <h:inputHidden />
+                    <p:message for="cbxDependencia" display="icon" />
+                    <div class="flabel" style="width:  150px;">Nombres :</div>
+                    <p:inputText id="txt_nombres" required="true" label="Nombres" style=" width: 240px;text-transform: uppercase;"
+                                 value="#{adminUsuarioBean.persona.nombre}"/>
+                    <p:commandButton id="btnPerson" icon="ui-icon-search"
+                                     update="formPersonas" oncomplete="PF('dlgPersonas').show();"/> 
+                    <p:message for="txt_nombres" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Apellido Paterno :</div>
+                    <p:inputText id="txt_apellido_paterno" required="true" label="Apellido Paterno" style=" width: 240px;text-transform: uppercase;"
+                                 value="#{adminUsuarioBean.persona.apellidoPaterno}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_apellido_paterno" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Apellido Materno :</div>
+                    <p:inputText id="txt_apellido_materno" required="true" label="Apellido Materno" style=" width: 240px;text-transform: uppercase;"
+                                 value="#{adminUsuarioBean.persona.apellidoMaterno}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_apellido_materno" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Dni :</div>
+                    <p:inputMask id="txt_dni" required="true" label="DNI" style=" width: 240px;"
+                                 mask="99999999" value="#{adminUsuarioBean.persona.numeroDocumento}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_dni" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Sexo :</div>
+                    <p:selectOneMenu id="cbx_sexo" style="width: 245px" value="#{adminUsuarioBean.persona.sexo}">
+                        <f:selectItem itemLabel="SELECCIONE" itemValue="" noSelectionOption="true" />
+                        <f:selectItem itemLabel="MASCULINO" itemValue="M"/>
+                        <f:selectItem itemLabel="FEMENINO" itemValue="F"/>
+                    </p:selectOneMenu>  
+                    <h:inputHidden />
+                    <p:message for="txt_dni" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Telefono :</div>
+                    <p:inputMask id="txt_telefono" required="true" label="Telefono" style=" width: 240px;"
+                                 mask="999-999-999" value="#{adminUsuarioBean.persona.telefono}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_telefono" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Correo :</div>
+                    <p:inputText id="txt_correo" required="true" label="Correo" style=" width: 240px;text-transform: uppercase;"
+                                 value="#{adminUsuarioBean.persona.correoElectronico}">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <h:inputHidden />
+                    <p:message for="txt_correo" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Nombre de Usuario :</div>
+                    <p:inputText id="txt_usuario" required="true" label="Usuario" style=" width: 240px;text-transform: uppercase;"
+                                 value="#{adminUsuarioBean.usuario.nombre}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_usuario" display="icon" />
+
+                    <div class="flabel" style="width:  150px;">Contraseña :</div>
+                    <p:password id="txt_clave" required="true" label="Contraseña" style=" width: 240px;text-transform: uppercase;"
+                                value="#{adminUsuarioBean.usuario.contrasenia}"/>
+                    <h:inputHidden />
+                    <p:message for="txt_clave" display="icon" />
+
+                    <h:outputLabel for="cbx_tu" value="Tipo de Usuario :" />
+                    <p:selectOneMenu id="cbx_tu" value="#{adminUsuarioBean.usuarioRol.rol.idrol}" style="width: 245px">
+                        <f:selectItem itemLabel="SELECCIONE" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{rolBean.selectOneItemsRol}"/>
+                    </p:selectOneMenu>  
+                    <h:inputHidden />
+                    <p:message for="cbx_tu" display="icon" />
+                </h:panelGrid>
+
+                <f:facet name="footer">
+                    <div style="width: 100%;text-align: left;">
+                        <p:commandButton icon="ui-icon-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
+                            <p:resetInput target="msgNew" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
+                                         update="msgNew, gridMisDatos, formDataTable" actionListener="#{adminUsuarioBean.registrar()}"/> 
+                    </div>
+                </f:facet>
+
+            </p:dialog>
+
+
+        </h:form>
+    </body>
+</html>
