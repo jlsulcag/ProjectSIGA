@@ -29,8 +29,7 @@
                     <h:form>
                         <p:growl id="msg" showDetail="true"/>
                         <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
-                                         actionListener="#{adminUsuarioBean.openLevel1()}">
-                            <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="msg"/>
+                                         update=":">
                         </p:commandButton>
                     </h:form>
 
