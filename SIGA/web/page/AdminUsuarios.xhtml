@@ -69,7 +69,9 @@
                                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                                     </span>
                                     <p:commandButton icon="ui-icon-search"
-                                                     update=":formPersonas" oncomplete="PF('dlgPersonas').show();"></p:commandButton>
+                                                     update=":formPersonas" oncomplete="PF('dlgPersonas').show();">
+                                        
+                                    </p:commandButton>
                                 </f:facet>
                             </p:toolbar>
                             <!--Fin Tollbar-->
@@ -82,7 +84,7 @@
                                     <f:selectItems value="#{dependenciaBean.selectOneItemsDependencia}"/>
                                 </p:selectOneMenu>
                                 <p:message for="cbxDependencia" display="icon" />
-                                
+
                                 <div class="flabel" style="width:  150px;">Nombres :</div>
                                 <p:inputText id="txt_nombres" required="true" label="Nombres" style=" width: 260px;text-transform: uppercase;"
                                              value="#{adminUsuarioBean.persona.nombre}"/>
@@ -143,7 +145,7 @@
 
                             <f:facet name="footer">
                                 <div style="width: 100%;text-align: left;">
-                                    <p:commandButton icon="ui-icon-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;">
+                                    <p:commandButton icon="ui-icon-close" value="Cancelar"  process="@this" style="float: right; margin-right: .3em;" oncomplete="PF('dlgNew').hide();">
                                         <p:resetInput target="msgNew" />
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true" style="float: right; margin-right: .3em;"
@@ -158,24 +160,28 @@
                     </h:form>
 
                     <h:form id="formPersonas">
-                        <p:dialog header="personas" widgetVar="dlgPersonas" id="dlgPersonas" modal="false" 
+                        <p:dialog header="Personas" widgetVar="dlgPersonas" id="dlgPersonas" modal="false" 
                                   resizable="false" closable="true" width="600">
                             <h:form id="formBusqueda">
                                 <p:toolbar>
                                     <f:facet name="left">
                                         <h:outputText value="Busqueda: " />
-                                        <p:inputText id="txtBusqueda" style="width: 300px; text-transform: uppercase" value="#{personaBean.txtBusqueda}">
-                                            <p:ajax event="keyup" />
+                                        <p:inputText id="txtBusqueda" style="width: 300px; text-transform: uppercase" value="#{personaBean.txtBusqueda}" placeholder="APELLIDOS Y NOMBRES">
+                                            <p:ajax event="keyup" update="formPersonas:formDataPersonas" listener="#{personaBean.buscarxNombres()}"/>
+                                        </p:inputText>
+                                        <p:inputText id="txtDni" style="width: 150px; text-transform: uppercase" value="#{personaBean.txtDni}" placeholder="DNI">
+                                            <p:ajax event="keyup" update="formPersonas:formDataPersonas" listener="#{personaBean.buscarxDni()}"/>
                                         </p:inputText>
                                     </f:facet>
                                 </p:toolbar>
 
                             </h:form>
-                            <h:form id="formDataPersonas">
+                            <h:form id="formDataPersonas" style="margin-top: 5px">
                                 <p:dataTable id="lista" value="#{personaBean.listPersonas}" var="item"
-                                             paginator="true" rows="10" paginatorPosition="bottom"
-                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="10,15,20" editable="true">
+                                             selectionMode="single" selection="#{personaBean.selectPersona}" rowKey="#{item.idpersona}">
+
+                                    <p:ajax event="rowSelect" listener="#{personaBean.onRowSelect}"/>
+                                    <p:ajax event="rowUnselect" listener="#{personaBean.onRowUnselect}"/>
 
                                     <p:column headerText="Nº" style="width: 50px">
                                         <h:outputText value="#{item.idpersona}"/>

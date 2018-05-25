@@ -79,5 +79,9 @@ public class PersonaBl extends AbstractBL<Persona>{
     public List<Persona> listarRef(String txtBusqueda) {
         return dao.listarRef(txtBusqueda);
     }
+
+    public List<Persona> listarxDni(String txtDni) {
+        return dao.listarxDni(txtDni);
+    }
     
 }

@@ -66,5 +66,10 @@ public class PersonaDao extends AbstractDA<Persona>{
         String hql = "from Persona a where (a.apellidoPaterno || ' ' || a.apellidoMaterno || ' ' || a.nombre) like '%"+txtBusqueda+"%'";
         return listar(hql);
     }
+
+    public List<Persona> listarxDni(String txtDni) {
+        String hql = "from Persona a where a.numeroDocumento like '%"+txtDni+"%'";
+        return listar(hql);
+    }
     
 }

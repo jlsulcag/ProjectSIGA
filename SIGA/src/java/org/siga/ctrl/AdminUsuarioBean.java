@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.siga.be.Persona;
 import org.siga.be.Usuario;
 import org.siga.be.UsuarioRol;
@@ -24,6 +25,7 @@ import org.siga.bl.UsuarioRolBl;
 import org.siga.util.Encrypt;
 import org.siga.util.MensajeView;
 import org.primefaces.PrimeFaces;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "adminUsuarioBean")
@@ -126,7 +128,10 @@ public class AdminUsuarioBean {
     public void listarxNombres(){
         setListUsuarios(usuarioBl.listarxNombres(txtBusqueda.toUpperCase()));
     }
-
+    
+    
+    
+    //Constructores
     public Persona getPersona() {
         return persona;
     }
@@ -189,6 +194,15 @@ public class AdminUsuarioBean {
 
     public void setListUsuarios(List<Usuario> listUsuarios) {
         this.listUsuarios = listUsuarios;
+    }
+
+    void enviaDatosPersona(HttpSession sesion) {
+        if(sesion.getAttribute("persona") != null){
+            this.persona = (Persona) sesion.getAttribute("persona");
+            System.out.println("Datos persona ... "+persona.getNombre());
+            RequestContext.getCurrentInstance().update("formNew");
+            RequestContext.getCurrentInstance().execute("PF('dlgNew').show()");
+        }
     }
     
 }
