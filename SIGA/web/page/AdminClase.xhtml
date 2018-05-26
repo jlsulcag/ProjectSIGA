@@ -72,12 +72,13 @@
 
 
                     <h:form id="formNew">
+                        <p:growl id="msgNew" sticky="false" showDetail="true"/>
                         <p:dialog header="Registrar Clase" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
                                 
                                 <h:outputLabel for="cbxFamilia" value="Familia :"/>
-                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}">
+                                <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{familiaBean.selectOneItemsFamilia}"/>
                                 </p:selectOneMenu>
@@ -87,8 +88,12 @@
                                 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
-                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{claseBean.registrar()}"/> 
+                                    <!--<p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                     oncomplete="PF('dlgNew').hide();" actionListener="{claseBean.registrar()}"/> 
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />-->
+                                    <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true"
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
+                                                     update="msgNew, formDataTable" actionListener="#{claseBean.registrar()}"/> 
                                     <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
                                 </f:facet>
 
@@ -97,6 +102,7 @@
                     </h:form>
 
                     <h:form id="formEdit">
+                        <p:growl id="msgEdit" sticky="false" showDetail="true"/>
                         <p:dialog header="Actualizar datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2"  cellpadding="3">
@@ -105,7 +111,7 @@
                                 <h:inputHidden />
                                 
                                 <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
-                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}">
+                                <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{claseBean.clase.familia.idfamilia}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{familiaBean.selectOneItemsFamilia}"/>
                                 </p:selectOneMenu>
@@ -122,9 +128,14 @@
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
+                                    <!--<p:commandButton id="btnActualizar" update=":formDataTable, :msg" 
                                                      oncomplete="PF('dlgEdit').hide();" icon="ui-icon-check" 
-                                                     title="Guardar" value="Guardar" actionListener="#{claseBean.actualizar()}"/>
+                                                     title="Guardar" value="Guardar" actionListener="{claseBean.actualizar()}"/>
+                                    <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />-->
+                                    <p:commandButton id="btnActualizar" icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true"
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
+                                                     update="msgEdit, formDataTable" actionListener="#{claseBean.actualizar()}"/> 
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
                                                      icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                                 </f:facet>

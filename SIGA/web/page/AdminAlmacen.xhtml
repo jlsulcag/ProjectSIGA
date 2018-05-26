@@ -108,7 +108,7 @@
                                 <p:inputText id="txtNombreEdit" label="Nombre" required="true" value="#{almacenBean.almacen.nombre}" style="width: 400px; text-transform:uppercase;"/>
                                 
                                 <h:outputLabel for="txtDireccionEdit" value="Dirección :"/>
-                                <p:inputText id="txtDireccionEdit" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" />
+                                <p:inputText id="txtDireccionEdit" label="Direccion" style="width: 400px; text-transform:uppercase;" value="#{almacenBean.almacen.direccion}" required="true"/>
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{almacenBean.almacen.estado}">
