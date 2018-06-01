@@ -28,7 +28,7 @@
                         </p:toolbar>
 
                     </h:form>
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{productoBean.listaProductos}" var="item" 
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -37,28 +37,22 @@
                                 Productos
                             </f:facet>
 
-                            <p:column style="width:15px;text-align: center" headerText="Nº">
+                            <p:column style="width:10px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idproducto}"/>
                             </p:column>
                             <p:column headerText="Descripción" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
-                            </p:column>                            
+                            </p:column>  
 
-                            <p:column headerText="Cant x UM" style="width: 50px">
-                                <h:outputText value="#{item.fraccion}"/>
-                            </p:column>
-
-                            <p:column headerText="Stock Min" style="width:50px;text-align: center">
+                            <p:column headerText="Stock Min" style="width:20px;text-align: center">
                                 <h:outputText value="#{item.stockMinimo}"/>
                             </p:column>
 
-                            <p:column headerText="Stock Max" style="width:50px; text-align: center">
+                            <p:column headerText="Stock Max" style="width:20px; text-align: center">
                                 <h:outputText value="#{item.stockMaximo}"/>
                             </p:column>
-                            <p:column headerText="Clase" style="width:80px;">
-                                <h:outputText value="#{item.clase.descripcion}"/>
-                            </p:column>
-                            <p:column style="width:30px;text-align: center">
+                            
+                            <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{productoBean.producto}"/>
@@ -99,9 +93,6 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
-
-                                <h:outputLabel for="spFraccion" value="Cant x UM: " />
-                                <p:spinner id="spFraccion" value="#{productoBean.producto.fraccion}" required="true"/>
 
                                 <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMin" value="#{productoBean.producto.stockMinimo}"/>
@@ -153,10 +144,7 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
-
-                                <h:outputLabel for="spFraccionEdit" value="Cant x UM: " />
-                                <p:spinner id="spFraccionEdit" value="#{productoBean.producto.fraccion}" required="true" />
-
+                                
                                 <h:outputLabel for="spStockMinEdit" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMinEdit" value="#{productoBean.producto.stockMinimo}"/>
 

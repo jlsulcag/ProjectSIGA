@@ -29,7 +29,7 @@
                         </p:toolbar>
 
                     </h:form>
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{unidadMedidaBean.listaUnidadMedidas}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -38,14 +38,14 @@
                                 Unidad de Medida
                             </f:facet>
 
-                            <p:column style="width:15px;text-align: center" headerText="Nº">
+                            <p:column style="width:10px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idunidadmedida}"/>
                             </p:column>
                             <p:column headerText="Unidad de Medida" style=" width: 250px">
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Estado" style="width:50px;text-align: center">
+                            <p:column headerText="Estado" style="width:10px;text-align: center">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 

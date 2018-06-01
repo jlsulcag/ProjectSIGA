@@ -67,10 +67,15 @@
 
                         </p:toolbar>
                     </h:form>
-                    <h:form id="formTabla">
-                        <p:dataTable id="lista" value="#{adminEquivalenciaBean.listEquivalencias}" var="item">
+                    <h:form id="formTabla" style="margin-top: 5px">
+                        <p:dataTable id="lista" value="#{adminEquivalenciaBean.listEquivalencias}" var="item"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20">
+                            
                             <f:facet name="header">Equivalencias</f:facet>
-                            <p:column style="width: 15px; text-align: center" headerText="ID">
+                            
+                            <p:column style="width: 20px; text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idequivalencia}"/>
                             </p:column>
 
@@ -82,9 +87,16 @@
                                 <h:outputText value="#{item.unidadEquivalente.descripcion}"/>
                             </p:column>
                             
-                            <p:column  headerText="Factor">
+                            <p:column  headerText="Factor" style="width: 40px; text-align: right">
                                 <h:outputText value="#{item.factor}"/>
                             </p:column>
+                            
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnEdit" icon="ui-icon-pencil" title="Editar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{adminEquivalenciaBean.equivalencia}" />
+                                </p:commandButton>                            
+                            </p:column>
+                            
                         </p:dataTable>
                     </h:form>
                 </p:panel>
