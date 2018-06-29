@@ -35,9 +35,6 @@
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" not-null="true" />
         </property>
-        <property name="fraccion" type="int">
-            <column name="fraccion" not-null="true" />
-        </property>
         <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_producto" not-null="true" />

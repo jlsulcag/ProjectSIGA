@@ -151,12 +151,9 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfFraccion, txfUnidadMedida"/>
+                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfUnidadMedida"/>
                                 </p:selectOneMenu>
 
-                                <h:outputLabel for="txfFraccion" value="Fracción :"/>
-                                <p:inputText id="txfFraccion" label="Fracción" readonly="true"
-                                             value="#{ordenCompraDetalleBean.producto.fraccion}"/>
 
                                 <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
                                 <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true"

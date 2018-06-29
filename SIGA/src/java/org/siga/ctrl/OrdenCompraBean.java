@@ -101,7 +101,7 @@ public class OrdenCompraBean {
         temp.setDesc1(ordenCompraDetalle.getDesc1());
         temp.setDesc2(ordenCompraDetalle.getDesc2());
         temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        temp.setIdEquivalencia(equivalencia.getIdequivalencia());
+        temp.setIdUnidadmedida(producto.getUnidadMedida().getIdunidadmedida());
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
         temp.setSubTotal((ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
@@ -159,7 +159,6 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setPrecioCompra(BigDecimal.ZERO);
         ordenCompraDetalle.setDesc1(0);
         ordenCompraDetalle.setDesc2(0);
-        producto.setFraccion(0);
         producto.setUnidadMedida(new UnidadMedida());
     }
 
@@ -209,16 +208,18 @@ public class OrdenCompraBean {
 
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
-        equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
+        //equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
     }
-
+    
+    /*
     public void setIsCompraUnitaria() {
         setCompraxUnidad(compraxUnidad);
         if (ordenCompraDetalle.getCantidad() > 0) {
             calcularTotalProductos();
         }
     }
-
+    
+    
     public void calcularTotalProductos() {
         if (compraxUnidad) {
             setTotalProductos(ordenCompraDetalle.getCantidad());
@@ -226,7 +227,7 @@ public class OrdenCompraBean {
             setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
         }
     }
-
+    */
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }

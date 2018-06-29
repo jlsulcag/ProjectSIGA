@@ -8,6 +8,11 @@ public class MensajeView {
     public static final BigDecimal IGV = new BigDecimal("0.18");
     public static final BigDecimal IGV_DIV = new BigDecimal("1.18");
     public static final int ENTRADA = 1, SALIDA = 2;
+
+    public static void registroError(Exception e) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error de registro \n "+e);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     String mensaje = "";
 
     public static void registroCorrecto() {

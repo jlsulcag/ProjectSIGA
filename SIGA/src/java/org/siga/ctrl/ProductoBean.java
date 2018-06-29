@@ -57,8 +57,7 @@ public class ProductoBean {
         return getListFamilias();
     }
 
-    public void registrar() {
-        //producto.setIdFamilia(idFamiliaTemp);
+    public void registrar() {        
         producto.setDescripcion(producto.getDescripcion().toUpperCase());
         producto.setCodigo(producto.getCodigo().toUpperCase());
         producto.setFechaReg(new Date());
@@ -86,7 +85,6 @@ public class ProductoBean {
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
         temp.setClase(producto.getClase());
-        temp.setFraccion(producto.getFraccion());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
@@ -107,7 +105,6 @@ public class ProductoBean {
         producto.setFechaReg(null);
         producto.setClase(new Clase());
         producto.setFamilia(new Familia());
-        producto.setFraccion(0);
     }
 
     public void buscarRef() {

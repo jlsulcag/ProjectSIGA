@@ -2,49 +2,49 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.OrdenCompraDetalle" optimistic-lock="version" schema="siga" table="orden_compra_detalle">
-        <id name="idordencompradetalle" type="long">
-            <column name="idordencompradetalle"/>
-            <generator class="increment"/>
-        </id>
-        <many-to-one class="org.siga.be.OrdenCompra" fetch="select" name="ordenCompra">
-            <column name="id_ordencompra" not-null="true"/>
-        </many-to-one>
-        <many-to-one class="org.siga.be.Producto" fetch="select" name="producto">
-            <column name="id_producto" not-null="true"/>
-        </many-to-one>
-        <property name="cantidad" type="int">
-            <column name="cantidad" not-null="true"/>
-        </property>
-        <property name="observacion" type="string">
-            <column length="300" name="observacion"/>
-        </property>
-        <property name="lote" type="string">
-            <column length="30" name="lote"/>
-        </property>
-        <property name="fechaVencimiento" type="date">
-            <column length="30" name="fecha_vencimiento"/>
-        </property>
-        <property name="valorCompra" type="big_decimal">
-            <column name="valor_compra" precision="18"/>
-        </property>
-        <property name="precioCompra" type="big_decimal">
-            <column name="precio_compra" precision="18"/>
-        </property>
-        <property name="desc1" type="double">
-            <column name="desc1" precision="18"/>
-        </property>
-        <property name="desc2" type="double">
-            <column name="desc2" precision="18"/>
-        </property>
-        <property name="unidadMedida" type="string">
-            <column length="30" name="unidad_medida"/>
-        </property>
-        <property name="montoDescitem" type="big_decimal">
-            <column name="monto_descitem" precision="18"/>
-        </property>
-        <property name="idEquivalencia" type="long">
-            <column name="id_equivalencia"  />
-        </property>
-    </class>
+  <class name="org.siga.be.OrdenCompraDetalle" optimistic-lock="version" schema="siga" table="orden_compra_detalle">
+    <id name="idordencompradetalle" type="long">
+      <column name="idordencompradetalle"/>
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="org.siga.be.OrdenCompra" fetch="select" name="ordenCompra">
+      <column name="id_ordencompra" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="org.siga.be.Producto" fetch="select" name="producto">
+      <column name="id_producto" not-null="true"/>
+    </many-to-one>
+    <property name="cantidad" type="int">
+      <column name="cantidad" not-null="true"/>
+    </property>
+    <property name="observacion" type="string">
+      <column length="300" name="observacion"/>
+    </property>
+    <property name="lote" type="string">
+      <column length="30" name="lote"/>
+    </property>
+    <property name="fechaVencimiento" type="date">
+      <column length="30" name="fecha_vencimiento"/>
+    </property>
+    <property name="valorCompra" type="big_decimal">
+      <column name="valor_compra" precision="18"/>
+    </property>
+    <property name="precioCompra" type="big_decimal">
+      <column name="precio_compra" precision="18"/>
+    </property>
+    <property name="desc1" type="double">
+      <column name="desc1" precision="18"/>
+    </property>
+    <property name="desc2" type="double">
+      <column name="desc2" precision="18"/>
+    </property>
+    <property name="unidadMedida" type="string">
+      <column length="30" name="unidad_medida"/>
+    </property>
+    <property name="montoDescitem" type="big_decimal">
+      <column name="monto_descitem" precision="18"/>
+    </property>
+    <property name="idUnidadmedida" type="long">
+      <column name="id_unidadmedida"/>
+    </property>
+  </class>
 </hibernate-mapping>

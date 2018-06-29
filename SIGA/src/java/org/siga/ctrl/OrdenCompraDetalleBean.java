@@ -194,7 +194,7 @@ public class OrdenCompraDetalleBean {
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
     }
-
+    /*
     public void setIsCompraUnitaria() {
         setCompraxUnidad(compraxUnidad);
         if (ordenCompraDetalle.getCantidad() > 0) {
@@ -209,7 +209,7 @@ public class OrdenCompraDetalleBean {
             setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
         }
     }
-
+    */
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }

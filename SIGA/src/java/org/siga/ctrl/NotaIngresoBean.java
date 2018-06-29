@@ -147,7 +147,6 @@ public class NotaIngresoBean {
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
         notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
-        producto.setFraccion(0);
         producto.getUnidadMedida().setDescripcion("");
         setCompraxUnidad(false);
         notaEntradaDetalle.setCantIngreso(0);
@@ -188,9 +187,9 @@ public class NotaIngresoBean {
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
             //
-            notaED.setIdEquivalencia(obj.getIdEquivalencia());
+            notaED.setIdEquivalencia(obj.getIdUnidadmedida());
             //buscar la equivalencia  utiliza para la orden de compra 
-            equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
+            equivalencia = equivalenciaBl.buscaxId(obj.getIdUnidadmedida());
             if (equivalencia != null) {
                 notaED.setTotalProductos((int) (notaED.getCantIngreso() * equivalencia.getFactor()));
             }
@@ -240,7 +239,8 @@ public class NotaIngresoBean {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
+    
+    /*
     public void setIsCompraUnitaria() {
         setCompraxUnidad(compraxUnidad);
         if (notaEntradaDetalle.getCantIngreso() > 0) {
@@ -255,7 +255,8 @@ public class NotaIngresoBean {
             setTotalProductos(notaEntradaDetalle.getCantIngreso() * producto.getFraccion());
         }
     }
-
+    */
+    
     public void agregarProducto() {
         NotaEntradaDetalle ned = new NotaEntradaDetalle();
         ned.setProducto(producto);

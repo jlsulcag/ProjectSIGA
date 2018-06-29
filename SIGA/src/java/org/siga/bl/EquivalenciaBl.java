@@ -94,4 +94,8 @@ public class EquivalenciaBl extends AbstractBL<Equivalencia>{
     public Equivalencia buscarxIdUnidadMedida(long idunidadmedida) {
         return dao.buscarxIdUnidadMedida(idunidadmedida);
     }
+
+    public Equivalencia buscarxIdUnidadMedida(long idproducto, long idproducto0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

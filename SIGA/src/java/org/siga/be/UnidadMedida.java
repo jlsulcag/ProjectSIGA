@@ -16,6 +16,7 @@ public class UnidadMedida  implements java.io.Serializable {
      private long idunidadmedida;
      private String descripcion;
      private String estado;
+     private int fraccion;
      private Set<Producto> productos = new HashSet<Producto>(0);
 
     public UnidadMedida() {
@@ -61,6 +62,14 @@ public class UnidadMedida  implements java.io.Serializable {
     
     public void setProductos(Set<Producto> productos) {
         this.productos = productos;
+    }
+
+    public int getFraccion() {
+        return fraccion;
+    }
+
+    public void setFraccion(int fraccion) {
+        this.fraccion = fraccion;
     }
 
 

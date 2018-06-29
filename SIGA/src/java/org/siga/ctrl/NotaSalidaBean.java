@@ -142,7 +142,7 @@ public class NotaSalidaBean {
     public void buscarProducto() {
         producto = getProductoBl().buscarxID(notaSalidaDetalle.getProducto().getIdproducto());
     }
-
+    /*
     public void setIsPedidoUnitario() {
         setPedidoxUnidad(pedidoxUnidad);
 //        if (notaSalidaDetalle.getCantidad() > 0) {
@@ -157,7 +157,7 @@ public class NotaSalidaBean {
             setTotalProductos(notaSalidaDetalle.getCantSolicitada() * producto.getFraccion());
         }
     }
-
+    */
     public void agregar() {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
         temp.setProducto(almacenProducto.getProducto());
@@ -251,7 +251,6 @@ public class NotaSalidaBean {
 
     public void inicioNew() {
         notaSalidaDetalle.setProducto(new Producto());
-        producto.setFraccion(0);
         producto.setUnidadMedida(null);
         setPedidoxUnidad(false);
         notaSalidaDetalle.setCantSolicitada(0);
