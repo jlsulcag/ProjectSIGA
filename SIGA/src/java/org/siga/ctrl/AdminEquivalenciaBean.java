@@ -25,6 +25,7 @@ public class AdminEquivalenciaBean {
     
     private List<Equivalencia> listEquivalencias;
     private List<SelectItem> selectOneItemsEquivalencia;
+    private long res;
     
     public AdminEquivalenciaBean() {
     }
@@ -51,6 +52,28 @@ public class AdminEquivalenciaBean {
             MensajeView.registroError();
         }
         
+    }
+    
+    public void actualizar(){
+        Equivalencia temp = new Equivalencia();
+        temp = buscarId();
+        
+        if(temp.getInterpretacion() != null){
+            temp.setInterpretacion(temp.getInterpretacion().toUpperCase());
+        }else{
+            temp.setInterpretacion("");
+        }
+        System.out.println("factir "+ equivalencia.getFactor());
+        temp.setUnidadMedida(equivalencia.getUnidadMedida());
+        temp.setUnidadEquivalente(equivalencia.getUnidadEquivalente());
+        temp.setFactor(equivalencia.getFactor());
+        res = equivalenciaBl.actualizar(temp);
+        if (res == 0) {
+            //listarXid(temp.getUnidadMedida().getIdunidadmedida());
+            MensajeView.actCorrecto();
+        } else {
+            MensajeView.actError();
+        }
     }
     
     private void listarXid(long idunidadmedida) {
@@ -107,6 +130,10 @@ public class AdminEquivalenciaBean {
         equivalencia.setUnidadMedida(new UnidadMedida());
         equivalencia.setUnidadEquivalente(new UnidadMedida());
         equivalencia.setInterpretacion("");        
+    }
+
+    private Equivalencia buscarId() {
+        return equivalenciaBl.buscar(equivalencia.getIdequivalencia());
     }
 
     

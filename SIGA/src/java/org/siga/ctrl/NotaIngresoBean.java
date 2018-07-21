@@ -96,11 +96,11 @@ public class NotaIngresoBean {
             //Registrar Nota Entrada Detalle
             if (res == 0) {
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+                    obj.setNotaEntrada(notaEntrada);
+                    notaIngresoDetalleBl.registrar(obj);
                     //Registrar o actualizar almacen stock
                     long resp = actualizarStockAlmacen(obj);
                     System.out.println("resp .......... "+resp);
-                    obj.setNotaEntrada(notaEntrada);
-                    notaIngresoDetalleBl.registrar(obj);
                     //RegistrarKardex
                     long kx = registrarKardex(obj, notaEntrada);
                 }
@@ -438,7 +438,7 @@ public class NotaIngresoBean {
         int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
         almacenProducto.setOrdenIngreso(numOrden + 1);
         almacenProducto.setUnidad(obj.getUnidadMedida());
-        
+      
         almacenProductoBl.registrar(almacenProducto);
         return almacenProducto.getIdalmacenproducto();
         

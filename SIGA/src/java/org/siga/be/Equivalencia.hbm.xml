@@ -4,7 +4,7 @@
 <!-- Generated 18/12/2017 12:00:54 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="org.siga.be.Equivalencia" table="equivalencia" schema="siga" optimistic-lock="version">
-        <id name="idequivalencia" type="int">
+        <id name="idequivalencia" type="long">
             <column name="idequivalencia" />
             <generator class="increment" />
         </id>

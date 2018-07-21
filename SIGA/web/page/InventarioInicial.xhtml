@@ -85,9 +85,7 @@
 
                     <h:form id="formDataTable" style="margin-top: 10px">
                         <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
-                                     paginator="false" rows="10" paginatorPosition="bottom"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10,15,20" editable="true">
+                                     paginator="false">
                             <f:facet name="header">Productos</f:facet>
 
                             <p:ajax event="rowEdit" listener="#{notaIngresoBean.onRowEdit}"  update=":msg"/>

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Equivalencia  implements java.io.Serializable {
 
 
-     private int idequivalencia;
+     private long idequivalencia;
      private UnidadMedida unidadMedida;
      private String interpretacion;
      private double factor;
@@ -34,11 +34,11 @@ public class Equivalencia  implements java.io.Serializable {
        this.estado = estado;
     }
    
-    public int getIdequivalencia() {
+    public long getIdequivalencia() {
         return this.idequivalencia;
     }
     
-    public void setIdequivalencia(int idequivalencia) {
+    public void setIdequivalencia(long idequivalencia) {
         this.idequivalencia = idequivalencia;
     }
     public UnidadMedida getUnidadMedida() {
