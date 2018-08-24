@@ -15,11 +15,14 @@ import org.siga.be.Producto;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.NotaIngresoBl;
-import org.siga.util.MensajeView;
 
+/**
+ *
+ * @author JSULCAG
+ */
 @ManagedBean
 @ViewScoped
-public class AlmacenProductoBean {
+public class StockBean {
     @ManagedProperty(value = "#{almacenProducto}")
     private AlmacenProducto almacenProducto;
     @ManagedProperty(value = "#{almacenProductoBl}")
@@ -36,28 +39,25 @@ public class AlmacenProductoBean {
     private List<AlmacenProducto> listInventario;
     private String txtBusqueda;
     private List<SelectItem> selectOneItemsAlmacenProducto;
-    private int invocador = -1;
-    public static final int NOTA_SALIDA_DISTRIBUCION = 1, STOCK = 2;
-    
-    
-    public AlmacenProductoBean() {
+    public StockBean() {
+        
     }
     
     @PostConstruct
     public void inicio(){
         almacenProducto.setAlmacen(defaultAlmacen());
         //Este metodo lista  todos los productos por almacen, valido para el caso de stock
-//        if(almacenProducto.getAlmacen().getIdalmacen() != 0){
-//            listarProductos(almacenProducto.getAlmacen().getIdalmacen());
-//        }        
+        if(almacenProducto.getAlmacen().getIdalmacen() != 0){
+            listarProductos(almacenProducto.getAlmacen().getIdalmacen());
+        }        
     }
     
-    public void buscarAlmacenProducto(){
-        almacenProducto = almacenProductoBl.buscarxId(almacenProducto.getIdalmacenproducto());
+    private void listarProductos(long idalmacen) {
+        setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));
     }
     
-    public void listarRef(){
-        setListInventario(almacenProductoBl.listarRef(txtBusqueda.toUpperCase(), almacenProducto.getAlmacen().getIdalmacen()));
+    private Almacen defaultAlmacen() {
+        return almacenBl.buscarXNombre("SEDE PRINCIPAL");
     }
 
     public AlmacenProducto getAlmacenProducto() {
@@ -100,10 +100,6 @@ public class AlmacenProductoBean {
         this.producto = producto;
     }
 
-    private Almacen defaultAlmacen() {
-        return almacenBl.buscarXNombre("SEDE PRINCIPAL");
-    }
-
     public AlmacenBl getAlmacenBl() {
         return almacenBl;
     }
@@ -118,10 +114,6 @@ public class AlmacenProductoBean {
 
     public void setListInventario(List<AlmacenProducto> listInventario) {
         this.listInventario = listInventario;
-    }
-
-    private void listarProductos(long idalmacen) {
-        setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));
     }
 
     public String getTxtBusqueda() {
@@ -145,17 +137,13 @@ public class AlmacenProductoBean {
     public void setSelectOneItemsAlmacenProducto(List<SelectItem> selectOneItemsAlmacenProducto) {
         this.selectOneItemsAlmacenProducto = selectOneItemsAlmacenProducto;
     }
-
+    
     private List<AlmacenProducto> listarAlmacenProducto() {
         return almacenProductoBl.listarPeps();
     }
-
-    public int getInvocador() {
-        return invocador;
-    }
-
-    public void setInvocador(int invocador) {
-        this.invocador = invocador;
+    
+    public void listarRef(){
+        setListInventario(almacenProductoBl.listarRef(txtBusqueda.toUpperCase(), almacenProducto.getAlmacen().getIdalmacen()));
     }
     
 }

@@ -21,6 +21,8 @@ public class NotaSalida  implements java.io.Serializable {
      private Almacen almacenDestino;
      private String observacion;
      private Dependencia dependencia;
+     private String personaDestino;
+     private String docRef;
 
     public NotaSalida() {
         this.idnotasalida = 0;
@@ -109,6 +111,22 @@ public class NotaSalida  implements java.io.Serializable {
 
     public void setDependencia(Dependencia dependencia) {
         this.dependencia = dependencia;
+    }
+
+    public String getPersonaDestino() {
+        return personaDestino;
+    }
+
+    public void setPersonaDestino(String personaDestino) {
+        this.personaDestino = personaDestino;
+    }
+
+    public String getDocRef() {
+        return docRef;
+    }
+
+    public void setDocRef(String docRef) {
+        this.docRef = docRef;
     }
 
 }

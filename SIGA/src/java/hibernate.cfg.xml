@@ -4,7 +4,7 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://192.168.32.33:5432/sigadb</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://192.168.32.33:5432/sigadb_desa</property>
     <property name="hibernate.connection.username">siga%admin</property>
     <property name="hibernate.connection.password">siga%admin</property>
     <property name="hibernate.show_sql">true</property>

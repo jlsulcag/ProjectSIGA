@@ -22,6 +22,7 @@ import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
+import org.siga.be.UnidadMedida;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.KardexBl;
@@ -30,6 +31,7 @@ import org.siga.bl.NotaIngresoDetalleBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UnidadMedidaBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -69,6 +71,11 @@ public class NotaIngresoBean {
     private Kardex kardex;
     @ManagedProperty(value = "#{kardexBl}")
     private KardexBl kardexBl;
+    
+    @ManagedProperty(value = "#{unidadMedida}")
+    private UnidadMedida unidadMedida;
+    @ManagedProperty(value = "#{unidadMedidaBl}")
+    private UnidadMedidaBl unidadMedidaBl;
 
     private List<Equivalencia> listEquivalencia;
     private List<SelectItem> selectOneItemsEquivalencia;
@@ -80,7 +87,6 @@ public class NotaIngresoBean {
     private List<NotaEntradaDetalle> listNotaEntradaDetalleTemp;
     ;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
-    private boolean compraxUnidad;
     private int totalProductos;
 
     private long res;
@@ -140,20 +146,23 @@ public class NotaIngresoBean {
         notaEntrada.setProveedor(new Proveedor());
         notaEntrada.setAlmacenDestino(new Almacen());
         listNotaEntradaDetalle.clear();
+        this.producto = null;
     }
 
     public void limpiarNew() {
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
-        notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
-        producto.getUnidadMedida().setDescripcion("");
-        setCompraxUnidad(false);
+        notaEntradaDetalle.setValorCompra(BigDecimal.ZERO); 
         notaEntradaDetalle.setCantIngreso(0);
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-        this.producto = null;
+        if(this.producto != null){
+            producto.getUnidadMedida().setDescripcion("");
+            this.producto = null;            
+        }
+        
     }
 
     private long maxNumero() {
@@ -240,23 +249,6 @@ public class NotaIngresoBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    /*
-    public void setIsCompraUnitaria() {
-        setCompraxUnidad(compraxUnidad);
-        if (notaEntradaDetalle.getCantIngreso() > 0) {
-            calcularTotalProductos();
-        }
-    }
-
-    public void calcularTotalProductos() {
-        if (compraxUnidad) {
-            setTotalProductos(notaEntradaDetalle.getCantIngreso());
-        } else {
-            setTotalProductos(notaEntradaDetalle.getCantIngreso() * producto.getFraccion());
-        }
-    }
-    */
-    
     public void agregarProducto() {
         NotaEntradaDetalle ned = new NotaEntradaDetalle();
         ned.setProducto(producto);
@@ -266,9 +258,15 @@ public class NotaIngresoBean {
         ned.setPrecioCompra(BigDecimal.ZERO);
         ned.setDesc1(0);
         ned.setDesc2(0);
-        ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
+        //ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         ned.setMontoDescitem(BigDecimal.ZERO);
         ned.setCantIngreso(notaEntradaDetalle.getCantIngreso());
+        //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
+        equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
+        //buscar la unidad de medida que corresponde a dicha equivalencia
+        unidadMedida = unidadMedidaBl.buscar(equivalencia.getUnidadEquivalente().getIdunidadmedida());
+        //
+        ned.setUnidadMedida(unidadMedida.getDescripcion());
         ned.setTotalProductos((int) (notaEntradaDetalle.getCantIngreso() * equivalencia.getFactor()));
         ned.setCantSolicitada(0);
         ned.setCantPendiente(0);
@@ -408,14 +406,6 @@ public class NotaIngresoBean {
 
     public void setProductoBl(ProductoBl productoBl) {
         this.productoBl = productoBl;
-    }
-
-    public boolean isCompraxUnidad() {
-        return compraxUnidad;
-    }
-
-    public void setCompraxUnidad(boolean compraxUnidad) {
-        this.compraxUnidad = compraxUnidad;
     }
 
     public int getTotalProductos() {
@@ -577,6 +567,22 @@ public class NotaIngresoBean {
         kardex.setNroComprobante("");
 
         return kardexBl.registrar(kardex);
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public UnidadMedidaBl getUnidadMedidaBl() {
+        return unidadMedidaBl;
+    }
+
+    public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
+        this.unidadMedidaBl = unidadMedidaBl;
     }
 
 }

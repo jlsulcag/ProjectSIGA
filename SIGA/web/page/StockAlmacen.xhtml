@@ -20,7 +20,7 @@
                                     <h:outputLabel value="Almacen :" for="cbxAlmacen"/>                                    
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#{almacenProductoBean.almacenProducto.almacen.idalmacen}" required="true" label="Almacen">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{stockBean.almacenProducto.almacen.idalmacen}" required="true" label="Almacen">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
                                     </p:selectOneMenu>
@@ -30,8 +30,8 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txtProducto" label="Producto" required="true"
-                                                 value="#{almacenProductoBean.txtBusqueda}">
-                                        <p:ajax event="keyup" update=":formDataTable" listener="#{almacenProductoBean.listarRef()}" />
+                                                 value="#{stockBean.txtBusqueda}">
+                                        <p:ajax event="keyup" update=":formDataTable" listener="#{stockBean.listarRef()}" />
                                     </p:inputText>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                     </h:form>
                     
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{almacenProductoBean.listInventario}" var="item" reflow="true"
+                        <p:dataTable id="lista" value="#{stockBean.listInventario}" var="item" reflow="true"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">

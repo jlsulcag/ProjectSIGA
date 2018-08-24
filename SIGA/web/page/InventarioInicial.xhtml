@@ -148,7 +148,7 @@
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
-                                <p:selectOneMenu id="txfUnidadIngreso" value="#{notaIngresoBean.notaEntradaDetalle.unidadMedida}" 
+                                <p:selectOneMenu id="txfUnidadIngreso" value="#{notaIngresoBean.equivalencia.idequivalencia}" 
                                                  filter="true" filterMatchMode="contains" style="width: 118px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{notaIngresoBean.selectOneItemsEquivalencia}"/>

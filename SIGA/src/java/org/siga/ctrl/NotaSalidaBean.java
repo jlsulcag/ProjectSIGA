@@ -26,6 +26,7 @@ import org.siga.be.PedidoDetalle;
 import org.siga.be.Persona;
 import org.siga.be.Producto;
 import org.siga.be.TipoMovimiento;
+import org.siga.be.UnidadMedida;
 import org.siga.be.Usuario;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
@@ -37,6 +38,7 @@ import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PersonaBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UnidadMedidaBl;
 import org.siga.bl.UsuarioBl;
 import org.siga.util.MensajeView;
 
@@ -71,31 +73,36 @@ public class NotaSalidaBean {
 
     @ManagedProperty(value = "#{pedidoDetalleBl}")
     private PedidoDetalleBl pedidoDetalleBl;
-    
+
     @ManagedProperty(value = "#{equivalencia}")
-    private Equivalencia equivalencia;    
+    private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     @ManagedProperty(value = "#{usuarioBl}")
-    private UsuarioBl usuarioBl;    
+    private UsuarioBl usuarioBl;
     @ManagedProperty(value = "#{usuario}")
     private Usuario usuario;
-    
+
     @ManagedProperty(value = "#{personaBl}")
-    private PersonaBl personaBl;    
+    private PersonaBl personaBl;
     @ManagedProperty(value = "#{persona}")
     private Persona persona;
-    
+
     @ManagedProperty(value = "#{almacenBl}")
-    private AlmacenBl almacenBl;    
+    private AlmacenBl almacenBl;
     @ManagedProperty(value = "#{almacen}")
     private Almacen almacen;
-    
+
     @ManagedProperty(value = "#{dependenciaBl}")
-    private DependenciaBl dependenciaBl; 
+    private DependenciaBl dependenciaBl;
     @ManagedProperty(value = "#{dependencia}")
     private Dependencia dependencia;
+    
+    @ManagedProperty(value = "#{unidadMedida}")
+    private UnidadMedida unidadMedida;
+    @ManagedProperty(value = "#{unidadMedidaBl}")
+    private UnidadMedidaBl unidadMedidaBl;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
@@ -131,6 +138,8 @@ public class NotaSalidaBean {
         notaSalida.setAlmacenDestino(new Almacen());
         notaSalida.setTipomovimiento(new TipoMovimiento());
         notaSalida.setPedido(new Pedido());
+        notaSalida.setPersonaDestino("");
+        notaSalida.setDocRef("");
         //setear campos de origen nombre del usuario
         buscarPersonaOrigen();
     }
@@ -143,32 +152,36 @@ public class NotaSalidaBean {
         producto = getProductoBl().buscarxID(notaSalidaDetalle.getProducto().getIdproducto());
     }
     /*
-    public void setIsPedidoUnitario() {
-        setPedidoxUnidad(pedidoxUnidad);
-//        if (notaSalidaDetalle.getCantidad() > 0) {
-//            calcularTotalProductos();
-//        }
-    }
+     public void setIsPedidoUnitario() {
+     setPedidoxUnidad(pedidoxUnidad);
+     //        if (notaSalidaDetalle.getCantidad() > 0) {
+     //            calcularTotalProductos();
+     //        }
+     }
 
-    public void calcularTotalProductos() {
-        if (pedidoxUnidad) {
-            setTotalProductos(notaSalidaDetalle.getCantSolicitada());
-        } else {
-            setTotalProductos(notaSalidaDetalle.getCantSolicitada() * producto.getFraccion());
-        }
-    }
-    */
+     public void calcularTotalProductos() {
+     if (pedidoxUnidad) {
+     setTotalProductos(notaSalidaDetalle.getCantSolicitada());
+     } else {
+     setTotalProductos(notaSalidaDetalle.getCantSolicitada() * producto.getFraccion());
+     }
+     }
+     */
+
     public void agregar() {
         NotaSalidaDetalle temp = new NotaSalidaDetalle();
         temp.setProducto(almacenProducto.getProducto());
-        temp.setCantSolicitada(notaSalidaDetalle.getCantSolicitada());
+        temp.setCantSalida(notaSalidaDetalle.getCantSalida());
         temp.setStock(almacenProducto.getStockActual());
         temp.setIdAlmacenProducto(almacenProducto.getIdalmacenproducto());
-        if (pedidoxUnidad) {
-            temp.setUnidadmedida("UNIDAD");
-        } else {
-            temp.setUnidadmedida(almacenProducto.getProducto().getUnidadMedida().getDescripcion());
-        }
+        //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
+        equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
+        //buscar la unidad de medida que corresponde a dicha equivalencia
+        unidadMedida = unidadMedidaBl.buscar(equivalencia.getUnidadEquivalente().getIdunidadmedida());
+        //
+        temp.setUnidadmedida(getUnidadMedida().getDescripcion());
+        temp.setIdEquivalencia(equivalencia.getIdequivalencia());
+        
         getListNotaSalidas().add(temp);
 
     }
@@ -185,7 +198,10 @@ public class NotaSalidaBean {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
                         if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
                             equivalencia = equivalenciaBl.buscaxId(nsd.getIdEquivalencia());
-                            actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSolicitada()*equivalencia.getFactor()));
+                            if (equivalencia != null) {
+                                actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSalida() * equivalencia.getFactor()));
+                            }
+
                         } else {
                             cont++;
                         }
@@ -216,9 +232,12 @@ public class NotaSalidaBean {
 
         notaSalida.setFechaReg(new Date());
         notaSalida.setIdUserReg(0);
-        notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
+        //notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
+        notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
         notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
         notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+        notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
+        notaSalida.setDocRef(notaSalida.getDocRef().toUpperCase());
 
         //Obtener todos los datos del pedido para determinar  origen y destino 
         pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
@@ -507,7 +526,7 @@ public class NotaSalidaBean {
                 this.selectOneItemsEquivalencia.add(selectItem);
             }
             return selectOneItemsEquivalencia;
-        }else{
+        } else {
             return null;
         }
     }
@@ -523,7 +542,7 @@ public class NotaSalidaBean {
 
     private void buscarPersonaOrigen() {
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        if(sesionUser.getAttribute("idUsuario") != null){
+        if (sesionUser.getAttribute("idUsuario") != null) {
             usuario = usuarioBl.buscarxIdUsuario(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
             persona = personaBl.buscar(usuario.getPersona().getIdpersona());
             almacen = almacenBl.buscar(usuario.getDependencia().getAlmacen().getIdalmacen());
@@ -577,8 +596,8 @@ public class NotaSalidaBean {
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
     }
-    
-    public List<Dependencia> listarDependenciaxAlmacen(){
+
+    public List<Dependencia> listarDependenciaxAlmacen() {
         return dependenciaBl.listarDependenciaxAlmacen(notaSalida.getAlmacenDestino().getIdalmacen());
     }
 
@@ -610,6 +629,22 @@ public class NotaSalidaBean {
 
     public void setSelectOneItemsDependencia(List<SelectItem> selectOneItemsDependencia) {
         this.selectOneItemsDependencia = selectOneItemsDependencia;
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public UnidadMedidaBl getUnidadMedidaBl() {
+        return unidadMedidaBl;
+    }
+
+    public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
+        this.unidadMedidaBl = unidadMedidaBl;
     }
 
 }

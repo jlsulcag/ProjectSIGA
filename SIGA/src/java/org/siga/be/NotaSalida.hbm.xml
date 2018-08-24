@@ -35,6 +35,12 @@
          <many-to-one name="dependencia" class="org.siga.be.Dependencia" fetch="select">
             <column name="id_dependencia" />
         </many-to-one> 
+        <property name="personaDestino" type="string">
+            <column name="persona_destino" length="100" not-null="true" />
+        </property>
+        <property name="docRef" type="string">
+            <column name="doc_ref" length="100" not-null="true" />
+        </property>
        
     </class>
 </hibernate-mapping>
