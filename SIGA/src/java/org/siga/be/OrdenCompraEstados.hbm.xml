@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01/09/2018 12:46:21 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.OrdenCompraEstados" table="orden_compra_estados" schema="siga" optimistic-lock="version">
+        <id name="idordencompraestados" type="long">
+            <column name="idordencompraestados" />
+            <generator class="increment" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="60" not-null="true" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="10" not-null="true" />
+        </property>
+        <set name="ordenCompraSeguimientos" table="orden_compra_seguimiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_ordencompraestado" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.OrdenCompraSeguimiento" />
+        </set>
+    </class>
+</hibernate-mapping>

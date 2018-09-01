@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01/09/2018 12:46:21 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.OrdenCompraSeguimiento" table="orden_compra_seguimiento" schema="siga" optimistic-lock="version">
+        <id name="idordencompraseguimiento" type="long">
+            <column name="idordencompraseguimiento" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="ordenCompra" class="org.siga.be.OrdenCompra" fetch="select">
+            <column name="id_ordencompra" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ordenCompraEstados" class="org.siga.be.OrdenCompraEstados" fetch="select">
+            <column name="id_ordencompraestado" not-null="true" />
+        </many-to-one>
+        <property name="fecha" type="date">
+            <column name="fecha" length="13" not-null="true" />
+        </property>
+        <property name="hora" type="string">
+            <column name="hora" length="20" not-null="true" />
+        </property>
+        <property name="numero" type="int">
+            <column name="numero" not-null="true" />
+        </property>
+        <property name="estado" type="string">
+            <column name="estado" length="10" not-null="true" />
+        </property>
+        <property name="idUser" type="long">
+            <column name="id_user" not-null="true" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="240" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

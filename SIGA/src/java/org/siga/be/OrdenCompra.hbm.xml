@@ -80,5 +80,11 @@
             </key>
             <one-to-many class="org.siga.be.NotaEntrada" />
         </set>
+        <set name="ordenCompraSeguimientos" table="orden_compra_seguimiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_ordencompra" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.OrdenCompraSeguimiento" />
+        </set>
     </class>
 </hibernate-mapping>

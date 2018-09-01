@@ -38,6 +38,7 @@ public class OrdenCompra  implements java.io.Serializable {
      
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
+     private Set<OrdenCompraSeguimiento> ordenCompraSeguimientos = new HashSet<OrdenCompraSeguimiento>(0);
 
     public OrdenCompra() {
         this.idordencompra = 0;
@@ -214,6 +215,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setFormaPago(String formaPago) {
         this.formaPago = formaPago;
+    }
+
+    public Set<OrdenCompraSeguimiento> getOrdenCompraSeguimientos() {
+        return ordenCompraSeguimientos;
+    }
+
+    public void setOrdenCompraSeguimientos(Set<OrdenCompraSeguimiento> ordenCompraSeguimientos) {
+        this.ordenCompraSeguimientos = ordenCompraSeguimientos;
     }
 
 
