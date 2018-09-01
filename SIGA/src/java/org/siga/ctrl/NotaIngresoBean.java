@@ -71,7 +71,7 @@ public class NotaIngresoBean {
     private Kardex kardex;
     @ManagedProperty(value = "#{kardexBl}")
     private KardexBl kardexBl;
-    
+
     @ManagedProperty(value = "#{unidadMedida}")
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
@@ -95,19 +95,28 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
-        //validar  que el stock de los productos existan en almacen
+        //validar  que el los productos esten cargados en la tabla de  detalle
         int r = -1;
+        int cont = 0;
         if (!listNotaEntradaDetalle.isEmpty()) {
             res = registrarNotaEntrada();
             //Registrar Nota Entrada Detalle
             if (res == 0) {
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
+                    cont++;
                     obj.setNotaEntrada(notaEntrada);
                     notaIngresoDetalleBl.registrar(obj);
                     //Registrar o actualizar almacen stock
-                    long resp = actualizarStockAlmacen(obj);
-                    System.out.println("resp .......... "+resp);
-                    //RegistrarKardex
+                    long resp = registrarStockAlmacen(obj);
+                    if (cont == listNotaEntradaDetalle.size()) {
+                        if (resp != 0) {
+                            MensajeView.registroCorrecto();
+                        } else {
+                            MensajeView.registroError();
+                        }
+                    }
+
+                    //Registrar Kardex
                     long kx = registrarKardex(obj, notaEntrada);
                 }
                 //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
@@ -115,13 +124,6 @@ public class NotaIngresoBean {
                     long res = -1;
                     res = actualizarEstadoOrdenCompra();
                 }
-                //Actualizar el stock de almacen segun las cantidades ingresadas
-                //r = actualizarStockAlmacen();
-//                if (r == 1) {
-//                    MensajeView.registroCorrecto();
-//                } else {
-//                    MensajeView.registroError();
-//                }
             }
             iniciar();
         } else {
@@ -153,16 +155,16 @@ public class NotaIngresoBean {
         notaEntradaDetalle.setIdnotaentradadetalle(0);
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
-        notaEntradaDetalle.setValorCompra(BigDecimal.ZERO); 
+        notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
         notaEntradaDetalle.setCantIngreso(0);
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
-        if(this.producto != null){
+        if (this.producto != null) {
             producto.getUnidadMedida().setDescripcion("");
-            this.producto = null;            
+            this.producto = null;
         }
-        
+
     }
 
     private long maxNumero() {
@@ -248,7 +250,7 @@ public class NotaIngresoBean {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void agregarProducto() {
         NotaEntradaDetalle ned = new NotaEntradaDetalle();
         ned.setProducto(producto);
@@ -416,7 +418,7 @@ public class NotaIngresoBean {
         this.totalProductos = totalProductos;
     }
 
-    private long actualizarStockAlmacen(NotaEntradaDetalle obj) {
+    private long registrarStockAlmacen(NotaEntradaDetalle obj) {
         almacenProducto.setProducto(obj.getProducto());
         almacenProducto.setStockActual(obj.getTotalProductos());
         almacenProducto.setProducto(obj.getProducto());
@@ -428,10 +430,10 @@ public class NotaIngresoBean {
         int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
         almacenProducto.setOrdenIngreso(numOrden + 1);
         almacenProducto.setUnidad(obj.getUnidadMedida());
-      
+
         almacenProductoBl.registrar(almacenProducto);
         return almacenProducto.getIdalmacenproducto();
-        
+
     }
 
     public AlmacenProducto getAlmacenProducto() {

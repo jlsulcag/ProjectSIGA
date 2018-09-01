@@ -81,6 +81,8 @@ public class OrdenCompraBean {
         totalDescuento = new BigDecimal("0.00");
         valorNeto = new BigDecimal("0.00");
         montoIgv = new BigDecimal("0.00");
+        ordenCompra.setSolicitante("");
+        ordenCompra.setFormaPago("");
         //invalidarSesionOrdenCompra();
     }
 
@@ -135,13 +137,15 @@ public class OrdenCompraBean {
     public long registrarOrdenCompra() {
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
         ordenCompra.setDocReferencia(ordenCompra.getObservacion().toUpperCase());
-        ordenCompra.setEstado("APROBADO");
+        ordenCompra.setEstado("REGISTRADO");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
         ordenCompra.setValorBruto(valorBruto);
         ordenCompra.setMontoDesc(totalDescuento);
         ordenCompra.setValorNeto(valorNeto);
         ordenCompra.setMontoIgv(montoIgv);
         ordenCompra.setMontoTotal(totalTemp);
+        ordenCompra.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
+        ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
 
         return ordenCompraBl.registrar(ordenCompra);
 

@@ -76,8 +76,8 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
         return dao.maxNumero(idpedido);
     }
 
-    public List<PedidoSeguimiento> listarxEstado(String aprobado) {
-        return dao.listarxEstado(aprobado);
+    public List<PedidoSeguimiento> listarxEstado(long idestado) {
+        return dao.listarxEstado(idestado);
     }
     
     

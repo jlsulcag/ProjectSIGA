@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class PedidoEstados  implements java.io.Serializable {
 
 
-     private long idpedidoestado;
+     private long idpedidoestados;
      private String descripcion;
      private boolean estado;
      private Set<PedidoSeguimiento> pedidoSeguimientos = new HashSet<PedidoSeguimiento>(0);
@@ -23,23 +23,23 @@ public class PedidoEstados  implements java.io.Serializable {
 
 	
     public PedidoEstados(long idpedidoestado, String descripcion, boolean estado) {
-        this.idpedidoestado = idpedidoestado;
+        this.idpedidoestados = idpedidoestado;
         this.descripcion = descripcion;
         this.estado = estado;
     }
     public PedidoEstados(long idpedidoestado, String descripcion, boolean estado, Set<PedidoSeguimiento> pedidoSeguimientos) {
-       this.idpedidoestado = idpedidoestado;
+       this.idpedidoestados = idpedidoestado;
        this.descripcion = descripcion;
        this.estado = estado;
        this.pedidoSeguimientos = pedidoSeguimientos;
     }
    
-    public long getIdpedidoestado() {
-        return this.idpedidoestado;
+    public long getIdpedidoestados() {
+        return this.idpedidoestados;
     }
     
-    public void setIdpedidoestado(long idpedidoestado) {
-        this.idpedidoestado = idpedidoestado;
+    public void setIdpedidoestados(long idpedidoestados) {
+        this.idpedidoestados = idpedidoestados;
     }
     public String getDescripcion() {
         return this.descripcion;

@@ -1,24 +1,23 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 03/11/2017 11:21:42 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.PedidoEstados" table="pedido_estados" schema="siga" optimistic-lock="version">
-        <id name="idpedidoestado" type="long">
-            <column name="idpedidoestado" />
-            <generator class="increment" />
-        </id>
-        <property name="descripcion" type="string">
-            <column name="descripcion" length="60" not-null="true" />
-        </property>
-        <property name="estado" type="boolean">
-            <column name="estado" not-null="true" />
-        </property>
-        <set name="pedidoSeguimientos" table="pedido_seguimiento" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_pedidoestado" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.PedidoSeguimiento" />
-        </set>
-    </class>
+  <class name="org.siga.be.PedidoEstados" optimistic-lock="version" schema="siga" table="pedido_estados">
+    <id name="idpedidoestados" type="long">
+      <column name="idpedidoestados"/>
+      <generator class="increment"/>
+    </id>
+    <property name="descripcion" type="string">
+      <column length="60" name="descripcion" not-null="true"/>
+    </property>
+    <property name="estado" type="boolean">
+      <column name="estado" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="pedidoSeguimientos" table="pedido_seguimiento">
+      <key>
+        <column name="id_pedidoestado" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.PedidoSeguimiento"/>
+    </set>
+  </class>
 </hibernate-mapping>

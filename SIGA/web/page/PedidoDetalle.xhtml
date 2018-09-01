@@ -66,21 +66,23 @@
                 <h:form id="formP">
                     <div class="ui-fluid">
                         <div class="ui-g">
+                           
                             <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                <h:outputLabel for="cbxEstado" value="Estado :"/>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                <p:selectOneMenu id="cbxEstado" value="#{pedidoDetalleBean.pedidoSeguimiento.estado.idpedidoestados}">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{pedidoEstadoBean.selectOneItemsPedidoEstado}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            
+                             <div class="ui-g-12 ui-md-3 ui-lg-3">
                                 <h:outputLabel value="Observación :" for="txfObservacion"/>
                             </div>
                             <div class="ui-g-12 ui-md-3 ui-lg-3">
                                 <p:inputText id="txfObservacion" label="Observacion" style="text-transform: uppercase"
                                              value="#{pedidoDetalleBean.pedidoSeguimiento.observacion}"/>
-                            </div>
-                            <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                <h:outputLabel for="cbxEstado" value="Estado :"/>
-                            </div>
-                            <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                <p:selectOneMenu id="cbxEstado" value="#{pedidoDetalleBean.pedidoSeguimiento.estado}">
-                                    <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{pedidoEstadoBean.selectOneItemsPedidoEstado}"/>
-                                </p:selectOneMenu>
                             </div>
 
                         </div>

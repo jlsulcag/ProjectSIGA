@@ -33,6 +33,21 @@
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfSolicitante" value="Solicitante :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfSolicitante" label="Solicitante" 
+                                                 value="#{ordenCompraBean.ordenCompra.solicitante}" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfFormaPago" value="Forma de Pago :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfFormaPago" label="Forma de Pago" 
+                                                 value="#{ordenCompraBean.ordenCompra.formaPago}" />
+                                </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxProveedor" value="Proveedor :"/>

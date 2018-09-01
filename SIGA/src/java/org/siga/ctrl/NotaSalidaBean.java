@@ -23,6 +23,7 @@ import org.siga.be.NotaSalida;
 import org.siga.be.NotaSalidaDetalle;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
+import org.siga.be.PedidoSeguimiento;
 import org.siga.be.Persona;
 import org.siga.be.Producto;
 import org.siga.be.TipoMovimiento;
@@ -36,11 +37,14 @@ import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.NotaSalidaDetalleBl;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
+import org.siga.bl.PedidoEstadoBl;
+import org.siga.bl.PedidoSeguimientoBl;
 import org.siga.bl.PersonaBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
 import org.siga.bl.UsuarioBl;
 import org.siga.util.MensajeView;
+import org.siga.util.Utilitarios;
 
 @ManagedBean
 @ViewScoped
@@ -98,11 +102,19 @@ public class NotaSalidaBean {
     private DependenciaBl dependenciaBl;
     @ManagedProperty(value = "#{dependencia}")
     private Dependencia dependencia;
-    
+
     @ManagedProperty(value = "#{unidadMedida}")
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
     private UnidadMedidaBl unidadMedidaBl;
+
+    @ManagedProperty(value = "#{pedidoSeguimiento}")
+    private PedidoSeguimiento pedidoSeguimiento;
+    @ManagedProperty(value = "#{pedidoSeguimientoBl}")
+    private PedidoSeguimientoBl pedidoSeguimientoBl;
+
+    @ManagedProperty(value = "#{pedidoEstadoBl}")
+    private PedidoEstadoBl pedidoEstadoBl;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
@@ -140,6 +152,9 @@ public class NotaSalidaBean {
         notaSalida.setPedido(new Pedido());
         notaSalida.setPersonaDestino("");
         notaSalida.setDocRef("");
+        if (pedido != null) {
+            pedido = null;
+        }
         //setear campos de origen nombre del usuario
         buscarPersonaOrigen();
     }
@@ -181,7 +196,7 @@ public class NotaSalidaBean {
         //
         temp.setUnidadmedida(getUnidadMedida().getDescripcion());
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
-        
+
         getListNotaSalidas().add(temp);
 
     }
@@ -206,10 +221,14 @@ public class NotaSalidaBean {
                             cont++;
                         }
                     }
-                    if (pedido != null) {
-                        if (cont == 0) {//Actualizar estado del pedido para ya no mostrar en la lista
-                            //pedido.setEstado("CERRADO");
-                            pedidoBl.actualizar(pedido);
+                    if (pedido != null && pedido.getIdpedido() > 0) {
+                        if (cont == 0) {//registrar un nuevo item en pedido seguimiento del pedido para ya no mostrar en la lista
+                            pedidoSeguimiento.setFecha(new Date());
+                            pedidoSeguimiento.setHora(Utilitarios.horaActual());
+                            pedidoSeguimiento.setPedido(pedido);
+                            pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido())+1);
+                            pedidoSeguimiento.setEstado(pedidoEstadoBl.buscar(4));
+                            pedidoSeguimientoBl.registrar(pedidoSeguimiento);
                         }
                     }
 
@@ -232,29 +251,60 @@ public class NotaSalidaBean {
 
         notaSalida.setFechaReg(new Date());
         notaSalida.setIdUserReg(0);
-        //notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
-        notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
-        notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
-        notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
-        notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
-        notaSalida.setDocRef(notaSalida.getDocRef().toUpperCase());
-
-        //Obtener todos los datos del pedido para determinar  origen y destino 
-        pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
-
-        if (pedido != null && pedido.getIdpedido() > 0) {
-            notaSalida.setPedido(notaSalida.getPedido());
-            notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
-            notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
+        //determinar almacen oprien y destino de  acuerdo a que tipo de salida es: DISTRIBUCION SIMPLE O  CON NOTA DE PEDIDO
+        if (this.getNotaSalida().getPedido().getIdpedido() > 0) {
+            //Obtener todos los datos del pedido para determinar  origen y destino 
+            Pedido temp = new Pedido();
+            pedido = pedidoBl.buscarXid(this.getNotaSalida().getPedido().getIdpedido());
+            if (temp != null) {
+                notaSalida.setPedido(pedido);
+                notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
+                notaSalida.setDependencia(pedido.getDependencia());
+                notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
+            }
         } else {
+            notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
+            notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
+            notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+            notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
+            notaSalida.setDocRef(notaSalida.getDocRef().toUpperCase());
             notaSalida.setPedido(null);
         }
+        //PARA  REGISTRAR POR DISTRIBUCION SIMPLE DESDE OTRA PAGINA
 
         return notaSalidaBl.registrar(notaSalida);
 
         //return notaSalida.getIdnotasalida();
     }
 
+    /*metodo funcionando  para  nota salida distribucion
+     public long registrarNotaSalida() {
+
+     notaSalida.setFechaReg(new Date());
+     notaSalida.setIdUserReg(0);
+     //notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
+     notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
+     notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
+     notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+     notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
+     notaSalida.setDocRef(notaSalida.getDocRef().toUpperCase());
+
+     //Obtener todos los datos del pedido para determinar  origen y destino 
+     pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
+
+     if (pedido != null && pedido.getIdpedido() > 0) {
+     notaSalida.setPedido(notaSalida.getPedido());
+     notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
+     notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
+     } else {
+     notaSalida.setPedido(null);
+     }
+
+     return notaSalidaBl.registrar(notaSalida);
+
+     //return notaSalida.getIdnotasalida();
+     }
+     */
     private long registrarNotaSalidaDetalle() {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
@@ -645,6 +695,30 @@ public class NotaSalidaBean {
 
     public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
         this.unidadMedidaBl = unidadMedidaBl;
+    }
+
+    public PedidoSeguimiento getPedidoSeguimiento() {
+        return pedidoSeguimiento;
+    }
+
+    public void setPedidoSeguimiento(PedidoSeguimiento pedidoSeguimiento) {
+        this.pedidoSeguimiento = pedidoSeguimiento;
+    }
+
+    public PedidoSeguimientoBl getPedidoSeguimientoBl() {
+        return pedidoSeguimientoBl;
+    }
+
+    public void setPedidoSeguimientoBl(PedidoSeguimientoBl pedidoSeguimientoBl) {
+        this.pedidoSeguimientoBl = pedidoSeguimientoBl;
+    }
+
+    public PedidoEstadoBl getPedidoEstadoBl() {
+        return pedidoEstadoBl;
+    }
+
+    public void setPedidoEstadoBl(PedidoEstadoBl pedidoEstadoBl) {
+        this.pedidoEstadoBl = pedidoEstadoBl;
     }
 
 }

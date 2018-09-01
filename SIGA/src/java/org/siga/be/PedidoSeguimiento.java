@@ -14,16 +14,17 @@ public class PedidoSeguimiento  implements java.io.Serializable {
 
      private long idpedidoseguimiento;
      private Pedido pedido;
+     private PedidoEstados estado;
      private Date fecha;
      private String hora;
      private String observacion;
      private int numero;
-     private String estado;
      private long idUser;
 
     public PedidoSeguimiento() {
         this.idpedidoseguimiento = 0;
         this.pedido = new Pedido();
+        this.estado = new PedidoEstados();
     }
 
 	
@@ -73,20 +74,20 @@ public class PedidoSeguimiento  implements java.io.Serializable {
         this.numero = numero;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public long getIdUser() {
         return idUser;
     }
 
     public void setIdUser(long idUser) {
         this.idUser = idUser;
+    }
+
+    public PedidoEstados getEstado() {
+        return estado;
+    }
+
+    public void setEstado(PedidoEstados estado) {
+        this.estado = estado;
     }
     
 

@@ -18,6 +18,7 @@ import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
 import org.siga.be.PedidoSeguimiento;
 import org.siga.be.Producto;
+import org.siga.be.UnidadMedida;
 import org.siga.be.Usuario;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.PedidoBl;
@@ -25,6 +26,7 @@ import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PedidoEstadoBl;
 import org.siga.bl.PedidoSeguimientoBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UnidadMedidaBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -57,6 +59,11 @@ public class PedidoBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+    
+    @ManagedProperty(value = "#{unidadMedida}")
+    private UnidadMedida unidadMedida;
+    @ManagedProperty(value = "#{unidadMedidaBl}")
+    private UnidadMedidaBl unidadMedidaBl;
 
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
     private List<Pedido> listPedido = new LinkedList<>();
@@ -95,11 +102,12 @@ public class PedidoBean {
         System.out.println("cantidad " + temp.getCantidadSolicitada());
 //        temp.setCantidadSurtida(pedidoDetalle.getCantidadSurtida());
 //        temp.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
-        if (pedidoxUnidad) {
-            temp.setUnidadMedida("UNIDAD");
-        } else {
-            temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        }
+        //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
+        equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
+        //buscar la unidad de medida que corresponde a dicha equivalencia
+        unidadMedida = unidadMedidaBl.buscar(equivalencia.getUnidadEquivalente().getIdunidadmedida());
+        //
+        temp.setUnidadMedida(unidadMedida.getDescripcion());
         listPedidoDetalle.add(temp);
 
     }
@@ -134,13 +142,13 @@ public class PedidoBean {
         pedido.setObservacion(pedido.getObservacion().toUpperCase().trim());
         pedido.setHoraPedido(Utilitarios.horaActual());
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        if(sesionUser.getAttribute("idUsuario") != null){
+        if (sesionUser.getAttribute("idUsuario") != null) {
             pedido.setIdUserreg(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
-        }else{
+        } else {
             pedido.setIdUserreg(0);
         }
-        
-        return pedidoBl.registrar(pedido);        
+
+        return pedidoBl.registrar(pedido);
     }
 
     private long registrarPedidoDetalle() {
@@ -287,10 +295,10 @@ public class PedidoBean {
 //            this.selectOneItemsPedido.add(selectItem);
 //        }
 //        return selectOneItemsPedido;
-        
+
         //Listar los seguimientos de pedido que se encuentren  en estado APROBADO
         listPedidoSeguimiento = new LinkedList<>();
-        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado("APROBADO");
+        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado(2);
         this.selectOneItemsPedido = new LinkedList<>();
         for (PedidoSeguimiento pedidoSeg : listPedidoSeguimiento) {
             pedido = pedidoBl.buscarXid(pedidoSeg.getPedido().getIdpedido());
@@ -299,8 +307,6 @@ public class PedidoBean {
         }
         return pedidosPorEstado;
     }
-    
-    
 
     public void setSelectOneItemsPedido(List<SelectItem> selectOneItemsPedido) {
         this.selectOneItemsPedido = selectOneItemsPedido;
@@ -360,15 +366,15 @@ public class PedidoBean {
 
     private void registrarPedidoSeguimiento(Pedido pedido) {
         pedidoSeguimiento.setPedido(pedido);
+        pedidoSeguimiento.setEstado(pedidoEstadoBl.buscar(1));
         pedidoSeguimiento.setFecha(new Date());
         pedidoSeguimiento.setHora(Utilitarios.horaActual());
         pedidoSeguimiento.setObservacion(pedido.getObservacion());
-        pedidoSeguimiento.setEstado("REGISTRADO");
         pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido()) + 1);
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        if(sesionUser.getAttribute("idUsuario") != null){
+        if (sesionUser.getAttribute("idUsuario") != null) {
             pedidoSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
-        }else{
+        } else {
             pedidoSeguimiento.setIdUser(0);
         }
 
@@ -378,7 +384,7 @@ public class PedidoBean {
     public List<SelectItem> getPedidosPorEstado() {
         //Listar los seguimientos de pedido que se encuentren  en estado APROBADO
         listPedidoSeguimiento = new LinkedList<>();
-        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado("APROBADO");
+        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado(2);
         selectOneItemsPedido = new LinkedList<>();
         for (PedidoSeguimiento pedidoSeg : listPedidoSeguimiento) {
             pedido = pedidoBl.buscarXid(pedidoSeg.getPedido().getIdpedido());
@@ -408,6 +414,22 @@ public class PedidoBean {
 
     public void setListPedidoSeguimiento(List<PedidoSeguimiento> listPedidoSeguimiento) {
         this.listPedidoSeguimiento = listPedidoSeguimiento;
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public UnidadMedidaBl getUnidadMedidaBl() {
+        return unidadMedidaBl;
+    }
+
+    public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
+        this.unidadMedidaBl = unidadMedidaBl;
     }
 
 }

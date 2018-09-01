@@ -40,7 +40,7 @@ public class PedidoEstadoBean {
         this.selectOneItemsPedidoEstado= new LinkedList<SelectItem>();
         for (PedidoEstados obj : pedidoEstadoBl.listar()) {
             this.setPedidoEstados(obj);
-            SelectItem selectItem = new SelectItem(obj.getDescripcion(), obj.getDescripcion());
+            SelectItem selectItem = new SelectItem(obj.getIdpedidoestados(), obj.getDescripcion());
             this.selectOneItemsPedidoEstado.add(selectItem);
         }
         return selectOneItemsPedidoEstado;

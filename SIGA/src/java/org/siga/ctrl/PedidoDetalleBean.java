@@ -108,7 +108,6 @@ public class PedidoDetalleBean {
     public void limpiar() {
         pedidoSeguimiento.setIdpedidoseguimiento(0);
         pedidoSeguimiento.setObservacion("");
-        pedidoSeguimiento.setEstado("");
     }
 
     public void onRowCancel(RowEditEvent event) {

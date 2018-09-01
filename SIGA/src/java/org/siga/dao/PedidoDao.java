@@ -84,14 +84,12 @@ public class PedidoDao extends AbstractDA<Pedido> {
     }
 
     public List<Pedido> listOrdenPedidoXEstado(String estado) {
-        System.out.println("primero");
-        String Hql = "from Pedido a where (from PedidoSeguimiento b left join fetch b.pedido)  a.pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b where a.estado = '"+estado+"'";
-        System.out.println("AQuiii");
+        String Hql = "from Pedido a where (from PedidoSeguimiento b left join fetch b.pedido)  a.pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b where a.estado = '"+estado+"'";        
         return listar(Hql);
     }
 
     public Pedido buscarXid(long idpedido) {
-        String Hql = "from Pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b where p.idpedido = '"+idpedido+"'";
+        String Hql = "from Pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b left join fetch d.almacen al where p.idpedido = '"+idpedido+"'";
         return buscar(Hql);
     }
 }

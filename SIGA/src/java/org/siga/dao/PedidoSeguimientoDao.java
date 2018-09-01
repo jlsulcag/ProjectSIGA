@@ -80,8 +80,8 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
         }
     }
 
-    public List<PedidoSeguimiento> listarxEstado(String aprobado) {
-        String hql = "from PedidoSeguimiento a where a.numero = (select max(b.numero) from PedidoSeguimiento b where b.pedido.idpedido = a.pedido.idpedido) and a.estado = '"+aprobado+"'";
+    public List<PedidoSeguimiento> listarxEstado(long idestado) {
+        String hql = "from PedidoSeguimiento a where a.numero = (select max(b.numero) from PedidoSeguimiento b where b.pedido.idpedido = a.pedido.idpedido) and a.estado.idpedidoestados = "+idestado;
         return listar(hql);
     }
     

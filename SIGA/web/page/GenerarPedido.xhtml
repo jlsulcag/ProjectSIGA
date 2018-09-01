@@ -111,11 +111,11 @@
                         <p:dialog header="Detalles" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
 
-                            <h:panelGrid columns="4" cellpadding="1">                            
+                            <h:panelGrid columns="2" cellpadding="1">                            
 
                                 <h:outputLabel for="cbxProducto" value="Producto :"/>
                                 <p:selectOneMenu id="cbxProducto" value="#{pedidoBean.pedidoDetalle.producto.idproducto}" 
-                                                 filter="true" filterMatchMode="contains" >
+                                                 filter="true" filterMatchMode="contains" style="width: 300px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
                                     <p:ajax listener="#{pedidoBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
@@ -127,8 +127,8 @@
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
-                                <p:selectOneMenu id="txfUnidadIngreso" value="#{pedidoBean.pedidoDetalle.unidadMedida}" 
-                                                 filter="true" filterMatchMode="contains" >
+                                <p:selectOneMenu id="txfUnidadIngreso" value="#{pedidoBean.equivalencia.idequivalencia}" 
+                                                 filter="true" filterMatchMode="contains" style="width: 118px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{pedidoBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>
