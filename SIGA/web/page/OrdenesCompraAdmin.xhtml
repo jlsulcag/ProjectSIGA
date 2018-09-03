@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Administrar Orden de Compra">
+                    
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
+                                     paginator="true" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20">
+                            <f:facet name="header">Ordenes de Compra</f:facet>
+
+                            <p:column headerText="Número" style="width: 50px">
+                                <h:outputText value="#{item.numero}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha" style="width: 60px">
+                                <h:outputText value="#{item.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Proveedor">
+                                <h:outputText value="#{item.proveedor.razonSocial}"/>
+                            </p:column>
+
+                            <p:column headerText="Entrega" style="width: 60px">
+                                <h:outputText value="#{item.fechaEntrega}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Estado" style="width: 80px">
+                                <h:outputText value=""/>
+                            </p:column>
+                            
+                        </p:dataTable>
+                    </h:form>
+                    
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

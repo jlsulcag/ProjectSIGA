@@ -32,4 +32,6 @@
     <table-filter match-name="tipo_doc_identidad"/>
     <table-filter match-name="nota_entrada_detalle"/>
     <table-filter match-name="pedido_seguimiento"/>
+    <table-filter match-name="orden_compra_estados"/>
+    <table-filter match-name="orden_compra_seguimiento"/>
 </hibernate-reverse-engineering>

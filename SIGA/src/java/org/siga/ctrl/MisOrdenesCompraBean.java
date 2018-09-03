@@ -17,11 +17,13 @@ import javax.servlet.http.HttpSession;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.ProveedorBl;
 import org.siga.util.MensajeView;
@@ -50,10 +52,14 @@ public class MisOrdenesCompraBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+    
+    @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
+    private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
 
     private List<SelectItem> selectOneItemsOrdenCompra;
     private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
+    private List<OrdenCompraSeguimiento> listOrdenCompraSeguimiento;
     private long res;
     private boolean compraxUnidad;
     private double totalProductos;
@@ -180,7 +186,6 @@ public class MisOrdenesCompraBean {
         //ordenCompra.setProveedor(proveedorBl.buscarXNombre(proveedor.getRazonSocial()));
         //ordenCompra.setIdProveedor((int) proveedor.getIdproveedor());
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
-        ordenCompra.setEstado("APROBADO");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
         ordenCompra.setValorBruto(BigDecimal.ZERO);
         ordenCompra.setMontoDesc(BigDecimal.ZERO);
@@ -310,9 +315,11 @@ public class MisOrdenesCompraBean {
     }
 
     public List<SelectItem> getSelectOneItemsOrdenCompra() {
-        this.selectOneItemsOrdenCompra = new LinkedList<SelectItem>();
-        for (OrdenCompra obj : listOrdenCompraXEstado("APROBADO")) {
-            this.setOrdenCompra(obj);
+        listOrdenCompraSeguimiento= new LinkedList<>();
+        listOrdenCompraSeguimiento = ordenCompraSeguimientoBl.listarxEstado(2);
+        selectOneItemsOrdenCompra = new LinkedList<>();
+        for (OrdenCompraSeguimiento obj : listOrdenCompraSeguimiento) {
+            ordenCompra = ordenCompraBl.buscarXId(obj.getOrdenCompra().getIdordencompra());
             SelectItem selectItem = new SelectItem(ordenCompra.getIdordencompra(), ordenCompra.getNumero() + "");
             this.selectOneItemsOrdenCompra.add(selectItem);
         }
@@ -435,6 +442,22 @@ public class MisOrdenesCompraBean {
 
     public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
         this.equivalenciaBl = equivalenciaBl;
+    }
+
+    public List<OrdenCompraSeguimiento> getListOrdenCompraSeguimiento() {
+        return listOrdenCompraSeguimiento;
+    }
+
+    public void setListOrdenCompraSeguimiento(List<OrdenCompraSeguimiento> listOrdenCompraSeguimiento) {
+        this.listOrdenCompraSeguimiento = listOrdenCompraSeguimiento;
+    }
+
+    public OrdenCompraSeguimientoBl getOrdenCompraSeguimientoBl() {
+        return ordenCompraSeguimientoBl;
+    }
+
+    public void setOrdenCompraSeguimientoBl(OrdenCompraSeguimientoBl ordenCompraSeguimientoBl) {
+        this.ordenCompraSeguimientoBl = ordenCompraSeguimientoBl;
     }
 
 }

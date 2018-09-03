@@ -144,7 +144,6 @@ public class NotaIngresoBean {
         notaEntrada.setNroDocref("");
         notaEntrada.setObservacion("");
         notaEntrada.setTipoIngreso("");
-        ordenCompra.setEstado("");
         notaEntrada.setProveedor(new Proveedor());
         notaEntrada.setAlmacenDestino(new Almacen());
         listNotaEntradaDetalle.clear();
@@ -375,7 +374,7 @@ public class NotaIngresoBean {
 //            temp.setFechaEntrega(notaEntrada.getOrdenCompra().getFechaEntrega());
 //            temp.setLugarEntrega(notaEntrada.getOrdenCompra().getLugarEntrega());
 //            temp.setObservacion(notaEntrada.getOrdenCompra().getObservacion());            
-            temp.setEstado(ordenCompra.getEstado());
+//            temp.setEstado(ordenCompra.getEstado());
 //            temp.setHoraRegistro(notaEntrada.getOrdenCompra().getHoraRegistro());
 //            temp.setFechaRecepcion(new Date());
 //            temp.setIdAlmacenDestino(0);

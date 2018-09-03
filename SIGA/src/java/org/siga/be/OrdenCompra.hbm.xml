@@ -29,11 +29,6 @@
         <property name="observacion" type="string">
             <column name="observacion" length="240" not-null="true" />
         </property>
-        <property name="estado" type="string">
-            <column name="estado" length="30" not-null="true">
-                <comment>APROBADO NO APROBADO ANULADO</comment>
-            </column>
-        </property>
         <property name="horaRegistro" type="string">
             <column name="hora_registro" length="30" not-null="true" />
         </property>

@@ -17,12 +17,15 @@ import org.siga.be.Almacen;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.UnidadMedida;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.bl.OrdenCompraEstadosBl;
+import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
@@ -47,6 +50,14 @@ public class OrdenCompraBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+    
+    @ManagedProperty(value = "#{ordenCompraSeguimiento}")
+    private OrdenCompraSeguimiento ordenCompraSeguimiento;
+    @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
+    private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
+    
+    @ManagedProperty(value = "#{ordenCompraEstadosBl}")
+    private OrdenCompraEstadosBl ordenCompraEstadosBl;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private long res = -1;
@@ -92,7 +103,7 @@ public class OrdenCompraBean {
 
     public void agregar() {
         OrdenCompraDetalle temp = new OrdenCompraDetalle();
-        
+
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setObservacion("");
@@ -116,17 +127,20 @@ public class OrdenCompraBean {
     }
 
     public void registrar() {
+        long res3 = -1;
         if (!listOrdenCompraDetalles.isEmpty()) {
             res = registrarOrdenCompra();
-            for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
-                obj.setOrdenCompra(ordenCompra);
-                res2 = ordenCompraDetalleBl.registrar(obj);
-            }
-            if (res2 == 0) {
-                MensajeView.registroCorrecto();
-                inicio();
-            } else {
-                MensajeView.registroError();
+            if (res == 0) {
+                res2 = registrarOrdenCompraDetalle();
+                if (res2 == 0) {
+                    res3 = registrarOrdenCompraSeguimiento(ordenCompra);
+                    if (res3 == 0) {
+                        MensajeView.registroCorrecto();
+                        inicio();
+                    } else {
+                        MensajeView.registroError();
+                    }
+                }
             }
         } else {
             MensajeView.listVacia();
@@ -137,7 +151,6 @@ public class OrdenCompraBean {
     public long registrarOrdenCompra() {
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
         ordenCompra.setDocReferencia(ordenCompra.getObservacion().toUpperCase());
-        ordenCompra.setEstado("REGISTRADO");
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
         ordenCompra.setValorBruto(valorBruto);
         ordenCompra.setMontoDesc(totalDescuento);
@@ -214,24 +227,24 @@ public class OrdenCompraBean {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
         //equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
     }
-    
+
     /*
-    public void setIsCompraUnitaria() {
-        setCompraxUnidad(compraxUnidad);
-        if (ordenCompraDetalle.getCantidad() > 0) {
-            calcularTotalProductos();
-        }
-    }
+     public void setIsCompraUnitaria() {
+     setCompraxUnidad(compraxUnidad);
+     if (ordenCompraDetalle.getCantidad() > 0) {
+     calcularTotalProductos();
+     }
+     }
     
     
-    public void calcularTotalProductos() {
-        if (compraxUnidad) {
-            setTotalProductos(ordenCompraDetalle.getCantidad());
-        } else {
-            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-        }
-    }
-    */
+     public void calcularTotalProductos() {
+     if (compraxUnidad) {
+     setTotalProductos(ordenCompraDetalle.getCantidad());
+     } else {
+     setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
+     }
+     }
+     */
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }
@@ -409,6 +422,55 @@ public class OrdenCompraBean {
 
     public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
         this.equivalenciaBl = equivalenciaBl;
+    }
+
+    private long registrarOrdenCompraDetalle() {
+        long id = -1;
+        for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
+            obj.setOrdenCompra(ordenCompra);
+            id = ordenCompraDetalleBl.registrar(obj);
+        }
+        return id;
+    }
+
+    private long registrarOrdenCompraSeguimiento(OrdenCompra ordenCompra) {
+        ordenCompraSeguimiento.setOrdenCompra(ordenCompra);
+        ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(1));
+        ordenCompraSeguimiento.setFecha(new Date());
+        ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
+        ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra())+1);
+        ordenCompraSeguimiento.setObservacion("");
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if (sesionUser.getAttribute("idUsuario") != null) {
+            ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+        } else {
+            ordenCompraSeguimiento.setIdUser(0);
+        }
+        return ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);        
+    }
+
+    public OrdenCompraSeguimiento getOrdenCompraSeguimiento() {
+        return ordenCompraSeguimiento;
+    }
+
+    public void setOrdenCompraSeguimiento(OrdenCompraSeguimiento ordenCompraSeguimiento) {
+        this.ordenCompraSeguimiento = ordenCompraSeguimiento;
+    }
+
+    public OrdenCompraSeguimientoBl getOrdenCompraSeguimientoBl() {
+        return ordenCompraSeguimientoBl;
+    }
+
+    public void setOrdenCompraSeguimientoBl(OrdenCompraSeguimientoBl ordenCompraSeguimientoBl) {
+        this.ordenCompraSeguimientoBl = ordenCompraSeguimientoBl;
+    }
+
+    public OrdenCompraEstadosBl getOrdenCompraEstadosBl() {
+        return ordenCompraEstadosBl;
+    }
+
+    public void setOrdenCompraEstadosBl(OrdenCompraEstadosBl ordenCompraEstadosBl) {
+        this.ordenCompraEstadosBl = ordenCompraEstadosBl;
     }
 
 }

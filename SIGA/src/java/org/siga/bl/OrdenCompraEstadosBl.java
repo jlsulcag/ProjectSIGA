@@ -1,10 +1,31 @@
 
-package org.siga.dao;
+package org.siga.bl;
 
 import java.util.List;
+import org.siga.be.OrdenCompraEstados;
+import org.siga.dao.OrdenCompraEstadosDao;
+import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-public class OrdenCompraEstados extends AbstractDA<OrdenCompraEstados>{
+@Service("ordenCompraEstadosBl")
+public class OrdenCompraEstadosBl extends AbstractBL<OrdenCompraEstados>{
+
+    @Autowired
+    @Qualifier("ordenCompraEstadosDao")
+    private OrdenCompraEstadosDao dao;
+    
+    @Override
+    public AbstractDA getDAO() {
+        return dao;
+    }
+
+    @Override
+    public void setDA(AbstractDA dao) {
+        this.dao = (OrdenCompraEstadosDao) dao;
+    }
 
     @Override
     public long registrar(OrdenCompraEstados bean) {
@@ -23,7 +44,7 @@ public class OrdenCompraEstados extends AbstractDA<OrdenCompraEstados>{
 
     @Override
     public List<OrdenCompraEstados> listar() {
-        return list(OrdenCompraEstados.class);
+        return list();
     }
 
     @Override
@@ -33,12 +54,12 @@ public class OrdenCompraEstados extends AbstractDA<OrdenCompraEstados>{
 
     @Override
     public List<OrdenCompraEstados> listar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(id);
     }
 
     @Override
     public OrdenCompraEstados buscar(long id) {
-        return search(OrdenCompraEstados.class, id);
+        return search(id);
     }
 
     @Override
@@ -48,7 +69,7 @@ public class OrdenCompraEstados extends AbstractDA<OrdenCompraEstados>{
 
     @Override
     public long id() {
-        return maxId(OrdenCompraEstados.class);
+        return maxId();
     }
     
 }

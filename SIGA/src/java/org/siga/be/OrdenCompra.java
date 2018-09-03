@@ -21,7 +21,6 @@ public class OrdenCompra  implements java.io.Serializable {
      private Date fechaEntrega;
      private String lugarEntrega;
      private String observacion;
-     private String estado;
      private String horaRegistro;
      private Proveedor proveedor;
      private Date fechaRecepcion;
@@ -90,13 +89,6 @@ public class OrdenCompra  implements java.io.Serializable {
     
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-    public String getEstado() {
-        return this.estado;
-    }
-    
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
     public Set<OrdenCompraDetalle> getOrdenCompraDetalles() {
         return this.ordenCompraDetalles;

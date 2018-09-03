@@ -23,9 +23,6 @@
         <property name="numero" type="int">
             <column name="numero" not-null="true" />
         </property>
-        <property name="estado" type="string">
-            <column name="estado" length="10" not-null="true" />
-        </property>
         <property name="idUser" type="long">
             <column name="id_user" not-null="true" />
         </property>
