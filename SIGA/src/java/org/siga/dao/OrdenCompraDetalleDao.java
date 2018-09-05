@@ -63,5 +63,7 @@ public class OrdenCompraDetalleDao extends AbstractDA<OrdenCompraDetalle>{
         String hql = "from OrdenCompraDetalle a left join fetch a.ordenCompra b left join fetch a.producto c where b.idordencompra = "+id;
         return listar(hql);
     }
+
+    
     
 }

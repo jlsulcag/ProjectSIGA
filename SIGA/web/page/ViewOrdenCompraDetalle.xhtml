@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Orden Compra Detalle">
+
+
+                    <h:form id="formDataTable">
+                        <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
+                                     paginator="false" rows="10" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20" editable="true">
+                            <f:facet name="header">Productos</f:facet>
+
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.idordencompradetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad" style="text-align:center">
+                                <h:outputText value="#{item.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Unidad Medida">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+
+                            <p:column headerText="V/Compra" style="text-align:right">
+                                <h:outputText value="#{item.valorCompra}"/>
+                            </p:column>
+
+                            <p:column headerText="Descuento" style="text-align:right">
+                                <h:outputText value="#{item.montoDescitem}"/>
+                            </p:column>
+
+                            <p:column headerText="Sub Total" style="text-align:right">
+                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                            </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Total :" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" style="text-align:right"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>                        
+
+                    </h:form> 
+                    <h:form id="formTool2" style="padding-top: 5px">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Autorizar" icon="ui-icon-document" 
+                                                 actionListener="#{ordenCompraDetalleBean.autorizarOrdenCompra()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                </p:panel>
+                
+                
+                
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

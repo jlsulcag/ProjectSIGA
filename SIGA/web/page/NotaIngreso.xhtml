@@ -59,9 +59,9 @@
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneRadio id="rbtnEstado" value="" label="Estado" required="true">
-                                        <f:selectItem itemLabel="PARCIAL" itemValue="APROBADO" />
-                                        <f:selectItem itemLabel="TOTAL" itemValue="CERRADO" />
+                                    <p:selectOneRadio id="rbtnEstado" value="#{notaIngresoBean.ordenCompraSeguimiento.ordenCompraEstados.idordencompraestados}" label="Estado" required="true">
+                                        <f:selectItem itemLabel="PARCIAL" itemValue="4" />
+                                        <f:selectItem itemLabel="TOTAL" itemValue="5" />
                                     </p:selectOneRadio>
                                 </div>
                                 

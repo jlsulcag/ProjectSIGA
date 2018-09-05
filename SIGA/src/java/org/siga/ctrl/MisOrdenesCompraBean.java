@@ -8,12 +8,14 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.SelectEvent;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
@@ -60,6 +62,7 @@ public class MisOrdenesCompraBean {
     private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private List<OrdenCompraSeguimiento> listOrdenCompraSeguimiento;
+    private List<OrdenCompraDetalle> listOrdenCompraDetalle;
     private long res;
     private boolean compraxUnidad;
     private double totalProductos;
@@ -70,6 +73,7 @@ public class MisOrdenesCompraBean {
     private BigDecimal totalDescuento;
     private BigDecimal valorNeto;
     private BigDecimal montoIgv;
+    private OrdenCompra selectedOrdenCompra;
 
     public MisOrdenesCompraBean() {
     }
@@ -235,7 +239,7 @@ public class MisOrdenesCompraBean {
     public String redirigir() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
-        return "RegistrarOrdenCompraDetalle";
+        return "ViewOrdenCompraDetalle";
     }
 
     public List<Proveedor> listProveedoresRef(String ref) {
@@ -244,6 +248,13 @@ public class MisOrdenesCompraBean {
 
     public List<Producto> listProductosRef(String ref) {
         return getProductoBl().listarRef(ref.toUpperCase());
+    }
+    
+     public void onRowSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Selected", ((OrdenCompra)event.getObject()).getIdordencompra()+"");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        setListOrdenCompraDetalle(ordenCompraDetalleBl.listarXIdOrdenCompra(((OrdenCompra) event.getObject()).getIdordencompra()));
+         System.out.println("tamaño del detalle ..... "+listOrdenCompraDetalle.size());
     }
 
     public Producto getProducto() {
@@ -316,7 +327,7 @@ public class MisOrdenesCompraBean {
 
     public List<SelectItem> getSelectOneItemsOrdenCompra() {
         listOrdenCompraSeguimiento= new LinkedList<>();
-        listOrdenCompraSeguimiento = ordenCompraSeguimientoBl.listarxEstado(2);
+        listOrdenCompraSeguimiento = ordenCompraSeguimientoBl.listarxEstado(2,4);
         selectOneItemsOrdenCompra = new LinkedList<>();
         for (OrdenCompraSeguimiento obj : listOrdenCompraSeguimiento) {
             ordenCompra = ordenCompraBl.buscarXId(obj.getOrdenCompra().getIdordencompra());
@@ -458,6 +469,22 @@ public class MisOrdenesCompraBean {
 
     public void setOrdenCompraSeguimientoBl(OrdenCompraSeguimientoBl ordenCompraSeguimientoBl) {
         this.ordenCompraSeguimientoBl = ordenCompraSeguimientoBl;
+    }
+
+    public List<OrdenCompraDetalle> getListOrdenCompraDetalle() {
+        return listOrdenCompraDetalle;
+    }
+
+    public void setListOrdenCompraDetalle(List<OrdenCompraDetalle> listOrdenCompraDetalle) {
+        this.listOrdenCompraDetalle = listOrdenCompraDetalle;
+    }
+
+    public OrdenCompra getSelectedOrdenCompra() {
+        return selectedOrdenCompra;
+    }
+
+    public void setSelectedOrdenCompra(OrdenCompra selectedOrdenCompra) {
+        this.selectedOrdenCompra = selectedOrdenCompra;
     }
 
 }

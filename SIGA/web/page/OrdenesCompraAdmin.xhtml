@@ -11,15 +11,20 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
+
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Orden de Compra">
-                    
+
                     <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
-                                     paginator="true" rows="10" paginatorPosition="bottom"
+
+                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item" selectionMode="single" selection="#{misOrdenesCompraBean.selectedOrdenCompra}" rowKey="#{item.idordencompra}"
+                                     paginator="true" rows="10" paginatorPosition="bottom" 
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Ordenes de Compra</f:facet>
+
+                            <p:ajax event="rowSelect" listener="#{misOrdenesCompraBean.onRowSelect}" update="msg" />
+                            <p:ajax event="rowUnselect"/>
 
                             <p:column headerText="Número" style="width: 50px">
                                 <h:outputText value="#{item.numero}"/>
@@ -40,14 +45,48 @@
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
                             </p:column>
-                            
+
                             <p:column headerText="Estado" style="width: 80px">
                                 <h:outputText value=""/>
                             </p:column>
-                            
+
+                            <p:column style="width:30px;text-align: center">
+                                <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                </p:commandButton>                           
+                            </p:column>
+
+                        </p:dataTable>
+
+
+
+                    </h:form>
+
+                    <h:form id="formDataTableDetalle" style="margin-top: 20px">
+                        <p:dataTable id="dtPedidos" value="#{misOrdenesCompraBean.listOrdenCompraDetalle}" var="item" editable="true" editMode="cell" widgetVar="cellPedidos"
+                                     selectionMode="single">
+
+                            <f:facet name="header">Productos</f:facet>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{item.cantidad}"/>
+                            </p:column>
+
+                            <p:column headerText="Valor">
+                                <h:outputText value="#{item.valorCompra}"/>
+                            </p:column>
+
+                            <p:column headerText="UM">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+
                         </p:dataTable>
                     </h:form>
-                    
+
                 </p:panel>
             </ui:define>
 

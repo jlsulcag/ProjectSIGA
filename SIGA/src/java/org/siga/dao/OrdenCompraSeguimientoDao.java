@@ -84,5 +84,10 @@ public class OrdenCompraSeguimientoDao extends AbstractDA<OrdenCompraSeguimiento
         String hql = "from OrdenCompraSeguimiento a where a.numero = (select max(b.numero) from OrdenCompraSeguimiento b where b.ordenCompra.idordencompra = a.ordenCompra.idordencompra) and a.ordenCompraEstados.idordencompraestados = "+idestado;
         return listar(hql);
     }
+
+    public List<OrdenCompraSeguimiento> listarxEstado(long idestado1, long idestado2) {
+        String hql = "from OrdenCompraSeguimiento a where a.numero = (select max(b.numero) from OrdenCompraSeguimiento b where b.ordenCompra.idordencompra = a.ordenCompra.idordencompra) and a.ordenCompraEstados.idordencompraestados in ("+idestado1+", "+idestado2+")";
+        return listar(hql);
+    }
     
 }

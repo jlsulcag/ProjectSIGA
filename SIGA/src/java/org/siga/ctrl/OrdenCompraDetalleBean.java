@@ -3,6 +3,7 @@ package org.siga.ctrl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -13,11 +14,16 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.OrdenCompraEstados;
+import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.bl.OrdenCompraEstadosBl;
+import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.util.MensajeView;
+import org.siga.util.Utilitarios;
 
 @ManagedBean
 @ViewScoped
@@ -31,10 +37,21 @@ public class OrdenCompraDetalleBean {
     private Producto producto;
     @ManagedProperty(value = "#{productoBl}")
     private ProductoBl productoBl;
+
+    @ManagedProperty(value = "#{ordenCompra}")
+    private OrdenCompra ordenCompra;
     @ManagedProperty(value = "#{ordenCompraBl}")
     private OrdenCompraBl ordenCompraBl;
 
-    private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();    
+    @ManagedProperty(value = "#{ordenCompraSeguimiento}")
+    private OrdenCompraSeguimiento ordenCompraSeguimiento;
+    @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
+    private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
+
+    @ManagedProperty(value = "#{ordenCompraEstadosBl}")
+    private OrdenCompraEstadosBl ordenCompraEstadosBl;
+
+    private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private long res;
     private boolean compraxUnidad;
     private int totalProductos;
@@ -98,38 +115,39 @@ public class OrdenCompraDetalleBean {
                 ocTemp.setValorNeto(valorNeto);
                 ocTemp.setMontoIgv(montoIgv);
                 ocTemp.setMontoTotal(totalTemp);
-                System.out.println("id orden compra a a actualizar "+ocTemp.getIdordencompra());
+                System.out.println("id orden compra a a actualizar " + ocTemp.getIdordencompra());
                 ordenCompraBl.actualizar(ocTemp);
             }
         }
-        //
-                /*
-         ordenCompraDetalle.setLote(ordenCompraDetalle.getLote().toUpperCase());
-         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-         if(httpSession.getAttribute("idOrdenCompra") != null){
-         ordenCompraDetalle.setOrdenCompra(ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
-         }
-         //validar  unidad d adquisicion
-         //realizar los calculos con el valor de compra
-         ordenCompraDetalle.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
-         //ordenCompraDetalle.setCantidad(producto.getFraccion()*ordenCompraDetalle.getCantidad());
-         if(compraxUnidad){
-         ordenCompraDetalle.setUnidadMedida("UNIDAD");
-         }else{
-         ordenCompraDetalle.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-         }
-         double du;
-         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
-         ordenCompraDetalle.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
-         res = ordenCompraDetalleBl.registrar(ordenCompraDetalle);
-        
-         if (res == 0) {
-         MensajeView.registroCorrecto();
-         } else {
-         MensajeView.registroError();
-         }        
-         listar();
-         */
+
+    }
+
+    public void autorizarOrdenCompra() {
+        long res = -1;
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if (httpSession.getAttribute("idOrdenCompra") != null) {
+            ordenCompra = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
+            if (ordenCompra != null) {
+                ordenCompraSeguimiento.setOrdenCompra(ordenCompra);
+                ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(2));
+                ordenCompraSeguimiento.setFecha(new Date());
+                ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
+                ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
+                HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                if (sesionUser.getAttribute("idUsuario") != null) {
+                    ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+                } else {
+                    ordenCompraSeguimiento.setIdUser(0);
+                }
+                ordenCompraSeguimiento.setObservacion("");
+                
+                res = ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
+                
+                if(res == 0){
+                    MensajeView.registroCorrecto();
+                }
+            }
+        }
     }
 
     public void limpiar() {
@@ -195,21 +213,22 @@ public class OrdenCompraDetalleBean {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
     }
     /*
-    public void setIsCompraUnitaria() {
-        setCompraxUnidad(compraxUnidad);
-        if (ordenCompraDetalle.getCantidad() > 0) {
-            calcularTotalProductos();
-        }
-    }
+     public void setIsCompraUnitaria() {
+     setCompraxUnidad(compraxUnidad);
+     if (ordenCompraDetalle.getCantidad() > 0) {
+     calcularTotalProductos();
+     }
+     }
 
-    public void calcularTotalProductos() {
-        if (compraxUnidad) {
-            setTotalProductos(ordenCompraDetalle.getCantidad());
-        } else {
-            setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-        }
-    }
-    */
+     public void calcularTotalProductos() {
+     if (compraxUnidad) {
+     setTotalProductos(ordenCompraDetalle.getCantidad());
+     } else {
+     setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
+     }
+     }
+     */
+
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }
@@ -364,6 +383,38 @@ public class OrdenCompraDetalleBean {
 
     public void setMontoIgv(BigDecimal montoIgv) {
         this.montoIgv = montoIgv;
+    }
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
+    }
+
+    public OrdenCompraSeguimiento getOrdenCompraSeguimiento() {
+        return ordenCompraSeguimiento;
+    }
+
+    public void setOrdenCompraSeguimiento(OrdenCompraSeguimiento ordenCompraSeguimiento) {
+        this.ordenCompraSeguimiento = ordenCompraSeguimiento;
+    }
+
+    public OrdenCompraSeguimientoBl getOrdenCompraSeguimientoBl() {
+        return ordenCompraSeguimientoBl;
+    }
+
+    public void setOrdenCompraSeguimientoBl(OrdenCompraSeguimientoBl ordenCompraSeguimientoBl) {
+        this.ordenCompraSeguimientoBl = ordenCompraSeguimientoBl;
+    }
+
+    public OrdenCompraEstadosBl getOrdenCompraEstadosBl() {
+        return ordenCompraEstadosBl;
+    }
+
+    public void setOrdenCompraEstadosBl(OrdenCompraEstadosBl ordenCompraEstadosBl) {
+        this.ordenCompraEstadosBl = ordenCompraEstadosBl;
     }
 
 }
