@@ -210,8 +210,11 @@ public class MisOrdenesCompraBean {
         temp = buscarId();
         temp.setFecha(ordenCompra.getFecha());
         temp.setProveedor(ordenCompra.getProveedor());
+        temp.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
+        temp.setAlmacenDestino(ordenCompra.getAlmacenDestino());
+        temp. setFormaPago(ordenCompra.getFormaPago().toUpperCase());
         temp.setFechaEntrega(ordenCompra.getFechaEntrega());
-        temp.setLugarEntrega(ordenCompra.getLugarEntrega().toUpperCase());
+        temp.setDocReferencia(ordenCompra.getDocReferencia().toUpperCase());
         temp.setObservacion(ordenCompra.getObservacion().toUpperCase());
         res = ordenCompraBl.actualizar(temp);
         if (res == 0) {
@@ -240,6 +243,12 @@ public class MisOrdenesCompraBean {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
         return "ViewOrdenCompraDetalle";
+    }
+    
+    public String redirigirOrdenCompraDetalles() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
+        return "RegistrarOrdenCompraDetalle";
     }
 
     public List<Proveedor> listProveedoresRef(String ref) {

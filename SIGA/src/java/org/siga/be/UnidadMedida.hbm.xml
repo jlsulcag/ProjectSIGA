@@ -14,9 +14,6 @@
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
-        <property name="fraccion" type="int">
-            <column name="fraccion" />
-        </property>
         <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_unidadmedida" not-null="true" />

@@ -101,7 +101,7 @@ public class UnidadMedidaBean {
         equivalencia.setUnidadEquivalente(unidadMedida);
         equivalencia.setInterpretacion("");
         equivalencia.setEstado(Boolean.TRUE);
-        equivalencia.setFactor(unidadMedida.getFraccion());//
+        //El factor  viene ingrerso desde pantalla por EL
         return equivalenciaBl.registrar(equivalencia);
     }
 

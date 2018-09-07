@@ -34,22 +34,7 @@
                                     </p:calendar>
                                 </div>
                                 
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfSolicitante" value="Solicitante :" />
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfSolicitante" label="Solicitante" 
-                                                 value="#{ordenCompraBean.ordenCompra.solicitante}" />
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="txfFormaPago" value="Forma de Pago :" />
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:inputText id="txfFormaPago" label="Forma de Pago" 
-                                                 value="#{ordenCompraBean.ordenCompra.formaPago}" />
-                                </div>
-
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -59,6 +44,35 @@
                                         <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                     </p:selectOneMenu>
                                 </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfSolicitante" value="Solicitante :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfSolicitante" label="Solicitante" 
+                                                 value="#{ordenCompraBean.ordenCompra.solicitante}" />
+                                </div>
+                                
+                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxAlmacen" value="Almacen Destino :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxAlmacen" value="#{ordenCompraBean.ordenCompra.almacenDestino.idalmacen}" 
+                                                     filter="true" filterMatchMode="contains" required="true" label="Almacen destino">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfFormaPago" value="Forma de Pago :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfFormaPago" label="Forma de Pago" 
+                                                 value="#{ordenCompraBean.ordenCompra.formaPago}" />
+                                </div>
+
+                               
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfFechaEntrega" value="Fecha Entrega :"/>
@@ -70,16 +84,7 @@
                                     </p:calendar>
                                 </div>
 
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <h:outputLabel for="cbxAlmacen" value="Almacen Destino :"/>
-                                </div>
-                                <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:selectOneMenu id="cbxAlmacen" value="#{ordenCompraBean.ordenCompra.almacenDestino.idalmacen}" 
-                                                     filter="true" filterMatchMode="contains" required="true" label="Almacen destino">
-                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
-                                        <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
-                                    </p:selectOneMenu>
-                                </div>
+                               
                                
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDocRef" value="Doc de referencia :" />
@@ -186,12 +191,19 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfUnidad"/>
+                                    <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
                                 <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
                                     <f:selectItem itemLabel="#{ordenCompraBean.producto.unidadMedida.descripcion}"/>
+                                </p:selectOneMenu>
+                                
+                                <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
+                                <p:selectOneMenu id="txfUnidadIngreso" value="#{ordenCompraBean.equivalencia.idequivalencia}" 
+                                                 filter="true" filterMatchMode="contains" style="width: 118px">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{ordenCompraBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>

@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import org.siga.be.Almacen;
 import org.siga.be.Equivalencia;
@@ -27,6 +28,7 @@ import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UnidadMedidaBl;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -58,8 +60,15 @@ public class OrdenCompraBean {
     
     @ManagedProperty(value = "#{ordenCompraEstadosBl}")
     private OrdenCompraEstadosBl ordenCompraEstadosBl;
+    
+    @ManagedProperty(value = "#{unidadMedida}")
+    private UnidadMedida unidadMedida;
+    @ManagedProperty(value = "#{unidadMedidaBl}")
+    private UnidadMedidaBl unidadMedidaBl;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
+    private List<SelectItem> selectOneItemsEquivalencia;
+    private List<Equivalencia> listEquivalencias;
     private long res = -1;
     private long res2 = -1;
     private boolean compraxUnidad;
@@ -106,6 +115,7 @@ public class OrdenCompraBean {
 
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
+        temp.setIdEquivalencia(equivalencia.getIdequivalencia());
         temp.setObservacion("");
         temp.setLote(ordenCompraDetalle.getLote().toUpperCase());
         temp.setFechaVencimiento(ordenCompraDetalle.getFechaVencimiento());
@@ -113,9 +123,12 @@ public class OrdenCompraBean {
         temp.setPrecioCompra(ordenCompraDetalle.getPrecioCompra());
         temp.setDesc1(ordenCompraDetalle.getDesc1());
         temp.setDesc2(ordenCompraDetalle.getDesc2());
-        temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        temp.setIdUnidadmedida(producto.getUnidadMedida().getIdunidadmedida());
-
+        //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
+        equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
+        //buscar la unidad de medida que corresponde a dicha equivalencia
+        unidadMedida = unidadMedidaBl.buscar(equivalencia.getUnidadEquivalente().getIdunidadmedida());
+        //
+        temp.setUnidadMedida(unidadMedida.getDescripcion());
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
         temp.setSubTotal((ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
         double du;
@@ -178,6 +191,26 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setDesc2(0);
         producto.setUnidadMedida(new UnidadMedida());
     }
+    
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        if (producto != null) {
+            for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+                this.setEquivalencia(obj);
+                SelectItem selectItem = new SelectItem(getEquivalencia().getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+                this.selectOneItemsEquivalencia.add(selectItem);
+            }
+            return selectOneItemsEquivalencia;
+        } else {
+            return null;
+        }
+
+    }
+    
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        setListEquivalencias(getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida));
+        return getListEquivalencias();
+    }
 
     public void listar() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -225,26 +258,8 @@ public class OrdenCompraBean {
 
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
-        //equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getUnidadMedida().getIdunidadmedida());
     }
-
-    /*
-     public void setIsCompraUnitaria() {
-     setCompraxUnidad(compraxUnidad);
-     if (ordenCompraDetalle.getCantidad() > 0) {
-     calcularTotalProductos();
-     }
-     }
-    
-    
-     public void calcularTotalProductos() {
-     if (compraxUnidad) {
-     setTotalProductos(ordenCompraDetalle.getCantidad());
-     } else {
-     setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-     }
-     }
-     */
+   
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }
@@ -471,6 +486,30 @@ public class OrdenCompraBean {
 
     public void setOrdenCompraEstadosBl(OrdenCompraEstadosBl ordenCompraEstadosBl) {
         this.ordenCompraEstadosBl = ordenCompraEstadosBl;
+    }
+
+    public List<Equivalencia> getListEquivalencias() {
+        return listEquivalencias;
+    }
+
+    public void setListEquivalencias(List<Equivalencia> listEquivalencias) {
+        this.listEquivalencias = listEquivalencias;
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public UnidadMedidaBl getUnidadMedidaBl() {
+        return unidadMedidaBl;
+    }
+
+    public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
+        this.unidadMedidaBl = unidadMedidaBl;
     }
 
 }

@@ -22,6 +22,7 @@ public class AlmacenProducto  implements java.io.Serializable {
      private BigDecimal valorCompraUnitario;
      private int ordenIngreso;
      private String unidad;
+     private long idEquivalencia;
      
 
     public AlmacenProducto() {
@@ -109,6 +110,14 @@ public class AlmacenProducto  implements java.io.Serializable {
 
     public void setUnidad(String unidad) {
         this.unidad = unidad;
+    }
+
+    public long getIdEquivalencia() {
+        return idEquivalencia;
+    }
+
+    public void setIdEquivalencia(long idEquivalencia) {
+        this.idEquivalencia = idEquivalencia;
     }
 
 

@@ -99,9 +99,6 @@ public class PedidoBean {
         temp.setProducto(producto);
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
         temp.setCantidadSolicitada(pedidoDetalle.getCantidadSolicitada());
-        System.out.println("cantidad " + temp.getCantidadSolicitada());
-//        temp.setCantidadSurtida(pedidoDetalle.getCantidadSurtida());
-//        temp.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
         //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
         equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
         //buscar la unidad de medida que corresponde a dicha equivalencia
@@ -180,15 +177,6 @@ public class PedidoBean {
 //            calcularTotalProductos();
 //        }
     }
-
-//    public void calcularTotalProductos() {
-//        if (pedidoxUnidad) {
-//
-//            setTotalProductos(pedidoDetalle.getCantidadSolicitada());
-//        } else {
-//            setTotalProductos(pedidoDetalle.getCantidadSolicitada() * producto.getFraccion());
-//        }
-//    }
 
     /*get and set*/
     public Pedido getPedido() {

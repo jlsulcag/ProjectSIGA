@@ -196,8 +196,12 @@ public class NotaSalidaBean {
         //
         temp.setUnidadmedida(getUnidadMedida().getDescripcion());
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
-
-        getListNotaSalidas().add(temp);
+        if (notaSalidaDetalle.getCantSalida() <= almacenProducto.getStockActual()) {
+            getListNotaSalidas().add(temp);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Cantidad no disponible");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
 
     }
 
@@ -226,7 +230,7 @@ public class NotaSalidaBean {
                             pedidoSeguimiento.setFecha(new Date());
                             pedidoSeguimiento.setHora(Utilitarios.horaActual());
                             pedidoSeguimiento.setPedido(pedido);
-                            pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido())+1);
+                            pedidoSeguimiento.setNumero(pedidoSeguimientoBl.maxNumero(pedido.getIdpedido()) + 1);
                             pedidoSeguimiento.setEstado(pedidoEstadoBl.buscar(4));
                             pedidoSeguimientoBl.registrar(pedidoSeguimiento);
                         }
@@ -341,6 +345,9 @@ public class NotaSalidaBean {
             nsd.setUnidadmedida(obj.getUnidadMedida());
             nsd.setNotasalida(notaSalida);
             nsd.setCantSolicitada(obj.getCantidadSolicitada());
+            nsd.setCantAtendida(obj.getCantidadSurtida());
+            nsd.setCantPendiente(obj.getCantidadSolicitada() - obj.getCantidadAutorizada());
+            nsd.setCantSalida(obj.getCantidadAutorizada());
             //buscar el producto en el almacen  para realizar  la actualizacion de stock de acuerdo al orden de ingreso  y stock disponible
             nsd.setIdAlmacenProducto(almacenProductoBl.buscarMinNumeroOrdenxProducto(nsd.getProducto().getIdproducto()));
             nsd.setStock(almacenProductoBl.buscarStockxProducto(nsd.getProducto().getIdproducto()));
@@ -532,6 +539,7 @@ public class NotaSalidaBean {
             temp.setStockActual(temp.getStockActual() + cantidad);
         }
         almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
+        System.out.println("stok que queda luego de atender el pedido .... " + temp.getStockActual());
         almacenProductoBl.actualizar(temp);
     }
 

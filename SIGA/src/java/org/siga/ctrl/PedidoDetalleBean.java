@@ -80,6 +80,7 @@ public class PedidoDetalleBean {
         selectedPedidoDetalle = new PedidoDetalle();
         selectedPedidoDetalle = pedidoDetalleBl.buscarxID(((PedidoDetalle) event.getObject()).getIdpedidodetalle());
         selectedPedidoDetalle.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
+        selectedPedidoDetalle.setCantidadSurtida(pedidoDetalle.getCantidadAutorizada());
 
         pedidoDetalleBl.actualizar(selectedPedidoDetalle);
 

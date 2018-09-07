@@ -31,5 +31,8 @@
     <property name="unidad" type="string">
       <column length="30" name="unidad"/>
     </property>
+    <property name="idEquivalencia" type="long">
+      <column name="id_equivalencia"/>
+    </property>
   </class>
 </hibernate-mapping>

@@ -24,7 +24,7 @@ import org.siga.util.Encrypt;
 
 @ManagedBean
 @SessionScoped
-public class LoginBean{
+public class LoginBean {
 
     @ManagedProperty(value = "#{usuarioBl}")
     private UsuarioBl usuarioBl;
@@ -46,7 +46,7 @@ public class LoginBean{
 
     public LoginBean() {
         HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        sesion.setMaxInactiveInterval(5000);
+        //sesion.setMaxInactiveInterval(5000);
     }
 
     public String login() {
@@ -70,25 +70,31 @@ public class LoginBean{
                     if (temp.getContrasenia().equals(Encrypt.sha512(this.getContrasenia().toUpperCase()))) {
                         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                         httpSession.setAttribute("nombreUsuario", this.nombreUsuario);
-                    //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "Bienvenido " + temp.getNombreUsuario());
+                        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "Bienvenido " + temp.getNombreUsuario());
                         //FacesContext.getCurrentInstance().addMessage(null, message);
                         //rol = rolBl.buscar(usuarioRol.getRol().getIdrol());
-                        if(usuarioRol.getRol().getIdrol()>0){
+                        if (usuarioRol.getRol().getIdrol() > 0) {
                             switch (usuarioRol.getRol().getRol().trim()) {
-                            case "ALMACEN":
-                                url = "/page/InicioAlmacen";
-                                break;
-                            case "SISTEMAS":
-                                url = "/page/InicioAlmacen";
-                                break;
-                            case "ADMINISTRADOR":
-                                url = "/page/InicioAlmacen";
-                                break;
-                        }
-                        }else{
+                                case "ALMACENERO":
+                                    url = "/page/InicioAlmacen";
+                                    break;
+                                case "SISTEMAS":
+                                    url = "/page/InicioSistemas";
+                                    break;
+                                case "ADQUISICIONES":
+                                    url = "/page/InicioAdquisiciones";
+                                    break;
+                                case "JEFE LOGISTICA":
+                                    url = "/page/InicioJefeLogistica";
+                                    break;
+                                case "USUARIO":
+                                    url = "/page/InicioUsuario";
+                                    break;
+                            }
+                        } else {
                             System.out.println("sin rolesss");
                         }
-                        
+
                     } else {
                         System.out.println("Contraseña incorrecta ..........");
                         msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
@@ -100,16 +106,16 @@ public class LoginBean{
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                     url = "/page/login_1";
                 }
-            }else{
+            } else {
                 System.out.println(".........");
             }
-            
+
         } else {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             url = "/page/login_1";
         }
-        
+
         return url + "?faces-redirect=true";
     }
 

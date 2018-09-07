@@ -43,8 +43,8 @@
     <property name="montoDescitem" type="big_decimal">
       <column name="monto_descitem" precision="18"/>
     </property>
-    <property name="idUnidadmedida" type="long">
-      <column name="id_unidadmedida"/>
+    <property name="idEquivalencia" type="long">
+      <column name="id_equivalencia"/>
     </property>
   </class>
 </hibernate-mapping>

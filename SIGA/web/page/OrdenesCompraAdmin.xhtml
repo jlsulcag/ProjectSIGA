@@ -22,10 +22,10 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Ordenes de Compra</f:facet>
-
-                            <p:ajax event="rowSelect" listener="#{misOrdenesCompraBean.onRowSelect}" update="msg" />
+                            <!--
+                            <p:ajax event="rowSelect" listener="{misOrdenesCompraBean.onRowSelect}" update="msg" />
                             <p:ajax event="rowUnselect"/>
-
+                            -->
                             <p:column headerText="Número" style="width: 50px">
                                 <h:outputText value="#{item.numero}"/>
                             </p:column>
@@ -61,32 +61,34 @@
 
 
                     </h:form>
-
+                    
+                    <!--
                     <h:form id="formDataTableDetalle" style="margin-top: 20px">
-                        <p:dataTable id="dtPedidos" value="#{misOrdenesCompraBean.listOrdenCompraDetalle}" var="item" editable="true" editMode="cell" widgetVar="cellPedidos"
+                        <p:dataTable id="dtPedidos" value="{misOrdenesCompraBean.listOrdenCompraDetalle}" var="item" editable="true" editMode="cell" widgetVar="cellPedidos"
                                      selectionMode="single">
 
                             <f:facet name="header">Productos</f:facet>
 
                             <p:column headerText="Producto">
-                                <h:outputText value="#{item.producto.descripcion}"/>
+                                <h:outputText value="{item.producto.descripcion}"/>
                             </p:column>
 
                             <p:column headerText="Cantidad">
-                                <h:outputText value="#{item.cantidad}"/>
+                                <h:outputText value="{item.cantidad}"/>
                             </p:column>
 
                             <p:column headerText="Valor">
-                                <h:outputText value="#{item.valorCompra}"/>
+                                <h:outputText value="{item.valorCompra}"/>
                             </p:column>
 
                             <p:column headerText="UM">
-                                <h:outputText value="#{item.unidadMedida}"/>
+                                <h:outputText value="{item.unidadMedida}"/>
                             </p:column>
 
                         </p:dataTable>
                     </h:form>
-
+                    -->
+                    
                 </p:panel>
             </ui:define>
 

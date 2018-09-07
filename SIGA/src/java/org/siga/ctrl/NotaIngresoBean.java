@@ -201,6 +201,7 @@ public class NotaIngresoBean {
             notaED.setDesc2(obj.getDesc2());
             notaED.setUnidadMedida(obj.getUnidadMedida());
             notaED.setMontoDescitem(obj.getMontoDescitem());
+            notaED.setIdEquivalencia(obj.getIdEquivalencia());
 
             notaED.setCantSolicitada(obj.getCantidad());
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
@@ -210,9 +211,8 @@ public class NotaIngresoBean {
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
             //
-            notaED.setIdEquivalencia(obj.getIdUnidadmedida());
             //buscar la equivalencia  utiliza para la orden de compra 
-            equivalencia = equivalenciaBl.buscaxId(obj.getIdUnidadmedida());
+            equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
             if (equivalencia != null) {
                 notaED.setTotalProductos((int) (notaED.getCantIngreso() * equivalencia.getFactor()));
             }
@@ -272,9 +272,9 @@ public class NotaIngresoBean {
         ned.setPrecioCompra(BigDecimal.ZERO);
         ned.setDesc1(0);
         ned.setDesc2(0);
-        //ned.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
         ned.setMontoDescitem(BigDecimal.ZERO);
         ned.setCantIngreso(notaEntradaDetalle.getCantIngreso());
+        ned.setIdEquivalencia(equivalencia.getIdequivalencia());
         //Buscar el factor de multiplicacion de acuerdo a   la unidad equivalente seleccionado
         equivalencia = equivalenciaBl.buscaxId(equivalencia.getIdequivalencia());
         //buscar la unidad de medida que corresponde a dicha equivalencia
@@ -431,6 +431,7 @@ public class NotaIngresoBean {
         almacenProducto.setLote(obj.getLote());
         almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
         almacenProducto.setValorCompraUnitario(obj.getValorCompra());
+        almacenProducto.setIdEquivalencia(obj.getIdEquivalencia());
         //registrar el orden de ingreso para cumplir con FIFO
         int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
         almacenProducto.setOrdenIngreso(numOrden + 1);

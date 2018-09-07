@@ -21,7 +21,7 @@
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Productos</f:facet>
 
-                            <p:column headerText="ID">
+                            <p:column headerText="ID" style="width: 50px">
                                 <h:outputText value="#{item.idordencompradetalle}"/>
                             </p:column>
 
@@ -29,27 +29,43 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cantidad" style="text-align:center">
+                            <p:column headerText="Cantidad" style="text-align:center; width: 50px">
                                 <h:outputText value="#{item.cantidad}"/>
                             </p:column>
 
-                            <p:column headerText="Unidad Medida">
+                            <p:column headerText="Unidad Medida" style="width: 80px">
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
-                            <p:column headerText="V/Compra" style="text-align:right">
+                            <p:column headerText="V/Compra" style="text-align:right; width: 80px">
                                 <h:outputText value="#{item.valorCompra}"/>
                             </p:column>
 
-                            <p:column headerText="Descuento" style="text-align:right">
+                            <p:column headerText="Descuento" style="text-align:right; width: 80px">
                                 <h:outputText value="#{item.montoDescitem}"/>
                             </p:column>
 
-                            <p:column headerText="Sub Total" style="text-align:right">
+                            <p:column headerText="Sub Total" style="text-align:right; width: 80px">
                                 <h:outputText value="#{item.cantidad*item.valorCompra}"/>
                             </p:column>
 
                             <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Valor Bruto :" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.valorBruto}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Descuento :" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.totalDescuento}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Valor Neto :"/>
+                                    <p:column footerText="#{ordenCompraDetalleBean.valorNeto}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="IGV :"/>
+                                    <p:column footerText="#{ordenCompraDetalleBean.montoIgv}" style="text-align:right" />
+                                </p:row>
                                 <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="Total :" />
                                     <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" style="text-align:right"/>
@@ -63,7 +79,7 @@
                         <p:toolbar>
                             <f:facet name="right">
                                 <p:commandButton value="Autorizar" icon="ui-icon-document" 
-                                                 actionListener="#{ordenCompraDetalleBean.autorizarOrdenCompra()}"/>
+                                                 actionListener="#{ordenCompraDetalleBean.autorizarOrdenCompra()}" update=":msg"/>
                             </f:facet>
                         </p:toolbar>
                     </h:form>

@@ -50,5 +50,8 @@
         <property name="cantIngreso" type="int">
             <column name="cant_ingreso" not-null="true"/>
         </property>
+        <property name="idEquivalencia" type="long">
+            <column name="id_equivalencia" />
+        </property>
     </class>
 </hibernate-mapping>

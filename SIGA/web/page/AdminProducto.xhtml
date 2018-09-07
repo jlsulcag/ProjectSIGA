@@ -160,11 +160,8 @@
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <!--<p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
-                                                     oncomplete="PF('dlgEdit').hide();" actionListener="{productoBean.actualizar()}"/>
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />-->
                                     <p:commandButton id="btnActualizar" icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true"
-                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgEdit').hide()}" 
                                                      update="msgEdit, formDataTable" actionListener="#{productoBean.actualizar()}"/> 
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
                                                      icon="ui-icon-close" title="Cancelar" value="Cancelar" />    

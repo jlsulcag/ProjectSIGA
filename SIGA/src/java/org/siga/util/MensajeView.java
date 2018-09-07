@@ -13,6 +13,11 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error de registro \n "+e);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public static void autorizarOrdenCompra() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "Orden Compra Aprobada");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     String mensaje = "";
 
     public static void registroCorrecto() {
