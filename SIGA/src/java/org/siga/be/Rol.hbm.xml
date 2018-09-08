@@ -20,5 +20,17 @@
         <property name="fechaReg" type="date">
             <column name="fecha_reg" length="13" />
         </property>
+        <set name="usuarioRols" table="usuario_rol" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_rol" />
+            </key>
+            <one-to-many class="org.siga.be.UsuarioRol" />
+        </set>
+        <set name="menus" table="menu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_rol" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.Menu" />
+        </set>
     </class>
 </hibernate-mapping>

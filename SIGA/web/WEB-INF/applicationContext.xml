@@ -79,6 +79,7 @@
                 <value>/org/siga/be/Kardex.hbm.xml</value>  
                 <value>/org/siga/be/OrdenCompraEstados.hbm.xml</value>  
                 <value>/org/siga/be/OrdenCompraSeguimiento.hbm.xml</value>  
+                <value>/org/siga/be/Menu.hbm.xml</value>  
             </list>
         </property>        
     </bean>

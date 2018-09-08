@@ -34,4 +34,5 @@
     <table-filter match-name="pedido_seguimiento"/>
     <table-filter match-name="orden_compra_estados"/>
     <table-filter match-name="orden_compra_seguimiento"/>
+    <table-filter match-name="menu"/>
 </hibernate-reverse-engineering>

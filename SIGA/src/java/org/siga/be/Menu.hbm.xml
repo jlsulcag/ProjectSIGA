@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 08/09/2018 09:49:56 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.Menu" table="menu" schema="siga" optimistic-lock="version">
+        <id name="idmenu" type="long">
+            <column name="idmenu" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="menu" class="org.siga.be.Menu" fetch="select">
+            <column name="id_menu" />
+        </many-to-one>
+        <many-to-one name="rol" class="org.siga.be.Rol" fetch="select">
+            <column name="id_rol" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="60" not-null="true" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="5" not-null="true">
+                <comment>MENU(M) ITEM(I)</comment>
+            </column>
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true">
+                <comment>0,1</comment>
+            </column>
+        </property>
+        <set name="menus" table="menu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_menu" />
+            </key>
+            <one-to-many class="org.siga.be.Menu" />
+        </set>
+    </class>
+</hibernate-mapping>

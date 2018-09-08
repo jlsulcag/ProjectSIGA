@@ -41,6 +41,7 @@
     <mapping resource="org/siga/be/PedidoDetalle.hbm.xml"/>
     <mapping resource="org/siga/be/OrdenCompraEstados.hbm.xml"/>
     <mapping resource="org/siga/be/OrdenCompraSeguimiento.hbm.xml"/>
+    <mapping resource="org/siga/be/Menu.hbm.xml"/>
     
   </session-factory>
 </hibernate-configuration>
