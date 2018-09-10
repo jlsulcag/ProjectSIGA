@@ -57,6 +57,9 @@ public class LoginBean {
         Usuario temp = getUsuarioBl().buscarxUsuario(this.getNombreUsuario().trim().toUpperCase());
 
         if (temp != null && temp.getIdusuario() > 0) {
+            //Almacenar  el usuario  en la sesion de JSF
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", temp);
+            System.out.println("usuario ......... "+ FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"));
             //guardamos en sesion usuario
             HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             sesionUser.setAttribute("idUsuario", temp.getIdusuario());

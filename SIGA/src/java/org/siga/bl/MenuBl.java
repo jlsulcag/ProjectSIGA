@@ -2,7 +2,6 @@
 package org.siga.bl;
 
 import java.util.List;
-import javax.websocket.server.ServerEndpoint;
 import org.siga.be.Menu;
 import org.siga.dao.MenuDao;
 import org.siga.util.AbstractBL;
@@ -11,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("menuBl")
 public class MenuBl extends AbstractBL<Menu>{
 
     @Autowired
-    @Qualifier("MenuDao")
+    @Qualifier("menuDao")
     private MenuDao dao;
     
     @Override

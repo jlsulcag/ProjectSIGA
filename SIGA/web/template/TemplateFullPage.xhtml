@@ -13,6 +13,7 @@
         <h:outputStylesheet name="./css/custom.css"/>
         <h:outputScript library="js" name="calendar_es.js"/>
         <title>.:SIGA:.</title>
+        <f:event type="preRenderView" listener="#{sesionBean.verificarSesion()}" />
     </h:head>
 
     <h:body>
@@ -21,7 +22,7 @@
             <p:layoutUnit position="north" size="65">
                 <ui:insert name="top">
                     <h:form>
-                        <p:menubar style="border: 0">
+                        <p:menubar style="border: 0">                            
                             <f:facet name="options">
                                 <p:outputLabel value="Bienvenido(a) : " style="margin-right: 5px;"></p:outputLabel>
                                 <p:menuButton value="#{adminUsuarioBean.usuario.nombre}" iconPos="fa fa-user">
@@ -32,8 +33,12 @@
                                                  icon="ui-icon-power" value="Cerrar Sesión" title="Cerrar Sesión"/>
                             </f:facet>
                         </p:menubar>
+                        
                     </h:form>
                 </ui:insert>
+                <h:form>
+                    <p:menubar model="#{menuCtrl.model}"/>
+                </h:form>
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="50">
