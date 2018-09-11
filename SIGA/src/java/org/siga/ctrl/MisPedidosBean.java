@@ -82,7 +82,7 @@ public class MisPedidosBean {
     public String redirigir() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idPedido", getPedido().getIdpedido());
-        return "PedidoDetalle";
+        return "PedidoDetalle?faces-redirect=true";
     }
     
     public void actualizarPedidoDetalle(){

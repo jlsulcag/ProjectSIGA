@@ -242,7 +242,7 @@ public class MisOrdenesCompraBean {
     public String redirigir() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
-        return "ViewOrdenCompraDetalle";
+        return "ViewOrdenCompraDetalle?faces-redirect=true";
     }
     
     public String redirigirOrdenCompraDetalles() {

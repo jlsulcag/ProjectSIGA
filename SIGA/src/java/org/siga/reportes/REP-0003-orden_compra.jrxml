@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ventas_Resumen" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="759" leftMargin="41" rightMargin="42" topMargin="41" bottomMargin="41" uuid="70649f45-9d13-46cc-bb5b-b2fdbe84e65b">
 	<property name="ireport.zoom" value="1.1000000000000478"/>
-	<property name="ireport.x" value="25"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Integer">
+	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>

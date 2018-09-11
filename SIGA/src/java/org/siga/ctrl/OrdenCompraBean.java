@@ -1,19 +1,34 @@
 package org.siga.ctrl;
 
+
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.siga.be.Almacen;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
@@ -29,6 +44,7 @@ import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
+import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -149,6 +165,7 @@ public class OrdenCompraBean {
                     res3 = registrarOrdenCompraSeguimiento(ordenCompra);
                     if (res3 == 0) {
                         MensajeView.registroCorrecto();
+                        imprimirOrdenCompra(ordenCompra);
                         inicio();
                     } else {
                         MensajeView.registroError();
@@ -176,6 +193,39 @@ public class OrdenCompraBean {
         return ordenCompraBl.registrar(ordenCompra);
 
     }
+    
+    public void imprimirOrdenCompra(OrdenCompra oc) {
+        try {
+            //Mapa de parametros
+            Map<String, Object> parametro = new HashMap<>();
+            //
+            DSConeccion ds = new DSConeccion("127.0.0.1", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            parametro.put("ID_ORDEN_COMPRA", oc.getIdordencompra());
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/REP-0003-orden_compra.jasper"));
+            //JasperPrint jasperPrint = JasperFillManager.fillRepot(jasper.getPath(),parametro,);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametro, ds.getConeccion());
+            
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+            
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+            
+            
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+            
+            
+            
+            
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     public void inicioNew() {
         ordenCompraDetalle.setIdordencompradetalle(0);
