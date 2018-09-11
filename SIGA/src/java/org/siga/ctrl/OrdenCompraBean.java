@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +29,11 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.hibernate.internal.SessionImpl;
 import org.siga.be.Almacen;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
@@ -45,6 +50,7 @@ import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
 import org.siga.ds.DSConeccion;
+import org.siga.ds.DsConexion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -165,8 +171,7 @@ public class OrdenCompraBean {
                     res3 = registrarOrdenCompraSeguimiento(ordenCompra);
                     if (res3 == 0) {
                         MensajeView.registroCorrecto();
-                        imprimirOrdenCompra(ordenCompra);
-                        inicio();
+                        //inicio();
                     } else {
                         MensajeView.registroError();
                     }
@@ -194,16 +199,19 @@ public class OrdenCompraBean {
 
     }
     
-    public void imprimirOrdenCompra(OrdenCompra oc) {
+    public void generarOrdenCompra(OrdenCompra oc) {
         try {
             //Mapa de parametros
+            System.out.println("entra al  reporte ................");
             Map<String, Object> parametro = new HashMap<>();
             //
-            DSConeccion ds = new DSConeccion("127.0.0.1", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            DsConexion ds = new DsConexion();
+            System.out.println("orden de compra ID = ........ "+oc.getIdordencompra());
             parametro.put("ID_ORDEN_COMPRA", oc.getIdordencompra());
-            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/REP-0003-orden_compra.jasper"));
-            //JasperPrint jasperPrint = JasperFillManager.fillRepot(jasper.getPath(),parametro,);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametro, ds.getConeccion());
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("REP-0003-orden_compra.jasper"));
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametro, ((SessionImpl)ds.getSession()).connection());
             
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
@@ -222,6 +230,81 @@ public class OrdenCompraBean {
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void descargarOrdenCompra() {
+        try {
+            //Mapa de parametros
+            System.out.println("entra al  reporte ................");
+            Map<String, Object> parametro = new HashMap<>();
+            //
+            File file = new File("C:\\Reportes\\REP-0003-orden_compra.jasper");
+            DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            //DsConexion ds = new DsConexion();
+            System.out.println("orden de compra ID = ........ "+ordenCompra.getIdordencompra());
+            parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+            //File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("REP-0003-orden_compra.jasper"));
+            System.out.println("path......... "+file.getPath());
+            JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
+            
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+            
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+            
+            
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+            
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void visualizarOrdenCompra() {
+        try {
+            Map<String, Object> parametro = new HashMap<>();
+            
+            File file = new File("C:\\Reportes\\REP-0003-orden_compra.jasper");
+            DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            
+            
+            parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+            byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+            
+            String fileType = "inline";
+            String reportSetting = fileType+"; filename=OrdenCompra.pdf";
+            
+            
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.setContentType("application/pdf");
+            response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
+            response.setHeader("Cache-Control", "private");
+            response.setContentLength(documento.length);
+            
+            ServletOutputStream stream = response.getOutputStream();
+            stream.write(documento, 0, documento.length);
+            stream.flush();
+            stream.close();
+            
+            ds.getConeccion().close();
+            
+            FacesContext.getCurrentInstance().responseComplete();
+            
+            inicio();
+            
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
