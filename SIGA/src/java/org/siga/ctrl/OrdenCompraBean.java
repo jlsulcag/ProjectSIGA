@@ -272,7 +272,7 @@ public class OrdenCompraBean {
         try {
             Map<String, Object> parametro = new HashMap<>();
             
-            File file = new File("C:\\Reportes\\REP-0003-orden_compra.jasper");
+            File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
             DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
             
             

@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.6105100000000139"/>
 	<property name="ireport.x" value="62"/>
 	<property name="ireport.y" value="26"/>
-	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Integer">
+	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
