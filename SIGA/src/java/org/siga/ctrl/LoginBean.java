@@ -43,11 +43,14 @@ public class LoginBean {
 
     private String nombreUsuario;
     private String contrasenia;
+    private String currentUser;
 
     public LoginBean() {
         HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         //sesion.setMaxInactiveInterval(5000);
     }
+    
+    
 
     public String login() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -59,7 +62,6 @@ public class LoginBean {
         if (temp != null && temp.getIdusuario() > 0) {
             //Almacenar  el usuario  en la sesion de JSF
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", temp);
-            System.out.println("usuario ......... "+ FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"));
             //guardamos en sesion usuario
             HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             sesionUser.setAttribute("idUsuario", temp.getIdusuario());
@@ -99,7 +101,6 @@ public class LoginBean {
                         }
 
                     } else {
-                        System.out.println("Contraseña incorrecta ..........");
                         msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
                         FacesContext.getCurrentInstance().addMessage(null, msg);
                         url = "/page/login_1";
@@ -125,8 +126,7 @@ public class LoginBean {
     public String cerrarSesion() {
         this.nombreUsuario = null;
         this.contrasenia = null;
-        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        httpSession.invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/page/login_1?faces-redirect=true";
     }
 
@@ -192,6 +192,16 @@ public class LoginBean {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public String getCurrentUser() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        currentUser = usuario.getNombre();
+        return currentUser;
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
     }
 
 }

@@ -19,6 +19,7 @@ public class Menu  implements java.io.Serializable {
      private String nombre;
      private String tipo;
      private int estado;
+     private String url;
      private Set<Menu> menus = new HashSet<Menu>(0);
 
     public Menu() {
@@ -90,6 +91,14 @@ public class Menu  implements java.io.Serializable {
     
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 

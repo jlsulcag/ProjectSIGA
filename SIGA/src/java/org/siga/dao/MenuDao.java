@@ -1,13 +1,43 @@
-
 package org.siga.dao;
 
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.siga.be.Menu;
+import org.siga.be.UsuarioRol;
 import org.siga.util.AbstractDA;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MenuDao extends AbstractDA<Menu>{
+public class MenuDao extends AbstractDA<Menu> {
+
+    @Autowired
+    @Qualifier("sessionFactory")
+    private SessionFactory sessionFactory;
+
+    @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    @Override
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Deprecated
+    public Session getSession() {
+        try {
+            return getSessionFactory().getCurrentSession();
+        } catch (HibernateException e) {
+            return getSessionFactory().openSession();
+        }
+    }
 
     @Override
     public long registrar(Menu bean) {
@@ -53,5 +83,6 @@ public class MenuDao extends AbstractDA<Menu>{
     public long id() {
         return maxId(Menu.class);
     }
-    
+
+
 }

@@ -42,14 +42,14 @@
             </p:layoutUnit>
 
             <h:form>
-                <p:menubar model="#{menuCtrl.model}" style="margin-top: 40px;border: 0;">
+                <p:menubar model="#{menuCtrl.model}" style="margin-top: 40px;border: 0; margin-left: 280px">
                     <f:facet name="options">
                         <p:outputLabel value="Bienvenido(a) : " style="margin-right: 5px;"></p:outputLabel>
-                        <p:menuButton value="#{loginBean.currentUser}" iconPos="fa fa-user">
+                        <p:menuButton value="{adminUsuarioBean.usuario.nombre}" iconPos="fa fa-user">
                             <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w"/>
                             <p:menuitem value="Información" icon="fa fa-user"/>
                         </p:menuButton>
-                        <p:commandButton id="btnCancelarRegistro"  action="#{loginBean.cerrarSesion()}"
+                        <p:commandButton id="btnCancelarRegistro"  action="{loginBean.cerrarSesion()}"
                                          icon="ui-icon-power" value="Cerrar Sesión" title="Cerrar Sesión"/>
                     </f:facet>
                 </p:menubar>
@@ -61,8 +61,8 @@
 
                 </ui:insert>
             </p:layoutUnit>
-            <!--
-            <p:layoutUnit position="west" size="20%" header="USUARIO CONECTADO" resizable="true" collapsible="true">
+
+            <p:layoutUnit position="west" size="20%" header="MENU" resizable="true" collapsible="true">
                 <ui:insert name="left">
                     <h:form>
                         <p:menu toggleable="true" style="width: 95%">
@@ -103,7 +103,7 @@
                     </h:form>
                 </ui:insert>
             </p:layoutUnit>
-            -->
+
             <p:layoutUnit position="center">
                 <ui:insert name="content">
 

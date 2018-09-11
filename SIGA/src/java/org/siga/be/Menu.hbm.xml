@@ -27,6 +27,10 @@
                 <comment>0,1</comment>
             </column>
         </property>
+        <property name="url" type="string">
+            <column name="url" length="150">
+            </column>
+        </property>
         <set name="menus" table="menu" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_menu" />

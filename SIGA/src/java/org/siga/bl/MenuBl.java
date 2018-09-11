@@ -3,6 +3,7 @@ package org.siga.bl;
 
 import java.util.List;
 import org.siga.be.Menu;
+import org.siga.be.UsuarioRol;
 import org.siga.dao.MenuDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
@@ -71,5 +72,7 @@ public class MenuBl extends AbstractBL<Menu>{
     public long id() {
         return maxId();
     }
+
+    
     
 }
