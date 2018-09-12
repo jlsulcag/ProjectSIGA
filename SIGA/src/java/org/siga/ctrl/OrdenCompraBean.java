@@ -97,11 +97,12 @@ public class OrdenCompraBean {
     private int totalProductos;
     //variables temporales
     private BigDecimal subTotalItem;
-    private BigDecimal totalTemp;
+    private BigDecimal montoTotal;
     private BigDecimal valorBruto;
     private BigDecimal totalDescuento;
     private BigDecimal valorNeto;
     private BigDecimal montoIgv;
+    private BigDecimal montoSubtotal;
 
     public OrdenCompraBean() {
     }
@@ -118,7 +119,7 @@ public class OrdenCompraBean {
         ordenCompra.setProveedor(new Proveedor());
         ordenCompra.setAlmacenDestino(new Almacen());
         listOrdenCompraDetalles.clear();
-        totalTemp = new BigDecimal("0.00");
+        montoTotal = new BigDecimal("0.00");
         valorBruto = new BigDecimal("0.00");
         totalDescuento = new BigDecimal("0.00");
         valorNeto = new BigDecimal("0.00");
@@ -191,7 +192,7 @@ public class OrdenCompraBean {
         ordenCompra.setMontoDesc(totalDescuento);
         ordenCompra.setValorNeto(valorNeto);
         ordenCompra.setMontoIgv(montoIgv);
-        ordenCompra.setMontoTotal(totalTemp);
+        ordenCompra.setMontoTotal(montoTotal);
         ordenCompra.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
         ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
 
@@ -485,32 +486,34 @@ public class OrdenCompraBean {
 
     }
 
-    public BigDecimal getTotalTemp() {
-        return totalTemp;
+    public BigDecimal getMontoTotal() {
+        return montoTotal;
     }
 
-    public void setTotalTemp(BigDecimal totalTemp) {
-        this.totalTemp = totalTemp;
+    public void setMontoTotal(BigDecimal montoTotal) {
+        this.montoTotal = montoTotal;
     }
 
     private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
-        totalTemp = new BigDecimal(BigInteger.ZERO);
+        montoTotal = new BigDecimal(BigInteger.ZERO);
         valorBruto = new BigDecimal(BigInteger.ZERO);
         totalDescuento = new BigDecimal(BigInteger.ZERO);
         valorNeto = new BigDecimal(BigInteger.ZERO);
         montoIgv = new BigDecimal(BigInteger.ZERO);
+        setMontoSubtotal(new BigDecimal(BigInteger.ZERO));
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
             valorBruto = (valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
             totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
             valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
-            montoIgv = (valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP)).setScale(2, RoundingMode.HALF_UP);
+            setMontoSubtotal(valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
+            montoIgv = valorBruto.subtract(getMontoSubtotal()).setScale(2, RoundingMode.HALF_UP);
             if (httpSession.getAttribute("idOrdenCompra") != null) {
-                totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+                montoTotal = montoTotal.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             } else {
-                //totalTemp = totalTemp.add(obj.getSubTotal());//Antes
-                totalTemp = valorNeto.subtract(montoIgv);
+                //totalTemp = montoTotal.add(obj.getSubTotal());//Antes
+                montoTotal = valorNeto;                
             }
 
         }
@@ -643,6 +646,14 @@ public class OrdenCompraBean {
 
     public void setUnidadMedidaBl(UnidadMedidaBl unidadMedidaBl) {
         this.unidadMedidaBl = unidadMedidaBl;
+    }
+
+    public BigDecimal getMontoSubtotal() {
+        return montoSubtotal;
+    }
+
+    public void setMontoSubtotal(BigDecimal montoSubtotal) {
+        this.montoSubtotal = montoSubtotal;
     }
 
 }

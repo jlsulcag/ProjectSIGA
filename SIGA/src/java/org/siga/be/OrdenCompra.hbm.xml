@@ -62,6 +62,9 @@
         <property name="formaPago" type="string">
             <column name="forma_pago" length="100" not-null="true" />
         </property>
+        <property name="montoSubtotal" type="big_decimal">
+            <column name="monto_subtotal" precision="10" not-null="true" default="0.00"/>
+        </property>
         
         <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>

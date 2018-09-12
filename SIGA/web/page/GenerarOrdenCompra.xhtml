@@ -33,8 +33,8 @@
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
                                 </div>
-                                
-                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -44,7 +44,7 @@
                                         <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                     </p:selectOneMenu>
                                 </div>
-                                
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfSolicitante" value="Solicitante :" />
                                 </div>
@@ -52,8 +52,8 @@
                                     <p:inputText id="txfSolicitante" label="Solicitante" 
                                                  value="#{ordenCompraBean.ordenCompra.solicitante}" />
                                 </div>
-                                
-                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxAlmacen" value="Almacen Destino :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -63,7 +63,7 @@
                                         <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>
                                     </p:selectOneMenu>
                                 </div>
-                                
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfFormaPago" value="Forma de Pago :" />
                                 </div>
@@ -72,7 +72,7 @@
                                                  value="#{ordenCompraBean.ordenCompra.formaPago}" />
                                 </div>
 
-                               
+
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfFechaEntrega" value="Fecha Entrega :"/>
@@ -84,8 +84,8 @@
                                     </p:calendar>
                                 </div>
 
-                               
-                               
+
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDocRef" value="Doc de referencia :" />
                                 </div>
@@ -93,7 +93,7 @@
                                     <p:inputText id="txfDocRef" label="Documento de referencia" 
                                                  value="#{ordenCompraBean.ordenCompra.docReferencia}" />
                                 </div>
-                                
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfObservacion" value="Observacion :" />
                                 </div>
@@ -174,7 +174,11 @@
                                 </p:row>
                                 <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="Total :"/>
-                                    <p:column footerText="#{ordenCompraBean.totalTemp}" style="text-align:right" />
+                                    <p:column footerText="#{ordenCompraBean.montoSubtotal}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Total :"/>
+                                    <p:column footerText="#{ordenCompraBean.montoTotal}" style="text-align:right" />
                                 </p:row>
                             </p:columnGroup>
 
@@ -195,12 +199,12 @@
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
                                     <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
                                 </p:selectOneMenu>
-                                
+
                                 <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
                                 <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
                                     <f:selectItem itemLabel="#{ordenCompraBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
-                                
+
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
                                 <p:selectOneMenu id="txfUnidadIngreso" value="#{ordenCompraBean.equivalencia.idequivalencia}" 
                                                  filter="true" filterMatchMode="contains" style="width: 118px">

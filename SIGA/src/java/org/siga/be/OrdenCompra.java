@@ -34,6 +34,7 @@ public class OrdenCompra  implements java.io.Serializable {
      private BigDecimal montoTotal;
      private String solicitante;
      private String formaPago;
+     private BigDecimal montoSubTotal;
      
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
@@ -215,6 +216,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setOrdenCompraSeguimientos(Set<OrdenCompraSeguimiento> ordenCompraSeguimientos) {
         this.ordenCompraSeguimientos = ordenCompraSeguimientos;
+    }
+
+    public BigDecimal getMontoSubTotal() {
+        return montoSubTotal;
+    }
+
+    public void setMontoSubTotal(BigDecimal montoSubTotal) {
+        this.montoSubTotal = montoSubTotal;
     }
 
 
