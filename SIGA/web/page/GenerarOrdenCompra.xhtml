@@ -13,7 +13,7 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Generar orden de compra">
-                    <h:form id="formP">
+                    <h:form id="formP" target="_blank">
                         <div class="ui-fluid">
                             <div class="ui-g">
 
@@ -112,8 +112,6 @@
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
                                                  actionListener="#{ordenCompraBean.registrar()}"/>
-                                <p:commandButton value="Imprimir" icon="ui-icon-check" ajax="false"
-                                                 action="#{ordenCompraBean.visualizarOrdenCompra()}"/>
                                 <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{ordenCompraBean.inicio()}"
                                                  update="formP, :formDataTable"/>
                             </f:facet>

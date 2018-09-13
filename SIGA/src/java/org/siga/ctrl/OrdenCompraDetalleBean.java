@@ -1,27 +1,42 @@
 package org.siga.ctrl;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
+import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.OrdenCompraEstados;
 import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
+import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -50,6 +65,14 @@ public class OrdenCompraDetalleBean {
 
     @ManagedProperty(value = "#{ordenCompraEstadosBl}")
     private OrdenCompraEstadosBl ordenCompraEstadosBl;
+    
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
+    
+    private List<SelectItem> selectOneItemsEquivalencia;
+    private List<Equivalencia> listEquivalencias;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private long res;
@@ -57,11 +80,12 @@ public class OrdenCompraDetalleBean {
     private int totalProductos;
     //variables temporales
     private BigDecimal subTotalItem;
-    private BigDecimal totalTemp;
+    private BigDecimal montoTotal;
     private BigDecimal valorBruto;
     private BigDecimal totalDescuento;
     private BigDecimal valorNeto;
     private BigDecimal montoIgv;
+    private BigDecimal montoSubtotal;
 
     public OrdenCompraDetalleBean() {
     }
@@ -114,7 +138,7 @@ public class OrdenCompraDetalleBean {
                 ocTemp.setMontoDesc(totalDescuento);
                 ocTemp.setValorNeto(valorNeto);
                 ocTemp.setMontoIgv(montoIgv);
-                ocTemp.setMontoTotal(totalTemp);
+                ocTemp.setMontoTotal(montoTotal);
                 System.out.println("id orden compra a a actualizar " + ocTemp.getIdordencompra());
                 ordenCompraBl.actualizar(ocTemp);
             }
@@ -128,23 +152,29 @@ public class OrdenCompraDetalleBean {
         if (httpSession.getAttribute("idOrdenCompra") != null) {
             ordenCompra = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
             if (ordenCompra != null) {
-                ordenCompraSeguimiento.setOrdenCompra(ordenCompra);
-                ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(2));
-                ordenCompraSeguimiento.setFecha(new Date());
-                ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
-                ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
-                HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-                if (sesionUser.getAttribute("idUsuario") != null) {
-                    ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+                ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
+                if (!ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
+                    ordenCompraSeguimiento.setOrdenCompra(ordenCompra);
+                    ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(2));
+                    ordenCompraSeguimiento.setFecha(new Date());
+                    ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
+                    ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
+                    HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                    if (sesionUser.getAttribute("idUsuario") != null) {
+                        ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+                    } else {
+                        ordenCompraSeguimiento.setIdUser(0);
+                    }
+                    ordenCompraSeguimiento.setObservacion("");
+
+                    res = ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
+                    if (res == 0) {
+                        MensajeView.autorizarOrdenCompra();
+                    }
                 } else {
-                    ordenCompraSeguimiento.setIdUser(0);
+                    MensajeView.seEncuentraAutorizada();
                 }
-                ordenCompraSeguimiento.setObservacion("");
-                
-                res = ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
-                if(res == 0){
-                    MensajeView.autorizarOrdenCompra();
-                }
+
             }
         }
     }
@@ -169,11 +199,12 @@ public class OrdenCompraDetalleBean {
         if (httpSession.getAttribute("idOrdenCompra") != null) {
             setListOrdenCompraDetalles(ordenCompraDetalleBl.listarXIdOrdenCompra(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString())));
             calcularTotal(getListOrdenCompraDetalles());
-        } else {
+        }
+        /*
+        else {
             setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
         }
-        //calcularTotal(getListOrdenCompraDetalles());
-        //setListOrdenCompraDetalles(ordenCompraDetalleBl.listar());
+        */
     }
 
     public void actualizar() {
@@ -210,6 +241,56 @@ public class OrdenCompraDetalleBean {
 
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
+    }
+
+    public void visualizarOrdenCompra() {
+        try {
+            HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            if (httpSession.getAttribute("idOrdenCompra") != null) {
+                ordenCompra = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
+                if (ordenCompra != null) {
+                    ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
+                    if (ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
+                    
+                    Map<String, Object> parametro = new HashMap<>();
+
+                    File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
+                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+
+                    parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+                    byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+
+                    String fileType = "inline";
+                    String reportSetting = fileType + "; filename=OrdenCompra.pdf";
+
+                    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                    response.setContentType("application/pdf");
+                    response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
+                    response.setHeader("Cache-Control", "private");
+                    response.setContentLength(documento.length);
+
+                    ServletOutputStream stream = response.getOutputStream();
+                    stream.write(documento, 0, documento.length);
+                    stream.flush();
+                    stream.close();
+
+                    ds.getConeccion().close();
+
+                    FacesContext.getCurrentInstance().responseComplete();
+                    }else{
+                        MensajeView.noImprimeOrdenCompra();
+                    }
+                }
+            }
+
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return "Reportes?faces-redirect=true";
     }
     /*
      public void setIsCompraUnitaria() {
@@ -320,34 +401,37 @@ public class OrdenCompraDetalleBean {
 
     }
 
-    public BigDecimal getTotalTemp() {
-        return totalTemp;
+    public BigDecimal getMontoTotal() {
+        return montoTotal;
     }
 
-    public void setTotalTemp(BigDecimal totalTemp) {
-        this.totalTemp = totalTemp;
+    public void setMontoTotal(BigDecimal montoTotal) {
+        this.montoTotal = montoTotal;
     }
 
     private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
-        totalTemp = new BigDecimal(BigInteger.ZERO);
-        valorBruto = new BigDecimal(BigInteger.ZERO);
-        totalDescuento = new BigDecimal(BigInteger.ZERO);
-        valorNeto = new BigDecimal(BigInteger.ZERO);
-        montoIgv = new BigDecimal(BigInteger.ZERO);
+        montoTotal = new BigDecimal("0.00");
+        valorBruto = new BigDecimal("0.00");
+        totalDescuento = new BigDecimal("0.00");
+        valorNeto = new BigDecimal("0.00");
+        montoIgv = new BigDecimal("0.00");
+        montoSubtotal = new BigDecimal("0.00");
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
-            valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
-            totalDescuento = totalDescuento.add(obj.getMontoDescitem());
-            valorNeto = valorBruto.subtract(totalDescuento);
-            montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
-            if (httpSession.getAttribute("idOrdenCompra") != null) {
-                totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
-            } else {
-                //totalTemp = totalTemp.add(obj.getSubTotal());//Antes
-                totalTemp = valorNeto.subtract(montoIgv);
-            }
+            //Los calculos se estan realizando  teniendo en cuenta el precio de compra
+            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
+            totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
+            valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
+            montoSubtotal = valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+            montoIgv = valorNeto.subtract(montoSubtotal).setScale(2, RoundingMode.HALF_UP);
 
+            if (httpSession.getAttribute("idOrdenCompra") != null) {
+                montoTotal = montoTotal.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())));
+            } else {
+                //totalTemp = montoTotal.add(obj.getSubTotal());//Antes
+                montoTotal = valorNeto;
+            }
         }
     }
 
@@ -413,6 +497,61 @@ public class OrdenCompraDetalleBean {
 
     public void setOrdenCompraEstadosBl(OrdenCompraEstadosBl ordenCompraEstadosBl) {
         this.ordenCompraEstadosBl = ordenCompraEstadosBl;
+    }
+
+    public BigDecimal getMontoSubtotal() {
+        return montoSubtotal;
+    }
+
+    public void setMontoSubtotal(BigDecimal montoSubtotal) {
+        this.montoSubtotal = montoSubtotal;
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
+    }
+
+    public List<SelectItem> getSelectOneItemsEquivalencia() {
+        this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        if (producto != null) {
+            for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
+                this.setEquivalencia(obj);
+                SelectItem selectItem = new SelectItem(getEquivalencia().getIdequivalencia(), getEquivalencia().getUnidadEquivalente().getDescripcion());
+                this.selectOneItemsEquivalencia.add(selectItem);
+            }
+            return selectOneItemsEquivalencia;
+        } else {
+            return null;
+        }
+    }
+    
+    private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
+        setListEquivalencias(getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida));
+        return getListEquivalencias();
+    }
+
+    public void setSelectOneItemsEquivalencia(List<SelectItem> selectOneItemsEquivalencia) {
+        this.selectOneItemsEquivalencia = selectOneItemsEquivalencia;
+    }
+
+    public List<Equivalencia> getListEquivalencias() {
+        return listEquivalencias;
+    }
+
+    public void setListEquivalencias(List<Equivalencia> listEquivalencias) {
+        this.listEquivalencias = listEquivalencias;
     }
 
 }

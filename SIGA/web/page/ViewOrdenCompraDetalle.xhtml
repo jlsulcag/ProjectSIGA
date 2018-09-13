@@ -37,8 +37,8 @@
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
-                            <p:column headerText="V/Compra" style="text-align:right; width: 80px">
-                                <h:outputText value="#{item.valorCompra}"/>
+                            <p:column headerText="P/Compra" style="text-align:right; width: 80px">
+                                <h:outputText value="#{item.precioCompra}"/>
                             </p:column>
 
                             <p:column headerText="Descuento" style="text-align:right; width: 80px">
@@ -46,7 +46,7 @@
                             </p:column>
 
                             <p:column headerText="Sub Total" style="text-align:right; width: 80px">
-                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                                <h:outputText value="#{item.cantidad*item.precioCompra}"/>
                             </p:column>
 
                             <p:columnGroup type="footer">
@@ -63,22 +63,28 @@
                                     <p:column footerText="#{ordenCompraDetalleBean.valorNeto}" style="text-align:right" />
                                 </p:row>
                                 <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Sub Total :"/>
+                                    <p:column footerText="#{ordenCompraDetalleBean.montoSubtotal}" style="text-align:right" />
+                                </p:row>
+                                <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="IGV :"/>
                                     <p:column footerText="#{ordenCompraDetalleBean.montoIgv}" style="text-align:right" />
                                 </p:row>
                                 <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="Total :" />
-                                    <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" style="text-align:right"/>
+                                    <p:column footerText="#{ordenCompraDetalleBean.montoTotal}" style="text-align:right"/>
                                 </p:row>
                             </p:columnGroup>
 
                         </p:dataTable>                        
 
                     </h:form> 
-                    <h:form id="formTool2" style="padding-top: 5px">
+                    <h:form id="formTool2" style="padding-top: 5px" target="_blank">
                         <p:toolbar>
                             <f:facet name="right">
-                                <p:commandButton value="Autorizar" icon="ui-icon-document" 
+                                <p:commandButton value="Imprimir" icon="ui-icon-print" 
+                                                 action="#{ordenCompraDetalleBean.visualizarOrdenCompra()}" ajax="false"/>
+                                <p:commandButton value="Autorizar" icon="ui-icon-check" 
                                                  actionListener="#{ordenCompraDetalleBean.autorizarOrdenCompra()}" update=":msg"/>
                             </f:facet>
                         </p:toolbar>

@@ -83,5 +83,9 @@ public class OrdenCompraSeguimientoBl extends AbstractBL<OrdenCompraSeguimiento>
     public List<OrdenCompraSeguimiento> listarxEstado(long idestado1, long idestado2) {
         return dao.listarxEstado(idestado1, idestado2);
     }
+
+    public OrdenCompraSeguimiento buscarxidCompra(long idordencompra) {
+        return dao.buscarxidCompra(idordencompra);
+    }
     
 }

@@ -22,7 +22,7 @@
                         </p:toolbar>
                     </h:form>
 
-                    <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -45,16 +45,16 @@
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
-                            <p:column headerText="V/Compra" style="width: 80px">
-                                <h:outputText value="#{item.valorCompra}"/>
+                            <p:column headerText="P/Compra" style="width: 80px; text-align: right">
+                                <h:outputText value="#{item.precioCompra}"/>
                             </p:column>
 
-                            <p:column headerText="Descuento" style="width: 80px">
+                            <p:column headerText="Descuento" style="width: 80px; text-align: right">
                                 <h:outputText value="#{item.montoDescitem}"/>
                             </p:column>
 
-                            <p:column headerText="Sub Total" style="width: 80px">
-                                <h:outputText value="#{item.cantidad*item.valorCompra}"/>
+                            <p:column headerText="Sub Total" style="width: 80px; text-align: right">
+                                <h:outputText value="#{item.cantidad*item.precioCompra}"/>
                             </p:column>
                             
                             <p:column style="width:30px;text-align: center">
@@ -63,15 +63,15 @@
                                     <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />
                                 </p:commandButton>                            
                             </p:column>
-
+                            <!--
                             <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
                                                  immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraDetalleBean.ordenCompraDetalle}" />           
+                                    <f:setPropertyActionListener value="{item}" target="{ordenCompraDetalleBean.ordenCompraDetalle}" />           
                                 </p:commandButton>                                                        
 
                             </p:column>
-
+                            -->
                             <p:columnGroup type="footer">
                                 <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="Valor Bruto :" />
@@ -94,8 +94,13 @@
                                     <p:column colspan="2"/>
                                 </p:row>
                                 <p:row>
+                                    <p:column colspan="6" style="text-align:right" footerText="Sub Total :" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.montoSubtotal}" style="text-align:right" />
+                                    <p:column colspan="2"/>
+                                </p:row>
+                                <p:row>
                                     <p:column colspan="6" style="text-align:right" footerText="Total :" />
-                                    <p:column footerText="#{ordenCompraDetalleBean.totalTemp}" style="text-align:right" />
+                                    <p:column footerText="#{ordenCompraDetalleBean.montoTotal}" style="text-align:right" />
                                     <p:column colspan="2"/>
                                 </p:row>
                             </p:columnGroup>
@@ -112,43 +117,6 @@
                         </p:toolbar>
                     </h:form>
 
-                    <!--
-                    <h:form>
-                        <div class="ui-g">
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <h:outputLabel for="txf1" value="Valor Bruto :" style="text-align: right"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="txf1" label="Valor Bruto" readonly="true" style="width: 70px"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <h:outputLabel for="txf2" value="Dscto :" style="text-align: right"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="txf2" label="Dscto" readonly="true" style="width: 70px"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <h:outputLabel for="txf3" value="Valor Neto :" style="text-align: right"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="txf3" label="Valor Neto" readonly="true" style="width: 70px"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <h:outputLabel for="txf4" value="IGV :" style="text-align: right"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="txf4" label="IGV" readonly="true" style="width: 70px"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <h:outputLabel for="txf5" value="Total :" style="text-align: right"/>
-                            </div>
-                            <div class="ui-g-12 ui-sm-6 ui-md-3 ui-lg-1">
-                                <p:inputText id="txf5" label="Total" readonly="true" style="width: 70px"/>
-                            </div>
-                        </div>
-                    </h:form>
-                    -->
-
                     <h:form id="formNew">
                         <p:dialog header="Registrar Orden de Compra Detalle" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="true">
@@ -160,34 +128,30 @@
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
-                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfUnidadMedida"/>
+                                    <p:ajax listener="#{ordenCompraDetalleBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
+                                </p:selectOneMenu>
+                                
+                                
+                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
+                                    <f:selectItem itemLabel="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
 
-
-                                <h:outputLabel for="txfUnidadMedida" value="Unidad de Medida :"/>
-                                <p:inputText id="txfUnidadMedida" label="Unidad de Medida" readonly="true"
-                                             value="#{ordenCompraDetalleBean.producto.unidadMedida.descripcion}"/>
-
-                                <h:outputLabel for="txfCompraxUnidad" value=" Compra por unidad ?:"/>
-                                <p:selectBooleanCheckbox  id="txfCompraxUnidad" value="#{ordenCompraDetalleBean.compraxUnidad}">
-                                    <p:ajax update="txfTotalproductos" listener="#{ordenCompraDetalleBean.setIsCompraUnitaria()}" />
-                                </p:selectBooleanCheckbox>
-
+                                <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
+                                <p:selectOneMenu id="txfUnidadIngreso" value="#{ordenCompraDetalleBean.equivalencia.idequivalencia}" 
+                                                 filter="true" filterMatchMode="contains" style="width: 118px">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="#{ordenCompraDetalleBean.selectOneItemsEquivalencia}"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
                                 <p:inputText id="txfCantidad" label="Cantidad" required="true"
                                              value="#{ordenCompraDetalleBean.ordenCompraDetalle.cantidad}">
-                                    <p:ajax event="keyup" update="txfTotalproductos" listener="#{ordenCompraDetalleBean.calcularTotalProductos()}"/>
                                 </p:inputText>
-
-                                <h:outputLabel for="txfTotalproductos" value="Total productos :"/>
-                                <p:inputText id="txfTotalproductos" label="Cantidad"
-                                             value="#{ordenCompraDetalleBean.totalProductos}"/>
 
                                 <h:outputLabel for="txfLote" value="Lote:"/>
                                 <p:inputText id="txfLote" label="Lote"
                                              value="#{ordenCompraDetalleBean.ordenCompraDetalle.lote}"/>
-
-
 
                                 <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
                                 <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"

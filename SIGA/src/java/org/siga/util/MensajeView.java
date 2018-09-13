@@ -18,6 +18,16 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "Orden Compra Aprobada");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public static void seEncuentraAutorizada() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "La Orden de Compra ya esta Aprobada");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public static void noImprimeOrdenCompra() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "La Orden de Compra no se encuentra Aprobada");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     String mensaje = "";
 
     public static void registroCorrecto() {

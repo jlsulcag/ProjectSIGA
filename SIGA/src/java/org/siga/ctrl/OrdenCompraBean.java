@@ -122,7 +122,7 @@ public class OrdenCompraBean {
         valorBruto = new BigDecimal("0.00");
         totalDescuento = new BigDecimal("0.00");
         valorNeto = new BigDecimal("0.00");
-        montoSubtotal = BigDecimal.ZERO;
+        montoSubtotal = new BigDecimal("0.00");
         montoIgv = new BigDecimal("0.00");
         ordenCompra.setSolicitante("");
         ordenCompra.setFormaPago("");
@@ -172,7 +172,7 @@ public class OrdenCompraBean {
                     res3 = registrarOrdenCompraSeguimiento(ordenCompra);
                     if (res3 == 0) {
                         MensajeView.registroCorrecto();
-                        //inicio();
+                        inicio();
                     } else {
                         MensajeView.registroError();
                     }
@@ -294,6 +294,7 @@ public class OrdenCompraBean {
             FacesContext.getCurrentInstance().responseComplete();
 
             inicio();
+            
 
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -302,6 +303,7 @@ public class OrdenCompraBean {
         } catch (SQLException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //return "Reportes?faces-redirect=true";
     }
 
     public void inicioNew() {
@@ -488,12 +490,12 @@ public class OrdenCompraBean {
     }
 
     private void calcularTotal(List<OrdenCompraDetalle> listOrdenCompraDetalles) {
-        montoTotal = new BigDecimal(BigInteger.ZERO);
-        valorBruto = new BigDecimal(BigInteger.ZERO);
-        totalDescuento = new BigDecimal(BigInteger.ZERO);
-        valorNeto = new BigDecimal(BigInteger.ZERO);
-        montoIgv = new BigDecimal(BigInteger.ZERO);
-        montoSubtotal = BigDecimal.ZERO;
+        montoTotal = new BigDecimal("0.00");
+        valorBruto = new BigDecimal("0.00");
+        totalDescuento = new BigDecimal("0.00");
+        valorNeto = new BigDecimal("0.00");
+        montoIgv = new BigDecimal("0.00");
+        montoSubtotal = new BigDecimal("0.00");
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda

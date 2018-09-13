@@ -57,6 +57,9 @@ public class MisOrdenesCompraBean {
     
     @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
     private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
+    
+    @ManagedProperty(value = "#{ordenCompraSeguimiento}")
+    private OrdenCompraSeguimiento ordenCompraSeguimiento;
 
     private List<SelectItem> selectOneItemsOrdenCompra;
     private List<OrdenCompra> listOrdenCompra;
@@ -64,7 +67,6 @@ public class MisOrdenesCompraBean {
     private List<OrdenCompraSeguimiento> listOrdenCompraSeguimiento;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
     private long res;
-    private boolean compraxUnidad;
     private double totalProductos;
     //variables temporales
     private BigDecimal subTotalItem;
@@ -83,6 +85,11 @@ public class MisOrdenesCompraBean {
         inicio();
         listOrdenCompra = new ArrayList<>();
         for (OrdenCompra obj : ordenCompraBl.listarFull("")) {
+            //Para cada orden compra retornar su ultimo estado del historial
+            ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(obj.getIdordencompra());
+            if(ordenCompraSeguimiento!= null){
+                obj.setEstado(ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion());
+            }
             listOrdenCompra.add(obj);
         }
         setListOrdenCompra(listOrdenCompra);
@@ -94,24 +101,11 @@ public class MisOrdenesCompraBean {
         //System.out.println("Fraccion ---- "+producto.getFraccion());
     }
 
-    public void setIsCompraUnitaria() {
-        setCompraxUnidad(compraxUnidad);
-        if (ordenCompraDetalle.getCantidad() > 0) {
-            calcularTotalProductos();
-        }
-    }
 
     public void calcularTotalProductos() {
         //Obtener su fraccion para determinar la cantidad total
         if (producto != null) {
-            equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getIdproducto(), producto.getIdproducto());
-            if (equivalencia != null) {
-                if (compraxUnidad) {
-                    setTotalProductos(ordenCompraDetalle.getCantidad());
-                } else {
-                    setTotalProductos(ordenCompraDetalle.getCantidad() * equivalencia.getFactor());
-                }
-            }
+            equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getIdproducto(), producto.getIdproducto());            
         }
 
     }
@@ -140,11 +134,6 @@ public class MisOrdenesCompraBean {
         temp.setPrecioCompra(ordenCompraDetalle.getPrecioCompra());
         temp.setDesc1(ordenCompraDetalle.getDesc1());
         temp.setDesc2(ordenCompraDetalle.getDesc2());
-        if (compraxUnidad) {
-            temp.setUnidadMedida("UNIDAD");
-        } else {
-            temp.setUnidadMedida(producto.getUnidadMedida().getDescripcion());
-        }
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
         temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
@@ -384,14 +373,6 @@ public class MisOrdenesCompraBean {
         this.listOrdenCompraDetalles = listOrdenCompraDetalles;
     }
 
-    public boolean isCompraxUnidad() {
-        return compraxUnidad;
-    }
-
-    public void setCompraxUnidad(boolean compraxUnidad) {
-        this.compraxUnidad = compraxUnidad;
-    }
-
     public double getTotalProductos() {
         return totalProductos;
     }
@@ -494,6 +475,14 @@ public class MisOrdenesCompraBean {
 
     public void setSelectedOrdenCompra(OrdenCompra selectedOrdenCompra) {
         this.selectedOrdenCompra = selectedOrdenCompra;
+    }
+
+    public OrdenCompraSeguimiento getOrdenCompraSeguimiento() {
+        return ordenCompraSeguimiento;
+    }
+
+    public void setOrdenCompraSeguimiento(OrdenCompraSeguimiento ordenCompraSeguimiento) {
+        this.ordenCompraSeguimiento = ordenCompraSeguimiento;
     }
 
 }
