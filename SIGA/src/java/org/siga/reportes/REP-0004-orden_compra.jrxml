@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
-	<property name="ireport.zoom" value="1.4641000000000162"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="132"/>
+	<property name="ireport.zoom" value="1.7715610000000206"/>
+	<property name="ireport.x" value="158"/>
+	<property name="ireport.y" value="239"/>
 	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -21,7 +21,7 @@ ocd.observacion,
 prod.descripcion,
 ocd.cantidad,
 ocd.unidad_medida,
-ocd.valor_compra,
+ocd.precio_compra,
 oc.valor_bruto,
 oc.monto_desc,
 oc.valor_neto,
@@ -51,7 +51,7 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 	<field name="descripcion" class="java.lang.String"/>
 	<field name="cantidad" class="java.lang.Integer"/>
 	<field name="unidad_medida" class="java.lang.String"/>
-	<field name="valor_compra" class="java.math.BigDecimal"/>
+	<field name="precio_compra" class="java.math.BigDecimal"/>
 	<field name="valor_bruto" class="java.math.BigDecimal"/>
 	<field name="monto_desc" class="java.math.BigDecimal"/>
 	<field name="valor_neto" class="java.math.BigDecimal"/>
@@ -60,7 +60,7 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="fecha" class="java.sql.Date"/>
 	<variable name="SUM" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+		<variableExpression><![CDATA[$F{cantidad}*$F{precio_compra}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -284,7 +284,7 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[V/Compra]]></text>
+				<text><![CDATA[Precio Compra]]></text>
 			</staticText>
 			<line>
 				<reportElement uuid="d5bbe058-c166-477a-8c2a-31d5afd23d73" x="5" y="16" width="545" height="1" forecolor="#000000"/>
@@ -311,7 +311,7 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="13" splitType="Stretch">
 			<line>
 				<reportElement uuid="40adf0cc-65ed-4209-84aa-cf50b1f0a957" x="20" y="1" width="1" height="10"/>
 				<graphicElement>
@@ -337,12 +337,13 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{numeroincre}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement uuid="db49596f-702a-4c85-b8ac-45c6a10d9381" x="367" y="0" width="115" height="11"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valor_compra}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{precio_compra}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement uuid="faf17b94-575c-435f-8d96-677e9f4a476a" x="4" y="1" width="1" height="10"/>
@@ -350,12 +351,13 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement uuid="46d458df-4d18-4291-a935-83a6542a5cce" x="483" y="1" width="67" height="11"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cantidad}*$F{precio_compra}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="5fbb4607-a2cd-4ecd-8383-d508263e3579" x="300" y="0" width="66" height="11"/>
@@ -462,7 +464,13 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="79" splitType="Stretch">
+		<band height="77" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="ad28fff2-59d8-44a2-8b8c-246ddc9d3646" x="405" y="0" width="146" height="77"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
 			<staticText>
 				<reportElement uuid="bb56d8ef-3cbc-40b6-af25-d8e7e7ff33e8" mode="Transparent" x="404" y="57" width="65" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -471,7 +479,7 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 				</textElement>
 				<text><![CDATA[Total S/.]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="#,##0.00">
 				<reportElement uuid="b9e12ed4-8fd2-4b2a-8785-fc66a5a9ad36" mode="Transparent" x="469" y="57" width="81" height="19"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true" isItalic="true" isUnderline="false"/>
@@ -480,58 +488,62 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 				<textFieldExpression><![CDATA[$V{SUM}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f279f452-a4af-4593-8bd0-4048f7dfcf9a" mode="Opaque" x="404" y="12" width="65" height="11" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="f279f452-a4af-4593-8bd0-4048f7dfcf9a" mode="Opaque" x="406" y="12" width="64" height="11" forecolor="#006699"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descuento]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement uuid="40521da3-c6a1-4b8c-879e-2e4040e06a20" x="469" y="12" width="82" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto_desc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="812672a4-7cd1-4168-a563-d78824eac397" mode="Opaque" x="404" y="24" width="65" height="10" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="812672a4-7cd1-4168-a563-d78824eac397" mode="Opaque" x="406" y="24" width="64" height="10" forecolor="#006699"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[V/Neto]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="#,##0.00">
 				<reportElement uuid="d2e3b22d-35d8-4454-bc2e-c3aaad3cfa13" x="469" y="23" width="82" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valor_neto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="67cba806-3c55-4982-b54d-7651dc38f000" mode="Opaque" x="404" y="35" width="65" height="10" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="67cba806-3c55-4982-b54d-7651dc38f000" mode="Opaque" x="406" y="35" width="64" height="10" forecolor="#006699"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Igv]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="#,##0.00">
 				<reportElement uuid="8f778110-7c64-4a3b-8efe-cf8c1fc49b81" x="469" y="34" width="82" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto_igv}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="a13e12ef-3527-4dae-b702-16ffb2992b0f" mode="Opaque" x="404" y="1" width="65" height="10" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="a13e12ef-3527-4dae-b702-16ffb2992b0f" mode="Opaque" x="406" y="1" width="64" height="10" forecolor="#006699"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[V/Bruto]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement uuid="f6324b35-6c1a-43bf-8ffd-e8963444e2e4" x="469" y="1" width="82" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valor_bruto}]]></textFieldExpression>
 			</textField>
@@ -554,32 +566,27 @@ where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="8e749aa8-7c00-461a-b536-af096a2224ba" x="404" y="45" width="145" height="1"/>
+				<reportElement uuid="8e749aa8-7c00-461a-b536-af096a2224ba" x="405" y="45" width="144" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
-			<line>
-				<reportElement uuid="230b2a92-4f83-40cb-b625-53266c3e5d6e" x="404" y="76" width="145" height="1"/>
-				<graphicElement>
-					<pen lineStyle="Dotted"/>
-				</graphicElement>
-			</line>
-			<textField pattern="">
+			<textField pattern="#,##0.00">
 				<reportElement uuid="49da51fb-2575-470f-8feb-1d20454f9bb0" x="469" y="45" width="82" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
+					<paragraph rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto_subtotal}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="d49d05a2-2b3a-4028-b10b-19cf3c345ca1" x="404" y="55" width="145" height="1"/>
+				<reportElement uuid="d49d05a2-2b3a-4028-b10b-19cf3c345ca1" x="405" y="55" width="144" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="a61c25cd-41b0-41a1-9937-9dde8143bf69" mode="Opaque" x="404" y="46" width="65" height="10" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="a61c25cd-41b0-41a1-9937-9dde8143bf69" mode="Opaque" x="406" y="46" width="64" height="9" forecolor="#006699"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7" isBold="true"/>
 				</textElement>
