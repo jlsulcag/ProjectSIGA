@@ -62,7 +62,8 @@
         <property name="formaPago" type="string">
             <column name="forma_pago" length="100" not-null="true" />
         </property>
-        <property name="montoSubtotal" type="big_decimal">
+        
+        <property name="montoSubTotal" type="big_decimal">
             <column name="monto_subtotal" precision="10" not-null="true" default="0.00"/>
         </property>
         
