@@ -143,8 +143,8 @@
                                 <h:outputText value="#{item.unidadMedida}"/>
                             </p:column>
 
-                            <p:column headerText="V/Compra" style="width: 80px; text-align: right">
-                                <h:outputText value="#{item.valorCompra}"/>
+                            <p:column headerText="P/Compra" style="width: 80px; text-align: right">
+                                <h:outputText value="#{item.precioCompra}"/>
                             </p:column>
 
                             <p:column headerText="Descuento" style="width: 80px; text-align: right">
@@ -173,7 +173,7 @@
                                     <p:column footerText="#{ordenCompraBean.montoIgv}" style="text-align:right" />
                                 </p:row>
                                 <p:row>
-                                    <p:column colspan="6" style="text-align:right" footerText="Total :"/>
+                                    <p:column colspan="6" style="text-align:right" footerText="Sub Total :"/>
                                     <p:column footerText="#{ordenCompraBean.montoSubtotal}" style="text-align:right" />
                                 </p:row>
                                 <p:row>

@@ -1,6 +1,5 @@
 package org.siga.ctrl;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -74,15 +73,15 @@ public class OrdenCompraBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     @ManagedProperty(value = "#{ordenCompraSeguimiento}")
     private OrdenCompraSeguimiento ordenCompraSeguimiento;
     @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
     private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
-    
+
     @ManagedProperty(value = "#{ordenCompraEstadosBl}")
     private OrdenCompraEstadosBl ordenCompraEstadosBl;
-    
+
     @ManagedProperty(value = "#{unidadMedida}")
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
@@ -123,6 +122,7 @@ public class OrdenCompraBean {
         valorBruto = new BigDecimal("0.00");
         totalDescuento = new BigDecimal("0.00");
         valorNeto = new BigDecimal("0.00");
+        montoSubtotal = BigDecimal.ZERO;
         montoIgv = new BigDecimal("0.00");
         ordenCompra.setSolicitante("");
         ordenCompra.setFormaPago("");
@@ -153,7 +153,7 @@ public class OrdenCompraBean {
         //
         temp.setUnidadMedida(unidadMedida.getDescripcion());
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
-        temp.setSubTotal((ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
+        temp.setSubTotal((ordenCompraDetalle.getPrecioCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
@@ -192,6 +192,7 @@ public class OrdenCompraBean {
         ordenCompra.setMontoDesc(totalDescuento);
         ordenCompra.setValorNeto(valorNeto);
         ordenCompra.setMontoIgv(montoIgv);
+        ordenCompra.setMontoSubTotal(montoSubtotal);
         ordenCompra.setMontoTotal(montoTotal);
         ordenCompra.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
         ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
@@ -199,7 +200,7 @@ public class OrdenCompraBean {
         return ordenCompraBl.registrar(ordenCompra);
 
     }
-    
+
     public void generarOrdenCompra(OrdenCompra oc) {
         try {
             //Mapa de parametros
@@ -208,33 +209,29 @@ public class OrdenCompraBean {
             //
             //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
             DsConexion ds = new DsConexion();
-            System.out.println("orden de compra ID = ........ "+oc.getIdordencompra());
+            System.out.println("orden de compra ID = ........ " + oc.getIdordencompra());
             parametro.put("ID_ORDEN_COMPRA", oc.getIdordencompra());
             File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("REP-0003-orden_compra.jasper"));
-            
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametro, ((SessionImpl)ds.getSession()).connection());
-            
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametro, ((SessionImpl) ds.getSession()).connection());
+
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
             ServletOutputStream stream = response.getOutputStream();
-            
+
             JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-            
-            
+
             stream.flush();
             stream.close();
             FacesContext.getCurrentInstance().responseComplete();
-            
-            
-            
-            
+
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void descargarOrdenCompra() {
         try {
             //Mapa de parametros
@@ -244,63 +241,60 @@ public class OrdenCompraBean {
             File file = new File("C:\\Reportes\\REP-0003-orden_compra.jasper");
             DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
             //DsConexion ds = new DsConexion();
-            System.out.println("orden de compra ID = ........ "+ordenCompra.getIdordencompra());
+            System.out.println("orden de compra ID = ........ " + ordenCompra.getIdordencompra());
             parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
             //File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("REP-0003-orden_compra.jasper"));
-            System.out.println("path......... "+file.getPath());
+            System.out.println("path......... " + file.getPath());
             JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
-            
+
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
             ServletOutputStream stream = response.getOutputStream();
-            
+
             JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-            
-            
+
             stream.flush();
             stream.close();
             FacesContext.getCurrentInstance().responseComplete();
-            
+
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void visualizarOrdenCompra() {
         try {
             Map<String, Object> parametro = new HashMap<>();
-            
+
             File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
             DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
-            
-            
+
             parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
             byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
-            
+
             String fileType = "inline";
-            String reportSetting = fileType+"; filename=OrdenCompra.pdf";
-            
-            
+            String reportSetting = fileType + "; filename=OrdenCompra.pdf";
+
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.setContentType("application/pdf");
             response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
             response.setHeader("Cache-Control", "private");
             response.setContentLength(documento.length);
-            
+
             ServletOutputStream stream = response.getOutputStream();
             stream.write(documento, 0, documento.length);
             stream.flush();
             stream.close();
-            
+
             ds.getConeccion().close();
-            
+
             FacesContext.getCurrentInstance().responseComplete();
-            
+
             inicio();
-            
+
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -309,7 +303,6 @@ public class OrdenCompraBean {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     public void inicioNew() {
         ordenCompraDetalle.setIdordencompradetalle(0);
@@ -325,7 +318,7 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setDesc2(0);
         producto.setUnidadMedida(new UnidadMedida());
     }
-    
+
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
         if (producto != null) {
@@ -340,7 +333,7 @@ public class OrdenCompraBean {
         }
 
     }
-    
+
     private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         setListEquivalencias(getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida));
         return getListEquivalencias();
@@ -393,7 +386,7 @@ public class OrdenCompraBean {
     public void buscarProducto() {
         producto = productoBl.buscarxID(ordenCompraDetalle.getProducto().getIdproducto());
     }
-   
+
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
     }
@@ -500,20 +493,22 @@ public class OrdenCompraBean {
         totalDescuento = new BigDecimal(BigInteger.ZERO);
         valorNeto = new BigDecimal(BigInteger.ZERO);
         montoIgv = new BigDecimal(BigInteger.ZERO);
-        setMontoSubtotal(new BigDecimal(BigInteger.ZERO));
+        montoSubtotal = BigDecimal.ZERO;
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
-            valorBruto = (valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
+            //Los calculos se estan realizando  teniendo en cuenta el precio de compra
+            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
             totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
             valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
-            setMontoSubtotal(valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
-            montoIgv = valorBruto.subtract(getMontoSubtotal()).setScale(2, RoundingMode.HALF_UP);
+            montoSubtotal = valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+            montoIgv = valorNeto.subtract(montoSubtotal).setScale(2, RoundingMode.HALF_UP);
+            
             if (httpSession.getAttribute("idOrdenCompra") != null) {
                 montoTotal = montoTotal.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             } else {
                 //totalTemp = montoTotal.add(obj.getSubTotal());//Antes
-                montoTotal = valorNeto;                
+                montoTotal = valorNeto;
             }
 
         }
@@ -589,7 +584,7 @@ public class OrdenCompraBean {
         ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(1));
         ordenCompraSeguimiento.setFecha(new Date());
         ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
-        ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra())+1);
+        ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
         ordenCompraSeguimiento.setObservacion("");
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if (sesionUser.getAttribute("idUsuario") != null) {
@@ -597,7 +592,7 @@ public class OrdenCompraBean {
         } else {
             ordenCompraSeguimiento.setIdUser(0);
         }
-        return ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);        
+        return ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
     }
 
     public OrdenCompraSeguimiento getOrdenCompraSeguimiento() {
