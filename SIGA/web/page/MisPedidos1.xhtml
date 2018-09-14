@@ -29,6 +29,12 @@
                         <p:column headerText="ID" style="width: 15px">
                             <h:outputText value="#{item.idpedido}"/>
                         </p:column>
+                        
+                        <p:column headerText="Fecha" style="width: 80px">
+                            <h:outputText value="#{item.fechaPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                            </h:outputText>
+                        </p:column>
 
                         <p:column headerText="Dependencia">
                             <h:outputText value="#{item.dependencia.descripcion}"/>
@@ -38,9 +44,8 @@
                             <h:outputText value="#{item.numero}"/>
                         </p:column>
 
-                        <p:column headerText="Fecha" style="width: 80px">
-                            <h:outputText value="#{item.fechaPedido}">
-                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                        <p:column headerText="Estado" style="width: 100px">
+                            <h:outputText value="#{item.estado}">
                             </h:outputText>
                         </p:column>
 

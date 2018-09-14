@@ -50,7 +50,7 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
 
     @Override
     public PedidoSeguimiento buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -83,6 +83,12 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
     public List<PedidoSeguimiento> listarxEstado(long idestado) {
         String hql = "from PedidoSeguimiento a where a.numero = (select max(b.numero) from PedidoSeguimiento b where b.pedido.idpedido = a.pedido.idpedido) and a.estado.idpedidoestados = "+idestado;
         return listar(hql);
+    }
+
+    public PedidoSeguimiento buscarxidPedido(long idpedido) {
+        String hql = "from PedidoSeguimiento a left join fetch a.pedido b left join fetch a.estado c "
+                + "where b.idpedido = "+idpedido+" and a.numero = (select max(d.numero) from PedidoSeguimiento d where d.pedido.idpedido = "+idpedido+")";
+        return buscar(hql);
     }
     
 }

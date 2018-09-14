@@ -1,5 +1,6 @@
 package org.siga.ctrl;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -15,8 +16,10 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
+import org.siga.be.PedidoSeguimiento;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
+import org.siga.bl.PedidoSeguimientoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -39,6 +42,12 @@ public class MisPedidosBean {
     private PedidoDetalleBl pedidoDetalleBl;
     @ManagedProperty(value = "#{pedidoDetalle}")
     private PedidoDetalle pedidoDetalle;
+    
+    @ManagedProperty(value = "#{pedidoSeguimiento}")
+    private PedidoSeguimiento pedidoSeguimiento;
+    @ManagedProperty(value = "#{pedidoSeguimientoBl}")
+    private PedidoSeguimientoBl pedidoSeguimientoBl;
+    
     private List<PedidoDetalle> listPedidoDetalle;
     
     private long res;
@@ -48,7 +57,15 @@ public class MisPedidosBean {
 
     @PostConstruct
     public void listarPedidos() {
-        setListPedidos(pedidoBl.listarFull(""));
+        listPedidos = new LinkedList<>();
+        for (Pedido obj : pedidoBl.listarFull("")) {
+            pedidoSeguimiento = pedidoSeguimientoBl.buscarxidPedido(obj.getIdpedido());
+            if(pedidoSeguimiento != null){
+                obj.setEstado(pedidoSeguimiento.getEstado().getDescripcion());
+            }
+            listPedidos.add(obj);
+        }
+        setListPedidos(listPedidos);
     }
 
     public void onRowSelect(SelectEvent event) {
@@ -198,6 +215,22 @@ public class MisPedidosBean {
 
     public void setSelectPedidoDetalle(PedidoDetalle selectPedidoDetalle) {
         this.selectPedidoDetalle = selectPedidoDetalle;
+    }
+
+    public PedidoSeguimiento getPedidoSeguimiento() {
+        return pedidoSeguimiento;
+    }
+
+    public void setPedidoSeguimiento(PedidoSeguimiento pedidoSeguimiento) {
+        this.pedidoSeguimiento = pedidoSeguimiento;
+    }
+
+    public PedidoSeguimientoBl getPedidoSeguimientoBl() {
+        return pedidoSeguimientoBl;
+    }
+
+    public void setPedidoSeguimientoBl(PedidoSeguimientoBl pedidoSeguimientoBl) {
+        this.pedidoSeguimientoBl = pedidoSeguimientoBl;
     }
 
 }

@@ -63,7 +63,7 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
 
     @Override
     public PedidoSeguimiento buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -78,6 +78,10 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
 
     public List<PedidoSeguimiento> listarxEstado(long idestado) {
         return dao.listarxEstado(idestado);
+    }
+
+    public PedidoSeguimiento buscarxidPedido(long idpedido) {
+        return dao.buscarxidPedido(idpedido);
     }
     
     
