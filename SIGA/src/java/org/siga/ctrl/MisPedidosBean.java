@@ -17,9 +17,14 @@ import org.primefaces.event.UnselectEvent;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
 import org.siga.be.PedidoSeguimiento;
+import org.siga.be.Rol;
+import org.siga.be.Usuario;
+import org.siga.be.UsuarioRol;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PedidoSeguimientoBl;
+import org.siga.bl.RolBl;
+import org.siga.bl.UsuarioRolBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -42,14 +47,14 @@ public class MisPedidosBean {
     private PedidoDetalleBl pedidoDetalleBl;
     @ManagedProperty(value = "#{pedidoDetalle}")
     private PedidoDetalle pedidoDetalle;
-    
+
     @ManagedProperty(value = "#{pedidoSeguimiento}")
     private PedidoSeguimiento pedidoSeguimiento;
     @ManagedProperty(value = "#{pedidoSeguimientoBl}")
     private PedidoSeguimientoBl pedidoSeguimientoBl;
-    
+
     private List<PedidoDetalle> listPedidoDetalle;
-    
+
     private long res;
 
     public MisPedidosBean() {
@@ -60,7 +65,7 @@ public class MisPedidosBean {
         listPedidos = new LinkedList<>();
         for (Pedido obj : pedidoBl.listarFull("")) {
             pedidoSeguimiento = pedidoSeguimientoBl.buscarxidPedido(obj.getIdpedido());
-            if(pedidoSeguimiento != null){
+            if (pedidoSeguimiento != null) {
                 obj.setEstado(pedidoSeguimiento.getEstado().getDescripcion());
             }
             listPedidos.add(obj);
@@ -82,8 +87,8 @@ public class MisPedidosBean {
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ingreso al metodo ..........");
         selectedPedido = new Pedido();
-        selectedPedido.setIdpedido(((Pedido)event.getObject()).getIdpedido());
-        System.out.println("id pedido .. "+selectedPedido.getIdpedido());
+        selectedPedido.setIdpedido(((Pedido) event.getObject()).getIdpedido());
+        System.out.println("id pedido .. " + selectedPedido.getIdpedido());
 //        temp = new PedidoDetalle();
 //        temp = (PedidoDetalle) event.getObject();
 //        System.out.println("pedido detalle ... "+temp.getCantidadSolicitada());
@@ -95,18 +100,28 @@ public class MisPedidosBean {
 //        System.out.println("Estado modificado..." + getPedidoDetalle().getIdpedidodetalle());
 //        temp2.setCantidadAutorizada(getPedidoDetalle().getCantidadAutorizada());
     }
-    
+
     public String redirigir() {
+        String url = "";
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idPedido", getPedido().getIdpedido());
-        return "PedidoDetalle?faces-redirect=true";
+        switch (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol").toString()) {
+            case "ALMACENERO":
+                url = "PedidoDetalle";
+                break;
+            case "JEFE LOGISTICA":
+                url = "PedidoDetalleAdmin";
+                break;
+        }
+        return url + "?faces-redirect=true";
+
     }
-    
-    public void actualizarPedidoDetalle(){
+
+    public void actualizarPedidoDetalle() {
         PedidoDetalle temp = new PedidoDetalle();
         temp = buscarId();
         temp.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
-       
+
         res = pedidoDetalleBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
@@ -115,7 +130,7 @@ public class MisPedidosBean {
         }
         //listar();
     }
-    
+
     private PedidoDetalle buscarId() {
         return pedidoDetalleBl.buscarxID(pedidoDetalle.getIdpedidodetalle());
     }
@@ -134,7 +149,7 @@ public class MisPedidosBean {
 
         System.out.println("valor nuevo........... " + newValue);
 
-         //pedidoDetalle = (PedidoDetalle) ((DataTable)event.getComponent()).getRowData();
+        //pedidoDetalle = (PedidoDetalle) ((DataTable)event.getComponent()).getRowData();
         System.out.println("valor nuevo........... " + pedidoDetalle.getCantidadAutorizada());
 
         //System.out.println("valor nuevo........... "+selectPedidoDetalle.getCantidadAutorizada());

@@ -26,6 +26,10 @@ public class AlmacenProducto  implements java.io.Serializable {
      
 
     public AlmacenProducto() {
+        this.idalmacenproducto = 0;
+        this.almacen = new Almacen();
+        this.producto = new Producto();
+        
     }
 
 	

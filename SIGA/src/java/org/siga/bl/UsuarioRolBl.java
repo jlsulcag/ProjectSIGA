@@ -63,7 +63,7 @@ public class UsuarioRolBl extends AbstractBL<UsuarioRol>{
 
     @Override
     public UsuarioRol buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -72,6 +72,7 @@ public class UsuarioRolBl extends AbstractBL<UsuarioRol>{
     }
 
     public UsuarioRol buscarxIdUsuario(long idusuario) {
+        System.out.println("id .........."+idusuario);
         return dao.buscarxIdUsuario(idusuario);
     }
 }

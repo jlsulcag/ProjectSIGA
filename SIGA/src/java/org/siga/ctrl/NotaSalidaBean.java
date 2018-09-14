@@ -252,9 +252,9 @@ public class NotaSalidaBean {
     }
 
     public long registrarNotaSalida() {
-
+        Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
         notaSalida.setFechaReg(new Date());
-        notaSalida.setIdUserReg(0);
+        notaSalida.setIdUserReg(user!=null?user.getIdusuario():0);
         //determinar almacen oprien y destino de  acuerdo a que tipo de salida es: DISTRIBUCION SIMPLE O  CON NOTA DE PEDIDO
         if (this.getNotaSalida().getPedido().getIdpedido() > 0) {
             //Obtener todos los datos del pedido para determinar  origen y destino 

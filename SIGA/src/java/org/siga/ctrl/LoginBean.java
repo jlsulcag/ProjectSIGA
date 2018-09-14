@@ -68,6 +68,7 @@ public class LoginBean {
             //sesionUser.setAttribute("usuario", temp);
             //Obtenemos los datos del usuario vinculado al rol
             usuarioRol = usuarioRolBl.buscarxIdUsuario(temp.getIdusuario());
+            
             //Obtenemos el rol del usuario que ingresa, para establecer las paginas de acceso
             //rol = rolBl.buscar("" + getUsuarioRol().getRol().getIdrol());
             if (usuarioRol.getIdusuariorol() > 0) {
@@ -79,7 +80,9 @@ public class LoginBean {
                         //FacesContext.getCurrentInstance().addMessage(null, message);
                         //rol = rolBl.buscar(usuarioRol.getRol().getIdrol());
                         if (usuarioRol.getRol().getIdrol() > 0) {
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rol", usuarioRol.getRol().getRol().trim());
                             switch (usuarioRol.getRol().getRol().trim()) {
+                                
                                 case "ALMACENERO":
                                     url = "/page/InicioAlmacen";
                                     break;

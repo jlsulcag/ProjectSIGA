@@ -56,6 +56,7 @@ public class UsuarioRolDao extends AbstractDA<UsuarioRol>{
 
     public UsuarioRol buscarxIdUsuario(long idusuario) {
         String hql = "from UsuarioRol a left join fetch a.usuario b left join fetch a.rol c where b.idusuario = "+idusuario;
+        System.out.println("        .... aqioiii");
         return buscar(hql);
     }
     

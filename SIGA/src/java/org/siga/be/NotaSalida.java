@@ -15,7 +15,7 @@ public class NotaSalida  implements java.io.Serializable {
      private int numero;
      private Date fechaReg;
      private Pedido pedido;
-     private int idUserReg;
+     private long idUserReg;
      private TipoMovimiento tipomovimiento;
      private Almacen almacenOrigen;
      private Almacen almacenDestino;
@@ -65,11 +65,11 @@ public class NotaSalida  implements java.io.Serializable {
         this.pedido = pedido;
     }
 
-    public int getIdUserReg() {
+    public long getIdUserReg() {
         return idUserReg;
     }
 
-    public void setIdUserReg(int idUserReg) {
+    public void setIdUserReg(long idUserReg) {
         this.idUserReg = idUserReg;
     }
 

@@ -56,5 +56,6 @@ public class RolDao extends AbstractDA<Rol>{
     public Rol buscarxIdRol(long idrol) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }

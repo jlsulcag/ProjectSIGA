@@ -26,7 +26,7 @@
         <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
             <column name="id_almacen_destino" />
         </many-to-one> 
-        <property name="idUserReg" type="int">
+        <property name="idUserReg" type="long">
             <column name="id_user_reg" not-null="true" />
         </property>       
         <property name="observacion" type="string">
