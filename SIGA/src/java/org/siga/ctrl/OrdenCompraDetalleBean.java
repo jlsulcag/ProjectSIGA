@@ -65,12 +65,12 @@ public class OrdenCompraDetalleBean {
 
     @ManagedProperty(value = "#{ordenCompraEstadosBl}")
     private OrdenCompraEstadosBl ordenCompraEstadosBl;
-    
+
     @ManagedProperty(value = "#{equivalencia}")
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     private List<SelectItem> selectOneItemsEquivalencia;
     private List<Equivalencia> listEquivalencias;
 
@@ -201,10 +201,10 @@ public class OrdenCompraDetalleBean {
             calcularTotal(getListOrdenCompraDetalles());
         }
         /*
-        else {
-            setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
-        }
-        */
+         else {
+         setListOrdenCompraDetalles(ordenCompraDetalleBl.listarFull());
+         }
+         */
     }
 
     public void actualizar() {
@@ -251,33 +251,33 @@ public class OrdenCompraDetalleBean {
                 if (ordenCompra != null) {
                     ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
                     if (ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
-                    
-                    Map<String, Object> parametro = new HashMap<>();
 
-                    File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
-                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                        Map<String, Object> parametro = new HashMap<>();
 
-                    parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
-                    byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+                        File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
+                        DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
 
-                    String fileType = "inline";
-                    String reportSetting = fileType + "; filename=OrdenCompra.pdf";
+                        parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+                        byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
 
-                    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-                    response.setContentType("application/pdf");
-                    response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
-                    response.setHeader("Cache-Control", "private");
-                    response.setContentLength(documento.length);
+                        String fileType = "inline";
+                        String reportSetting = fileType + "; filename=OrdenCompra.pdf";
 
-                    ServletOutputStream stream = response.getOutputStream();
-                    stream.write(documento, 0, documento.length);
-                    stream.flush();
-                    stream.close();
+                        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                        response.setContentType("application/pdf");
+                        response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
+                        response.setHeader("Cache-Control", "private");
+                        response.setContentLength(documento.length);
 
-                    ds.getConeccion().close();
+                        ServletOutputStream stream = response.getOutputStream();
+                        stream.write(documento, 0, documento.length);
+                        stream.flush();
+                        stream.close();
 
-                    FacesContext.getCurrentInstance().responseComplete();
-                    }else{
+                        ds.getConeccion().close();
+
+                        FacesContext.getCurrentInstance().responseComplete();
+                    } else {
                         MensajeView.noImprimeOrdenCompra();
                     }
                 }
@@ -536,7 +536,7 @@ public class OrdenCompraDetalleBean {
             return null;
         }
     }
-    
+
     private List<Equivalencia> listarEquivalenciaxUnidadMedida(long idunidadmedida) {
         setListEquivalencias(getEquivalenciaBl().listarEquivalenciaxUnidadMedida(idunidadmedida));
         return getListEquivalencias();

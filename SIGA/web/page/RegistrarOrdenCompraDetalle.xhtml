@@ -108,10 +108,12 @@
                         </p:dataTable>                        
 
                     </h:form> 
-                    <h:form id="formTool2" style="padding-top: 5px">
+                    <h:form id="formTool2" style="padding-top: 5px" target="_blank">
                         <p:toolbar>
                             <f:facet name="right">
-                                <p:commandButton value="Guardar" icon="ui-icon-document" 
+                                <p:commandButton value="Imprimir" icon="ui-icon-print" 
+                                                 action="#{ordenCompraDetalleBean.visualizarOrdenCompra()}" ajax="false"/>
+                                <p:commandButton value="Actualizar" icon="ui-icon-disk" 
                                                  actionListener="#{ordenCompraDetalleBean.registrar()}"/>
                             </f:facet>
                         </p:toolbar>
