@@ -10,10 +10,12 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
+import org.siga.be.Equivalencia;
 import org.siga.be.NotaEntrada;
 import org.siga.be.Producto;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.AlmacenProductoBl;
+import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaIngresoBl;
 
 /**
@@ -36,9 +38,15 @@ public class StockBean {
     @ManagedProperty(value = "#{almacenBl}")
     private AlmacenBl almacenBl;
     
+    @ManagedProperty(value = "#{equivalencia}")
+    private Equivalencia equivalencia;
+    @ManagedProperty(value = "#{equivalenciaBl}")
+    private EquivalenciaBl equivalenciaBl;
+    
     private List<AlmacenProducto> listInventario;
     private String txtBusqueda;
     private List<SelectItem> selectOneItemsAlmacenProducto;
+    private long idalmacenTemp;
     public StockBean() {
         
     }
@@ -52,8 +60,15 @@ public class StockBean {
         }        
     }
     
-    private void listarProductos(long idalmacen) {
-        setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));
+    public void listarProductos(long idalmacen) {
+        listInventario = new LinkedList<>();
+        for (AlmacenProducto obj : almacenProductoBl.listarXAlmacen(idalmacen)) {
+            almacenProducto = obj;
+            equivalencia = equivalenciaBl.buscaxId(almacenProducto.getIdEquivalencia());
+            almacenProducto.setStockReal(almacenProducto.getStockActual()/equivalencia.getFactor());
+            listInventario.add(almacenProducto);
+        }
+        //setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));
     }
     
     private Almacen defaultAlmacen() {
@@ -143,7 +158,31 @@ public class StockBean {
     }
     
     public void listarRef(){
-        setListInventario(almacenProductoBl.listarRef(txtBusqueda.toUpperCase(), almacenProducto.getAlmacen().getIdalmacen()));
+        setListInventario(almacenProductoBl.listarRef(txtBusqueda.toUpperCase(), getIdalmacenTemp()));
+    }
+
+    public long getIdalmacenTemp() {
+        return idalmacenTemp;
+    }
+
+    public void setIdalmacenTemp(long idalmacenTemp) {
+        this.idalmacenTemp = idalmacenTemp;
+    }
+
+    public Equivalencia getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Equivalencia equivalencia) {
+        this.equivalencia = equivalencia;
+    }
+
+    public EquivalenciaBl getEquivalenciaBl() {
+        return equivalenciaBl;
+    }
+
+    public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
+        this.equivalenciaBl = equivalenciaBl;
     }
     
 }

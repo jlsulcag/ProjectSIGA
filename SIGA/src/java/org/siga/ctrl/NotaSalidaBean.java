@@ -1,10 +1,15 @@
 package org.siga.ctrl;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -12,7 +17,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
@@ -43,6 +52,7 @@ import org.siga.bl.PersonaBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
 import org.siga.bl.UsuarioBl;
+import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -254,13 +264,15 @@ public class NotaSalidaBean {
     public long registrarNotaSalida() {
         Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
         notaSalida.setFechaReg(new Date());
-        notaSalida.setIdUserReg(user!=null?user.getIdusuario():0);
+        notaSalida.setIdUserReg(user != null ? user.getIdusuario() : 0);
         //determinar almacen oprien y destino de  acuerdo a que tipo de salida es: DISTRIBUCION SIMPLE O  CON NOTA DE PEDIDO
         if (this.getNotaSalida().getPedido().getIdpedido() > 0) {
-            //Obtener todos los datos del pedido para determinar  origen y destino 
-            Pedido temp = new Pedido();
+            //Obtener todos los datos del pedido para determinar  origen y destino             
             pedido = pedidoBl.buscarXid(this.getNotaSalida().getPedido().getIdpedido());
-            if (temp != null) {
+
+            if (pedido != null) {
+                HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                httpSession.setAttribute("pedidoactual", pedido);
                 notaSalida.setPedido(pedido);
                 notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
                 notaSalida.setDependencia(pedido.getDependencia());
@@ -281,34 +293,6 @@ public class NotaSalidaBean {
         //return notaSalida.getIdnotasalida();
     }
 
-    /*metodo funcionando  para  nota salida distribucion
-     public long registrarNotaSalida() {
-
-     notaSalida.setFechaReg(new Date());
-     notaSalida.setIdUserReg(0);
-     //notaSalida.setAlmacenOrigen(notaSalida.getAlmacenOrigen().getIdalmacen() > 0 ? notaSalida.getAlmacenOrigen() : null);
-     notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
-     notaSalida.setAlmacenDestino(notaSalida.getAlmacenDestino().getIdalmacen() > 0 ? notaSalida.getAlmacenDestino() : null);
-     notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
-     notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
-     notaSalida.setDocRef(notaSalida.getDocRef().toUpperCase());
-
-     //Obtener todos los datos del pedido para determinar  origen y destino 
-     pedido = pedidoBl.buscarXid(notaSalida.getPedido().getIdpedido());
-
-     if (pedido != null && pedido.getIdpedido() > 0) {
-     notaSalida.setPedido(notaSalida.getPedido());
-     notaSalida.setAlmacenOrigen(pedido.getDependencia().getAlmacen());
-     notaSalida.setAlmacenDestino(pedido.getAlmacenDestino());
-     } else {
-     notaSalida.setPedido(null);
-     }
-
-     return notaSalidaBl.registrar(notaSalida);
-
-     //return notaSalida.getIdnotasalida();
-     }
-     */
     private long registrarNotaSalidaDetalle() {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
@@ -337,6 +321,7 @@ public class NotaSalidaBean {
         listNotaSalidas.clear();
         //obtener la lista con los detalles del pedido
         long id = notaSalida.getPedido().getIdpedido();
+        //FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("pedido", notaSalida.getPedido());
         listPedidoDetalle = pedidoDetalleBl.listarxIdPedido(id);
         for (PedidoDetalle obj : listPedidoDetalle) {
             NotaSalidaDetalle nsd = new NotaSalidaDetalle();
@@ -381,6 +366,55 @@ public class NotaSalidaBean {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+    public void visualizarPedido() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        pedido = (Pedido) httpSession.getAttribute("pedidoactual");
+        try {
+            if (pedido != null) {
+                pedidoSeguimiento = pedidoSeguimientoBl.buscarxidPedido(pedido.getIdpedido());
+                if (pedidoSeguimiento.getEstado().getDescripcion().trim().equals("ATENDIDO")) {
+
+                    Map<String, Object> parametro = new HashMap<>();
+
+                    File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
+                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+
+                    parametro.put("ID_PEDIDO", pedido.getIdpedido());
+                    byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+
+                    String fileType = "inline";
+                    String reportSetting = fileType + "; filename=Pedido.pdf";
+
+                    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                    response.setContentType("application/pdf");
+                    response.addHeader("Content-disposition", "inline; filename=Pedido.pdf");
+                    response.setHeader("Cache-Control", "private");
+                    response.setContentLength(documento.length);
+
+                    ServletOutputStream stream = response.getOutputStream();
+                    stream.write(documento, 0, documento.length);
+                    stream.flush();
+                    stream.close();
+
+                    ds.getConeccion().close();
+
+                    FacesContext.getCurrentInstance().responseComplete();
+                } else {
+                    MensajeView.noImprimeOrdenCompra();
+                }
+            }
+
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return "Reportes?faces-redirect=true";
+    }
+
     /*
      public int actualizarStock(){
      System.out.println("pedido    "+notaSalida);
@@ -409,7 +443,6 @@ public class NotaSalidaBean {
      return res;
      }
      */
-
     public NotaSalida getNotaSalida() {
         return notaSalida;
     }

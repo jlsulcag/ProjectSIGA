@@ -432,6 +432,7 @@ public class NotaIngresoBean {
         almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
         almacenProducto.setValorCompraUnitario(obj.getValorCompra());
         almacenProducto.setIdEquivalencia(obj.getIdEquivalencia());
+        almacenProducto.setFechaIngreso(new Date());
         //registrar el orden de ingreso para cumplir con FIFO
         int numOrden = almacenProductoBl.obtenerUltimoNumero(obj.getProducto().getIdproducto());
         almacenProducto.setOrdenIngreso(numOrden + 1);

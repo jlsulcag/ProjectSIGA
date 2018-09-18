@@ -72,7 +72,6 @@ public class UsuarioRolBl extends AbstractBL<UsuarioRol>{
     }
 
     public UsuarioRol buscarxIdUsuario(long idusuario) {
-        System.out.println("id .........."+idusuario);
         return dao.buscarxIdUsuario(idusuario);
     }
 }

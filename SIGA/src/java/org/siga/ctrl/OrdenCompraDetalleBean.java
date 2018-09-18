@@ -292,22 +292,7 @@ public class OrdenCompraDetalleBean {
         }
         //return "Reportes?faces-redirect=true";
     }
-    /*
-     public void setIsCompraUnitaria() {
-     setCompraxUnidad(compraxUnidad);
-     if (ordenCompraDetalle.getCantidad() > 0) {
-     calcularTotalProductos();
-     }
-     }
-
-     public void calcularTotalProductos() {
-     if (compraxUnidad) {
-     setTotalProductos(ordenCompraDetalle.getCantidad());
-     } else {
-     setTotalProductos(ordenCompraDetalle.getCantidad() * producto.getFraccion());
-     }
-     }
-     */
+    
 
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));

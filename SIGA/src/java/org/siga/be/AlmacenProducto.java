@@ -23,6 +23,8 @@ public class AlmacenProducto  implements java.io.Serializable {
      private int ordenIngreso;
      private String unidad;
      private long idEquivalencia;
+     private Date fechaIngreso;
+     private double stockReal;
      
 
     public AlmacenProducto() {
@@ -122,6 +124,22 @@ public class AlmacenProducto  implements java.io.Serializable {
 
     public void setIdEquivalencia(long idEquivalencia) {
         this.idEquivalencia = idEquivalencia;
+    }
+
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public double getStockReal() {
+        return stockReal;
+    }
+
+    public void setStockReal(double stockReal) {
+        this.stockReal = stockReal;
     }
 
 

@@ -13,7 +13,7 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Nota de Salida">
-                    <h:form id="formP">
+                    <h:form id="formP" target="_blank">
                         <div class="ui-fluid">
                             <div class="ui-g">
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -105,7 +105,7 @@
                             <p:column headerText="Cant Solicitada" style="width: 80px">
                                 <h:outputText id="txfCantSolicitada" value="#{item.cantSolicitada}" />
                             </p:column>
-                            
+
                             <p:column headerText="Cant Autorizada" style="width: 80px">
                                 <h:outputText id="txfCantAutorizada" value="#{item.cantSalida}" />
                             </p:column>
@@ -119,6 +119,16 @@
                             </p:column>
 
                         </p:dataTable>
+                    </h:form>
+
+                    <h:form target="_blank" style="margin-top: 5px">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Imprimir" icon="ui-icon-print" 
+                                                 action="#{notaSalidaBean.visualizarPedido()}" ajax="false"/>
+                            </f:facet>
+                        </p:toolbar>
+
                     </h:form>
 
                 </p:panel>

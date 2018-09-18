@@ -161,7 +161,6 @@ public class MisOrdenesCompraBean {
             valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             totalDescuento = totalDescuento.add(obj.getMontoDescitem());
             valorNeto = valorBruto.subtract(totalDescuento);
-            System.out.println("valor total = " + valorNeto);
             montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
             if (httpSession.getAttribute("idOrdenCompra") != null) {
                 totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
