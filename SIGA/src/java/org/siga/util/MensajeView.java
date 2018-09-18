@@ -28,6 +28,11 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "La Orden de Compra no se encuentra Aprobada");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public static void autorizarPedido() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue aprobado");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     String mensaje = "";
 
     public static void registroCorrecto() {

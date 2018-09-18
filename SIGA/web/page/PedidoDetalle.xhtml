@@ -11,9 +11,12 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Detalle del Pedido">
                     <h:form id="formPedido">
+                        <!--
                         <p:growl id="msg" showDetail="true"/>
+                        -->
                         <p:dataTable id="dtPedidos" value="#{pedidoDetalleBean.listPedidoDetalle}" var="item" editable="true"
                                      >
                             <f:facet name="header">Detalle del Pedido</f:facet>
@@ -21,8 +24,8 @@
                             <p:ajax event="rowSelect" listener="{pedidoDetalleBean.onRowSelect}"/>
                             <p:ajax event="cellEdit" listener="{pedidoDetalleBean.onCellEdit}" />
                             -->
-                            <p:ajax event="rowEdit" listener="#{pedidoDetalleBean.onRowEdit}" />
-                            <p:ajax event="rowEditCancel" listener="#{pedidoDetalleBean.onRowCancel}"/>
+                            <p:ajax event="rowEdit" listener="#{pedidoDetalleBean.onRowEdit}" update=":msg, dtPedidos"/>
+                            <p:ajax event="rowEditCancel" listener="#{pedidoDetalleBean.onRowCancel}" update=":msg"/>
 
                             <p:column headerText="ID" style="width: 15px">
                                 <h:outputText value="#{item.idpedidodetalle}"/>
@@ -40,6 +43,9 @@
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{item.cantidadAutorizada}"/></f:facet>
                                     <f:facet name="input"><p:inputText value="#{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                    <!--
+                                    <f:facet name="input"><p:inputText value="{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                    -->
                                 </p:cellEditor>
                             </p:column>
 

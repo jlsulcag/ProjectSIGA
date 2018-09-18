@@ -539,7 +539,6 @@ public class NotaSalidaBean {
             temp.setStockActual(temp.getStockActual() + cantidad);
         }
         almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
-        System.out.println("stok que queda luego de atender el pedido .... " + temp.getStockActual());
         almacenProductoBl.actualizar(temp);
     }
 

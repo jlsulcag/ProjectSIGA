@@ -52,14 +52,6 @@
                             </p:column>
 
                         </p:dataTable>
-                        <!--
-                        <p:contextMenu for="dtPedidos" widgetVar="cMenu">   
-                            <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('cellPedidos').showCellEditor();
-                                return false;"/>  
-                            <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
-                        </p:contextMenu> 
-                        -->
-
                     </h:form>
                 </p:panel>
 
@@ -89,8 +81,8 @@
                     </div>
                     <p:toolbar>                        
                         <f:facet name="right">
-                            <p:commandButton id="btnReg" value="Guardar" title="Guardar" 
-                                             actionListener="#{pedidoDetalleBean.actualizarPedido()}" update=":formP"/>
+                            <p:commandButton id="btnReg" value="Autorizar" title="Autorizar" 
+                                             actionListener="#{pedidoDetalleBean.actualizarPedido()}" update=":formP :"/>
                         </f:facet>
                     </p:toolbar>
 

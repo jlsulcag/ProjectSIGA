@@ -20,6 +20,7 @@ import org.siga.be.Producto;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PedidoSeguimientoBl;
+import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
 @ManagedBean
@@ -72,8 +73,6 @@ public class PedidoDetalleBean {
         if (httpSession.getAttribute("idPedido") != null) {
             setListPedidoDetalle(pedidoDetalleBl.listarxIdPedido(Long.parseLong(httpSession.getAttribute("idPedido").toString())));
         }
-        //calcularTotal(getListOrdenCompraDetalles());
-        //setListOrdenCompraDetalles(ordenCompraDetalleBl.listar());
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -81,12 +80,13 @@ public class PedidoDetalleBean {
         selectedPedidoDetalle = pedidoDetalleBl.buscarxID(((PedidoDetalle) event.getObject()).getIdpedidodetalle());
         selectedPedidoDetalle.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
         selectedPedidoDetalle.setCantidadSurtida(pedidoDetalle.getCantidadAutorizada());
-
         pedidoDetalleBl.actualizar(selectedPedidoDetalle);
+        listar();
 
     }
 
     public void actualizarPedido() {
+        long res = -1;
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if (httpSession.getAttribute("idPedido") != null) {  
             pedido = pedidoBl.buscarXid(Long.parseLong(httpSession.getAttribute("idPedido").toString()));
@@ -101,8 +101,11 @@ public class PedidoDetalleBean {
             } else {
                 pedidoSeguimiento.setIdUser(0);
             }
-            pedidoSeguimientoBl.registrar(pedidoSeguimiento);
+            res = pedidoSeguimientoBl.registrar(pedidoSeguimiento);            
             limpiar();
+            if(res==0){
+                MensajeView.autorizarPedido();
+            }
         }
     }
     

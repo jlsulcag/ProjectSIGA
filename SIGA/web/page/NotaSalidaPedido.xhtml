@@ -90,11 +90,11 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">Productos</f:facet>
-
-                            <p:ajax event="rowEdit" listener="#{notaIngresoBean.onRowEdit}"  update=":msg"/>
-                            <p:ajax event="rowEditCancel" listener="#{notaIngresoBean.onRowCancel}"  update=":msg"/>
-
-                            <p:column headerText="ID">
+                            <!--
+                            <p:ajax event="rowEdit" listener="{notaIngresoBean.onRowEdit}"  update=":msg"/>
+                            <p:ajax event="rowEditCancel" listener="{notaIngresoBean.onRowCancel}"  update=":msg"/>
+                            -->
+                            <p:column headerText="ID" style="width: 30px">
                                 <h:outputText value="#{item.idnotasalidadetalle}"/>
                             </p:column>
 
@@ -102,33 +102,20 @@
                                 <h:outputText value="#{item.producto.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cant">
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText id="txfCantIngresoInput" value="#{item.cantSolicitada}" /></f:facet>
-                                    <f:facet name="input">
-                                        <p:inputText id="txtCantIngreso" label="Cantidad" value="#{item.cantSolicitada}"/>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column headerText="Cant Solicitada" style="width: 80px">
+                                <h:outputText id="txfCantSolicitada" value="#{item.cantSolicitada}" />
+                            </p:column>
+                            
+                            <p:column headerText="Cant Autorizada" style="width: 80px">
+                                <h:outputText id="txfCantAutorizada" value="#{item.cantSalida}" />
                             </p:column>
 
-                            <p:column headerText="Unidad">
+                            <p:column headerText="Unidad" style="width: 100px">
                                 <h:outputText value="#{item.unidadmedida}"/>
                             </p:column>
 
-                            <p:column headerText="Stock">
+                            <p:column headerText="Stock" style="width: 80px">
                                 <h:outputText value="#{item.stock}"/>
-                            </p:column>
-                            
-                            <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
-                                <p:rowEditor />
-                            </p:column>
-
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnDelete" update=""  
-                                                 immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#" target="#" />           
-                                </p:commandButton>                                                        
-
                             </p:column>
 
                         </p:dataTable>
