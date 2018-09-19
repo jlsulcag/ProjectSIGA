@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -292,7 +293,63 @@ public class OrdenCompraDetalleBean {
         }
         //return "Reportes?faces-redirect=true";
     }
-    
+
+    public void visualizarOrdenCompra2() {
+        try {
+            HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            if (httpSession.getAttribute("idOrdenCompra") != null) {
+                ordenCompra = ordenCompraBl.buscar(Long.parseLong(httpSession.getAttribute("idOrdenCompra").toString()));
+                if (ordenCompra != null) {
+                    ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
+                    if (ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
+
+                        Map<String, Object> parametro = new HashMap<>();
+
+                        //File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
+                        
+                        FacesContext fc = FacesContext.getCurrentInstance();
+                        ServletContext sc = (ServletContext) fc.getExternalContext().getContext();
+                        String realPath = sc.getRealPath("/");
+                        System.out.println("Real Path ... "+realPath);
+                        
+                        File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0004-orden_compra.jasper"));
+                        DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+
+                        parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+                        byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+
+                        String fileType = "inline";
+                        String reportSetting = fileType + "; filename=OrdenCompra_"+ordenCompra.getNumero()+".pdf";
+
+                        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                        response.setContentType("application/pdf");
+                        response.addHeader("Content-disposition", "inline; filename=OrdenCompra_"+ordenCompra.getNumero()+".pdf");
+                        response.setHeader("Cache-Control", "private");
+                        response.setContentLength(documento.length);
+
+                        ServletOutputStream stream = response.getOutputStream();
+                        stream.write(documento, 0, documento.length);
+                        stream.flush();
+                        stream.close();
+
+                        ds.getConeccion().close();
+
+                        FacesContext.getCurrentInstance().responseComplete();
+                    } else {
+                        MensajeView.noImprimeOrdenCompra();
+                    }
+                }
+            }
+
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return "Reportes?faces-redirect=true";
+    }
 
     public void calcularPrecioCompra() {
         ordenCompraDetalle.setPrecioCompra(ordenCompraDetalle.getValorCompra().add((ordenCompraDetalle.getValorCompra().multiply(MensajeView.IGV))).setScale(2, RoundingMode.HALF_UP));
