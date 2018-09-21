@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select rownumber() as NumeroIncre,
+		<![CDATA[select row_number() OVER () as NumeroIncre,
 oc.numero,
 pro.razon_social,
 oc.fecha_entrega,
@@ -31,7 +31,7 @@ on oc.id_almacendestino = al.idalmacen inner join producto prod
 on ocd.id_producto = prod.idproducto
 where oc.numero=$P{ID_ORDEN_COMPRA}]]>
 	</queryString>
-	<field name="numeroincre" class="java.lang.Integer"/>
+	<field name="numeroincre" class="java.lang.Long"/>
 	<field name="numero" class="java.lang.Long"/>
 	<field name="razon_social" class="java.lang.String"/>
 	<field name="fecha_entrega" class="java.sql.Date"/>
