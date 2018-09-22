@@ -19,12 +19,11 @@ public class OrdenCompra  implements java.io.Serializable {
      private long numero;
      private Date fecha;
      private Date fechaEntrega;
-     private String lugarEntrega;
      private String observacion;
      private String horaRegistro;
      private Proveedor proveedor;
      private Date fechaRecepcion;
-     private Almacen almacenDestino;
+     private Almacen almacenSolicitante;
      private int idMoneda;
      private String docReferencia;
      private BigDecimal valorBruto;
@@ -32,10 +31,10 @@ public class OrdenCompra  implements java.io.Serializable {
      private BigDecimal valorNeto;
      private BigDecimal montoIgv;
      private BigDecimal montoTotal;
-     private String solicitante;
      private String formaPago;
      private BigDecimal montoSubTotal;
      private String estado;
+     private String penalidadIncumplimiento;
      
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
@@ -44,7 +43,7 @@ public class OrdenCompra  implements java.io.Serializable {
     public OrdenCompra() {
         this.idordencompra = 0;
         this.proveedor = new Proveedor();
-        this.almacenDestino = new Almacen();
+        this.almacenSolicitante = new Almacen();
     }
 
 	
@@ -77,13 +76,6 @@ public class OrdenCompra  implements java.io.Serializable {
     
     public void setFechaEntrega(Date fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
-    }
-    public String getLugarEntrega() {
-        return this.lugarEntrega;
-    }
-    
-    public void setLugarEntrega(String lugarEntrega) {
-        this.lugarEntrega = lugarEntrega;
     }
     public String getObservacion() {
         return this.observacion;
@@ -187,20 +179,12 @@ public class OrdenCompra  implements java.io.Serializable {
         this.montoTotal = montoTotal;
     }
 
-    public Almacen getAlmacenDestino() {
-        return almacenDestino;
+    public Almacen getAlmacenSolicitante() {
+        return almacenSolicitante;
     }
 
-    public void setAlmacenDestino(Almacen almacenDestino) {
-        this.almacenDestino = almacenDestino;
-    }
-
-    public String getSolicitante() {
-        return solicitante;
-    }
-
-    public void setSolicitante(String solicitante) {
-        this.solicitante = solicitante;
+    public void setAlmacenSolicitante(Almacen almacenSolicitante) {
+        this.almacenSolicitante = almacenSolicitante;
     }
 
     public String getFormaPago() {
@@ -233,6 +217,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getPenalidadIncumplimiento() {
+        return penalidadIncumplimiento;
+    }
+
+    public void setPenalidadIncumplimiento(String penalidadIncumplimiento) {
+        this.penalidadIncumplimiento = penalidadIncumplimiento;
     }
 
 

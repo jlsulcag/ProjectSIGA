@@ -198,8 +198,7 @@ public class MisOrdenesCompraBean {
         temp = buscarId();
         temp.setFecha(ordenCompra.getFecha());
         temp.setProveedor(ordenCompra.getProveedor());
-        temp.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
-        temp.setAlmacenDestino(ordenCompra.getAlmacenDestino());
+        temp.setAlmacenSolicitante(ordenCompra.getAlmacenSolicitante());
         temp. setFormaPago(ordenCompra.getFormaPago().toUpperCase());
         temp.setFechaEntrega(ordenCompra.getFechaEntrega());
         temp.setDocReferencia(ordenCompra.getDocReferencia().toUpperCase());
@@ -218,7 +217,7 @@ public class MisOrdenesCompraBean {
         ordenCompra.setNumero(maxNumero() + 1);
         ordenCompra.setFecha(new Date());
         ordenCompra.setFechaEntrega(null);
-        ordenCompra.setLugarEntrega("");
+        ordenCompra.setPenalidadIncumplimiento("");
         ordenCompra.setObservacion("");
         //invalidarSesionOrdenCompra();
     }

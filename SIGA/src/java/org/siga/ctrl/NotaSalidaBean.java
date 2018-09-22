@@ -378,7 +378,7 @@ public class NotaSalidaBean {
                     Map<String, Object> parametro = new HashMap<>();
 
                     //File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
-                    File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0005-nota-pedido.jasper"));
+                    File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0005-nota-salida.jasper"));
                     DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
 
                     parametro.put("ID_PEDIDO", pedido.getIdpedido());

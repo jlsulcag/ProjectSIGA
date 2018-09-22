@@ -38,13 +38,13 @@
                                 <h:outputText value="#{item.proveedor.razonSocial}"/>
                             </p:column>
 
-                            <p:column headerText="Fecha Entrega" style="width: 60px">
+                            <p:column headerText="Plazo de Entrega" style="width: 60px">
                                 <h:outputText value="#{item.fechaEntrega}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Estado" style="width: 80px">
+                            <p:column headerText="Estado" style="width: 120px">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 
@@ -88,12 +88,9 @@
                                     <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                 </p:selectOneMenu>
 
-                                <h:outputLabel for="txfSolicitanteEdit" value="Solicitante :"/>
-                                <p:inputText id="txfSolicitanteEdit" label="Solicitante" 
-                                             value="#{misOrdenesCompraBean.ordenCompra.solicitante}" />
 
                                 <h:outputLabel for="cbxAlmacenEdit" value="Almacen Destino :"/>
-                                <p:selectOneMenu id="cbxAlmacenEdit" value="#{misOrdenesCompraBean.ordenCompra.almacenDestino.idalmacen}" 
+                                <p:selectOneMenu id="cbxAlmacenEdit" value="#{misOrdenesCompraBean.ordenCompra.almacenSolicitante.idalmacen}" 
                                                  filter="true" filterMatchMode="contains" required="true" label="Almacen destino">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItems value="#{almacenBean.selectOneItemsAlmacen}"/>

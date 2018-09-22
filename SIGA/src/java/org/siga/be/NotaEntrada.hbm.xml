@@ -29,7 +29,7 @@
         <property name="nroDocref" type="string">
             <column name="nro_docref" length="20" />
         </property>
-        <property name="idUserReg" type="int">
+        <property name="idUserReg" type="long">
             <column name="id_user_reg" not-null="true" />
         </property>
         <property name="observacion" type="string">

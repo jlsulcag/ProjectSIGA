@@ -73,7 +73,7 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada>{
 
     @Override
     public NotaEntrada buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
@@ -105,5 +105,12 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada>{
             t.rollback();
             return 0;
         }
+    }
+
+    
+
+    public NotaEntrada buscarxIdCompra(long idordencompra) {
+        String hql = "from NotaEntrada a where a.ordenCompra.idordencompra = "+idordencompra;
+        return buscar(hql);
     }
 }

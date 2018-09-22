@@ -41,6 +41,7 @@ import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.UnidadMedida;
+import org.siga.bl.AlmacenBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
@@ -86,6 +87,11 @@ public class OrdenCompraBean {
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
     private UnidadMedidaBl unidadMedidaBl;
+    
+    @ManagedProperty(value = "#{almacen}")
+    private Almacen almacen;
+    @ManagedProperty(value = "#{almacenBl}")
+    private AlmacenBl almacenBl;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private List<SelectItem> selectOneItemsEquivalencia;
@@ -112,11 +118,11 @@ public class OrdenCompraBean {
         ordenCompra.setNumero(maxNumero() + 1);
         ordenCompra.setFecha(new Date());
         ordenCompra.setFechaEntrega(null);
-        ordenCompra.setLugarEntrega("");
+        ordenCompra.setPenalidadIncumplimiento("");
         ordenCompra.setObservacion("");
         ordenCompra.setDocReferencia("");
         ordenCompra.setProveedor(new Proveedor());
-        ordenCompra.setAlmacenDestino(new Almacen());
+        ordenCompra.setAlmacenSolicitante(new Almacen());
         listOrdenCompraDetalles.clear();
         montoTotal = new BigDecimal("0.00");
         valorBruto = new BigDecimal("0.00");
@@ -124,9 +130,9 @@ public class OrdenCompraBean {
         valorNeto = new BigDecimal("0.00");
         montoSubtotal = new BigDecimal("0.00");
         montoIgv = new BigDecimal("0.00");
-        ordenCompra.setSolicitante("");
         ordenCompra.setFormaPago("");
-        //invalidarSesionOrdenCompra();
+        almacen.setDireccion("");
+        almacen = null;
     }
 
     public long maxNumero() {
@@ -194,7 +200,6 @@ public class OrdenCompraBean {
         ordenCompra.setMontoIgv(montoIgv);
         ordenCompra.setMontoSubTotal(montoSubtotal);
         ordenCompra.setMontoTotal(montoTotal);
-        ordenCompra.setSolicitante(ordenCompra.getSolicitante().toUpperCase());
         ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
 
         return ordenCompraBl.registrar(ordenCompra);
@@ -383,6 +388,10 @@ public class OrdenCompraBean {
             MensajeView.eliminacionErronea();
         }
         listar();
+    }
+    
+    public void obtenerAlmacen(){
+        almacen = almacenBl.buscar(ordenCompra.getAlmacenSolicitante().getIdalmacen());        
     }
 
     public void buscarProducto() {
@@ -651,6 +660,22 @@ public class OrdenCompraBean {
 
     public void setMontoSubtotal(BigDecimal montoSubtotal) {
         this.montoSubtotal = montoSubtotal;
+    }
+
+    public Almacen getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
+    }
+
+    public AlmacenBl getAlmacenBl() {
+        return almacenBl;
+    }
+
+    public void setAlmacenBl(AlmacenBl almacenBl) {
+        this.almacenBl = almacenBl;
     }
 
 }

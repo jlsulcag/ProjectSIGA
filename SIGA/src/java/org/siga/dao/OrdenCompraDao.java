@@ -123,7 +123,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     }
 
     public OrdenCompra buscarXId(long idordencompra) {
-        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenDestino c where a.idordencompra = "+idordencompra;
+        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenSolicitante c where a.idordencompra = "+idordencompra;
         return buscar(hql);
     }
 

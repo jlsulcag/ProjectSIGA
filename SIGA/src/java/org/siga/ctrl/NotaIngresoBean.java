@@ -1,9 +1,16 @@
 package org.siga.ctrl;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -11,7 +18,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.primefaces.event.RowEditEvent;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
@@ -25,6 +36,7 @@ import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.UnidadMedida;
+import org.siga.be.Usuario;
 import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.KardexBl;
@@ -36,6 +48,7 @@ import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
+import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -80,16 +93,15 @@ public class NotaIngresoBean {
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
     private UnidadMedidaBl unidadMedidaBl;
-    
-    
+
     @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
     private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
     @ManagedProperty(value = "#{ordenCompraSeguimiento}")
     private OrdenCompraSeguimiento ordenCompraSeguimiento;
-    
+
     @ManagedProperty(value = "#{ordenCompraEstadosBl}")
     private OrdenCompraEstadosBl ordenCompraEstadosBl;
-    
+
     private List<Equivalencia> listEquivalencia;
     private List<SelectItem> selectOneItemsEquivalencia;
 
@@ -115,6 +127,14 @@ public class NotaIngresoBean {
             res = registrarNotaEntrada();
             //Registrar Nota Entrada Detalle
             if (res == 0) {
+                System.out.println("id ordencompra .... " + notaEntrada.getOrdenCompra().getIdordencompra());
+                notaEntrada = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
+                if (notaEntrada != null) {
+                    System.out.println("id nota entrada .... " + notaEntrada.getIdnotaentrada());
+                    HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                    httpSession.setAttribute("notaEntrada", notaEntrada);
+                }
+
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
                     cont++;
                     obj.setNotaEntrada(notaEntrada);
@@ -219,7 +239,7 @@ public class NotaIngresoBean {
 
             //buscar stock disponible en el inventario
             AlmacenProducto temp = new AlmacenProducto();
-            temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenDestino().getIdalmacen(), notaED.getProducto());
+            temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenSolicitante().getIdalmacen(), notaED.getProducto());
             if (temp == null) {
                 notaED.setCantDisponible(0);
             } else {
@@ -380,10 +400,10 @@ public class NotaIngresoBean {
         if (notaEntrada.getOrdenCompra() != null) {
             temp = ordenCompraBl.buscar(notaEntrada.getOrdenCompra().getIdordencompra());
             ordenCompraSeguimiento.setOrdenCompra(notaEntrada.getOrdenCompra());
-            System.out.println("orden compra estado "+ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion());
+            System.out.println("orden compra estado " + ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion());
             ordenCompraSeguimiento.setFecha(new Date());
             ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
-            ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(notaEntrada.getOrdenCompra().getIdordencompra())+1);
+            ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(notaEntrada.getOrdenCompra().getIdordencompra()) + 1);
             HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             if (sesionUser.getAttribute("idUsuario") != null) {
                 ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
@@ -391,7 +411,7 @@ public class NotaIngresoBean {
                 ordenCompraSeguimiento.setIdUser(0);
             }
             ordenCompraSeguimiento.setObservacion("");
-            
+
             return ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
         } else {
             return -1;
@@ -461,6 +481,7 @@ public class NotaIngresoBean {
 
     private long registrarNotaEntrada() {
         long r = -1;
+        Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
         //BUSCAR ORDEN COMPRA PARA OBTENER SU PROVEEDOR  Y ALMACEN DESTINNO REGISTRADO
         //POR ALGUNA  RAZON NO PERSISTE ESOS OBJETOS -> VERIFICAR
         OrdenCompra temp = ordenCompraBl.buscarXId(notaEntrada.getOrdenCompra().getIdordencompra());
@@ -468,23 +489,24 @@ public class NotaIngresoBean {
             if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
                 notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
                 notaEntrada.setProveedor(temp.getProveedor());
-                notaEntrada.setAlmacenDestino(temp.getAlmacenDestino());
+                notaEntrada.setAlmacenDestino(temp.getAlmacenSolicitante());
             } else {
                 notaEntrada.setOrdenCompra(null);
                 notaEntrada.setProveedor(null);
                 notaEntrada.setAlmacenDestino(null);
             }
-            notaEntrada.setIdUserReg(0);
+            notaEntrada.setIdUserReg(user != null ? user.getIdusuario() : 0);
             notaEntrada.setObservacion("");
 
             r = notaIngresoBl.registrar(notaEntrada);
         } else {
             notaEntrada.setOrdenCompra(null);
-            notaEntrada.setIdUserReg(0);
+            notaEntrada.setIdUserReg(user != null ? user.getIdusuario() : 0);
             notaEntrada.setObservacion("");
             notaEntrada.setProveedor(notaEntrada.getProveedor().getIdproveedor() > 0 ? notaEntrada.getProveedor() : null);
             r = notaIngresoBl.registrar(notaEntrada);
         }
+
         return r;
     }
 
@@ -576,6 +598,50 @@ public class NotaIngresoBean {
         kardex.setNroComprobante("");
 
         return kardexBl.registrar(kardex);
+    }
+
+    public void visualizarNotaEntrada() {
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        notaEntrada = (NotaEntrada) httpSession.getAttribute("notaEntrada");
+        System.out.println("id ne............. " + notaEntrada.getIdnotaentrada());
+        try {
+            if (notaEntrada != null) {
+
+                Map<String, Object> parametro = new HashMap<>();
+                //File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
+                File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0006-nota-entrada.jasper"));
+                DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                System.out.println("id -............. " + notaEntrada.getIdnotaentrada());
+                parametro.put("ID_ENTRADA", notaEntrada.getIdnotaentrada());
+                byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
+
+                String fileType = "inline";
+                String reportSetting = fileType + "; filename=Nota_Entrada.pdf";
+
+                HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                response.setContentType("application/pdf");
+                response.addHeader("Content-disposition", reportSetting);
+                response.setHeader("Cache-Control", "private");
+                response.setContentLength(documento.length);
+
+                ServletOutputStream stream = response.getOutputStream();
+                stream.write(documento, 0, documento.length);
+                stream.flush();
+                stream.close();
+
+                ds.getConeccion().close();
+
+                FacesContext.getCurrentInstance().responseComplete();
+
+            }
+        } catch (JRException ex) {
+            Logger.getLogger(NotaIngresoBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(NotaIngresoBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NotaIngresoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //return "Reportes?faces-redirect=true";
     }
 
     public UnidadMedida getUnidadMedida() {

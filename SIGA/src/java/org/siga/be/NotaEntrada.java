@@ -22,7 +22,7 @@ public class NotaEntrada  implements java.io.Serializable {
      private Date fechaReg;
      private Date fechaDocref;
      private String nroDocref;
-     private int idUserReg;
+     private long idUserReg;
      private String observacion;
      private String tipoIngreso;
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
@@ -78,11 +78,11 @@ public class NotaEntrada  implements java.io.Serializable {
     public void setNroDocref(String nroDocref) {
         this.nroDocref = nroDocref;
     }
-    public int getIdUserReg() {
+    public long getIdUserReg() {
         return this.idUserReg;
     }
     
-    public void setIdUserReg(int idUserReg) {
+    public void setIdUserReg(long idUserReg) {
         this.idUserReg = idUserReg;
     }
     public String getObservacion() {

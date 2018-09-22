@@ -85,4 +85,9 @@ public class NotaIngresoBl extends AbstractBL<NotaEntrada>{
     public long buscarUltimoNumero() {
         return dao.buscarUltimoNumero();
     }
+
+    
+    public NotaEntrada buscarxIdCompra(long idordencompra) {
+        return dao.buscarxIdCompra(idordencompra);
+    }
 }

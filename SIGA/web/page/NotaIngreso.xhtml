@@ -63,7 +63,7 @@
                                         <f:selectItem itemLabel="TOTAL" itemValue="5" />
                                     </p:selectOneRadio>
                                 </div>
-                                
+
                             </div>                            
                         </div> 
                         <p:toolbar>
@@ -76,7 +76,7 @@
                         </p:toolbar>
                     </h:form>                        
 
-                    <h:form id="formDataTable" style="margin-top: 10px">
+                    <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{notaIngresoBean.listNotaEntradaDetalle}" var="item" reflow="true"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -137,9 +137,16 @@
 
                     </h:form>  
 
-                    <h:form id="formTool2" style="padding-top: 5px">
+                    <h:form target="_blank" style="margin-top: 5px">
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton value="Imprimir" icon="ui-icon-print" 
+                                                 action="#{notaIngresoBean.visualizarNotaEntrada()}" ajax="false"/>
+                            </f:facet>
+                        </p:toolbar>
 
                     </h:form>
+                    
                 </p:panel>
 
             </ui:define>

@@ -1,89 +1,83 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.OrdenCompra" table="orden_compra" schema="siga" optimistic-lock="version">
-        <id name="idordencompra" type="long">
-            <column name="idordencompra" />
-            <generator class="increment" />
-        </id>
-        <many-to-one name="almacenDestino" class="org.siga.be.Almacen" fetch="select">
-            <column name="id_almacendestino" />
-        </many-to-one>
-        <many-to-one name="proveedor" class="org.siga.be.Proveedor" fetch="select">
-            <column name="id_proveedor" />
-        </many-to-one>
-        <property name="numero" type="long">
-            <column name="numero" not-null="true" />
-        </property>
-        <property name="fecha" type="date">
-            <column name="fecha" length="13" not-null="true" />
-        </property>
-        <property name="fechaEntrega" type="date">
-            <column name="fecha_entrega" length="13" not-null="true" />
-        </property>
-        <property name="lugarEntrega" type="string">
-            <column name="lugar_entrega" length="80" not-null="true" />
-        </property>
-        <property name="observacion" type="string">
-            <column name="observacion" length="240" not-null="true" />
-        </property>
-        <property name="horaRegistro" type="string">
-            <column name="hora_registro" length="30" not-null="true" />
-        </property>
-        <property name="fechaRecepcion" type="date">
-            <column name="fecha_recepcion" length="13" />
-        </property>
-        <property name="idMoneda" type="int">
-            <column name="id_moneda"  />
-        </property>
-        <property name="docReferencia" type="string">
-            <column name="doc_referencia" length="80" />
-        </property>
-        <property name="valorBruto" type="big_decimal">
-            <column name="valor_bruto" precision="18" not-null="true" default="0.00" />
-        </property>
-        <property name="montoDesc" type="big_decimal">
-            <column name="monto_desc" precision="18" not-null="true" default="0.00"/>
-        </property>
-        <property name="valorNeto" type="big_decimal">
-            <column name="valor_neto" precision="18" not-null="true" default="0.00"/>
-        </property>
-        <property name="montoIgv" type="big_decimal">
-            <column name="monto_igv" precision="18" not-null="true" default="0.00"/>
-        </property>
-        <property name="montoTotal" type="big_decimal">
-            <column name="monto_total" precision="18" not-null="true" default="0.00"/>
-        </property>
-        <property name="solicitante" type="string">
-            <column name="solicitante" length="120" not-null="true" />
-        </property>
-        <property name="formaPago" type="string">
-            <column name="forma_pago" length="100" not-null="true" />
-        </property>
-        
-        <property name="montoSubTotal" type="big_decimal">
-            <column name="monto_subtotal" precision="10" not-null="true" default="0.00"/>
-        </property>
-        
-        <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_ordencompra" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.OrdenCompraDetalle" />
-        </set>
-        <set name="notaEntradas" table="nota_entrada" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_ordencompra" />
-            </key>
-            <one-to-many class="org.siga.be.NotaEntrada" />
-        </set>
-        <set name="ordenCompraSeguimientos" table="orden_compra_seguimiento" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_ordencompra" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.OrdenCompraSeguimiento" />
-        </set>
-    </class>
+  <class name="org.siga.be.OrdenCompra" optimistic-lock="version" schema="siga" table="orden_compra">
+    <id name="idordencompra" type="long">
+      <column name="idordencompra"/>
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="org.siga.be.Almacen" fetch="select" name="almacenSolicitante">
+      <column name="id_almacensolicitante"/>
+    </many-to-one>
+    <many-to-one class="org.siga.be.Proveedor" fetch="select" name="proveedor">
+      <column name="id_proveedor"/>
+    </many-to-one>
+    <property name="numero" type="long">
+      <column name="numero" not-null="true"/>
+    </property>
+    <property name="fecha" type="date">
+      <column length="13" name="fecha" not-null="true"/>
+    </property>
+    <property name="fechaEntrega" type="date">
+      <column length="13" name="fecha_entrega" not-null="true"/>
+    </property>
+    <property name="observacion" type="string">
+      <column length="240" name="observacion" not-null="true"/>
+    </property>
+    <property name="horaRegistro" type="string">
+      <column length="30" name="hora_registro" not-null="true"/>
+    </property>
+    <property name="fechaRecepcion" type="date">
+      <column length="13" name="fecha_recepcion"/>
+    </property>
+    <property name="idMoneda" type="int">
+      <column name="id_moneda"/>
+    </property>
+    <property name="docReferencia" type="string">
+      <column length="80" name="doc_referencia"/>
+    </property>
+    <property name="valorBruto" type="big_decimal">
+      <column default="0.00" name="valor_bruto" not-null="true" precision="18"/>
+    </property>
+    <property name="montoDesc" type="big_decimal">
+      <column default="0.00" name="monto_desc" not-null="true" precision="18"/>
+    </property>
+    <property name="valorNeto" type="big_decimal">
+      <column default="0.00" name="valor_neto" not-null="true" precision="18"/>
+    </property>
+    <property name="montoIgv" type="big_decimal">
+      <column default="0.00" name="monto_igv" not-null="true" precision="18"/>
+    </property>
+    <property name="montoTotal" type="big_decimal">
+      <column default="0.00" name="monto_total" not-null="true" precision="18"/>
+    </property>
+    <property name="formaPago" type="string">
+      <column length="100" name="forma_pago" not-null="true"/>
+    </property>
+    <property name="penalidadIncumplimiento" type="string">
+      <column length="300" name="penalidad_incumplimiento" not-null="true"/>
+    </property>
+    <property name="montoSubTotal" type="big_decimal">
+      <column default="0.00" name="monto_subtotal" not-null="true" precision="10"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="ordenCompraDetalles" table="orden_compra_detalle">
+      <key>
+        <column name="id_ordencompra" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.OrdenCompraDetalle"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="notaEntradas" table="nota_entrada">
+      <key>
+        <column name="id_ordencompra"/>
+      </key>
+      <one-to-many class="org.siga.be.NotaEntrada"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="ordenCompraSeguimientos" table="orden_compra_seguimiento">
+      <key>
+        <column name="id_ordencompra" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.OrdenCompraSeguimiento"/>
+    </set>
+  </class>
 </hibernate-mapping>
