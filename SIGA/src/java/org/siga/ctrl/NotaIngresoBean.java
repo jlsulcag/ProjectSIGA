@@ -123,16 +123,15 @@ public class NotaIngresoBean {
         //validar  que el los productos esten cargados en la tabla de  detalle
         int r = -1;
         int cont = 0;
+        NotaEntrada temp = new NotaEntrada();
         if (!listNotaEntradaDetalle.isEmpty()) {
             res = registrarNotaEntrada();
             //Registrar Nota Entrada Detalle
             if (res == 0) {
-                System.out.println("id ordencompra .... " + notaEntrada.getOrdenCompra().getIdordencompra());
-                notaEntrada = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
-                if (notaEntrada != null) {
-                    System.out.println("id nota entrada .... " + notaEntrada.getIdnotaentrada());
+                temp = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
+                if (temp != null) {
                     HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-                    httpSession.setAttribute("notaEntrada", notaEntrada);
+                    httpSession.setAttribute("notaEntrada", temp);
                 }
 
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
@@ -168,7 +167,7 @@ public class NotaIngresoBean {
     public void iniciar() {
         //remover:
         //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("NotaIngresoBean");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("NotaIngresoBean", null);
+        //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("NotaIngresoBean", null);
         notaEntrada.setIdnotaentrada(0);
         notaEntrada.setOrdenCompra(new OrdenCompra());
         notaEntrada.setNumero(maxNumero() + 1);
@@ -400,7 +399,6 @@ public class NotaIngresoBean {
         if (notaEntrada.getOrdenCompra() != null) {
             temp = ordenCompraBl.buscar(notaEntrada.getOrdenCompra().getIdordencompra());
             ordenCompraSeguimiento.setOrdenCompra(notaEntrada.getOrdenCompra());
-            System.out.println("orden compra estado " + ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion());
             ordenCompraSeguimiento.setFecha(new Date());
             ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
             ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(notaEntrada.getOrdenCompra().getIdordencompra()) + 1);
@@ -601,18 +599,17 @@ public class NotaIngresoBean {
     }
 
     public void visualizarNotaEntrada() {
+        NotaEntrada temp = new NotaEntrada();
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        notaEntrada = (NotaEntrada) httpSession.getAttribute("notaEntrada");
-        System.out.println("id ne............. " + notaEntrada.getIdnotaentrada());
+        temp = (NotaEntrada) httpSession.getAttribute("notaEntrada");
         try {
-            if (notaEntrada != null) {
+            if (temp != null) {
 
                 Map<String, Object> parametro = new HashMap<>();
                 //File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
                 File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0006-nota-entrada.jasper"));
-                DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
-                System.out.println("id -............. " + notaEntrada.getIdnotaentrada());
-                parametro.put("ID_ENTRADA", notaEntrada.getIdnotaentrada());
+                DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");                
+                parametro.put("ID_ENTRADA", temp.getIdnotaentrada());
                 byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
 
                 String fileType = "inline";
