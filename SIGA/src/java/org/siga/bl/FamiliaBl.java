@@ -79,5 +79,9 @@ public class FamiliaBl extends AbstractBL<Familia>{
     public List<Familia> listarRef(String txtBusqueda) {
         return dao.listarRef(txtBusqueda);
     }
+
+    public List listarNombresFamilias() {
+        return dao.listarNombresFamilias();
+    }
     
 }

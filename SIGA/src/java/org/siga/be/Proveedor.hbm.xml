@@ -44,5 +44,11 @@
             </key>
             <one-to-many class="org.siga.be.NotaEntrada" />
         </set>
+        <set name="proveedorFamilias" table="proveedor_familia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_proveedor" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.ProveedorFamilia" />
+        </set>
     </class>
 </hibernate-mapping>

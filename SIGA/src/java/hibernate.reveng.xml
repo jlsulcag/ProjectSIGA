@@ -35,4 +35,5 @@
     <table-filter match-name="orden_compra_estados"/>
     <table-filter match-name="orden_compra_seguimiento"/>
     <table-filter match-name="menu"/>
+    <table-filter match-name="proveedor_familia"/>
 </hibernate-reverse-engineering>

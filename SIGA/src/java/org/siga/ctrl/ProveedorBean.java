@@ -9,8 +9,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import org.siga.be.Familia;
 import org.siga.be.Proveedor;
+import org.siga.be.ProveedorFamilia;
 import org.siga.bl.ProveedorBl;
+import org.siga.bl.ProveedorFamiliaBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -22,10 +25,17 @@ public class ProveedorBean {
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
     
+    @ManagedProperty(value = "#{proveedorFamilia}")
+    private ProveedorFamilia proveedorFamilia;
+    @ManagedProperty(value = "#{proveedorFamiliaBl}")
+    private ProveedorFamiliaBl proveedorFamiliaBl;
+    
     private List<Proveedor> listProveedores;
     private List<SelectItem> selectOneItemsProveedores;
     private String txtBusqueda;
     private long res;
+    //private Object[] selectedFamilias;
+    private List listFamilia;
             
     public ProveedorBean() {
     }
@@ -42,12 +52,27 @@ public class ProveedorBean {
         proveedor.setFechaReg(new Date());
         res = proveedorBl.registrar(proveedor);
         if(res == 0){
+//            if(!listFamilia.isEmpty()){
+//                registrarFamiliaProveedor(listFamilia, proveedor);
+//            }            
             MensajeView.registroCorrecto();
         }else{
             MensajeView.registroError();
         }
         listar();
         
+    }
+    
+    public void registrarFamiliaProveedor(List<Familia> list, Proveedor proveedor){
+        for (Familia familia : list) {
+            System.out.println("tamañp de la lista .. "+list.size());
+            System.out.println("id familia 1..... "+familia.getIdfamilia());
+            proveedorFamilia.setFamilia(familia);
+            proveedorFamilia.setProveedor(proveedor);
+            proveedorFamilia.setEstado("ACT");
+            proveedorFamiliaBl.registrar(proveedorFamilia);
+            
+        }
     }
     
     public void actualizar(){
@@ -72,13 +97,10 @@ public class ProveedorBean {
     }
     
     public void buscarRef(){
-        System.out.println("texto  enviado "+txtBusqueda);
         setListProveedores(proveedorBl.buscarRef(txtBusqueda));
     }
     
     public List<Proveedor> complete(String query){
-        System.out.println("texto  enviad "+txtBusqueda);
-        System.out.println(" retoran query "+query);
         return  proveedorBl.buscarRef(query);
     }
     
@@ -91,6 +113,7 @@ public class ProveedorBean {
         proveedor.setTelefono("");
         proveedor.setEmail("");
         proveedor.setContacto("");
+        proveedor.setTelfFijo("");
     }
 
     public Proveedor getProveedor() {
@@ -151,6 +174,30 @@ public class ProveedorBean {
     private List<Proveedor> listarProveedor() {
         setListProveedores(proveedorBl.listar());
         return getListProveedores();
+    }
+
+    public List<Familia> getListFamilia() {
+        return listFamilia;
+    }
+
+    public void setListFamilia(List<Familia> listFamilia) {
+        this.listFamilia = listFamilia;
+    }
+
+    public ProveedorFamilia getProveedorFamilia() {
+        return proveedorFamilia;
+    }
+
+    public void setProveedorFamilia(ProveedorFamilia proveedorFamilia) {
+        this.proveedorFamilia = proveedorFamilia;
+    }
+
+    public ProveedorFamiliaBl getProveedorFamiliaBl() {
+        return proveedorFamiliaBl;
+    }
+
+    public void setProveedorFamiliaBl(ProveedorFamiliaBl proveedorFamiliaBl) {
+        this.proveedorFamiliaBl = proveedorFamiliaBl;
     }
     
 }

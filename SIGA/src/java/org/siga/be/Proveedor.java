@@ -26,6 +26,7 @@ public class Proveedor  implements java.io.Serializable {
      private String telfFijo;
      private String estado;
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
+     private Set<ProveedorFamilia> proveedorFamilias = new HashSet<ProveedorFamilia>(0);
 
     public Proveedor() {
     }
@@ -141,6 +142,14 @@ public class Proveedor  implements java.io.Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Set<ProveedorFamilia> getProveedorFamilias() {
+        return proveedorFamilias;
+    }
+
+    public void setProveedorFamilias(Set<ProveedorFamilia> proveedorFamilias) {
+        this.proveedorFamilias = proveedorFamilias;
     }
 
 

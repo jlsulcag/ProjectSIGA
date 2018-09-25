@@ -26,5 +26,11 @@
             </key>
             <one-to-many class="org.siga.be.Producto" />
         </set>
+        <set name="proveedorFamilias" table="proveedor_familia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_familia" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.ProveedorFamilia" />
+        </set>
     </class>
 </hibernate-mapping>

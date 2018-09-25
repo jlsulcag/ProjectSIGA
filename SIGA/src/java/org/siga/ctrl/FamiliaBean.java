@@ -24,6 +24,7 @@ public class FamiliaBean {
     private long res;
     private List<Familia> listFamilias;
     private List<SelectItem> selectOneItemsFamilia;
+    private List<String> familiaNombres;
     
     public FamiliaBean() {
     }
@@ -72,7 +73,8 @@ public class FamiliaBean {
     public void listarRef(){
         setListFamilias(familiaBl.listarRef(txtBusqueda));
     }
-
+    
+    
     public FamiliaBl getFamiliaBl() {
         return familiaBl;
     }
@@ -97,17 +99,10 @@ public class FamiliaBean {
         this.txtBusqueda = txtBusqueda;
     }
 
-    public List<Familia> getListFamilias() {
-        return listFamilias;
-    }
-
-    public void setListFamilias(List<Familia> listFamilias) {
-        this.listFamilias = listFamilias;
-    }
-
+   
     public List<SelectItem> getSelectOneItemsFamilia() {
        this.selectOneItemsFamilia= new LinkedList<SelectItem>();
-        for (Familia fam : listFamilias) {
+        for (Familia fam : getListFamilias()) {
             this.setFamilia(fam);
             SelectItem selectItem = new SelectItem(familia.getIdfamilia(), familia.getDescripcion());
             this.selectOneItemsFamilia.add(selectItem);
@@ -117,6 +112,22 @@ public class FamiliaBean {
 
     public void setSelectOneItemsFamilia(List<SelectItem> selectOneItemsFamilia) {
         this.selectOneItemsFamilia = selectOneItemsFamilia;
+    }
+
+    public List<String> getFamiliaNombres() {
+        return familiaBl.listarNombresFamilias();
+    }
+
+    public void setFamiliaNombres(List<String> familiaNombres) {
+        this.familiaNombres = familiaNombres;
+    }
+
+    public List<Familia> getListFamilias() {
+        return listFamilias;
+    }
+
+    public void setListFamilias(List<Familia> listFamilias) {
+        this.listFamilias = listFamilias;
     }
     
 }

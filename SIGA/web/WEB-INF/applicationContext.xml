@@ -80,6 +80,7 @@
                 <value>/org/siga/be/OrdenCompraEstados.hbm.xml</value>  
                 <value>/org/siga/be/OrdenCompraSeguimiento.hbm.xml</value>  
                 <value>/org/siga/be/Menu.hbm.xml</value>  
+                <value>/org/siga/be/ProveedorFamilia.hbm.xml</value>  
             </list>
         </property>        
     </bean>
