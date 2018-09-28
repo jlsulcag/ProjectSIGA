@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Detalle del Pedido">
+                    <h:form id="formPedido">
+                        <!--
+                        <p:growl id="msg" showDetail="true"/>
+                        -->
+                        <p:dataTable id="dtPedidos" value="#{pedidoDetalleBean.listPedidoDetalle}" var="item" editable="true"
+                                     >
+                            <f:facet name="header">Detalle del Pedido</f:facet>
+                            <!--
+                            <p:ajax event="rowSelect" listener="{pedidoDetalleBean.onRowSelect}"/>
+                            <p:ajax event="cellEdit" listener="{pedidoDetalleBean.onCellEdit}" />
+                            -->
+                            <p:ajax event="rowEdit" listener="#{pedidoDetalleBean.onRowEdit}" update=":msg, dtPedidos"/>
+                            <p:ajax event="rowEditCancel" listener="#{pedidoDetalleBean.onRowCancel}" update=":msg"/>
+
+                            <p:column headerText="ID" style="width: 20px">
+                                <h:outputText value="#{item.idpedidodetalle}"/>
+                            </p:column>
+
+                            <p:column headerText="Producto">
+                                <h:outputText value="#{item.producto.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Solicitada" style="width: 80px">
+                                <h:outputText value="#{item.cantidadSolicitada}"/>
+                            </p:column>
+
+                            <p:column headerText="Cant Autorizada" style="width: 80px">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.cantidadAutorizada}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                    <!--
+                                    <f:facet name="input"><p:inputText value="{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                    -->
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Unidad" style="width: 120px">
+                                <h:outputText value="#{item.unidadMedida}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+                    <h:form style="margin-top: 5px">
+                        <p:toolbar>                        
+                            <f:facet name="right">
+                                <!--
+                                <h:outputLabel for="cbxEstado" value="Estado :"/>
+                                <p:selectOneMenu id="cbxEstado" value="{pedidoDetalleBean.pedidoSeguimiento.estado.idpedidoestados}" style="width: 250px">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItems value="{pedidoEstadoBean.selectOneItemsPedidoEstado}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputLabel value="Observación :" for="txfObservacion" style="margin-left: 50px"/>
+                                <p:inputText id="txfObservacion" label="Observacion" style="text-transform: uppercase; width: 400px"
+                                             value="{pedidoDetalleBean.pedidoSeguimiento.observacion}"/>
+                                -->
+                                <p:commandButton value="Imprimir" icon="ui-icon-print" 
+                                                 action="#{pedidoDetalleBean.visualizarNotaEntrada()}" ajax="false"/>
+                                <p:commandButton id="btnReg" value="Recepcionar" title="Recepcionar" 
+                                                 actionListener="#{pedidoDetalleBean.recepcionarPedido()}" update=":msg"/>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+                </p:panel>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -86,4 +86,8 @@ public class PedidoBl extends AbstractBL<Pedido> {
     public Pedido buscarXid(long idpedido) {
         return dao.buscarXid(idpedido);
     }
+
+    public List<Pedido> listarPedidoxUser(long idusuario) {
+        return dao.listarPedidoxUser(idusuario);
+    }
 }

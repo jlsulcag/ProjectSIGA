@@ -26,12 +26,12 @@ public class PermisoDao extends AbstractDA<Permiso>{
 
     @Override
     public List<Permiso> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(Permiso.class);
     }
 
     @Override
     public List<Permiso> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -41,17 +41,22 @@ public class PermisoDao extends AbstractDA<Permiso>{
 
     @Override
     public Permiso buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(Permiso.class, id);
     }
 
     @Override
     public Permiso buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return maxId(Permiso.class);
+    }
+
+    public List<Permiso> listarxIdusuario(long idUser) {
+        String hql = "from Permiso a where a.idUsuario = "+idUser;
+        return listar(hql);
     }
     
 }

@@ -17,13 +17,13 @@ public class Permiso  implements java.io.Serializable {
      private int codigo;
      private String permiso;
      private String descripcion;
-     private int idUsuarioAct;
-     private int idUsuario;
+     private long idUsuarioAct;
+     private long idUsuario;
 
     public Permiso() {
     }
 
-    public Permiso(long idpermiso, int codigo, String permiso, String descripcion, int idUsuarioAct, int idUsuario) {
+    public Permiso(long idpermiso, int codigo, String permiso, String descripcion, long idUsuarioAct, long idUsuario) {
        this.idpermiso = idpermiso;
        this.codigo = codigo;
        this.permiso = permiso;
@@ -60,18 +60,18 @@ public class Permiso  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public int getIdUsuarioAct() {
+    public long getIdUsuarioAct() {
         return this.idUsuarioAct;
     }
     
-    public void setIdUsuarioAct(int idUsuarioAct) {
+    public void setIdUsuarioAct(long idUsuarioAct) {
         this.idUsuarioAct = idUsuarioAct;
     }
-    public int getIdUsuario() {
+    public long getIdUsuario() {
         return this.idUsuario;
     }
     
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(long idUsuario) {
         this.idUsuario = idUsuario;
     }
 

@@ -17,10 +17,10 @@
         <property name="descripcion" type="string">
             <column name="descripcion" length="120" not-null="true" />
         </property>
-        <property name="idUsuarioAct" type="int">
+        <property name="idUsuarioAct" type="long">
             <column name="id_usuario_act" not-null="true" />
         </property>
-        <property name="idUsuario" type="int">
+        <property name="idUsuario" type="long">
             <column name="id_usuario" not-null="true" />
         </property>
     </class>

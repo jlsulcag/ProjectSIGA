@@ -128,10 +128,12 @@ public class NotaIngresoBean {
             res = registrarNotaEntrada();
             //Registrar Nota Entrada Detalle
             if (res == 0) {
-                temp = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
-                if (temp != null) {
-                    HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-                    httpSession.setAttribute("notaEntrada", temp);
+                if (notaEntrada.getOrdenCompra() != null) {
+                    temp = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
+                    if (temp != null) {
+                        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                        httpSession.setAttribute("notaEntrada", temp);
+                    }
                 }
 
                 for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
@@ -608,7 +610,7 @@ public class NotaIngresoBean {
                 Map<String, Object> parametro = new HashMap<>();
                 //File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
                 File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0006-nota-entrada.jasper"));
-                DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");                
+                DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
                 parametro.put("ID_ENTRADA", temp.getIdnotaentrada());
                 byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
 

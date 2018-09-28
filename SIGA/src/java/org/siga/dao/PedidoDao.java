@@ -92,4 +92,9 @@ public class PedidoDao extends AbstractDA<Pedido> {
         String Hql = "from Pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b left join fetch d.almacen al where p.idpedido = '"+idpedido+"'";
         return buscar(Hql);
     }
+
+    public List<Pedido> listarPedidoxUser(long idusuario) {
+        String Hql = "from Pedido p left join fetch p.dependencia d left join fetch p.almacenDestino b left join fetch d.almacen al where p.idUserreg = '"+idusuario+"'";
+        return listar(Hql);
+    }
 }

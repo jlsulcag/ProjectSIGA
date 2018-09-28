@@ -33,6 +33,11 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue aprobado");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public static void recepcionarPedido() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue recepcionado");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     String mensaje = "";
 
     public static void registroCorrecto() {
