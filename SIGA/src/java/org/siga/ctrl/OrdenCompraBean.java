@@ -192,7 +192,7 @@ public class OrdenCompraBean {
 
     public long registrarOrdenCompra() {
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
-        ordenCompra.setDocReferencia(ordenCompra.getObservacion().toUpperCase());
+        ordenCompra.setDocReferencia(ordenCompra.getDocReferencia().toUpperCase());
         ordenCompra.setHoraRegistro(Utilitarios.horaActual());
         ordenCompra.setValorBruto(valorBruto);
         ordenCompra.setMontoDesc(totalDescuento);
@@ -201,6 +201,7 @@ public class OrdenCompraBean {
         ordenCompra.setMontoSubTotal(montoSubtotal);
         ordenCompra.setMontoTotal(montoTotal);
         ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
+        ordenCompra.setPenalidadIncumplimiento(ordenCompra.getPenalidadIncumplimiento().toUpperCase());
 
         return ordenCompraBl.registrar(ordenCompra);
 

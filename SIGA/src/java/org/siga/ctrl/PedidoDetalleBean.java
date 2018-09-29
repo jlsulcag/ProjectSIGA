@@ -20,7 +20,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -227,7 +232,9 @@ public class PedidoDetalleBean {
         if (!listPedidoDetalle.isEmpty()) {
             res = registrarNotaEntrada(pedido);
             if (res == 0) {
-                for (PedidoDetalle obj : listPedidoDetalle) {
+                HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                sesion.setAttribute("nealmacen", notaEntrada);
+                for (PedidoDetalle obj : listPedidoDetalle) {                    
                     notaEntradaDetalle.setNotaEntrada(notaEntrada);
                     notaEntradaDetalle.setProducto(obj.getProducto());
                     notaEntradaDetalle.setLote("");
@@ -296,9 +303,8 @@ public class PedidoDetalleBean {
 
     public void visualizarNotaEntrada() {
         NotaEntrada temp = new NotaEntrada();
-//        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-//        temp = (NotaEntrada) httpSession.getAttribute("notaEntrada");
-        temp = notaEntrada;
+       HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        temp = (NotaEntrada) sesion.getAttribute("nealmacen");
         try {
             if (temp != null) {
 
@@ -336,6 +342,40 @@ public class PedidoDetalleBean {
             Logger.getLogger(NotaIngresoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         //return "Reportes?faces-redirect=true";
+    }
+
+    public void descargarNotaEntrada() {
+        try {
+            //Mapa de parametros
+            System.out.println("entra al  reporte ................");
+            Map<String, Object> parametro = new HashMap<>();
+            //
+            File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0006-nota-entrada.jasper"));
+            DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+            //parametro.put("ID_ENTRADA", temp.getIdnotaentrada());
+            //DsConexion ds = new DsConexion();
+            //System.out.println("orden de compra ID = ........ " + ordenCompra.getIdordencompra());
+            //parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+            //File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("REP-0003-orden_compra.jasper"));
+            System.out.println("path......... " + file.getPath());
+            JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
+
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=OrdenCompra.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // getter and setter
