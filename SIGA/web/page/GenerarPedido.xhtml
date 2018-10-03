@@ -122,19 +122,19 @@
                                 </p:selectOneMenu>                                
                                 
                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
-                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 118px">
+                                <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 300px">
                                     <f:selectItem itemLabel="#{pedidoBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
                                 <p:selectOneMenu id="txfUnidadIngreso" value="#{pedidoBean.equivalencia.idequivalencia}" 
-                                                 filter="true" filterMatchMode="contains" style="width: 118px">
+                                                 filter="true" filterMatchMode="contains" style="width: 300px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{pedidoBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
-                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true" style="width: 320px; text-align: right"
                                              value="#{pedidoBean.pedidoDetalle.cantidadSolicitada}">
                                 </p:inputText>
                                 
