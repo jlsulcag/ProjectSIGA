@@ -255,7 +255,7 @@ public class OrdenCompraDetalleBean {
 
                         Map<String, Object> parametro = new HashMap<>();
 
-                        File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
+                        File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0004-orden_compra.jasper"));
                         DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
 
                         parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
@@ -266,7 +266,7 @@ public class OrdenCompraDetalleBean {
 
                         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
                         response.setContentType("application/pdf");
-                        response.addHeader("Content-disposition", "inline; filename=OrdenCompra.pdf");
+                        response.addHeader("Content-disposition", reportSetting);
                         response.setHeader("Cache-Control", "private");
                         response.setContentLength(documento.length);
 
@@ -302,28 +302,18 @@ public class OrdenCompraDetalleBean {
                 if (ordenCompra != null) {
                     ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
                     if (ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
-
                         Map<String, Object> parametro = new HashMap<>();
-
-                        //File file = new File("C:\\Reportes\\REP-0004-orden_compra.jasper");
-                        
-                        FacesContext fc = FacesContext.getCurrentInstance();
-                        ServletContext sc = (ServletContext) fc.getExternalContext().getContext();
-                        String realPath = sc.getRealPath("/");
-                        System.out.println("Real Path ... "+realPath);
-                        
                         File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0004-orden_compra.jasper"));
                         DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
-
                         parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
                         byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
-
+                            
                         String fileType = "inline";
                         String reportSetting = fileType + "; filename=OrdenCompra_"+ordenCompra.getNumero()+".pdf";
 
                         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
                         response.setContentType("application/pdf");
-                        response.addHeader("Content-disposition", "inline; filename=OrdenCompra_"+ordenCompra.getNumero()+".pdf");
+                        response.addHeader("Content-disposition", reportSetting);
                         response.setHeader("Cache-Control", "private");
                         response.setContentLength(documento.length);
 
