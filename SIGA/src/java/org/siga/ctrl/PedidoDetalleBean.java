@@ -33,6 +33,7 @@ import org.siga.be.AlmacenProducto;
 import org.siga.be.Equivalencia;
 import org.siga.be.NotaEntrada;
 import org.siga.be.NotaEntradaDetalle;
+import org.siga.be.NotaSalida;
 import org.siga.be.Pedido;
 import org.siga.be.PedidoDetalle;
 import org.siga.be.PedidoSeguimiento;
@@ -43,6 +44,7 @@ import org.siga.bl.AlmacenProductoBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.NotaIngresoBl;
 import org.siga.bl.NotaIngresoDetalleBl;
+import org.siga.bl.NotaSalidaBl;
 import org.siga.bl.PedidoBl;
 import org.siga.bl.PedidoDetalleBl;
 import org.siga.bl.PedidoEstadoBl;
@@ -94,6 +96,11 @@ public class PedidoDetalleBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
+
+    @ManagedProperty(value = "#{notaSalida}")
+    private NotaSalida notaSalida;
+    @ManagedProperty(value = "#{notaSalidaBl}")
+    private NotaSalidaBl notaSalidaBl;
 
     private PedidoDetalle selectedPedidoDetalle;
     private int cantAutorizada;
@@ -165,10 +172,19 @@ public class PedidoDetalleBean {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if (httpSession.getAttribute("idPedido") != null) {
             pedido = pedidoBl.buscarXid(Long.parseLong(httpSession.getAttribute("idPedido").toString()));
-            resp = registrarIngresoAlmacenDestino(pedido, listPedidoDetalle);
-            if (resp == 1) {
-                registrarMovimiento(pedido);
+            /*Registrar la nota  de entrada  solo cuando se trate de distribucion
+             Para lo cual se debe buscar  el tipo de movimiento (CONSUMO O DISTRIBUCION), generada en la nota de salida  
+             */
+            notaSalida = notaSalidaBl.buscarxIdPedido(pedido.getIdpedido());
+            if (notaSalida != null) {
+                if (notaSalida.getTipomovimiento().getDescripcion().trim().equals("DISTRIBUCION")) {
+                    //Registrar Nota ingreso a almacen                    
+                    resp = registrarIngresoAlmacenDestino(pedido, listPedidoDetalle);
+                }
+
             }
+            //  
+            registrarMovimiento(pedido);
 
         }
     }
@@ -234,7 +250,7 @@ public class PedidoDetalleBean {
             if (res == 0) {
                 HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 sesion.setAttribute("nealmacen", notaEntrada);
-                for (PedidoDetalle obj : listPedidoDetalle) {                    
+                for (PedidoDetalle obj : listPedidoDetalle) {
                     notaEntradaDetalle.setNotaEntrada(notaEntrada);
                     notaEntradaDetalle.setProducto(obj.getProducto());
                     notaEntradaDetalle.setLote("");
@@ -303,7 +319,7 @@ public class PedidoDetalleBean {
 
     public void visualizarNotaEntrada() {
         NotaEntrada temp = new NotaEntrada();
-       HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         temp = (NotaEntrada) sesion.getAttribute("nealmacen");
         try {
             if (temp != null) {
@@ -530,6 +546,22 @@ public class PedidoDetalleBean {
 
     public void setEquivalenciaBl(EquivalenciaBl equivalenciaBl) {
         this.equivalenciaBl = equivalenciaBl;
+    }
+
+    public NotaSalida getNotaSalida() {
+        return notaSalida;
+    }
+
+    public void setNotaSalida(NotaSalida notaSalida) {
+        this.notaSalida = notaSalida;
+    }
+
+    public NotaSalidaBl getNotaSalidaBl() {
+        return notaSalidaBl;
+    }
+
+    public void setNotaSalidaBl(NotaSalidaBl notaSalidaBl) {
+        this.notaSalidaBl = notaSalidaBl;
     }
 
 }

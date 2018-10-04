@@ -149,6 +149,10 @@ public class AlmacenProductoBean {
     private List<AlmacenProducto> listarAlmacenProducto() {
         return almacenProductoBl.listarPeps();
     }
+    
+    private List<AlmacenProducto> listarAlmacenProducto(long idalmacen) {
+        return almacenProductoBl.listarPeps();
+    }
 
     public int getInvocador() {
         return invocador;

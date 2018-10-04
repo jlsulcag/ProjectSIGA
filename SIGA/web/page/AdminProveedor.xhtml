@@ -103,8 +103,8 @@
 
                                 <h:outputLabel for="chbxFamilia" value="Tipo de Producto :" />
                                 <p:selectCheckboxMenu id="chbxFamilia" value="#{proveedorBean.listFamilia}" label="Tipos" multiple="true"
-                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                    <f:selectItems value="#{familiaBean.familiaNombres}"/>
+                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:380px">
+                                    <f:selectItems value="#{proveedorBean.selectOneItemsFamilia}"/>
                                 </p:selectCheckboxMenu>
 
                                 <f:facet name="footer">

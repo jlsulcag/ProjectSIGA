@@ -177,7 +177,7 @@
                                 <p:selectOneMenu id="cbxProducto" value="#{notaSalidaBean.almacenProducto.idalmacenproducto}" 
                                                  filter="true" filterMatchMode="contains" style="width: 300px">
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{almacenProductoBean.selectOneItemsAlmacenProducto}"/>
+                                    <f:selectItems value="#{notaSalidaBean.selectOneItemsAlmacenProducto}"/>
                                     <p:ajax listener="#{notaSalidaBean.buscarAlmacenProducto()}" update="txfUnidad, txfUnidadIngreso, txfStock"/>
                                 </p:selectOneMenu>
                                 

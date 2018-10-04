@@ -20,6 +20,7 @@ public class ProveedorFamilia  implements java.io.Serializable {
 
     public ProveedorFamilia() {
     }
+    
 
     public ProveedorFamilia(long idproveedorfamilia, Familia familia, Proveedor proveedor, String estado) {
        this.idproveedorfamilia = idproveedorfamilia;

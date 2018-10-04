@@ -136,6 +136,7 @@ public class NotaSalidaBean {
     private int stock;
 
     private NotaSalidaDetalle NotaSalidaDetalleTemp;
+    private List<SelectItem> selectOneItemsAlmacenProducto;
 
     public NotaSalidaBean() {
     }
@@ -309,7 +310,6 @@ public class NotaSalidaBean {
     public void inicioNew() {
         notaSalidaDetalle.setProducto(new Producto());
         producto.setUnidadMedida(null);
-        setPedidoxUnidad(false);
         notaSalidaDetalle.setCantSolicitada(0);
         notaSalidaDetalle.setCantAtendida(0);
         notaSalidaDetalle.setCantPendiente(0);
@@ -640,6 +640,23 @@ public class NotaSalidaBean {
         }
     }
 
+    public List<SelectItem> getSelectOneItemsAlmacenProducto() {
+        this.selectOneItemsAlmacenProducto = new LinkedList<SelectItem>();
+        if (almacen != null) {
+            for (AlmacenProducto obj : listarAlmacenProducto(almacen.getIdalmacen())) {
+                this.setAlmacenProducto(obj);
+                SelectItem selectItem = new SelectItem(almacenProducto.getIdalmacenproducto(), almacenProducto.getProducto().getDescripcion());
+                this.selectOneItemsAlmacenProducto.add(selectItem);
+            }            
+        }
+        return selectOneItemsAlmacenProducto;
+
+    }
+
+    private List<AlmacenProducto> listarAlmacenProducto(long idalmacen) {
+        return almacenProductoBl.listarPeps(idalmacen);
+    }
+
     public UsuarioBl getUsuarioBl() {
         return usuarioBl;
     }
@@ -760,6 +777,10 @@ public class NotaSalidaBean {
 
     public void setPedidoEstadoBl(PedidoEstadoBl pedidoEstadoBl) {
         this.pedidoEstadoBl = pedidoEstadoBl;
+    }
+
+    public void setSelectOneItemsAlmacenProducto(List<SelectItem> selectOneItemsAlmacenProducto) {
+        this.selectOneItemsAlmacenProducto = selectOneItemsAlmacenProducto;
     }
 
 }

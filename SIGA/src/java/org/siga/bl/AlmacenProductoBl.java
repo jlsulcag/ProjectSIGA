@@ -108,5 +108,9 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
         return dao.buscarStockxProducto(idproducto);
     }
 
+    public List<AlmacenProducto> listarPeps(long idalmacen) {
+        return dao.listarPeps(idalmacen);
+    }
+
     
 }

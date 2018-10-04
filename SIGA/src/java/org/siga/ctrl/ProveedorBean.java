@@ -1,4 +1,3 @@
-
 package org.siga.ctrl;
 
 import java.util.Date;
@@ -12,6 +11,7 @@ import javax.faces.model.SelectItem;
 import org.siga.be.Familia;
 import org.siga.be.Proveedor;
 import org.siga.be.ProveedorFamilia;
+import org.siga.bl.FamiliaBl;
 import org.siga.bl.ProveedorBl;
 import org.siga.bl.ProveedorFamiliaBl;
 import org.siga.util.MensajeView;
@@ -24,23 +24,30 @@ public class ProveedorBean {
     private Proveedor proveedor;
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
-    
+
     @ManagedProperty(value = "#{proveedorFamilia}")
     private ProveedorFamilia proveedorFamilia;
     @ManagedProperty(value = "#{proveedorFamiliaBl}")
     private ProveedorFamiliaBl proveedorFamiliaBl;
-    
+
+    @ManagedProperty(value = "#{familiaBl}")
+    private FamiliaBl familiaBl;
+    @ManagedProperty(value = "#{familia}")
+    private Familia familia;
+
     private List<Proveedor> listProveedores;
     private List<SelectItem> selectOneItemsProveedores;
     private String txtBusqueda;
     private long res;
     //private Object[] selectedFamilias;
-    private List listFamilia;
-            
+    private List<String> listFamilia;
+    private List<SelectItem> selectOneItemsFamilia;
+    private List<Familia> listFamilias;
+
     public ProveedorBean() {
     }
-    
-    public void registrar(){
+
+    public void registrar() {
         proveedor.setCodigo(proveedor.getCodigo().toUpperCase());
         proveedor.setRazonSocial(proveedor.getRazonSocial().toUpperCase());
         proveedor.setRuc(proveedor.getRuc().toUpperCase());
@@ -51,31 +58,44 @@ public class ProveedorBean {
         proveedor.setEstado("ACT");
         proveedor.setFechaReg(new Date());
         res = proveedorBl.registrar(proveedor);
-        if(res == 0){
-//            if(!listFamilia.isEmpty()){
-//                registrarFamiliaProveedor(listFamilia, proveedor);
-//            }            
+        if (res == 0) {
+            if (!listFamilia.isEmpty()) {
+                for (String obj : listFamilia) {
+                    System.out.println("objeto  select .... "+obj);
+                }
+                System.out.println("proveedor ... "+proveedor.getIdproveedor());
+                registrarFamiliaProveedor(listFamilia, proveedor);
+            }
             MensajeView.registroCorrecto();
-        }else{
+        } else {
             MensajeView.registroError();
         }
         listar();
-        
+
     }
-    
-    public void registrarFamiliaProveedor(List<Familia> list, Proveedor proveedor){
-        for (Familia familia : list) {
-            System.out.println("tamañp de la lista .. "+list.size());
-            System.out.println("id familia 1..... "+familia.getIdfamilia());
-            proveedorFamilia.setFamilia(familia);
+
+    public void registrarFamiliaProveedor(List<String> list, Proveedor proveedor) {
+
+        for (String obj : list) {
+            long id = Long.valueOf(obj);
+            proveedorFamilia.setFamilia(familiaBl.buscar(id));
             proveedorFamilia.setProveedor(proveedor);
             proveedorFamilia.setEstado("ACT");
             proveedorFamiliaBl.registrar(proveedorFamilia);
-            
         }
     }
     
-    public void actualizar(){
+    public List<SelectItem> getSelectOneItemsFamilia() {
+       this.selectOneItemsFamilia= new LinkedList<SelectItem>();
+        for (Familia fam : familiaBl.listar()) {
+            this.setFamilia(fam);
+            SelectItem selectItem = new SelectItem(getFamilia().getIdfamilia(), getFamilia().getDescripcion());
+            this.selectOneItemsFamilia.add(selectItem);
+        }
+        return selectOneItemsFamilia;
+    }
+
+    public void actualizar() {
         Proveedor temp = new Proveedor();
         temp = buscarId();
         temp.setCodigo(proveedor.getCodigo().toUpperCase());
@@ -87,24 +107,24 @@ public class ProveedorBean {
         temp.setContacto(proveedor.getContacto().toUpperCase());
         temp.setEstado(proveedor.getEstado().toUpperCase());
         res = proveedorBl.actualizar(temp);
-        if(res == 0){
+        if (res == 0) {
             MensajeView.actCorrecto();
-        }else{
+        } else {
             MensajeView.actError();
         }
         listar();
-        
+
     }
-    
-    public void buscarRef(){
+
+    public void buscarRef() {
         setListProveedores(proveedorBl.buscarRef(txtBusqueda));
     }
-    
-    public List<Proveedor> complete(String query){
-        return  proveedorBl.buscarRef(query);
+
+    public List<Proveedor> complete(String query) {
+        return proveedorBl.buscarRef(query);
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         proveedor.setIdproveedor(0);
         proveedor.setCodigo("");
         proveedor.setRazonSocial("");
@@ -147,7 +167,7 @@ public class ProveedorBean {
     public void setTxtBusqueda(String txtBusqueda) {
         this.txtBusqueda = txtBusqueda;
     }
-    
+
     @PostConstruct
     private void listar() {
         setListProveedores(proveedorBl.listar());
@@ -157,7 +177,7 @@ public class ProveedorBean {
         return proveedorBl.buscar(proveedor.getIdproveedor());
     }
 
-    public List<SelectItem> getSelectOneItemsProveedores() {        
+    public List<SelectItem> getSelectOneItemsProveedores() {
         this.selectOneItemsProveedores = new LinkedList<SelectItem>();
         for (Proveedor obj : listarProveedor()) {
             this.setProveedor(obj);
@@ -176,14 +196,6 @@ public class ProveedorBean {
         return getListProveedores();
     }
 
-    public List<Familia> getListFamilia() {
-        return listFamilia;
-    }
-
-    public void setListFamilia(List<Familia> listFamilia) {
-        this.listFamilia = listFamilia;
-    }
-
     public ProveedorFamilia getProveedorFamilia() {
         return proveedorFamilia;
     }
@@ -199,5 +211,41 @@ public class ProveedorBean {
     public void setProveedorFamiliaBl(ProveedorFamiliaBl proveedorFamiliaBl) {
         this.proveedorFamiliaBl = proveedorFamiliaBl;
     }
-    
+
+    public List<String> getListFamilia() {
+        return listFamilia;
+    }
+
+    public void setListFamilia(List<String> listFamilia) {
+        this.listFamilia = listFamilia;
+    }
+
+    public FamiliaBl getFamiliaBl() {
+        return familiaBl;
+    }
+
+    public void setFamiliaBl(FamiliaBl familiaBl) {
+        this.familiaBl = familiaBl;
+    }
+
+    public void setSelectOneItemsFamilia(List<SelectItem> selectOneItemsFamilia) {
+        this.selectOneItemsFamilia = selectOneItemsFamilia;
+    }
+
+    public List<Familia> getListFamilias() {
+        return listFamilias;
+    }
+
+    public void setListFamilias(List<Familia> listFamilias) {
+        this.listFamilias = listFamilias;
+    }
+
+    public Familia getFamilia() {
+        return familia;
+    }
+
+    public void setFamilia(Familia familia) {
+        this.familia = familia;
+    }
+
 }

@@ -199,8 +199,13 @@ public class LoginBean {
 
     public String getCurrentUser() {
         usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-        currentUser = usuario.getNombre();
-        return currentUser;
+        if(usuario != null){
+            currentUser = usuario.getNombre();
+            return currentUser;
+        }else{
+            return "";
+        }
+        
     }
 
     public void setCurrentUser(String currentUser) {

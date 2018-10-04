@@ -6,7 +6,7 @@
     <class name="org.siga.be.ProveedorFamilia" table="proveedor_familia" schema="siga" optimistic-lock="version">
         <id name="idproveedorfamilia" type="long">
             <column name="idproveedorfamilia" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <many-to-one name="familia" class="org.siga.be.Familia" fetch="select">
             <column name="id_familia" not-null="true" />

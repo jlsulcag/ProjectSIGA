@@ -44,12 +44,12 @@ public class NotaSalidaBl extends AbstractBL<NotaSalida>{
 
     @Override
     public List<NotaSalida> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list();
     }
 
     @Override
     public List<NotaSalida> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -59,21 +59,25 @@ public class NotaSalidaBl extends AbstractBL<NotaSalida>{
 
     @Override
     public NotaSalida buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(id);
     }
 
     @Override
     public NotaSalida buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return maxId();
     }
 
     public int maxNumero() {
         return dao.maxNumero();
+    }
+
+    public NotaSalida buscarxIdPedido(long idpedido) {
+        return dao.buscarxIdPedido(idpedido);
     }
     
 }

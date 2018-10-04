@@ -30,12 +30,12 @@ public class NotaSalidaDao extends AbstractDA<NotaSalida>{
 
     @Override
     public List<NotaSalida> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(NotaSalida.class);
     }
 
     @Override
     public List<NotaSalida> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -45,17 +45,17 @@ public class NotaSalidaDao extends AbstractDA<NotaSalida>{
 
     @Override
     public NotaSalida buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(NotaSalida.class, id);
     }
 
     @Override
     public NotaSalida buscar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(ref);
     }
 
     @Override
     public long id() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return maxId(NotaSalida.class);
     }
 
     public int maxNumero() {
@@ -77,6 +77,11 @@ public class NotaSalidaDao extends AbstractDA<NotaSalida>{
             t.rollback();
             return 0;
         }
+    }
+
+    public NotaSalida buscarxIdPedido(long idpedido) {
+        String hql = "from NotaSalida a left join fetch a.pedido b left join fetch a.tipomovimiento c where b.idpedido = "+idpedido;
+        return buscar(hql);
     }
     
 }
