@@ -12,16 +12,16 @@
             <ui:define name="content">
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Orden Compra Detalle">
-
+                    <!--
                     <h:form id="formTolbar">
                         <p:toolbar style="margin-top: 10px">
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
-                                                 update=":formNew" actionListener="#{ordenCompraDetalleBean.limpiar()}" oncomplete="PF('dlgNew').show();"/>
+                                                 update=":formNew" actionListener="{ordenCompraDetalleBean.limpiar()}" oncomplete="PF('dlgNew').show();"/>
                             </f:facet>
                         </p:toolbar>
                     </h:form>
-
+                    -->
                     <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{ordenCompraDetalleBean.listOrdenCompraDetalles}" var="item"
                                      paginator="false" rows="10" paginatorPosition="bottom"
@@ -111,10 +111,14 @@
                     <h:form id="formTool2" style="padding-top: 5px" target="_blank">
                         <p:toolbar>
                             <f:facet name="right">
+                                
                                 <p:commandButton value="Imprimir" icon="ui-icon-print" 
                                                  action="#{ordenCompraDetalleBean.visualizarOrdenCompra2()}" ajax="false"/>
+                                
+                                <!--
                                 <p:commandButton value="Actualizar" icon="ui-icon-disk" 
-                                                 actionListener="#{ordenCompraDetalleBean.registrar()}"/>
+                                                 actionListener="{ordenCompraDetalleBean.registrar()}"/>
+                                -->
                             </f:facet>
                         </p:toolbar>
                     </h:form>

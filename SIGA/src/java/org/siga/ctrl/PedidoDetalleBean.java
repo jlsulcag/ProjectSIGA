@@ -321,6 +321,7 @@ public class PedidoDetalleBean {
         NotaEntrada temp = new NotaEntrada();
         HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         temp = (NotaEntrada) sesion.getAttribute("nealmacen");
+        System.out.println(" nota entrada ... "+temp.getIdnotaentrada());
         try {
             if (temp != null) {
 

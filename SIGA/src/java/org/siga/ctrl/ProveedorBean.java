@@ -59,14 +59,16 @@ public class ProveedorBean {
         proveedor.setFechaReg(new Date());
         res = proveedorBl.registrar(proveedor);
         if (res == 0) {
-            if (!listFamilia.isEmpty()) {
-                for (String obj : listFamilia) {
-                    System.out.println("objeto  select .... "+obj);
-                }
-                System.out.println("proveedor ... "+proveedor.getIdproveedor());
-                registrarFamiliaProveedor(listFamilia, proveedor);
-            }
             MensajeView.registroCorrecto();
+            
+//            if (!listFamilia.isEmpty()) {
+//                for (String obj : listFamilia) {
+//                    System.out.println("objeto  select .... "+obj);
+//                }
+//                System.out.println("proveedor ... "+proveedor.getIdproveedor());
+//                registrarFamiliaProveedor(listFamilia, proveedor);
+//            }
+            
         } else {
             MensajeView.registroError();
         }

@@ -25,6 +25,7 @@ public class NotaEntrada  implements java.io.Serializable {
      private long idUserReg;
      private String observacion;
      private String tipoIngreso;
+     private Pedido pedido;
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
 
     public NotaEntrada() {
@@ -123,6 +124,14 @@ public class NotaEntrada  implements java.io.Serializable {
 
     public void setAlmacenDestino(Almacen almacenDestino) {
         this.almacenDestino = almacenDestino;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
 
