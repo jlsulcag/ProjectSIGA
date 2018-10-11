@@ -93,7 +93,14 @@
                                     <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
-
+                                
+                                <h:outputLabel for="cbxTipo" value="Tipo Producto :"/>
+                                <p:selectOneMenu id="cbxTipo" style="width: 380px;" value="#{productoBean.producto.tipoProducto}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="ESPECIAL" itemValue="2"/>
+                                    <f:selectItem itemLabel="NORMAL" itemValue="1"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="spStockMin" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMin" value="#{productoBean.producto.stockMinimo}"/>
 
@@ -145,6 +152,13 @@
                                     <f:selectItems value="#{unidadMedidaBean.selectOneItemsUnidadMedida}"/>
                                 </p:selectOneMenu>
                                 
+                                <h:outputLabel for="cbxTipoEdit" value="Tipo Producto :"/>
+                                <p:selectOneMenu id="cbxTipoEdit" style="width: 380px;" value="#{productoBean.producto.tipoProducto}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="ESPECIAL" itemValue="2"/>
+                                    <f:selectItem itemLabel="NORMAL" itemValue="1"/>
+                                </p:selectOneMenu>
+                                
                                 <h:outputLabel for="spStockMinEdit" value="Stock Mínimo: " />
                                 <p:spinner id="spStockMinEdit" value="#{productoBean.producto.stockMinimo}"/>
 
@@ -153,7 +167,7 @@
 
                                 <h:outputLabel for="cbxEstadoEdit" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstadoEdit" style="width: 380px" value="#{productoBean.producto.estado}">
-                                    <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>
                                 </p:selectOneMenu>

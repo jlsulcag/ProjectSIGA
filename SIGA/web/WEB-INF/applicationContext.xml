@@ -81,6 +81,7 @@
                 <value>/org/siga/be/OrdenCompraSeguimiento.hbm.xml</value>  
                 <value>/org/siga/be/Menu.hbm.xml</value>  
                 <value>/org/siga/be/ProveedorFamilia.hbm.xml</value>  
+                <value>/org/siga/be/UsuarioPermiso.hbm.xml</value>  
             </list>
         </property>        
     </bean>

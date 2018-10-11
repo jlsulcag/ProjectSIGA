@@ -23,6 +23,7 @@ public class Usuario  implements java.io.Serializable {
      private Date fechaReg;
      private Dependencia dependencia;
      private Set<Rol> roles = new HashSet<Rol>(0);
+     private Set<UsuarioPermiso> usuarioPermisos = new HashSet<UsuarioPermiso>(0);
 
     public Usuario() {
         this.idusuario = 0;
@@ -112,6 +113,14 @@ public class Usuario  implements java.io.Serializable {
 
     public void setRoles(Set<Rol> roles) {
         this.roles = roles;
+    }
+
+    public Set<UsuarioPermiso> getUsuarioPermisos() {
+        return usuarioPermisos;
+    }
+
+    public void setUsuarioPermisos(Set<UsuarioPermiso> usuarioPermisos) {
+        this.usuarioPermisos = usuarioPermisos;
     }
 
 

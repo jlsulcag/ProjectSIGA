@@ -54,9 +54,9 @@ public class PermisoDao extends AbstractDA<Permiso>{
         return maxId(Permiso.class);
     }
 
-    public List<Permiso> listarxIdusuario(long idUser) {
-        String hql = "from Permiso a where a.idUsuario = "+idUser;
-        return listar(hql);
+    public Permiso buscarxCodigo(int cod) {
+        String hql = "from Permiso a where a.codigo = "+cod;
+        return buscar(hql);
     }
     
 }

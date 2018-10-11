@@ -2,67 +2,67 @@
 package org.siga.bl;
 
 import java.util.List;
-import org.siga.be.Producto;
-import org.siga.dao.ProductoDao;
+import org.siga.be.UsuarioPermiso;
+import org.siga.dao.UsuarioPermisoDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-@Service("productoBl")
-public class ProductoBl extends AbstractBL<Producto>{
+@Service("usuarioPermisoBl")
+public class UsuarioPermisoBl extends AbstractBL<UsuarioPermiso>{
     @Autowired
-    @Qualifier("productoDao")
-    private ProductoDao dao;
-
+    @Qualifier("usuarioPermisoDao")
+    private UsuarioPermisoDao dao;
+    
     @Override
     public AbstractDA getDAO() {
+        dao = new UsuarioPermisoDao();
         return dao;
     }
 
     @Override
     public void setDA(AbstractDA dao) {
-        this.dao = (ProductoDao) dao;
+        this.dao = (UsuarioPermisoDao) dao;
     }
 
     @Override
-    public long registrar(Producto bean) {
+    public long registrar(UsuarioPermiso bean) {
         return save(bean);
     }
 
     @Override
-    public long actualizar(Producto bean) {
+    public long actualizar(UsuarioPermiso bean) {
         return update(bean);
     }
 
     @Override
-    public long eliminar(Producto bean) {
+    public long eliminar(UsuarioPermiso bean) {
         return delete(bean);
     }
 
     @Override
-    public List<Producto> listar() {
+    public List<UsuarioPermiso> listar() {
         return list();
     }
 
     @Override
-    public List<Producto> listar(String ref) {
+    public List<UsuarioPermiso> listar(String ref) {
         return list(ref);
     }
 
     @Override
-    public List<Producto> listar(long id) {
+    public List<UsuarioPermiso> listar(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Producto buscar(long id) {
+    public UsuarioPermiso buscar(long id) {
         return search(id);
     }
 
     @Override
-    public Producto buscar(String ref) {
+    public UsuarioPermiso buscar(String ref) {
         return search(ref);
     }
 
@@ -70,22 +70,13 @@ public class ProductoBl extends AbstractBL<Producto>{
     public long id() {
         return maxId();
     }
-    
-    public List<Producto> listarFull(String ref) {
-        return dao.listarFull(ref);
+
+    public List<UsuarioPermiso> listxIdUsuario(long idUser) {
+        return dao.listxIdUsuario(idUser);
     }
 
-    public List<Producto> listarRef(String txtBusqueda) {
-        return dao.listarRef(txtBusqueda);
+    public UsuarioPermiso buscarxIdUsuario(long idUser, long idpermiso) {        
+        return dao.buscarxIdUsuario(idUser, idpermiso);
     }
-
-    public Producto buscarxID(long idproducto) {
-        return dao.buscarxID(idproducto);
-    }
-
-    public List<Producto> listarNormal() {
-        return dao.listarNormal();
-    }
-
     
 }

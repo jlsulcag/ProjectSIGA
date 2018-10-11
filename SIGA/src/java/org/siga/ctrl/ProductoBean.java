@@ -7,16 +7,23 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 import org.siga.be.Clase;
 import org.siga.be.Equivalencia;
 import org.siga.be.Familia;
+import org.siga.be.Permiso;
 import org.siga.be.Producto;
 import org.siga.be.UnidadMedida;
+import org.siga.be.Usuario;
+import org.siga.be.UsuarioPermiso;
 import org.siga.bl.ClaseBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.FamiliaBl;
+import org.siga.bl.PermisoBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.UsuarioPermisoBl;
 import org.siga.util.MensajeView;
 
 @ManagedBean
@@ -36,6 +43,16 @@ public class ProductoBean {
     @ManagedProperty(value = "#{familia}")
     private Familia familia;
 
+    @ManagedProperty(value = "#{usuarioPermisoBl}")
+    private UsuarioPermisoBl usuarioPermisoBl;
+    @ManagedProperty(value = "#{usuarioPermiso}")
+    private UsuarioPermiso usuarioPermiso;
+
+    @ManagedProperty(value = "#{permisoBl}")
+    private PermisoBl permisoBl;
+    @ManagedProperty(value = "#{permiso}")
+    private Permiso permiso;
+
     private List<SelectItem> selectOneItemsFamilia;
     private List<SelectItem> selectOneItemsClase;
     private List<SelectItem> selectOneItemsProducto;
@@ -45,6 +62,7 @@ public class ProductoBean {
     private List<Producto> listaProductos;
     private long res;
     private long idFamiliaTemp;
+    private List<UsuarioPermiso> listUsuarioPermisos;
 
     //Metodos transaccionales
     @PostConstruct
@@ -57,7 +75,7 @@ public class ProductoBean {
         return getListFamilias();
     }
 
-    public void registrar() {        
+    public void registrar() {
         producto.setDescripcion(producto.getDescripcion().toUpperCase());
         producto.setCodigo(producto.getCodigo().toUpperCase());
         producto.setFechaReg(new Date());
@@ -85,6 +103,7 @@ public class ProductoBean {
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
         temp.setClase(producto.getClase());
+        temp.setTipoProducto(producto.getTipoProducto());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();
@@ -245,11 +264,32 @@ public class ProductoBean {
 
     public List<SelectItem> getSelectOneItemsProducto() {
         this.selectOneItemsProducto = new LinkedList<SelectItem>();
-        for (Producto obj : listarProducto()) {
-            this.setProducto(obj);
-            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
-            this.selectOneItemsProducto.add(selectItem);
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if (sesionUser.getAttribute("idUsuario") != null) {
+            long idUser = (long) sesionUser.getAttribute("idUsuario");
+            if (idUser != 0) {
+                //buscar permiso por codigo
+                permiso = permisoBl.buscarxCodigo(3);
+                if (permiso != null) {
+                    usuarioPermiso = usuarioPermisoBl.buscarxIdUsuario(idUser, permiso.getIdpermiso());
+                    if (usuarioPermiso != null) {//si tiene permiso listar todos los productos
+                        for (Producto obj : listarProducto()) {
+                            this.setProducto(obj);
+                            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
+                            this.selectOneItemsProducto.add(selectItem);
+                        }
+                    } else {// si no tiene el permiso 3 listar solo los productos normales
+                        for (Producto obj : listarProductoNormal()) {
+                            this.setProducto(obj);
+                            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
+                            this.selectOneItemsProducto.add(selectItem);
+                        }
+                    }
+                }
+
+            }
         }
+
         return selectOneItemsProducto;
     }
 
@@ -260,6 +300,43 @@ public class ProductoBean {
     private Iterable<Producto> listarProducto() {
         setListaProductos(productoBl.listar());
         return getListaProductos();
+    }
+
+    private Iterable<Producto> listarProductoNormal() {
+        setListaProductos(productoBl.listarNormal());
+        return getListaProductos();
+    }
+
+    public UsuarioPermisoBl getUsuarioPermisoBl() {
+        return usuarioPermisoBl;
+    }
+
+    public void setUsuarioPermisoBl(UsuarioPermisoBl usuarioPermisoBl) {
+        this.usuarioPermisoBl = usuarioPermisoBl;
+    }
+
+    public UsuarioPermiso getUsuarioPermiso() {
+        return usuarioPermiso;
+    }
+
+    public void setUsuarioPermiso(UsuarioPermiso usuarioPermiso) {
+        this.usuarioPermiso = usuarioPermiso;
+    }
+
+    public PermisoBl getPermisoBl() {
+        return permisoBl;
+    }
+
+    public void setPermisoBl(PermisoBl permisoBl) {
+        this.permisoBl = permisoBl;
+    }
+
+    public Permiso getPermiso() {
+        return permiso;
+    }
+
+    public void setPermiso(Permiso permiso) {
+        this.permiso = permiso;
     }
 
 }

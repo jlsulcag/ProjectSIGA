@@ -36,4 +36,5 @@
     <table-filter match-name="orden_compra_seguimiento"/>
     <table-filter match-name="menu"/>
     <table-filter match-name="proveedor_familia"/>
+    <table-filter match-name="usuario_permiso"/>
 </hibernate-reverse-engineering>

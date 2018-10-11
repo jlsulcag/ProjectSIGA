@@ -72,7 +72,7 @@ public class PermisoBl extends AbstractBL<Permiso>{
         return maxId();
     }
 
-    public List<Permiso> listarxIdusuario(long idUser) {
-        return dao.listarxIdusuario(idUser);
+    public Permiso buscarxCodigo(int cod) {
+        return dao.buscarxCodigo(cod);
     }
 }

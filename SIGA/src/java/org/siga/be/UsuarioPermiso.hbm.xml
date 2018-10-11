@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/10/2018 10:07:53 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.UsuarioPermiso" table="usuario_permiso" schema="siga" optimistic-lock="version">
+        <id name="idusuariopermiso" type="long">
+            <column name="idusuariopermiso" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="permiso" class="org.siga.be.Permiso" fetch="select">
+            <column name="id_permiso" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="org.siga.be.Usuario" fetch="select">
+            <column name="id_usuario" not-null="true" />
+        </many-to-one>
+        <property name="idUseract" type="long">
+            <column name="id_useract" not-null="true" />
+        </property>
+        <property name="fecha" type="date">
+            <column name="fecha" length="13" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

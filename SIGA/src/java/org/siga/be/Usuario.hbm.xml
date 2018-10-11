@@ -35,5 +35,11 @@
             </key>
             <one-to-many class="org.siga.be.UsuarioRol" />
         </set>
+        <set name="usuarioPermisos" table="usuario_permiso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_usuario" not-null="true" />
+            </key>
+            <one-to-many class="org.siga.be.UsuarioPermiso" />
+        </set>
     </class>
 </hibernate-mapping>
