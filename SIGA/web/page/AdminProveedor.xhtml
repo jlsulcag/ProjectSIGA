@@ -71,13 +71,20 @@
                         <p:dialog header="Registrar" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+                                
+                                <h:outputLabel for="cbxTipoPersona" value="Tipo Persona:"/>
+                                <p:selectOneMenu id="cbxTipoPersona" style="width: 380px" value="#{productoBean.producto.clase.idclase}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
+                                    <f:selectItem itemLabel="NATURAL" itemValue="NATURAL"/>
+                                    <f:selectItem itemLabel="JURIDICA" itemValue="JURIDICA"/>
+                                </p:selectOneMenu>
 
-                                <h:outputLabel for="txtRazonSocial" value="Razón Social :"/>
-                                <p:inputText id="txtRazonSocial" label="Razón Social" required="true" 
+                                <h:outputLabel for="txtRazonSocial" value="Razón Social / Nombres:"/>
+                                <p:inputText id="txtRazonSocial" label="Razón Social / Nombres" required="true" placeholder="RAZON SOCIAL / NOMBRES Y APELLIDOS"
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.razonSocial}" />
 
-                                <h:outputLabel for="txtRuc" value="N° Ruc :"/>
-                                <p:inputText id="txtRuc" label="RUC" 
+                                <h:outputLabel for="txtRuc" value="N° Doc :"/>
+                                <p:inputText id="txtRuc" label="N° Documento" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.ruc}" required="true" />
 
 
@@ -100,10 +107,17 @@
                                 <h:outputLabel for="txtContacto" value="Contacto :"/>
                                 <p:inputText id="txtContacto" label="Contacto" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
-
-                                <h:outputLabel for="chbxFamilia" value="Tipo de Producto :" />
-                                <p:selectCheckboxMenu id="chbxFamilia" value="#{proveedorBean.listFamilia}" label="Tipos" multiple="true"
-                                                      filter="true" filterMatchMode="startsWith" panelStyle="width:380px">
+                                
+                                <h:outputLabel for="chbxTipo" value="Tipo :" />
+                                <p:selectCheckboxMenu id="chbxTipo" value="#{proveedorBean.listFamilia}" label="Tipos" multiple="true"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 410px">
+                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
+                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
+                                </p:selectCheckboxMenu>
+                                
+                                <h:outputLabel for="chbxFamilia" value="Familia :" />
+                                <p:selectCheckboxMenu id="chbxFamilia" value="#{proveedorBean.listFamilia}" label="Familia" multiple="true"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 410px">
                                     <f:selectItems value="#{proveedorBean.selectOneItemsFamilia}"/>
                                 </p:selectCheckboxMenu>
 
