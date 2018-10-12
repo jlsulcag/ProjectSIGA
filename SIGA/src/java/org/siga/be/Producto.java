@@ -23,7 +23,7 @@ public class Producto  implements java.io.Serializable {
      private String estado;
      private Date fechaReg;
      private Familia familia;
-     private int tipoProducto;
+     private int clasificacion;
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntradaDetalle> notaEntradaDetalles = new HashSet<NotaEntradaDetalle>(0);
      private Set<AlmacenProducto> almacenProductos = new HashSet<AlmacenProducto>(0);
@@ -172,17 +172,13 @@ public class Producto  implements java.io.Serializable {
         this.kardexes = kardexes;
     }
     
-    public int getTipoProducto() {
-        return tipoProducto;
+    public int getClasificacion() {
+        return clasificacion;
     }
 
-    public void setTipoProducto(int tipoProducto) {
-        this.tipoProducto = tipoProducto;
+    public void setClasificacion(int clasificacion) {
+        this.clasificacion = clasificacion;
     }
-    
-    
-    
-
 }
 
 

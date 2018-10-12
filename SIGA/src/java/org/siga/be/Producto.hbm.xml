@@ -1,74 +1,71 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.Producto" table="producto" schema="siga" optimistic-lock="version">
-        <id name="idproducto" type="long">
-            <column name="idproducto" />
-            <generator class="increment" />
-        </id>         
-        <many-to-one name="familia" class="org.siga.be.Familia" fetch="select">
-            <column name="id_familia" />
-        </many-to-one>
-        <many-to-one name="clase" class="org.siga.be.Clase" fetch="select">
-            <column name="id_clase" />
-        </many-to-one>
-        <many-to-one name="unidadMedida" class="org.siga.be.UnidadMedida" fetch="select">
-            <column name="id_unidadmedida" not-null="true" />
-        </many-to-one>
-        <property name="descripcion" type="string">
-            <column name="descripcion" length="60" not-null="true" />
-        </property>
-        <property name="codigo" type="string">
-            <column name="codigo" length="30" not-null="true" />
-        </property>
-        <property name="stockMinimo" type="int">
-            <column name="stock_minimo" not-null="true" />
-        </property>
-        <property name="stockMaximo" type="int">
-            <column name="stock_maximo" not-null="true" />
-        </property>
-        <property name="estado" type="string">
-            <column name="estado" length="10" not-null="true" />
-        </property>
-        <property name="fechaReg" type="date">
-            <column name="fecha_reg" length="13" not-null="true" />
-        </property>
-        
-        <property name="tipoProducto" type="int">
-            <column name="tipo_producto" not-null="true" />
-        </property>
-        
-        <set name="ordenCompraDetalles" table="orden_compra_detalle" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_producto" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.OrdenCompraDetalle" />
-        </set>
-        <set name="notaEntradaDetalles" table="nota_entrada_detalle" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_producto" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.NotaEntradaDetalle" />
-        </set>
-        <set name="almacenProductos" table="almacen_producto" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_producto" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.AlmacenProducto" />
-        </set>
-        <set name="pedidoDetalle" table="pedido_detalle" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_producto" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.PedidoDetalle" />
-        </set>
-        <set name="kardexes" table="kardex" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_producto" not-null="true" />
-            </key>
-            <one-to-many class="org.siga.be.Kardex" />
-        </set>
-    </class>
+  <class name="org.siga.be.Producto" optimistic-lock="version" schema="siga" table="producto">
+    <id name="idproducto" type="long">
+      <column name="idproducto"/>
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="org.siga.be.Familia" fetch="select" name="familia">
+      <column name="id_familia"/>
+    </many-to-one>
+    <many-to-one class="org.siga.be.Clase" fetch="select" name="clase">
+      <column name="id_clase"/>
+    </many-to-one>
+    <many-to-one class="org.siga.be.UnidadMedida" fetch="select" name="unidadMedida">
+      <column name="id_unidadmedida" not-null="true"/>
+    </many-to-one>
+    <property name="descripcion" type="string">
+      <column length="60" name="descripcion" not-null="true"/>
+    </property>
+    <property name="codigo" type="string">
+      <column length="30" name="codigo" not-null="true"/>
+    </property>
+    <property name="stockMinimo" type="int">
+      <column name="stock_minimo" not-null="true"/>
+    </property>
+    <property name="stockMaximo" type="int">
+      <column name="stock_maximo" not-null="true"/>
+    </property>
+    <property name="estado" type="string">
+      <column length="10" name="estado" not-null="true"/>
+    </property>
+    <property name="fechaReg" type="date">
+      <column length="13" name="fecha_reg" not-null="true"/>
+    </property>
+    <property name="clasificacion" type="int">
+      <column name="clasificacion" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="ordenCompraDetalles" table="orden_compra_detalle">
+      <key>
+        <column name="id_producto" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.OrdenCompraDetalle"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="notaEntradaDetalles" table="nota_entrada_detalle">
+      <key>
+        <column name="id_producto" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.NotaEntradaDetalle"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="almacenProductos" table="almacen_producto">
+      <key>
+        <column name="id_producto" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.AlmacenProducto"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="pedidoDetalle" table="pedido_detalle">
+      <key>
+        <column name="id_producto" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.PedidoDetalle"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="kardexes" table="kardex">
+      <key>
+        <column name="id_producto" not-null="true"/>
+      </key>
+      <one-to-many class="org.siga.be.Kardex"/>
+    </set>
+  </class>
 </hibernate-mapping>

@@ -37,10 +37,10 @@
                                 Proveedor
                             </f:facet>
 
-                            <p:column style="width:15px;text-align: center" headerText="ID">
+                            <p:column style="width:30px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idproveedor}"/>
                             </p:column>
-                            <p:column headerText="Razon Social" style="width: 250px">
+                            <p:column headerText="Razon Social">
                                 <h:outputText value="#{item.razonSocial}"/> 
                             </p:column>
 
@@ -48,15 +48,15 @@
                                 <h:outputText value="#{item.ruc}"/>
                             </p:column>
 
-                            <p:column headerText="Dirección" style="width: 180px">
+                            <p:column headerText="Dirección">
                                 <h:outputText value="#{item.direccion}"/>
                             </p:column>
 
-                            <p:column headerText="Estado" style="width: 20px; text-align: center">
+                            <p:column headerText="Estado" style="width: 40px; text-align: center">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:40px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{proveedorBean.proveedor}" />
@@ -73,7 +73,7 @@
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
                                 
                                 <h:outputLabel for="cbxTipoPersona" value="Tipo Persona:"/>
-                                <p:selectOneMenu id="cbxTipoPersona" style="width: 380px" value="#{productoBean.producto.clase.idclase}" required="true">
+                                <p:selectOneMenu id="cbxTipoPersona" style="width: 380px" value="#{proveedorBean.proveedor.tipoPersona}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
                                     <f:selectItem itemLabel="NATURAL" itemValue="NATURAL"/>
                                     <f:selectItem itemLabel="JURIDICA" itemValue="JURIDICA"/>
@@ -107,13 +107,16 @@
                                 <h:outputLabel for="txtContacto" value="Contacto :"/>
                                 <p:inputText id="txtContacto" label="Contacto" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
+                                                                
+                                <h:outputText value="Proveedor de Productos :" />
+                                <p:selectBooleanButton id="value1" value="#{proveedorBean.proveedor.deproducto}" onLabel="Sí" offLabel="No" style="width:120px" >
+                                    <p:ajax  listener="#{proveedorBean.listarxTipo()}" update="chbxFamilia" />
+                                </p:selectBooleanButton>
                                 
-                                <h:outputLabel for="chbxTipo" value="Tipo :" />
-                                <p:selectCheckboxMenu id="chbxTipo" value="#{proveedorBean.listFamilia}" label="Tipos" multiple="true"
-                                                      filter="true" filterMatchMode="startsWith" style="width: 410px">
-                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
-                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
-                                </p:selectCheckboxMenu>
+                               <h:outputText value="Proveedor de Servicios :" />
+                               <p:selectBooleanButton id="value2" value="#{proveedorBean.proveedor.deservicio}" onLabel="Sí" offLabel="No" style="width:120px" >
+                                   <p:ajax  listener="#{proveedorBean.listarxTipo()}" update="chbxFamilia" />
+                               </p:selectBooleanButton>
                                 
                                 <h:outputLabel for="chbxFamilia" value="Familia :" />
                                 <p:selectCheckboxMenu id="chbxFamilia" value="#{proveedorBean.listFamilia}" label="Familia" multiple="true"

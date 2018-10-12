@@ -83,5 +83,13 @@ public class FamiliaBl extends AbstractBL<Familia>{
     public List listarNombresFamilias() {
         return dao.listarNombresFamilias();
     }
+
+    public List<Familia> listarxTipo(String tipo) {
+        return dao.listarxTipo(tipo);
+    }
+
+    public List<Familia> listarAmbosTipos(String producto, String servicio) {
+        return dao.listarAmbosTipos(producto, servicio);
+    }
     
 }

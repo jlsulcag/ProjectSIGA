@@ -60,7 +60,7 @@ public class ProveedorBean {
         res = proveedorBl.registrar(proveedor);
         if (res == 0) {
             MensajeView.registroCorrecto();
-            
+
 //            if (!listFamilia.isEmpty()) {
 //                for (String obj : listFamilia) {
 //                    System.out.println("objeto  select .... "+obj);
@@ -68,7 +68,6 @@ public class ProveedorBean {
 //                System.out.println("proveedor ... "+proveedor.getIdproveedor());
 //                registrarFamiliaProveedor(listFamilia, proveedor);
 //            }
-            
         } else {
             MensajeView.registroError();
         }
@@ -86,15 +85,28 @@ public class ProveedorBean {
             proveedorFamiliaBl.registrar(proveedorFamilia);
         }
     }
-    
+
     public List<SelectItem> getSelectOneItemsFamilia() {
-       this.selectOneItemsFamilia= new LinkedList<SelectItem>();
-        for (Familia fam : familiaBl.listar()) {
+        this.selectOneItemsFamilia = new LinkedList<SelectItem>();
+        for (Familia fam : listarxTipo()) {
             this.setFamilia(fam);
             SelectItem selectItem = new SelectItem(getFamilia().getIdfamilia(), getFamilia().getDescripcion());
             this.selectOneItemsFamilia.add(selectItem);
         }
         return selectOneItemsFamilia;
+    }
+
+    public List<Familia> listarxTipo() {
+        if (proveedor.isDeproducto() && proveedor.isDeservicio()) {
+            return familiaBl.listarAmbosTipos("PRODUCTO", "SERVICIO");
+        } else if (proveedor.isDeproducto()) {
+            return familiaBl.listarxTipo("PRODUCTO");
+        } else if (proveedor.isDeservicio()) {
+            return familiaBl.listarxTipo("SERVICIO");
+        } else {
+            return familiaBl.listarxTipo("NINGUNO");
+        }
+
     }
 
     public void actualizar() {
@@ -119,7 +131,7 @@ public class ProveedorBean {
     }
 
     public void buscarRef() {
-        setListProveedores(proveedorBl.buscarRef(txtBusqueda));
+        setListProveedores(proveedorBl.buscarRef(txtBusqueda.toUpperCase()));
     }
 
     public List<Proveedor> complete(String query) {
@@ -136,6 +148,9 @@ public class ProveedorBean {
         proveedor.setEmail("");
         proveedor.setContacto("");
         proveedor.setTelfFijo("");
+        proveedor.setTipoPersona("");
+        proveedor.setDeproducto(false);
+        proveedor.setDeservicio(false);
     }
 
     public Proveedor getProveedor() {

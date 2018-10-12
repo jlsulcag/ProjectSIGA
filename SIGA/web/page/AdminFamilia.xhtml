@@ -36,18 +36,23 @@
                             <f:facet name="header">
                                 Familias
                             </f:facet>
-                            <p:column style="width:10px;text-align: center" headerText="ID">
+                            <p:column style="width:30px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idfamilia}"/>
                             </p:column>
-                            <p:column headerText="Descripción" style=" width: 250px">
+                            
+                            <p:column headerText="Tipo" style="width: 120px">
+                                <h:outputText value="#{item.tipo}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Descripción">
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Estado" style="width: 10px; text-align: center">
+                            <p:column headerText="Estado" style="width: 40px; text-align: center">
                                 <h:outputText value="#{item.estado}"/>
                             </p:column>
 
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:40px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{familiaBean.familia}" />
@@ -61,6 +66,13 @@
                         <p:dialog header="Registrar Familia" widgetVar="dlgNew" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
+                                
+                                <h:outputLabel for="cbxTipo" value="Tipo :"/>
+                                <p:selectOneMenu id="cbxTipo" style="width: 380px" value="#{familiaBean.familia.tipo}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
+                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
+                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="txtDescripcion" value="Descripción :"/>
                                 <p:inputText id="txtDescripcion" label="Descripción" required="true" style="width: 400px; text-transform:uppercase;" value="#{familiaBean.familia.descripcion}" />
@@ -88,6 +100,13 @@
 
                                 <h:inputHidden value="#{familiaBean.familia.idfamilia}" />
                                 <h:inputHidden />
+                                
+                                <h:outputLabel for="cbxTipoEdit" value="Tipo :"/>
+                                <p:selectOneMenu id="cbxTipoEdit" style="width: 380px" value="#{familiaBean.familia.tipo}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
+                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
+                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="txtCategoriaEdit" value="Categoria :"/>
                                 <p:inputText id="txtCategoriaEdit" label="Categoria" required="true" value="#{familiaBean.familia.descripcion}" style="width: 400px; text-transform:uppercase;"/>

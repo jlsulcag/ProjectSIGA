@@ -51,6 +51,7 @@ public class FamiliaBean {
         temp = buscarId();
         temp.setDescripcion(familia.getDescripcion().toUpperCase());
         temp.setEstado(familia.getEstado().toUpperCase());
+        temp.setTipo(familia.getTipo().toUpperCase());
         res = familiaBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();

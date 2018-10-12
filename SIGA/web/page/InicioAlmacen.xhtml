@@ -3,44 +3,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <div style="height:500px">
-                    <h:form>
-                        <p:growl id="msgs" showDetail="true" />
+                <p:growl id="msgs" showDetail="true" />
+                <h:form>
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <p:panel id="columna11" header="Pedidos">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p:graphicImage name="./img/Cart-icon.png" />
+                                    <h:outputText value="100" style="font-size: 40px; font-weight: bold"/>
+                                    <f:facet name="footer">                                   
+                                        <p:commandButton icon="ui-icon-arrowstop-1-e" value="Ver" title="Ver"/>                                    
+                                    </f:facet>
+                                </h:panelGrid>
 
-                        <p:dashboard id="board" model="#{dashboardView.model}">
-                            <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs" />
-
-                            <p:panel id="sports" header="Sports" style="width: 200px">
-                                <h:outputText value="Sports Content" />
                             </p:panel>
-
-                            <p:panel id="finance" header="Finance">
-                                <h:outputText value="Finance Content" />
+                        </div>
+                        <div class="ui-g-3">
+                            <p:panel id="columna12" header="Orden de Compra">
+                                <h:outputText value="100" />
                             </p:panel>
-
-                            <p:panel id="lifestyle" header="Lifestyle">
-                                <h:outputText value="Lifestyle Content"  />
+                        </div>
+                        <div class="ui-g-3">
+                            <p:panel id="columna21" header="Inventario">
+                                <h:outputText value="100"  />
                             </p:panel>
-
-                            <p:panel id="weather" header="Weather">
-                                <h:outputText value="Weather Content" />
+                        </div>
+                        <div class="ui-g-3">
+                            <p:panel id="colunna22" header="Productos Caducados">
+                                <h:outputText value="100" />
                             </p:panel>
-
-                            <p:panel id="politics" header="Politics">
-                                <h:outputText value="Politics Content" />
-                            </p:panel>
-                        </p:dashboard>
-
-                        <div style="clear:both" />
-                    </h:form>
-                </div>
+                        </div>
+                    </div>
+                </h:form>
             </ui:define>
 
         </ui:composition>

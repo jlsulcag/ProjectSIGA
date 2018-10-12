@@ -38,6 +38,15 @@
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
+        <property name="deproducto" type="boolean">
+            <column name="deproducto"/>
+        </property>
+        <property name="deservicio" type="boolean">
+            <column name="deservicio"/>
+        </property>
+        <property name="tipoPersona" type="string">
+            <column name="tipo_persona" length="60"/>
+        </property>
         <set name="notaEntradas" table="nota_entrada" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_proveedor" />

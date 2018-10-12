@@ -34,25 +34,30 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,15,20" editable="true">
                             <f:facet name="header">
-                                Productos
+                                Productos y/o Servicios
                             </f:facet>
 
-                            <p:column style="width:10px;text-align: center" headerText="ID">
+                            <p:column style="width:30px;text-align: center" headerText="ID">
                                 <h:outputText value="#{item.idproducto}"/>
                             </p:column>
-                            <p:column headerText="Descripción" style=" width: 250px">
+                            
+                            <p:column headerText="Tipo" style="width: 100px">
+                                <h:outputText value="#{item.familia.tipo}"/>
+                            </p:column> 
+                            
+                            <p:column headerText="Descripción">
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>  
 
-                            <p:column headerText="Stock Min" style="width:20px;text-align: center">
+                            <p:column headerText="Stock Min" style="width:30px;text-align: center">
                                 <h:outputText value="#{item.stockMinimo}"/>
                             </p:column>
 
-                            <p:column headerText="Stock Max" style="width:20px; text-align: center">
+                            <p:column headerText="Stock Max" style="width:30px; text-align: center">
                                 <h:outputText value="#{item.stockMaximo}"/>
                             </p:column>
                             
-                            <p:column style="width:10px;text-align: center">
+                            <p:column style="width:30px;text-align: center">
                                 <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
                                                  icon="ui-icon-pencil" title="Editar">
                                     <f:setPropertyActionListener value="#{item}" target="#{productoBean.producto}"/>
@@ -69,13 +74,6 @@
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridNew" columns="2" cellpadding="3">
                                 
-                                <h:outputLabel for="cbxTipo" value="Tipo :"/>
-                                <p:selectOneMenu id="cbxTipo" style="width: 380px" value="#{productoBean.producto.clase.idclase}" required="true">
-                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
-                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
-                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
-                                </p:selectOneMenu>
-
                                 <h:outputLabel for="cbxFamilia" value="Familia :"/>
                                 <p:selectOneMenu id="cbxFamilia" style="width: 380px;" value="#{productoBean.producto.familia.idfamilia}" required="true">
                                     <p:ajax listener="#{productoBean.listarClasesXFamilia()}" update="cbxClase"/>
@@ -103,7 +101,7 @@
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="cbxClasificacion" value="Clasificacion :"/>
-                                <p:selectOneMenu id="cbxClasificacion" style="width: 380px;" value="#{productoBean.producto.tipoProducto}" required="true">
+                                <p:selectOneMenu id="cbxClasificacion" style="width: 380px;" value="#{productoBean.producto.clasificacion}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItem itemLabel="ESPECIAL" itemValue="2"/>
                                     <f:selectItem itemLabel="NORMAL" itemValue="1"/>
@@ -133,14 +131,7 @@
                         <p:dialog header="Actualizar Registro" widgetVar="dlgEdit" id="dlgNew" modal="false" 
                                   resizable="false" closable="false">
                             <h:panelGrid id="gridEdit" columns="2" cellpadding="3">
-                                
-                                <h:outputLabel for="cbxTipoEdit" value="Tipo :"/>
-                                <p:selectOneMenu id="cbxTipoEdit" style="width: 380px" value="#{productoBean.producto.clase.idclase}" required="true">
-                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
-                                    <f:selectItem itemLabel="PRODUCTO" itemValue="PRODUCTO"/>
-                                    <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
-                                </p:selectOneMenu>
-
+                             
                                 <h:outputLabel for="cbxFamiliaEdit" value="Familia :"/>
                                 <p:selectOneMenu id="cbxFamiliaEdit" style="width: 380px;" value="#{productoBean.producto.familia.idfamilia}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE"/>
@@ -167,7 +158,7 @@
                                 </p:selectOneMenu>
                                 
                                 <h:outputLabel for="cbxClasificacionEdit" value="Clasificación :"/>
-                                <p:selectOneMenu id="cbxClasificacionEdit" style="width: 380px;" value="#{productoBean.producto.tipoProducto}" required="true">
+                                <p:selectOneMenu id="cbxClasificacionEdit" style="width: 380px;" value="#{productoBean.producto.clasificacion}" required="true">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItem itemLabel="ESPECIAL" itemValue="2"/>
                                     <f:selectItem itemLabel="NORMAL" itemValue="1"/>

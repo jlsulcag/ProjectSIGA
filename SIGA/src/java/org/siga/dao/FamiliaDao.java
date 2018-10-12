@@ -67,5 +67,16 @@ public class FamiliaDao extends AbstractDA<Familia>{
         String hql = "Select f.descripcion From Familia f where f.estado = 'ACT'";
         return listSQL(hql);
     }
+
+
+    public List<Familia> listarxTipo(String tipo) {
+        String hql = "from Familia a where a.tipo = '"+tipo+"'";
+        return listar(hql);
+    }
+
+    public List<Familia> listarAmbosTipos(String producto, String servicio) {
+        String hql = "from Familia a where a.tipo in ('"+producto+"', '"+servicio+"')";
+        return listar(hql);
+    }
     
 }

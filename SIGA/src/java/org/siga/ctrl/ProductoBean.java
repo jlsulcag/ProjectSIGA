@@ -103,7 +103,7 @@ public class ProductoBean {
         temp.setFechaReg(new Date());
         temp.setFamilia(producto.getFamilia());
         temp.setClase(producto.getClase());
-        temp.setTipoProducto(producto.getTipoProducto());
+        temp.setClasificacion(producto.getClasificacion());
         res = productoBl.actualizar(temp);
         if (res == 0) {
             MensajeView.actCorrecto();

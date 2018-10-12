@@ -16,6 +16,7 @@ public class Familia  implements java.io.Serializable {
      private long idfamilia;
      private String descripcion;
      private String estado;
+     private String tipo;
      private Set<Clase> clases = new HashSet<Clase>(0);
      private Set<Producto> productos = new HashSet<Producto>(0);
      private Set<ProveedorFamilia> proveedorFamilias = new HashSet<ProveedorFamilia>(0);
@@ -79,6 +80,14 @@ public class Familia  implements java.io.Serializable {
 
     public void setProveedorFamilias(Set<ProveedorFamilia> proveedorFamilias) {
         this.proveedorFamilias = proveedorFamilias;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
 

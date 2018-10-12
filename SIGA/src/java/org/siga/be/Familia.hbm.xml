@@ -14,6 +14,9 @@
         <property name="estado" type="string">
             <column name="estado" length="10" not-null="true" />
         </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="30" not-null="true" />
+        </property>
         <set name="clases" table="clase" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_familia" />

@@ -26,18 +26,25 @@ public class DashboardView {
         DashboardColumn column1 = new DefaultDashboardColumn();
         DashboardColumn column2 = new DefaultDashboardColumn();
         DashboardColumn column3 = new DefaultDashboardColumn();
+        DashboardColumn column4 = new DefaultDashboardColumn();
          
-        column1.addWidget("sports");
-        column1.addWidget("finance");
+        column1.addWidget("columna11");
+        column1.addWidget("columna12");
          
-        column2.addWidget("lifestyle");
-        column2.addWidget("weather");
+        column2.addWidget("columna21");
+        column2.addWidget("columna22");
          
-        column3.addWidget("politics");
+        column3.addWidget("columna31");
+        column3.addWidget("columna32");
+        
+        column4.addWidget("columna41");
+        column4.addWidget("columna42");       
+        
  
         model.addColumn(column1);
         model.addColumn(column2);
         model.addColumn(column3);
+        model.addColumn(column4);
     }
      
     public void handleReorder(DashboardReorderEvent event) {
