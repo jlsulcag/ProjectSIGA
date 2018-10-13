@@ -145,6 +145,13 @@
 
                                 <h:inputHidden value="#{proveedorBean.proveedor.idproveedor}" />
                                 <h:inputHidden />
+                                
+                                <h:outputLabel for="cbxTipoPersonaEdit" value="Tipo Persona:"/>
+                                <p:selectOneMenu id="cbxTipoPersonaEdit" style="width: 380px" value="#{proveedorBean.proveedor.tipoPersona}" required="true">
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="TRUE"/>
+                                    <f:selectItem itemLabel="NATURAL" itemValue="NATURAL"/>
+                                    <f:selectItem itemLabel="JURIDICA" itemValue="JURIDICA"/>
+                                </p:selectOneMenu>
 
                                 <h:outputLabel for="txtRazonSocialEdit" value="Razón Social :"/>
                                 <p:inputText id="txtRazonSocialEdit" label="Razón Social" required="true" 
@@ -173,7 +180,7 @@
 
 
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
-                                <p:selectOneMenu id="cbxEstado" style="width: 300px" value="#{proveedorBean.proveedor.estado}">
+                                <p:selectOneMenu id="cbxEstado" style="width: 380px" value="#{proveedorBean.proveedor.estado}">
                                     <f:selectItem itemLabel="--Seleccione--" noSelectionOption="true" />
                                     <f:selectItem itemLabel="ACTIVO" itemValue="ACT"/>
                                     <f:selectItem itemLabel="BAJA" itemValue="BAJA"/>

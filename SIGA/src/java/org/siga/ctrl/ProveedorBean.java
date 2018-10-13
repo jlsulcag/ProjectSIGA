@@ -39,7 +39,6 @@ public class ProveedorBean {
     private List<SelectItem> selectOneItemsProveedores;
     private String txtBusqueda;
     private long res;
-    //private Object[] selectedFamilias;
     private List<String> listFamilia;
     private List<SelectItem> selectOneItemsFamilia;
     private List<Familia> listFamilias;
@@ -59,31 +58,26 @@ public class ProveedorBean {
         proveedor.setFechaReg(new Date());
         res = proveedorBl.registrar(proveedor);
         if (res == 0) {
-            MensajeView.registroCorrecto();
+            if (!listFamilia.isEmpty()) {
+                for (String obj : listFamilia) {
+                    registrarFamiliaProveedor(obj, proveedor);
+                    MensajeView.registroCorrecto();
+                }
 
-//            if (!listFamilia.isEmpty()) {
-//                for (String obj : listFamilia) {
-//                    System.out.println("objeto  select .... "+obj);
-//                }
-//                System.out.println("proveedor ... "+proveedor.getIdproveedor());
-//                registrarFamiliaProveedor(listFamilia, proveedor);
-//            }
-        } else {
-            MensajeView.registroError();
+            } else {
+                MensajeView.registroError();
+            }
+            listar();
+
         }
-        listar();
-
     }
 
-    public void registrarFamiliaProveedor(List<String> list, Proveedor proveedor) {
-
-        for (String obj : list) {
-            long id = Long.valueOf(obj);
-            proveedorFamilia.setFamilia(familiaBl.buscar(id));
-            proveedorFamilia.setProveedor(proveedor);
-            proveedorFamilia.setEstado("ACT");
-            proveedorFamiliaBl.registrar(proveedorFamilia);
-        }
+    public void registrarFamiliaProveedor(String obj, Proveedor proveedor) {
+        long id = Long.valueOf(obj);
+        proveedorFamilia.setFamilia(familiaBl.buscar(id));
+        proveedorFamilia.setProveedor(proveedor);
+        proveedorFamilia.setEstado("ACT");
+        proveedorFamiliaBl.registrar(proveedorFamilia);
     }
 
     public List<SelectItem> getSelectOneItemsFamilia() {

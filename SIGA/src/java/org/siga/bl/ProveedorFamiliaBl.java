@@ -6,9 +6,13 @@ import org.siga.be.ProveedorFamilia;
 import org.siga.dao.ProveedorFamiliaDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 @Service("proveedorFamiliaBl")
 public class ProveedorFamiliaBl extends AbstractBL<ProveedorFamilia>{
+    @Autowired
+    @Qualifier("proveedorFamiliaDao")
     private ProveedorFamiliaDao dao;
     
     @Override
