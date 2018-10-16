@@ -129,7 +129,7 @@
                                 <h:outputLabel for="txfUnidadIngreso" value="Unidad Medida Ingreso:"/>
                                 <p:selectOneMenu id="txfUnidadIngreso" value="#{pedidoBean.equivalencia.idequivalencia}" 
                                                  filter="true" filterMatchMode="contains" style="width: 300px">
-                                    <f:selectItem itemLabel="SELECCIONE"/>
+                                    <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                     <f:selectItems value="#{pedidoBean.selectOneItemsEquivalencia}"/>
                                 </p:selectOneMenu>
 

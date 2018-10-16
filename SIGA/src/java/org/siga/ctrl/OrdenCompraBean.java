@@ -158,7 +158,7 @@ public class OrdenCompraBean {
 
     public void agregar() {
         OrdenCompraDetalle temp = new OrdenCompraDetalle();
-
+        System.out.println("aqui ..........");
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
@@ -341,8 +341,8 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setPrecioCompra(BigDecimal.ZERO);
         ordenCompraDetalle.setDesc1(0);
         ordenCompraDetalle.setDesc2(0);
+        ordenCompraDetalle.setDescripcion("");
         producto.setUnidadMedida(new UnidadMedida());
-        //getSelectOneItemsProducto();
     }
     
 
@@ -699,7 +699,6 @@ public class OrdenCompraBean {
     }
 
     public List<SelectItem> getSelectOneItemsProducto() {
-        System.out.println("recien ingresa  ................"+ordenCompra.getTipoOrden());
         this.selectOneItemsProducto = new LinkedList<>();
         HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         if (sesionUser.getAttribute("idUsuario") != null) {
