@@ -35,6 +35,18 @@
                                 </div>
 
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxTipoOrden" value="Orden Compra/Servicio :"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxTipoOrden" value="#{ordenCompraBean.ordenCompra.tipoOrden}" required="true"
+                                                     label="Proveedor">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="COMPRA" itemValue="COMPRA"/>
+                                        <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="cbxProveedor" value="Proveedor :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -44,8 +56,8 @@
                                         <f:selectItems value="#{proveedorBean.selectOneItemsProveedores}"/>
                                     </p:selectOneMenu>
                                 </div>
-                                
-                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfFechaEntrega" value="Plazo de entrega :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
@@ -83,7 +95,7 @@
                                                  value="#{ordenCompraBean.ordenCompra.formaPago}" />
                                 </div>
 
-                               
+
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <h:outputLabel for="txfDocRef" value="Requerimiento :" />
                                 </div>
@@ -105,7 +117,11 @@
                         <p:toolbar>
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
-                                                 update="formNew" actionListener="#{ordenCompraBean.inicioNew()}" oncomplete="PF('dlgNew').show();"/>
+                                                 update="formNew" actionListener="#{ordenCompraBean.inicioNew()}" 
+                                                 validateClient="true"
+                                                 oncomplete="PF('dlgNew').show();">
+
+                                </p:commandButton>
                             </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
@@ -192,7 +208,7 @@
                                 <p:selectOneMenu id="cbxProducto" value="#{ordenCompraBean.ordenCompraDetalle.producto.idproducto}" 
                                                  filter="true" filterMatchMode="contains" >
                                     <f:selectItem itemLabel="SELECCIONE"/>
-                                    <f:selectItems value="#{productoBean.selectOneItemsProducto}"/>
+                                    <f:selectItems value="#{ordenCompraBean.selectOneItemsProducto}"/>
                                     <p:ajax listener="#{ordenCompraBean.buscarProducto()}" update="txfUnidad, txfUnidadIngreso"/>
                                 </p:selectOneMenu>
 
@@ -241,17 +257,24 @@
 
                                 <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
                                 <p:inputText id="txfDesc2" label="Descuento 2"
-                                             value="#{ordenCompraBean.ordenCompraDetalle.desc2}"/>                                
-                                <f:facet name="footer">
-                                    <p:separator/>
+                                             value="#{ordenCompraBean.ordenCompraDetalle.desc2}"/>   
 
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
 
-                                    <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
-                                                     oncomplete="PF('dlgNew').hide();" actionListener="#{ordenCompraBean.agregar()}"/>
-                                </f:facet>
 
                             </h:panelGrid>
+                            <h:panelGrid columns="4" cellpadding="1">
+                                <h:outputLabel for="txfDescripcion" value="Descripción: "/>
+                                <p:inputText id="txfDescripcion" label="Descripción"
+                                             value="#{ordenCompraBean.ordenCompraDetalle.descripcion}"/>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <p:separator/>
+
+                                <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+
+                                <p:commandButton value="Agregar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                                 oncomplete="PF('dlgNew').hide();" actionListener="#{ordenCompraBean.agregar()}"/>
+                            </f:facet>
                         </p:dialog>
                     </h:form>
 

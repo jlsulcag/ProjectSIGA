@@ -61,6 +61,9 @@
     <property name="montoSubTotal" type="big_decimal">
       <column default="0.00" name="monto_subtotal" not-null="true" precision="10"/>
     </property>
+    <property name="tipoOrden" type="string">
+      <column length="20" name="tipo_orden"/>
+    </property>
     <set fetch="select" inverse="true" lazy="true" name="ordenCompraDetalles" table="orden_compra_detalle">
       <key>
         <column name="id_ordencompra" not-null="true"/>

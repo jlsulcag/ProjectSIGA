@@ -69,7 +69,7 @@ public class ProductoDao extends AbstractDA<Producto>{
     }
 
     public List<Producto> listarNormal() {
-        String ref = "from Producto p left join fetch p.clase left join fetch p.familia left join fetch p.unidadMedida where p.tipoProducto = "+1;
+        String ref = "from Producto p left join fetch p.clase left join fetch p.familia left join fetch p.unidadMedida where p.clasificacion = "+1;
         return listar(ref);
     }
     

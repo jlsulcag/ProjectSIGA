@@ -38,17 +38,21 @@ import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.OrdenCompraSeguimiento;
+import org.siga.be.Permiso;
 import org.siga.be.Producto;
 import org.siga.be.Proveedor;
 import org.siga.be.UnidadMedida;
+import org.siga.be.UsuarioPermiso;
 import org.siga.bl.AlmacenBl;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
 import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
+import org.siga.bl.PermisoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.UnidadMedidaBl;
+import org.siga.bl.UsuarioPermisoBl;
 import org.siga.ds.DSConeccion;
 import org.siga.ds.DsConexion;
 import org.siga.util.MensajeView;
@@ -92,8 +96,20 @@ public class OrdenCompraBean {
     private Almacen almacen;
     @ManagedProperty(value = "#{almacenBl}")
     private AlmacenBl almacenBl;
+    
+    @ManagedProperty(value = "#{permisoBl}")
+    private PermisoBl permisoBl;
+    @ManagedProperty(value = "#{permiso}")
+    private Permiso permiso;
+    
+    @ManagedProperty(value = "#{usuarioPermisoBl}")
+    private UsuarioPermisoBl usuarioPermisoBl;
+    @ManagedProperty(value = "#{usuarioPermiso}")
+    private UsuarioPermiso usuarioPermiso;
 
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
+    private List<SelectItem> selectOneItemsProducto;
+    private List<Producto> listaProductos;
     private List<SelectItem> selectOneItemsEquivalencia;
     private List<Equivalencia> listEquivalencias;
     private long res = -1;
@@ -123,6 +139,7 @@ public class OrdenCompraBean {
         ordenCompra.setDocReferencia("");
         ordenCompra.setProveedor(new Proveedor());
         ordenCompra.setAlmacenSolicitante(new Almacen());
+        ordenCompra.setTipoOrden("");
         listOrdenCompraDetalles.clear();
         montoTotal = new BigDecimal("0.00");
         valorBruto = new BigDecimal("0.00");
@@ -325,7 +342,9 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setDesc1(0);
         ordenCompraDetalle.setDesc2(0);
         producto.setUnidadMedida(new UnidadMedida());
+        //getSelectOneItemsProducto();
     }
+    
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
@@ -677,6 +696,92 @@ public class OrdenCompraBean {
 
     public void setAlmacenBl(AlmacenBl almacenBl) {
         this.almacenBl = almacenBl;
+    }
+
+    public List<SelectItem> getSelectOneItemsProducto() {
+        System.out.println("recien ingresa  ................"+ordenCompra.getTipoOrden());
+        this.selectOneItemsProducto = new LinkedList<>();
+        HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        if (sesionUser.getAttribute("idUsuario") != null) {
+            long idUser = (long) sesionUser.getAttribute("idUsuario");
+            if (idUser != 0) {
+                //buscar permiso por codigo
+                setPermiso(getPermisoBl().buscarxCodigo(3));
+                if (getPermiso() != null) {
+                    setUsuarioPermiso(getUsuarioPermisoBl().buscarxIdUsuario(idUser, getPermiso().getIdpermiso()));
+                    if (getUsuarioPermiso() != null) {//si tiene permiso listar todos los productos
+                        for (Producto obj : listarProducto()) {
+                            this.setProducto(obj);
+                            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
+                            this.selectOneItemsProducto.add(selectItem);
+                        }
+                    } else {// si no tiene el permiso 3 listar solo los productos normales
+                        for (Producto obj : listarProductoNormal()) {
+                            this.setProducto(obj);
+                            SelectItem selectItem = new SelectItem(getProducto().getIdproducto(), getProducto().getDescripcion());
+                            this.selectOneItemsProducto.add(selectItem);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return selectOneItemsProducto;
+    }
+    
+    private List<Producto> listarProducto() {
+        setListaProductos(productoBl.listar());
+        return getListaProductos();
+    }
+
+    private List<Producto> listarProductoNormal() {
+        setListaProductos(productoBl.listarNormal());
+        return getListaProductos();
+    }
+
+    public void setSelectOneItemsProducto(List<SelectItem> selectOneItemsProducto) {
+        this.selectOneItemsProducto = selectOneItemsProducto;
+    }
+
+    public List<Producto> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void setListaProductos(List<Producto> listaProductos) {
+        this.listaProductos = listaProductos;
+    }
+
+    public PermisoBl getPermisoBl() {
+        return permisoBl;
+    }
+
+    public void setPermisoBl(PermisoBl permisoBl) {
+        this.permisoBl = permisoBl;
+    }
+
+    public Permiso getPermiso() {
+        return permiso;
+    }
+
+    public void setPermiso(Permiso permiso) {
+        this.permiso = permiso;
+    }
+
+    public UsuarioPermisoBl getUsuarioPermisoBl() {
+        return usuarioPermisoBl;
+    }
+
+    public void setUsuarioPermisoBl(UsuarioPermisoBl usuarioPermisoBl) {
+        this.usuarioPermisoBl = usuarioPermisoBl;
+    }
+
+    public UsuarioPermiso getUsuarioPermiso() {
+        return usuarioPermiso;
+    }
+
+    public void setUsuarioPermiso(UsuarioPermiso usuarioPermiso) {
+        this.usuarioPermiso = usuarioPermiso;
     }
 
 }

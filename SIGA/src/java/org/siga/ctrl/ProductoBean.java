@@ -297,12 +297,12 @@ public class ProductoBean {
         this.selectOneItemsProducto = selectOneItemsProducto;
     }
 
-    private Iterable<Producto> listarProducto() {
+    private List<Producto> listarProducto() {
         setListaProductos(productoBl.listar());
         return getListaProductos();
     }
 
-    private Iterable<Producto> listarProductoNormal() {
+    private List<Producto> listarProductoNormal() {
         setListaProductos(productoBl.listarNormal());
         return getListaProductos();
     }

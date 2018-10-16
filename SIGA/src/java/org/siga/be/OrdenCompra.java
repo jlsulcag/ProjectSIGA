@@ -35,6 +35,7 @@ public class OrdenCompra  implements java.io.Serializable {
      private BigDecimal montoSubTotal;
      private String estado;
      private String penalidadIncumplimiento;
+     private String tipoOrden;
      
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
@@ -225,6 +226,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setPenalidadIncumplimiento(String penalidadIncumplimiento) {
         this.penalidadIncumplimiento = penalidadIncumplimiento;
+    }
+
+    public String getTipoOrden() {
+        return tipoOrden;
+    }
+
+    public void setTipoOrden(String tipoOrden) {
+        this.tipoOrden = tipoOrden;
     }
 
 

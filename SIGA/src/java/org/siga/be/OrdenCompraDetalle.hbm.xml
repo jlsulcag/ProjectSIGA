@@ -46,5 +46,8 @@
     <property name="idEquivalencia" type="long">
       <column name="id_equivalencia"/>
     </property>
+    <property name="descripcion" type="string">
+      <column length="540" name="descripcion"/>
+    </property>
   </class>
 </hibernate-mapping>
