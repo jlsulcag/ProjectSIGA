@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class TipoMovimiento  implements java.io.Serializable {
 
 
-     private int idtipomov;
+     private long idtipomovimiento;
      private String descripcion;
      private String estado;
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
@@ -23,24 +23,24 @@ public class TipoMovimiento  implements java.io.Serializable {
     }
 
 	
-    public TipoMovimiento(int idtipomov, String descripcion, String estado) {
-        this.idtipomov = idtipomov;
+    public TipoMovimiento(long idtipomov, String descripcion, String estado) {
+        this.idtipomovimiento = idtipomov;
         this.descripcion = descripcion;
         this.estado = estado;
     }
-    public TipoMovimiento(int idtipomov, String descripcion, String estado, Set<NotaEntrada> notaEntradas) {
-       this.idtipomov = idtipomov;
+    public TipoMovimiento(long idtipomov, String descripcion, String estado, Set<NotaEntrada> notaEntradas) {
+       this.idtipomovimiento = idtipomov;
        this.descripcion = descripcion;
        this.estado = estado;
        this.notaEntradas = notaEntradas;
     }
    
-    public int getIdtipomov() {
-        return this.idtipomov;
+    public long getIdtipomovimiento() {
+        return this.idtipomovimiento;
     }
     
-    public void setIdtipomov(int idtipomov) {
-        this.idtipomov = idtipomov;
+    public void setIdtipomovimiento(long idtipomovimiento) {
+        this.idtipomovimiento = idtipomovimiento;
     }
     public String getDescripcion() {
         return this.descripcion;

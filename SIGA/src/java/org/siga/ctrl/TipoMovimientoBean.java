@@ -44,7 +44,7 @@ public class TipoMovimientoBean {
         this.selectOneItemsTipoMovimiento= new LinkedList<SelectItem>();
         for (TipoMovimiento obj : tipoMovimientoBl.listar()) {
             this.setTipoMovimiento(obj);
-            SelectItem selectItem = new SelectItem(obj.getIdtipomov(), obj.getDescripcion());
+            SelectItem selectItem = new SelectItem(obj.getIdtipomovimiento(), obj.getDescripcion());
             this.selectOneItemsTipoMovimiento.add(selectItem);
         }
         return selectOneItemsTipoMovimiento;

@@ -1,31 +1,29 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 07/08/2017 05:08:46 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="org.siga.be.TipoMovimiento" table="tipo_movimiento" schema="siga" optimistic-lock="version">
-        <id name="idtipomov" type="int">
-            <column name="idtipomov" />
-            <generator class="increment" />
-        </id>
-        <property name="descripcion" type="string">
-            <column name="descripcion" length="60" not-null="true" />
-        </property>
-        <property name="estado" type="string">
-            <column name="estado" length="10" not-null="true" />
-        </property>
-        <set name="notaEntradas" table="nota_entrada" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_tipomovimiento" />
-            </key>
-            <one-to-many class="org.siga.be.NotaEntrada" />
-        </set>
-        
-        <set name="pedidos" table="pedido" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_tipomov" />
-            </key>
-            <one-to-many class="org.siga.be.TipoMovimiento" />
-        </set>
-    </class>
+  <class name="org.siga.be.TipoMovimiento" optimistic-lock="version" schema="siga" table="tipo_movimiento">
+    <id name="idtipomovimiento" type="long">
+      <column name="idtipomovimiento"/>
+      <generator class="increment"/>
+    </id>
+    <property name="descripcion" type="string">
+      <column length="60" name="descripcion" not-null="true"/>
+    </property>
+    <property name="estado" type="string">
+      <column length="10" name="estado" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="notaEntradas" table="nota_entrada">
+      <key>
+        <column name="id_tipomovimiento"/>
+      </key>
+      <one-to-many class="org.siga.be.NotaEntrada"/>
+    </set>
+    <set fetch="select" inverse="true" lazy="true" name="pedidos" table="pedido">
+      <key>
+        <column name="id_tipomov"/>
+      </key>
+      <one-to-many class="org.siga.be.TipoMovimiento"/>
+    </set>
+  </class>
 </hibernate-mapping>

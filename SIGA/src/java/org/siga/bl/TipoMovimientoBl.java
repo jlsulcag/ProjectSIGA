@@ -58,7 +58,7 @@ public class TipoMovimientoBl extends AbstractBL<TipoMovimiento>{
 
     @Override
     public TipoMovimiento buscar(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(id);
     }
 
     @Override

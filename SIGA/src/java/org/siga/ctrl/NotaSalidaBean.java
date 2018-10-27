@@ -50,6 +50,7 @@ import org.siga.bl.PedidoEstadoBl;
 import org.siga.bl.PedidoSeguimientoBl;
 import org.siga.bl.PersonaBl;
 import org.siga.bl.ProductoBl;
+import org.siga.bl.TipoMovimientoBl;
 import org.siga.bl.UnidadMedidaBl;
 import org.siga.bl.UsuarioBl;
 import org.siga.ds.DSConeccion;
@@ -125,6 +126,9 @@ public class NotaSalidaBean {
 
     @ManagedProperty(value = "#{pedidoEstadoBl}")
     private PedidoEstadoBl pedidoEstadoBl;
+
+    @ManagedProperty(value = "#{tipoMovimientoBl}")
+    private TipoMovimientoBl tipoMovimientoBl;
 
     private List<NotaSalidaDetalle> listNotaSalidas = new LinkedList<>();
     private List<PedidoDetalle> listPedidoDetalle = new LinkedList<>();
@@ -216,6 +220,22 @@ public class NotaSalidaBean {
 
     }
 
+    public void registrarNSSucursal() {
+        long res = -1;
+        long res2 = -1;
+        int cont = 0;//Contador de items no atendidos
+        if (!listNotaSalidas.isEmpty()) {
+            res = registrarNotaSalidaSucursal();
+            if (res == 0) {
+                res2 = registrarNotaSalidaDetalle();
+            } else {
+                MensajeView.registroError();
+            }
+        } else {
+            MensajeView.listVacia();
+        }
+    }
+
     public void registrar() {
         long res = -1;
         long res2 = -1;
@@ -266,7 +286,8 @@ public class NotaSalidaBean {
         Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
         notaSalida.setFechaReg(new Date());
         notaSalida.setIdUserReg(user != null ? user.getIdusuario() : 0);
-        //determinar almacen oprien y destino de  acuerdo a que tipo de salida es: DISTRIBUCION SIMPLE O  CON NOTA DE PEDIDO
+        System.out.println("   id al,macen ........ " + user.getDependencia().getAlmacen().getIdalmacen());
+        //determinar almacen origen y destino de  acuerdo a que tipo de salida es: DISTRIBUCION SIMPLE O  CON NOTA DE PEDIDO
         if (this.getNotaSalida().getPedido().getIdpedido() > 0) {
             //Obtener todos los datos del pedido para determinar  origen y destino             
             pedido = pedidoBl.buscarXid(this.getNotaSalida().getPedido().getIdpedido());
@@ -294,6 +315,27 @@ public class NotaSalidaBean {
         //return notaSalida.getIdnotasalida();
     }
 
+    public long registrarNotaSalidaSucursal() {
+        Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        notaSalida.setNumero(maxNumero() + 1);
+        notaSalida.setFechaReg(new Date());
+        notaSalida.setIdUserReg(user != null ? user.getIdusuario() : 0);
+        notaSalida.setTipomovimiento(getTipoMovimientoBl().buscar(3));
+        almacen = almacenBl.buscar(user.getDependencia().getAlmacen().getIdalmacen());
+        notaSalida.setAlmacenOrigen(almacen != null ? almacen : null);
+        notaSalida.setAlmacenDestino(almacen != null ? almacen : null);
+        notaSalida.setObservacion(notaSalida.getObservacion().toUpperCase());
+        notaSalida.setDependencia(dependenciaBl.buscarXId(user.getDependencia().getIddependencia()));
+        notaSalida.setPersonaDestino(notaSalida.getPersonaDestino().toUpperCase());
+        notaSalida.setDocRef("");
+        notaSalida.setPedido(null);
+
+        //PARA  REGISTRAR POR DISTRIBUCION SIMPLE DESDE OTRA PAGINA
+        return notaSalidaBl.registrar(notaSalida);
+
+        //return notaSalida.getIdnotasalida();
+    }
+
     private long registrarNotaSalidaDetalle() {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
@@ -301,8 +343,6 @@ public class NotaSalidaBean {
                 obj.setNotasalida(notaSalida);
                 id = notaSalidaDetalleBl.registrar(obj);
             }
-
-            //Actualizar stock almacen
         }
         return id;
     }
@@ -314,6 +354,8 @@ public class NotaSalidaBean {
         notaSalidaDetalle.setCantAtendida(0);
         notaSalidaDetalle.setCantPendiente(0);
         notaSalidaDetalle.setCantSalida(0);
+        notaSalidaDetalle.setIdAlmacenProducto(0);
+        almacenProducto.setIdalmacenproducto(0);
         setTotalProductos(0);
     }
 
@@ -647,7 +689,14 @@ public class NotaSalidaBean {
                 this.setAlmacenProducto(obj);
                 SelectItem selectItem = new SelectItem(almacenProducto.getIdalmacenproducto(), almacenProducto.getProducto().getDescripcion());
                 this.selectOneItemsAlmacenProducto.add(selectItem);
-            }            
+            }
+        }else{//para el caso de una  nota de salida de una sucursal
+            Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+            for (AlmacenProducto obj : listarAlmacenProducto(user.getDependencia().getAlmacen().getIdalmacen())) {
+                this.setAlmacenProducto(obj);
+                SelectItem selectItem = new SelectItem(almacenProducto.getIdalmacenproducto(), almacenProducto.getProducto().getDescripcion());
+                this.selectOneItemsAlmacenProducto.add(selectItem);
+            }
         }
         return selectOneItemsAlmacenProducto;
 
@@ -781,6 +830,14 @@ public class NotaSalidaBean {
 
     public void setSelectOneItemsAlmacenProducto(List<SelectItem> selectOneItemsAlmacenProducto) {
         this.selectOneItemsAlmacenProducto = selectOneItemsAlmacenProducto;
+    }
+
+    public TipoMovimientoBl getTipoMovimientoBl() {
+        return tipoMovimientoBl;
+    }
+
+    public void setTipoMovimientoBl(TipoMovimientoBl tipoMovimientoBl) {
+        this.tipoMovimientoBl = tipoMovimientoBl;
     }
 
 }
