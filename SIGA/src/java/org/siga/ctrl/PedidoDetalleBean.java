@@ -136,6 +136,7 @@ public class PedidoDetalleBean {
     public void onRowEdit(RowEditEvent event) {
         selectedPedidoDetalle = new PedidoDetalle();
         selectedPedidoDetalle = pedidoDetalleBl.buscarxID(((PedidoDetalle) event.getObject()).getIdpedidodetalle());
+        System.out.println("seelct pedido detalle ..... "+selectedPedidoDetalle.getIdpedidodetalle());
         selectedPedidoDetalle.setCantidadAutorizada(pedidoDetalle.getCantidadAutorizada());
         selectedPedidoDetalle.setCantidadSurtida(pedidoDetalle.getCantidadAutorizada());
         pedidoDetalleBl.actualizar(selectedPedidoDetalle);
@@ -162,7 +163,7 @@ public class PedidoDetalleBean {
             res = pedidoSeguimientoBl.registrar(pedidoSeguimiento);
             limpiar();
             if (res == 0) {
-                MensajeView.autorizarPedido();
+                MensajeView.pedidoAprobado();
             }
         }
     }
@@ -226,6 +227,7 @@ public class PedidoDetalleBean {
         System.out.println("valor antiguo........... " + oldValue);
         System.out.println("valor nuevo........... " + newValue);
         if (newValue != null && !newValue.equals(oldValue)) {
+            System.out.println("aqui.............");
 
         } else {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);

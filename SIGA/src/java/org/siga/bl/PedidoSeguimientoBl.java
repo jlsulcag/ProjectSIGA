@@ -48,7 +48,7 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
 
     @Override
     public List<PedidoSeguimiento> listar(String ref) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return list(ref);
     }
 
     @Override
@@ -84,5 +84,8 @@ public class PedidoSeguimientoBl extends AbstractBL<PedidoSeguimiento>{
         return dao.buscarxidPedido(idpedido);
     }
     
+    public List<PedidoSeguimiento> listarxidPedido(long idpedido) {
+        return dao.listarxidPedido(idpedido);
+    }   
     
 }

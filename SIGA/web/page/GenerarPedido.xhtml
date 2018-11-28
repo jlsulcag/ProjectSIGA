@@ -69,7 +69,9 @@
                         <p:toolbar>
                             <f:facet name="left">
                                 <p:commandButton id="btnAdd" icon="ui-icon-plus" value="Agregar" title="Agregar" 
-                                                 update="formNew" actionListener="#{pedidoBean.inicioNew()}" oncomplete="PF('dlgNew').show();"/>
+                                                 actionListener="#{pedidoBean.inicioNew()}" update="formNew" 
+                                                 oncomplete="PF('dlgNew').show();"
+                                                 resetValues="true"/>
                             </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
@@ -80,7 +82,7 @@
                         </p:toolbar>
                     </h:form> 
 
-                     <h:form id="formDataTable">
+                    <h:form id="formDataTable" style="margin-top: 5px">
                         <p:dataTable id="lista" value="#{pedidoBean.listPedidoDetalle}" var="item"
                                      paginator="false" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -123,6 +125,7 @@
                                 
                                <h:outputLabel for="txfUnidad" value="Unidad Medida :"/>
                                 <p:selectOneMenu id="txfUnidad" disabled="true" style="width: 300px">
+                                    <f:selectItem itemLabel="SELECCIONE"/>
                                     <f:selectItem itemLabel="#{pedidoBean.producto.unidadMedida.descripcion}"/>
                                 </p:selectOneMenu>
                                 

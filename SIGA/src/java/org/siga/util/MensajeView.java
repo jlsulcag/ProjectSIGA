@@ -23,21 +23,47 @@ public class MensajeView {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "La Orden de Compra ya esta Aprobada");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
+    public static void pedidoEstado(String estado) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido debe estar en estado "+estado);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
     public static void noImprimeOrdenCompra() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención", "La Orden de Compra no se encuentra Aprobada");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
+    public static void verificarPedido() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue verificado");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
-    public static void autorizarPedido() {
+    public static void pedidoAprobado() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue aprobado");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public static void recepcionarPedido() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue recepcionado");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Atención", "El pedido fue recepcionado con éxito");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public static void noExisteNotaEntrada(long numero) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "No existe nota de entrada para el pedido N° "+numero);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public static void seleccioneTabla() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Seleccione un elemento de la tabla");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public static void docEstaCerrado() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "El Documento se encuentra en estado CERRADO");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
     String mensaje = "";
 
     public static void registroCorrecto() {

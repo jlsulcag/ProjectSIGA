@@ -160,23 +160,17 @@ public class PedidoBean {
 
     public void inicioNew() {
         pedidoDetalle.setProducto(new Producto());
-//        producto.setFraccion(0);
-//        producto.setUnidadMedida(null);
-        setPedidoxUnidad(false);
         pedidoDetalle.setCantidadSolicitada(0);
         setTotalProductos(0);
+        if(producto != null){
+            producto = null;
+        }
     }
 
     public void buscarProducto() {
         producto = getProductoBl().buscarxID(pedidoDetalle.getProducto().getIdproducto());
     }
 
-    public void setIsPedidoUnitario() {
-        setPedidoxUnidad(pedidoxUnidad);
-//        if (pedidoDetalle.getCantidadSolicitada() > 0) {
-//            calcularTotalProductos();
-//        }
-    }
 
     /*get and set*/
     public Pedido getPedido() {
@@ -306,6 +300,7 @@ public class PedidoBean {
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
+        //System.out.println("producto ..... "+producto.getDescripcion());
         if (producto != null) {
             for (Equivalencia obj : listarEquivalenciaxUnidadMedida(producto.getUnidadMedida().getIdunidadmedida())) {
                 this.setEquivalencia(obj);
@@ -372,7 +367,7 @@ public class PedidoBean {
     public List<SelectItem> getPedidosPorEstado() {
         //Listar los seguimientos de pedido que se encuentren  en estado APROBADO
         listPedidoSeguimiento = new LinkedList<>();
-        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado(2);
+        listPedidoSeguimiento = pedidoSeguimientoBl.listarxEstado(3);
         selectOneItemsPedido = new LinkedList<>();
         for (PedidoSeguimiento pedidoSeg : listPedidoSeguimiento) {
             pedido = pedidoBl.buscarXid(pedidoSeg.getPedido().getIdpedido());

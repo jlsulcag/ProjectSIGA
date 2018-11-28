@@ -79,12 +79,11 @@
 
                                 
                                 <f:facet name="footer">
-                                    <p:separator/>
-                                    
+                                    <p:separator/>                                    
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true"
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
                                                      update="msgNew, formDataTable" actionListener="#{familiaBean.registrar()}"/> 
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" immediate="true"/>
                                     
                                 </f:facet>
 
@@ -125,7 +124,7 @@
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgEdit').hide()}" 
                                                      update="msgEdit, formDataTable" actionListener="#{familiaBean.actualizar()}"/> 
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" immediate="true"/>
                                     
                                 </f:facet>
                             </h:panelGrid>

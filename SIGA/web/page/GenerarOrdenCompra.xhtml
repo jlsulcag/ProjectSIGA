@@ -229,38 +229,38 @@
                                 </p:selectOneMenu>
 
                                 <h:outputLabel for="txfCantidad" value="Cantidad :"/>
-                                <p:inputText id="txfCantidad" label="Cantidad" required="true"
+                                <p:inputText id="txfCantidad" label="Cantidad" required="true" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.cantidad}">
                                 </p:inputText>
 
                                 <h:outputLabel for="txfLote" value="Lote: "/>
-                                <p:inputText id="txfLote" label="Lote"
+                                <p:inputText id="txfLote" label="Lote" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.lote}"/>
 
                                 <h:outputLabel for="txfFechaVenc" value="fecha de vencimiento:"/>
-                                <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
+                                <p:calendar id="txfFechaVenc" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" 
                                             value="#{ordenCompraBean.ordenCompraDetalle.fechaVencimiento}">
                                     <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" />
                                 </p:calendar>
 
                                 <h:outputLabel for="txfValorCompra" value="Valor Unitario :"/>
-                                <p:inputText id="txfValorCompra" label="Valor de compra" required="true" 
+                                <p:inputText id="txfValorCompra" label="Valor de compra" required="true" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.valorCompra}">
                                     <p:ajax event="keyup" update="txfPrecioCompra" listener="#{ordenCompraBean.calcularPrecioCompra()}"/>
                                 </p:inputText>
 
                                 <h:outputLabel for="txfPrecioCompra" value="Precio Unitario :"/>
-                                <p:inputText id="txfPrecioCompra" label="Precio de compra" required="true"
+                                <p:inputText id="txfPrecioCompra" label="Precio de compra" required="true" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.precioCompra}">
                                     <p:ajax event="keyup" update="txfValorCompra" listener="#{ordenCompraBean.calcularValorCompra()}"/>
                                 </p:inputText>
 
                                 <h:outputLabel for="txfDesc1" value="% Descuento 1:"/>
-                                <p:inputText id="txfDesc1" label="Descuento 1"
+                                <p:inputText id="txfDesc1" label="Descuento 1" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.desc1}"/>
 
                                 <h:outputLabel for="txfDesc2" value="% Descuento 2:"/>
-                                <p:inputText id="txfDesc2" label="Descuento 2"
+                                <p:inputText id="txfDesc2" label="Descuento 2" style="width: 400px; text-align: right"
                                              value="#{ordenCompraBean.ordenCompraDetalle.desc2}"/>
 
                                 <f:facet name="footer">

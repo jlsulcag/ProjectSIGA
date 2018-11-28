@@ -11,55 +11,129 @@
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <h:form id="form">
+                <h:form id="form" target="_blank">
                     <p:growl id="msg" showDetail="true"/>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:toolbar>
+                                <f:facet name="left">
+                                    <p:commandButton  value="Recepcionar" icon="ui-icon-disk" 
+                                                      actionListener="#{pedidoPorUsuarioBean.recepcionarPedido()}" update="msg"/>
+                                    <p:commandButton  value="PDF" icon="ui-icon-print" ajax="false"
+                                                      action="#{pedidoPorUsuarioBean.visualizarNotaEntrada()}"/>                                    
+                                </f:facet>
+                            </p:toolbar>
+                        </div>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:dataTable id="lista" value="#{pedidoPorUsuarioBean.listPedidos}" var="item" 
+                                         selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
+                                         paginator="true" rows="5" paginatorPosition="bottom"
+                                         rowsPerPageTemplate="5,10">
+                                <f:facet name="header">Pedidos</f:facet>
 
-                    <p:dataTable id="lista" value="#{pedidoPorUsuarioBean.listPedidos}" var="item" selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
-                                 paginator="true" rows="5" paginatorPosition="bottom"
-                                 rowsPerPageTemplate="5,10">
-                        <f:facet name="header">Pedidos</f:facet>
+                                <p:ajax event="rowSelect" listener="#{pedidoPorUsuarioBean.onRowSelect}" update=":form:msg,form:dtblDetalle, form:dtblSeguimiento" />
+                                <p:ajax event="rowUnselect" listener="#{pedidoPorUsuarioBean.onRowUnselect}" update=":form:msg"/>
 
-                        <p:ajax event="rowSelect" listener="#{pedidoPorUsuarioBean.onRowSelect}" update="form" />
-                        <p:ajax event="rowUnselect" listener="#{pedidoPorUsuarioBean.onRowUnselect}" update="form"/>
+                                <!--
+                                <p:ajax event="rowEdit" listener="{misPedidosBean.onRowEdit}" update=":form:msg"/>
+                                <p:ajax event="rowEditCancel" listener="{misPedidosBean.onRowCancel}" update=":form:msg"/>
+                                -->
+                                <p:column headerText="ID" style="width: 15px">
+                                    <h:outputText value="#{item.idpedido}"/>
+                                </p:column>
 
-                        <!--
-                        <p:ajax event="rowEdit" listener="{misPedidosBean.onRowEdit}" update=":form:msg"/>
-                        <p:ajax event="rowEditCancel" listener="{misPedidosBean.onRowCancel}" update=":form:msg"/>
-                        -->
-                        <p:column headerText="ID" style="width: 15px">
-                            <h:outputText value="#{item.idpedido}"/>
-                        </p:column>
+                                <p:column headerText="Fecha" style="width: 80px">
+                                    <h:outputText value="#{item.fechaPedido}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </h:outputText>
+                                </p:column>
 
-                        <p:column headerText="Fecha" style="width: 80px">
-                            <h:outputText value="#{item.fechaPedido}">
-                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                            </h:outputText>
-                        </p:column>
+                                <p:column headerText="Dependencia">
+                                    <h:outputText value="#{item.dependencia.descripcion}"/>
+                                </p:column>
 
-                        <p:column headerText="Dependencia">
-                            <h:outputText value="#{item.dependencia.descripcion}"/>
-                        </p:column>
+                                <p:column headerText="Número" style="width: 80px">
+                                    <h:outputText value="#{item.numero}"/>
+                                </p:column>
 
-                        <p:column headerText="Número" style="width: 80px">
-                            <h:outputText value="#{item.numero}"/>
-                        </p:column>
+                                <p:column headerText="Estado" style="width: 100px">
+                                    <h:outputText value="#{item.estado}">
+                                    </h:outputText>
+                                </p:column>
+                                <!--
+                                <p:column style="width:30px;text-align: center">
+                                    <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="{pedidoPorUsuarioBean.redirigir()}">
+                                        <f:setPropertyActionListener value="{item}" target="{pedidoPorUsuarioBean.pedido}" />
+                                    </p:commandButton>                           
+                                </p:column>
+                                
+                                <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
+                                    <p:rowEditor />
+                                </p:column>
+                                -->
+                            </p:dataTable>
+                        </div>
+                    </div>
 
-                        <p:column headerText="Estado" style="width: 100px">
-                            <h:outputText value="#{item.estado}">
-                            </h:outputText>
-                        </p:column>
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            <p:dataTable id="dtblDetalle" value="#{pedidoPorUsuarioBean.listPedidoDetalles}" var="itemDetalle">                                  
+                                <f:facet name="header">Detalles</f:facet>
 
-                        <p:column style="width:30px;text-align: center">
-                            <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{pedidoPorUsuarioBean.redirigir()}">
-                                <f:setPropertyActionListener value="#{item}" target="#{pedidoPorUsuarioBean.pedido}" />
-                            </p:commandButton>                           
-                        </p:column>
-                        <!--
-                        <p:column style="width:50px;text-align: center" styleClass="ui-editable-column-options">
-                            <p:rowEditor />
-                        </p:column>
-                        -->
-                    </p:dataTable>
+                                <p:column headerText="ID" style="width: 20px">
+                                    <h:outputText value="#{itemDetalle.idpedidodetalle}"/>
+                                </p:column>
+
+                                <p:column headerText="Producto">
+                                    <h:outputText value="#{itemDetalle.producto.descripcion}"/>
+                                </p:column>
+
+                                <p:column headerText="Cant Solicitada" style="width: 80px">
+                                    <h:outputText value="#{itemDetalle.cantidadSolicitada}"/>
+                                </p:column>
+
+                                <p:column headerText="Cant Autorizada" style="width: 80px">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{itemDetalle.cantidadAutorizada}"/></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                        <!--
+                                        <f:facet name="input"><p:inputText value="{pedidoDetalleBean.pedidoDetalle.cantidadAutorizada}" style="width: 96%" /></f:facet>
+                                        -->
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Unidad" style="width: 120px">
+                                    <h:outputText value="#{itemDetalle.unidadMedida}"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                        <div class="ui-g-6">
+                            <p:dataTable id="dtblSeguimiento" value="#{pedidoPorUsuarioBean.listPedidoEstados}" var="itemEstado">
+                                <f:facet name="header">Seguimiento</f:facet>
+                                <p:column headerText="ID" style="width: 20px">
+                                    <h:outputText value="#{itemEstado.idpedidoseguimiento}"/>
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <h:outputText value="#{itemEstado.fecha}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Hora">
+                                    <h:outputText value="#{itemEstado.hora}"/>
+                                </p:column>
+                                <p:column headerText="Estado">
+                                    <h:outputText value="#{itemEstado.estado.descripcion}"/>
+                                </p:column>
+                            </p:dataTable> 
+                        </div>
+                    </div>
+
+
+
+
                 </h:form>
             </ui:define>
 

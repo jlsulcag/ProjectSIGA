@@ -62,7 +62,7 @@
                             <p:column style="width:10px;text-align: center">
                                 <p:commandButton id="btnDelete" update="" oncomplete="PF('dlgDelete').show();" 
                                                  immediate="True" icon="ui-icon-trash" title="Eliminar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{almacenBean.almacen}" />           
+                                    <f:setPropertyActionListener value="{item}" target="{almacenBean.almacen}" />           
                                 </p:commandButton>                                                        
 
                             </p:column>
@@ -88,7 +88,7 @@
                                     <p:commandButton icon="ui-icon-check" value="Guardar" title="Guardar"  validateClient="true"
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgNew').hide()}" 
                                                      update="msgNew, formDataTable" actionListener="#{almacenBean.registrar()}"/> 
-                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" />
+                                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNew').hide();" icon="ui-icon-close" immediate="true"/>
                                 </f:facet>
 
                             </h:panelGrid>
@@ -125,7 +125,7 @@
                                                      update="msgEdit, formDataTable" actionListener="#{almacenBean.actualizar()}"/> 
                                     
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" immediate="true"/>
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>

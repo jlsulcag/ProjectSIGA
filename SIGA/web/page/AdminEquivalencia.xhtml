@@ -133,7 +133,7 @@
                                                      oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('dlgEdit').hide()}" 
                                                      update="msgEdit, formTabla" actionListener="#{adminEquivalenciaBean.actualizar()}"/> 
                                     <p:commandButton id="btnCancelarActualizar"  oncomplete="PF('dlgEdit').hide();" 
-                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" />
+                                                     icon="ui-icon-close" title="Cancelar" value="Cancelar" immediate="true"/>
 
                                 </f:facet>
                             </h:panelGrid>

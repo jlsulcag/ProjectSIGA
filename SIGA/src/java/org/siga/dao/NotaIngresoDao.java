@@ -113,4 +113,9 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada>{
         String hql = "from NotaEntrada a where a.ordenCompra.idordencompra = "+idordencompra;
         return buscar(hql);
     }
+
+    public NotaEntrada buscarxIdPedido(long idpedido) {
+        String hql = "from NotaEntrada a where a.pedido.idpedido = "+idpedido;
+        return buscar(hql);
+    }
 }

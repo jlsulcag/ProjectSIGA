@@ -1,12 +1,18 @@
 package org.siga.ctrl;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -14,7 +20,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.primefaces.event.SelectEvent;
 import org.siga.be.Equivalencia;
 import org.siga.be.OrdenCompra;
@@ -25,9 +39,11 @@ import org.siga.be.Proveedor;
 import org.siga.bl.EquivalenciaBl;
 import org.siga.bl.OrdenCompraBl;
 import org.siga.bl.OrdenCompraDetalleBl;
+import org.siga.bl.OrdenCompraEstadosBl;
 import org.siga.bl.OrdenCompraSeguimientoBl;
 import org.siga.bl.ProductoBl;
 import org.siga.bl.ProveedorBl;
+import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
 
@@ -54,18 +70,21 @@ public class MisOrdenesCompraBean {
     private Equivalencia equivalencia;
     @ManagedProperty(value = "#{equivalenciaBl}")
     private EquivalenciaBl equivalenciaBl;
-    
+
     @ManagedProperty(value = "#{ordenCompraSeguimientoBl}")
     private OrdenCompraSeguimientoBl ordenCompraSeguimientoBl;
-    
     @ManagedProperty(value = "#{ordenCompraSeguimiento}")
     private OrdenCompraSeguimiento ordenCompraSeguimiento;
+
+    @ManagedProperty(value = "#{ordenCompraEstadosBl}")
+    private OrdenCompraEstadosBl ordenCompraEstadosBl;
 
     private List<SelectItem> selectOneItemsOrdenCompra;
     private List<OrdenCompra> listOrdenCompra;
     private List<OrdenCompraDetalle> listOrdenCompraDetalles = new LinkedList<>();
     private List<OrdenCompraSeguimiento> listOrdenCompraSeguimiento;
     private List<OrdenCompraDetalle> listOrdenCompraDetalle;
+    private OrdenCompra selectedOrdenCompra;
     private long res;
     private double totalProductos;
     //variables temporales
@@ -75,7 +94,6 @@ public class MisOrdenesCompraBean {
     private BigDecimal totalDescuento;
     private BigDecimal valorNeto;
     private BigDecimal montoIgv;
-    private OrdenCompra selectedOrdenCompra;
 
     public MisOrdenesCompraBean() {
     }
@@ -87,7 +105,7 @@ public class MisOrdenesCompraBean {
         for (OrdenCompra obj : ordenCompraBl.listarFull("")) {
             //Para cada orden compra retornar su ultimo estado del historial
             ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(obj.getIdordencompra());
-            if(ordenCompraSeguimiento!= null){
+            if (ordenCompraSeguimiento != null) {
                 obj.setEstado(ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion());
             }
             listOrdenCompra.add(obj);
@@ -101,11 +119,10 @@ public class MisOrdenesCompraBean {
         //System.out.println("Fraccion ---- "+producto.getFraccion());
     }
 
-
     public void calcularTotalProductos() {
         //Obtener su fraccion para determinar la cantidad total
         if (producto != null) {
-            equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getIdproducto(), producto.getIdproducto());            
+            equivalencia = equivalenciaBl.buscarxIdUnidadMedida(producto.getIdproducto(), producto.getIdproducto());
         }
 
     }
@@ -199,7 +216,7 @@ public class MisOrdenesCompraBean {
         temp.setFecha(ordenCompra.getFecha());
         temp.setProveedor(ordenCompra.getProveedor());
         temp.setAlmacenSolicitante(ordenCompra.getAlmacenSolicitante());
-        temp. setFormaPago(ordenCompra.getFormaPago().toUpperCase());
+        temp.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
         temp.setFechaEntrega(ordenCompra.getFechaEntrega());
         temp.setDocReferencia(ordenCompra.getDocReferencia().toUpperCase());
         temp.setObservacion(ordenCompra.getObservacion().toUpperCase());
@@ -231,7 +248,75 @@ public class MisOrdenesCompraBean {
         httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
         return "ViewOrdenCompraDetalle?faces-redirect=true";
     }
-    
+
+    public void autorizarOrdenCompra() {
+        if (getOrdenCompra() != null) {
+            ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(getOrdenCompra().getIdordencompra());
+            if (!ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
+                ordenCompraSeguimiento.setOrdenCompra(getOrdenCompra());
+                ordenCompraSeguimiento.setOrdenCompraEstados(getOrdenCompraEstadosBl().buscar(2));
+                ordenCompraSeguimiento.setFecha(new Date());
+                ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
+                ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
+                HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                if (sesionUser.getAttribute("idUsuario") != null) {
+                    ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+                } else {
+                    ordenCompraSeguimiento.setIdUser(0);
+                }
+                ordenCompraSeguimiento.setObservacion("");
+
+                res = ordenCompraSeguimientoBl.registrar(ordenCompraSeguimiento);
+                if (res == 0) {
+                    MensajeView.autorizarOrdenCompra();
+                    listarOrdenCompra();
+                }
+            } else {
+                MensajeView.seEncuentraAutorizada();
+            }
+
+        }
+    }
+
+    public void descargarOrdenCompra() {
+        try {
+            if (ordenCompra != null) {
+                ordenCompraSeguimiento = ordenCompraSeguimientoBl.buscarxidCompra(ordenCompra.getIdordencompra());
+                if (ordenCompraSeguimiento.getOrdenCompraEstados().getDescripcion().trim().equals("APROBADO")) {
+                    //Mapa de parametros
+                    Map<String, Object> parametro = new HashMap<>();
+                    //
+                    File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0004-orden_compra.jasper"));
+                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    //DsConexion ds = new DsConexion();
+                    parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+                    JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
+
+                    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+                    response.addHeader("Content-disposition", "attachment; filename=Orden_Compra_"+Utilitarios.numberFormat(ordenCompra.getNumero(), "########")+".pdf");
+                    ServletOutputStream stream = response.getOutputStream();
+
+                    JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+                    stream.flush();
+                    stream.close();
+                    FacesContext.getCurrentInstance().responseComplete();
+                } else {
+                    MensajeView.noImprimeOrdenCompra();
+                }
+
+            } else {
+
+            }
+
+        } catch (JRException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public String redirigirOrdenCompraDetalles() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("idOrdenCompra", getOrdenCompra().getIdordencompra());
@@ -245,12 +330,14 @@ public class MisOrdenesCompraBean {
     public List<Producto> listProductosRef(String ref) {
         return getProductoBl().listarRef(ref.toUpperCase());
     }
-    
-     public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Selected", ((OrdenCompra)event.getObject()).getIdordencompra()+"");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+    public void onRowSelect(SelectEvent event) {
+        /*
+         FacesMessage msg = new FacesMessage("Numero Compra", ((OrdenCompra) event.getObject()).getNumero() + "");
+         FacesContext.getCurrentInstance().addMessage(null, msg);
+         */
+        ordenCompra = (OrdenCompra) event.getObject();
         setListOrdenCompraDetalle(ordenCompraDetalleBl.listarXIdOrdenCompra(((OrdenCompra) event.getObject()).getIdordencompra()));
-         System.out.println("tamaño del detalle ..... "+listOrdenCompraDetalle.size());
     }
 
     public Producto getProducto() {
@@ -322,8 +409,8 @@ public class MisOrdenesCompraBean {
     }
 
     public List<SelectItem> getSelectOneItemsOrdenCompra() {
-        listOrdenCompraSeguimiento= new LinkedList<>();
-        listOrdenCompraSeguimiento = ordenCompraSeguimientoBl.listarxEstado(2,4);
+        listOrdenCompraSeguimiento = new LinkedList<>();
+        listOrdenCompraSeguimiento = ordenCompraSeguimientoBl.listarxEstado(2, 4);
         selectOneItemsOrdenCompra = new LinkedList<>();
         for (OrdenCompraSeguimiento obj : listOrdenCompraSeguimiento) {
             ordenCompra = ordenCompraBl.buscarXId(obj.getOrdenCompra().getIdordencompra());
@@ -481,6 +568,14 @@ public class MisOrdenesCompraBean {
 
     public void setOrdenCompraSeguimiento(OrdenCompraSeguimiento ordenCompraSeguimiento) {
         this.ordenCompraSeguimiento = ordenCompraSeguimiento;
+    }
+
+    public OrdenCompraEstadosBl getOrdenCompraEstadosBl() {
+        return ordenCompraEstadosBl;
+    }
+
+    public void setOrdenCompraEstadosBl(OrdenCompraEstadosBl ordenCompraEstadosBl) {
+        this.ordenCompraEstadosBl = ordenCompraEstadosBl;
     }
 
 }

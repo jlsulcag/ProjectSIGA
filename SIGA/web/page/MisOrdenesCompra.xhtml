@@ -14,55 +14,116 @@
                 <p:growl id="msg" showDetail="true"/>
                 <p:panel header="Administrar Orden de Compra">
 
-                    <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
-                                     paginator="true" rows="5" paginatorPosition="bottom"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10">
-                            <f:facet name="header">Ordenes de Compra</f:facet>
+                    <h:form id="form">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:dataTable id="lista" value="#{misOrdenesCompraBean.listOrdenCompra}" var="item"
+                                             selectionMode="single" selection="#{misOrdenesCompraBean.selectedOrdenCompra}" rowKey="#{item.idordencompra}"
+                                             paginator="true" rows="5" paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10">
+                                    <f:facet name="header">Ordenes de Compra</f:facet>
 
-                            <p:column headerText="ID" style="width: 50px">
-                                <h:outputText value="#{item.idordencompra}"/>
-                            </p:column>
-                            <p:column headerText="Número" style="width: 50px">
-                                <h:outputText value="#{item.numero}"/>
-                            </p:column>
+                                    <p:ajax event="rowSelect" listener="#{misOrdenesCompraBean.onRowSelect}" update="msg,form:dtblDetalle" />
 
-                            <p:column headerText="Fecha" style="width: 60px">
-                                <h:outputText value="#{item.fecha}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                </h:outputText>
-                            </p:column>
+                                    <p:column headerText="ID" style="width: 50px">
+                                        <h:outputText value="#{item.idordencompra}"/>
+                                    </p:column>
+                                    <p:column headerText="Número" style="width: 50px">
+                                        <h:outputText value="#{item.numero}"/>
+                                    </p:column>
 
-                            <p:column headerText="Proveedor">
-                                <h:outputText value="#{item.proveedor.razonSocial}"/>
-                            </p:column>
+                                    <p:column headerText="Fecha" style="width: 80px">
+                                        <h:outputText value="#{item.fecha}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                        </h:outputText>
+                                    </p:column>
 
-                            <p:column headerText="Plazo de Entrega" style="width: 60px">
-                                <h:outputText value="#{item.fechaEntrega}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                </h:outputText>
-                            </p:column>
+                                    <p:column headerText="Proveedor">
+                                        <h:outputText value="#{item.proveedor.razonSocial}"/>
+                                    </p:column>
 
-                            <p:column headerText="Estado" style="width: 120px">
-                                <h:outputText value="#{item.estado}"/>
-                            </p:column>
+                                    <p:column headerText="Plazo de Entrega" style="width: 80px">
+                                        <h:outputText value="#{item.fechaEntrega}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <!--
+                                    <p:column headerText="Sub Total" style="width: 60px">
+                                        <h:outputText value="{item.montoSubTotal}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="IGV" style="width: 60px">
+                                        <h:outputText value="{item.montoIgv}">
+                                        </h:outputText>
+                                    </p:column>
+                                    -->
+                                    <p:column headerText="Total" style="width: 60px">
+                                        <h:outputText value="#{item.montoTotal}"/>
+                                    </p:column>
 
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigirOrdenCompraDetalles()}">
-                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
-                                </p:commandButton>                           
-                            </p:column>
+                                    <p:column headerText="Estado" style="width: 120px">
+                                        <h:outputText value="#{item.estado}"/>
+                                    </p:column>
 
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
-                                                 icon="ui-icon-pencil" title="Editar">
-                                    <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
-                                </p:commandButton>                            
-                            </p:column>
-                        </p:dataTable>
+                                    <p:column style="width:80px;text-align: center">
+                                        <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                        </p:commandButton>  
+                                        <p:commandButton id="btnDescargar" icon="ui-icon-arrowthickstop-1-s" title="Descargar PDF" action="#{misOrdenesCompraBean.descargarOrdenCompra()}" ajax="false">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misOrdenesCompraBean.ordenCompra}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:dataTable id="dtblDetalle" value="#{misOrdenesCompraBean.listOrdenCompraDetalle}" var="item">
+                                    <f:facet name="header">Productos</f:facet>
+
+                                    <p:column headerText="ID" style="width: 50px">
+                                        <h:outputText value="#{item.idordencompradetalle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Producto">
+                                        <h:outputText value="#{item.producto.descripcion}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Cantidad" style="width: 60px">
+                                        <h:outputText value="#{item.cantidad}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Unidad Medida" style="width: 80px">
+                                        <h:outputText value="#{item.unidadMedida}"/>
+                                    </p:column>
+
+                                    <p:column headerText="P/Compra" style="width: 80px; text-align: right">
+                                        <h:outputText value="#{item.precioCompra}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Descuento" style="width: 80px; text-align: right">
+                                        <h:outputText value="#{item.montoDescitem}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Sub Total" style="width: 80px; text-align: right">
+                                        <h:outputText value="#{item.cantidad*item.precioCompra}"/>
+                                    </p:column>
+                                    <!--
+                                    <p:column style="width:30px;text-align: center">
+                                        <p:commandButton id="btnEdit" update=":formEdit" oncomplete="PF('dlgEdit').show();" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                            <f:setPropertyActionListener value="{item}" target="{misOrdenesCompraBean.ordenCompraDetalle}" />
+                                        </p:commandButton>                            
+                                    </p:column>
+                                    -->
+                                </p:dataTable>
+                            </div>
+                        </div>
+
                     </h:form>
-
 
                     <h:form id="formEdit">
                         <p:dialog header="Actualizar Datos" widgetVar="dlgEdit" id="dlgEdit" modal="false" 
@@ -116,7 +177,7 @@
 
                                 <f:facet name="footer">
                                     <p:separator/>
-                                    <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg"
+                                    <p:commandButton value="Guardar" icon="ui-icon-check" update="form, :msg"
                                                      oncomplete="PF('dlgEdit').hide())" actionListener="#{misOrdenesCompraBean.actualizar()}"/>
 
                                     <p:commandButton value="Cancelar" oncomplete="PF('dlgEdit').hide();" icon="ui-icon-close" />

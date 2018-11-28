@@ -4,105 +4,128 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <body>
 
         <ui:composition template="./../template/TemplateFullPage.xhtml">
 
             <ui:define name="content">
-                <p:growl id="msg" showDetail="true"/>
-                <p:panel>
-                    <h:form id="formDataTable">
-                        <p:dataTable id="lista" value="#{misPedidosBean.listPedidos}" var="item" selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
-                                     paginator="true" rows="10" paginatorPosition="bottom"
-                                     rowsPerPageTemplate="10,15,20">
-                            <f:facet name="header">Pedidos</f:facet>
-                            <p:ajax event="rowSelect" listener="#{misPedidosBean.onRowSelect}" update=":msg,:formDataTableDetalle" />
-                            <p:ajax event="rowUnselect" listener="#{misPedidosBean.onRowUnselect}" update=":msg" />
-                            <p:column headerText="ID" style="width: 15px">
-                                <h:outputText value="#{item.idpedido}"/>
-                            </p:column>
+                <h:form id="form">
+                    <p:growl id="msg" showDetail="true"/>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:dataTable id="lista" value="#{misPedidosBean.listPedidos}" var="item" selectionMode="single" selection="#{misPedidosBean.selectedPedido}" rowKey="#{item.idpedido}"
+                                         paginator="true" rows="5" paginatorPosition="bottom"
+                                         rowsPerPageTemplate="5,10,15">
+                                <f:facet name="header">Pedidos</f:facet>
 
-                            <p:column headerText="Dependencia">
-                                <h:outputText value="#{item.dependencia.descripcion}"/>
-                            </p:column>
+                                <p:ajax event="rowSelect" listener="#{misPedidosBean.onRowSelect}" update="form,form:dtPedidos, form:dtblSeguimiento" />
+                                <p:ajax event="rowUnselect" listener="#{misPedidosBean.onRowUnselect}" update="form"/>
 
-                            <p:column headerText="Número" style="width: 80px">
-                                <h:outputText value="#{item.numero}"/>
-                            </p:column>
+                                <p:column headerText="ID" style="width: 15px">
+                                    <h:outputText value="#{item.idpedido}"/>
+                                </p:column>
 
-                            <p:column headerText="Fecha" style="width: 80px">
-                                <h:outputText value="#{item.fechaPedido}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
-                                </h:outputText>
-                            </p:column>
+                                <p:column headerText="Fecha" style="width: 80px">
+                                    <h:outputText value="#{item.fechaPedido}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </h:outputText>
+                                </p:column>
 
-                            <p:column headerText="Estado" style="width: 100px">
-                                <h:outputText value="#{item.estado}"/>
-                            </p:column>
+                                <p:column headerText="Dependencia">
+                                    <h:outputText value="#{item.dependencia.descripcion}"/>
+                                </p:column>
 
-                            <p:column style="width:30px;text-align: center">
-                                <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misOrdenesCompraBean.redirigir()}">
-                                    <f:setPropertyActionListener value="#{item}" target="" />
-                                </p:commandButton>                           
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
+                                <p:column headerText="Número" style="width: 80px">
+                                    <h:outputText value="#{item.numero}"/>
+                                </p:column>
 
-                    <h:form id="formDataTableDetalle" style="margin-top: 20px">
-                        <p:dataTable id="dtPedidos" value="#{misPedidosBean.listPedidoDetalle}" var="item" editable="true" editMode="cell" widgetVar="cellPedidos"
-                                     selectionMode="single" selection="#{misPedidosBean.selectPedidoDetalle}" rowKey="#{item.idpedidodetalle}"
-                                     paginator="true" rows="10" paginatorPosition="bottom"
-                                     rowsPerPageTemplate="10,15,20">
-                            <f:facet name="header">Detalle del Pedido</f:facet>
+                                <p:column headerText="Estado" style="width: 100px">
+                                    <h:outputText value="#{item.estado}">
+                                    </h:outputText>
+                                </p:column>
 
-                            <p:ajax event="cellEdit" listener="#{misPedidosBean.onCellEdit}" update=":msg" />
+                                <p:column style="width:120px;text-align: center">
 
-                            <p:column headerText="ID" style="width: 15px">
-                                <h:outputText value="#{item.idpedidodetalle}"/>
-                            </p:column>
 
-                            <p:column headerText="Producto">
-                                <h:outputText value="#{item.producto.descripcion}"/>
-                            </p:column>
+                                    <c:if test="#{misPedidosBean.rol =='JEFE LOGISTICA'}">
+                                        <p:commandButton id="btnDescargar" icon="ui-icon-arrowthickstop-1-s" title="Descargar PDF" action="#{misPedidosBean.descargarPedido()}" ajax="false">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton> 
+                                        <p:commandButton id="btnAutorizar" icon="ui-icon-check" title="Aprobar" 
+                                                         action="#{misPedidosBean.aprobarPedido()}" update="form:msg,form">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton> 
+                                        <p:commandButton id="btnAnular" icon="ui-icon-closethick" title="Anular" action="#">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton> 
+                                    </c:if>
 
-                            <p:column headerText="Cant Solicitada">
-                                <h:outputText value="#{item.cantidadSolicitada}"/>
-                            </p:column>
+                                    <c:if test="#{misPedidosBean.rol=='ALMACENERO'}">
+                                        <p:column style="width:30px;text-align: center">
+                                            <p:commandButton id="btnIr" icon="ui-icon-extlink" title="Detalles" action="#{misPedidosBean.redirigir()}">
+                                                <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                            </p:commandButton>                           
+                                        </p:column>
+                                        <p:commandButton id="btnAutorizar" icon="ui-icon-check" title="Verificado" 
+                                                         action="#{misPedidosBean.verificarPedido()}" update="form:msg,form">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton>                                         
+                                        <p:commandButton id="btnDescargar" icon="ui-icon-arrowthickstop-1-s" title="Descargar PDF" action="#{misPedidosBean.descargarPedido()}" ajax="false">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton>
 
-                            <p:column headerText="Cant Autorizada">
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{item.cantidadAutorizada}"/></f:facet>
-                                    <f:facet name="input"><p:inputText value="#{item.cantidadAutorizada}" style="width: 96%"/></f:facet>
-                                </p:cellEditor>
-                            </p:column>
+                                    </c:if>
 
-                            <p:column headerText="Unidad">
-                                <h:outputText value="#{item.unidadMedida}"/>
-                            </p:column>
+                                    <c:if test="#{misPedidosBean.rol=='USUARIO'}">
+                                        <p:commandButton  id="btnRecepcionar" icon="ui-icon-check" 
+                                                          actionListener="#{misPedidosBean.recepcionarPedido()}">
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton>
+                                        <p:commandButton  id="btnDescargar" icon="ui-icon-arrowthickstop-1-s" ajax="false"
+                                                          action="#{misPedidosBean.visualizarNotaEntrada()}">   
+                                            <f:setPropertyActionListener value="#{item}" target="#{misPedidosBean.pedido}" />
+                                        </p:commandButton> 
+                                    </c:if>
 
-                        </p:dataTable>
 
-                        <p:contextMenu for="dtPedidos" widgetVar="cMenu">   
-                            <p:menuitem value="Editar" icon="ui-icon-search" onclick="PF('cellPedidos').showCellEditor();
-                                    return false;"/>  
-                            <p:menuitem value="Cerrar" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
-                        </p:contextMenu>
+                                </p:column>
+                            </p:dataTable>  
+                        </div>
+                    </div>
 
-                    </h:form>
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            <ui:include src="pedidoDetalles.xhtml"></ui:include>
 
-                    <h:form id="formTools" style="margin-top: 10px">
-                        <p:toolbar>
-                            <f:facet name="right">
-                                <p:commandButton id="btnReg" value="Guardar" title="Guardar" 
-                                                 actionListener="#{productoBean.limpiar()}"/>
-                            </f:facet>
-                        </p:toolbar>
+                        </div>
 
-                    </h:form>
+                        <div class="ui-g-6">
+                            <p:dataTable id="dtblSeguimiento" value="#{misPedidosBean.listPedidoEstados}" var="itemEstado">
+                                <f:facet name="header">Seguimiento</f:facet>
+                                <p:column headerText="ID" style="width: 20px">
+                                    <h:outputText value="#{itemEstado.idpedidoseguimiento}"/>
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <h:outputText value="#{itemEstado.fecha}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Hora">
+                                    <h:outputText value="#{itemEstado.hora}"/>
+                                </p:column>
+                                <p:column headerText="Estado">
+                                    <h:outputText value="#{itemEstado.estado.descripcion}"/>
+                                </p:column>
+                            </p:dataTable> 
+                        </div>
 
-                </p:panel>
+                    </div>
+
+                </h:form>            
+
             </ui:define>
 
         </ui:composition>

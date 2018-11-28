@@ -90,5 +90,12 @@ public class PedidoSeguimientoDao extends AbstractDA<PedidoSeguimiento>{
                 + "where b.idpedido = "+idpedido+" and a.numero = (select max(d.numero) from PedidoSeguimiento d where d.pedido.idpedido = "+idpedido+")";
         return buscar(hql);
     }
+
+    public List<PedidoSeguimiento> listarxidPedido(long idpedido) {
+        String hql = "from PedidoSeguimiento a left join fetch a.pedido b left join fetch a.estado c "
+                + "where b.idpedido = "+idpedido;
+        return listar(hql);
+             
+    }
     
 }
