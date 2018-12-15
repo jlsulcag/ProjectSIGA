@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template/TemplateFullPage.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="msg" showDetail="true"/>
+                <p:panel header="Reporte de Compras">
+                    <h:form id="form">
+
+                        <p:commandButton value="Dynamic Focus" onclick="PF('dlg').show();" type="button" icon="pi pi-home" />
+
+                        <p:dialog header="Dynamic Focus" widgetVar="dlg" focus="age">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="name" value="Name:" />
+                                <p:inputText id="name" label="name" />
+
+                                <h:outputLabel for="surname" value="Surname:" />
+                                <p:inputText id="surname" label="surname" />
+
+                                <h:outputLabel for="age" value="Age:" />
+                                <p:inputText id="age" label="age" />
+                            </h:panelGrid>
+                        </p:dialog>       
+
+                        <!--
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:dataTable id="lista" value="{repOrdenCompraBean.listNotaEntradas}" var="item"
+                                             selectionMode="single" selection="{misOrdenesCompraBean.selectedOrdenCompra}" rowKey="#{item.idnotaentrada}"
+                                             paginator="true" rows="10" paginatorPosition="bottom"
+                                             rowsPerPageTemplate="10,20">
+                                    <f:facet name="header">Compras</f:facet>
+                                    <p:ajax event="rowSelect" listener={misOrdenesCompraBean.onRowSelect}" update="msg,form:dtblDetalle" />
+
+                                    <p:column headerText="ID" style="width: 50px">
+                                        <h:outputText value="{item.idnotaentrada}"/>
+                                    </p:column>
+                                    <p:column headerText="Número" style="width: 50px">
+                                        <h:outputText value="{item.numero}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha" style="width: 80px">
+                                        <h:outputText value="{item.fechaReg}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GTM-5"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Proveedor">
+                                        <h:outputText value="{item.proveedor.razonSocial}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:dataTable id="dtblDetalle" value="{misOrdenesCompraBean.listOrdenCompraDetalle}" var="item">
+                                    <f:facet name="header">Detalles</f:facet>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        -->
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

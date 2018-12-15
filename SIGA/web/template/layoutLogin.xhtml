@@ -11,22 +11,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/style.css"/>
         <title>.:SIGA:.</title>
-        <link rel="shortcut icon" type="image/x-icon" href="resources/img/favicon.png"/> 
     </h:head>
-    <h:body class="public_body">   
-        <ui:insert name="status">
-            <p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
-                <f:facet name="start">
-                    <p:graphicImage name="img/loader.gif" />
-                </f:facet>
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>
-        </ui:insert>
-        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="notificacion" effectSpeed="fast">
-            <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
-        </p:notificationBar>
+    <h:body class="public_body"> 
         <div class="background">            
             <div class="cuerpo_login" > 
                 <div style=" margin: 40px auto 10px auto;

@@ -46,8 +46,9 @@ public class LoginBean {
     private String currentUser;
 
     public LoginBean() {
+        //inactivar app por inactividad
         HttpSession sesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        //sesion.setMaxInactiveInterval(5000);
+        sesion.setMaxInactiveInterval(2000);
     }
     
     
@@ -106,12 +107,12 @@ public class LoginBean {
                     } else {
                         msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
                         FacesContext.getCurrentInstance().addMessage(null, msg);
-                        url = "/page/login_1";
+                        url = "/page/Login";
                     }
                 } else {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Su cuenta aún no esta activada, pongase en contacto con el administrador");
                     FacesContext.getCurrentInstance().addMessage(null, msg);
-                    url = "/page/login_1";
+                    url = "/page/Login";
                 }
             } else {
                 System.out.println(".........");
@@ -120,7 +121,7 @@ public class LoginBean {
         } else {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de acceso", "Usuario y/o contraseña incorrectos");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            url = "/page/login_1";
+            url = "/page/Login";
         }
 
         return url + "?faces-redirect=true";
@@ -130,7 +131,7 @@ public class LoginBean {
         this.nombreUsuario = null;
         this.contrasenia = null;
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/page/login_1?faces-redirect=true";
+        return "/page/Login?faces-redirect=true";
     }
 
     public UsuarioBl getUsuarioBl() {

@@ -59,7 +59,7 @@ public class MisOrdenesCompraBean {
     private OrdenCompraDetalle ordenCompraDetalle;
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
     private OrdenCompraDetalleBl ordenCompraDetalleBl;
-    ;
+    
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
     @ManagedProperty(value = "#{producto}")

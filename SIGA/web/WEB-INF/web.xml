@@ -32,11 +32,11 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            10
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>siga/page/login_1.xhtml</welcome-file>
+        <welcome-file>siga/page/Login.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.THEME</param-name>

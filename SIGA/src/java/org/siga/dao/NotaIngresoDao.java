@@ -118,4 +118,11 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada>{
         String hql = "from NotaEntrada a where a.pedido.idpedido = "+idpedido;
         return buscar(hql);
     }
+
+    public List<NotaEntrada> listarCompras() {
+        String hql = "from NotaEntrada a left join fetch a.ordenCompra b left join fetch b.proveedor c "
+                + "where b.idordencompra is not null "
+                + "order by b.numero desc";
+        return listar(hql);
+    }
 }

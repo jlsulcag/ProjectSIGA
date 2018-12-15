@@ -94,4 +94,8 @@ public class NotaIngresoBl extends AbstractBL<NotaEntrada>{
     public NotaEntrada buscarxIdPedido(long idpedido) {
         return dao.buscarxIdPedido(idpedido);
     }
+
+    public List<NotaEntrada> listarCompras() {
+        return dao.listarCompras();
+    }
 }
