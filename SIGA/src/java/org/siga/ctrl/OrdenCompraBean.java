@@ -180,7 +180,7 @@ public class OrdenCompraBean {
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
-
+        temp.setDescripcion(ordenCompraDetalle.getDescripcion().toUpperCase().trim());
         listOrdenCompraDetalles.add(temp);
         calcularTotal(listOrdenCompraDetalles);
     }

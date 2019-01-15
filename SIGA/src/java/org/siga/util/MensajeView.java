@@ -3,6 +3,7 @@ package org.siga.util;
 import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
 
 public class MensajeView {
     public static final BigDecimal IGV = new BigDecimal("0.18");
@@ -93,6 +94,11 @@ public class MensajeView {
     }
     public static void listVacia() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No existen items");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public static void errorFatal(HibernateException he) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error Fatal : "+he);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     

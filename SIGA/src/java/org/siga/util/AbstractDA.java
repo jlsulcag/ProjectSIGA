@@ -41,6 +41,7 @@ public abstract class AbstractDA<T> implements DAO<T>{
             return SUCCESS;
         } catch (HibernateException e) {
             t.rollback();
+            MensajeView.errorFatal(e);
             e.printStackTrace();            
             return ERROR;
         }
