@@ -16,6 +16,7 @@ public class OrdenCompra  implements java.io.Serializable {
 
 
      private long idordencompra;
+     private Moneda moneda;
      private long numero;
      private Date fecha;
      private Date fechaEntrega;
@@ -24,7 +25,6 @@ public class OrdenCompra  implements java.io.Serializable {
      private Proveedor proveedor;
      private Date fechaRecepcion;
      private Almacen almacenSolicitante;
-     private int idMoneda;
      private String docReferencia;
      private BigDecimal valorBruto;
      private BigDecimal montoDesc;
@@ -45,6 +45,7 @@ public class OrdenCompra  implements java.io.Serializable {
         this.idordencompra = 0;
         this.proveedor = new Proveedor();
         this.almacenSolicitante = new Almacen();
+        this.moneda = new Moneda();
     }
 
 	
@@ -122,14 +123,6 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setFechaRecepcion(Date fechaRecepcion) {
         this.fechaRecepcion = fechaRecepcion;
-    }
-
-    public int getIdMoneda() {
-        return idMoneda;
-    }
-
-    public void setIdMoneda(int idMoneda) {
-        this.idMoneda = idMoneda;
     }
 
     public String getDocReferencia() {
@@ -234,6 +227,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setTipoOrden(String tipoOrden) {
         this.tipoOrden = tipoOrden;
+    }
+
+    public Moneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
     }
 
 

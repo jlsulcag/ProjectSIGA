@@ -44,5 +44,6 @@
     <mapping resource="org/siga/be/Menu.hbm.xml"/>
     <mapping resource="org/siga/be/ProveedorFamilia.hbm.xml"/>
     <mapping resource="org/siga/be/UsuarioPermiso.hbm.xml"/>
+    <mapping resource="org/siga/be/Moneda.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

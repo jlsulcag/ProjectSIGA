@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.hibernate.internal.SessionImpl;
 import org.siga.be.Almacen;
 import org.siga.be.Equivalencia;
+import org.siga.be.Moneda;
 import org.siga.be.OrdenCompra;
 import org.siga.be.OrdenCompraDetalle;
 import org.siga.be.OrdenCompraSeguimiento;
@@ -91,17 +92,17 @@ public class OrdenCompraBean {
     private UnidadMedida unidadMedida;
     @ManagedProperty(value = "#{unidadMedidaBl}")
     private UnidadMedidaBl unidadMedidaBl;
-    
+
     @ManagedProperty(value = "#{almacen}")
     private Almacen almacen;
     @ManagedProperty(value = "#{almacenBl}")
     private AlmacenBl almacenBl;
-    
+
     @ManagedProperty(value = "#{permisoBl}")
     private PermisoBl permisoBl;
     @ManagedProperty(value = "#{permiso}")
     private Permiso permiso;
-    
+
     @ManagedProperty(value = "#{usuarioPermisoBl}")
     private UsuarioPermisoBl usuarioPermisoBl;
     @ManagedProperty(value = "#{usuarioPermiso}")
@@ -138,6 +139,7 @@ public class OrdenCompraBean {
         ordenCompra.setObservacion("");
         ordenCompra.setDocReferencia("");
         ordenCompra.setProveedor(new Proveedor());
+        ordenCompra.setMoneda(new Moneda());
         ordenCompra.setAlmacenSolicitante(new Almacen());
         ordenCompra.setTipoOrden("");
         listOrdenCompraDetalles.clear();
@@ -158,7 +160,6 @@ public class OrdenCompraBean {
 
     public void agregar() {
         OrdenCompraDetalle temp = new OrdenCompraDetalle();
-        System.out.println("aqui ..........");
         temp.setProducto(producto);
         temp.setCantidad(ordenCompraDetalle.getCantidad());
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
@@ -183,6 +184,21 @@ public class OrdenCompraBean {
         temp.setDescripcion(ordenCompraDetalle.getDescripcion().toUpperCase().trim());
         listOrdenCompraDetalles.add(temp);
         calcularTotal(listOrdenCompraDetalles);
+    }
+
+    public void registrarTx() {
+        if (!listOrdenCompraDetalles.isEmpty()) {
+            res = registrarOrdenCompra();
+            if (res == 0) {
+                MensajeView.registroCorrecto();
+                inicio();
+                res2 = registrarOrdenCompraDetalle();
+            } else {
+                MensajeView.registroError();
+            }
+        } else {
+            MensajeView.listVacia();
+        }
     }
 
     public void registrar() {
@@ -317,7 +333,6 @@ public class OrdenCompraBean {
             FacesContext.getCurrentInstance().responseComplete();
 
             inicio();
-            
 
         } catch (JRException ex) {
             Logger.getLogger(OrdenCompraBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -344,7 +359,6 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setDescripcion("");
         producto.setUnidadMedida(new UnidadMedida());
     }
-    
 
     public List<SelectItem> getSelectOneItemsEquivalencia() {
         this.selectOneItemsEquivalencia = new LinkedList<SelectItem>();
@@ -409,9 +423,9 @@ public class OrdenCompraBean {
         }
         listar();
     }
-    
-    public void obtenerAlmacen(){
-        almacen = almacenBl.buscar(ordenCompra.getAlmacenSolicitante().getIdalmacen());        
+
+    public void obtenerAlmacen() {
+        almacen = almacenBl.buscar(ordenCompra.getAlmacenSolicitante().getIdalmacen());
     }
 
     public void buscarProducto() {
@@ -534,7 +548,7 @@ public class OrdenCompraBean {
             valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
             montoSubtotal = valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
             montoIgv = valorNeto.subtract(montoSubtotal).setScale(2, RoundingMode.HALF_UP);
-            
+
             if (httpSession.getAttribute("idOrdenCompra") != null) {
                 montoTotal = montoTotal.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
             } else {
@@ -728,7 +742,7 @@ public class OrdenCompraBean {
 
         return selectOneItemsProducto;
     }
-    
+
     private List<Producto> listarProducto() {
         setListaProductos(productoBl.listar());
         return getListaProductos();

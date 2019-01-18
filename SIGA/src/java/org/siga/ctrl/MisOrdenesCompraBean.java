@@ -46,6 +46,7 @@ import org.siga.bl.ProveedorBl;
 import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
+import org.siga.util.Variables;
 
 @ManagedBean
 @ViewScoped
@@ -287,7 +288,8 @@ public class MisOrdenesCompraBean {
                     Map<String, Object> parametro = new HashMap<>();
                     //
                     File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0004-orden_compra.jasper"));
-                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    DSConeccion ds = new DSConeccion(Variables.HOST, Variables.PORT, Variables.DB, Variables.USER, Variables.PASS);
                     //DsConexion ds = new DsConexion();
                     parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
                     JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/01/2019 08:51:07 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.siga.be.Moneda" table="moneda" schema="siga" optimistic-lock="version">
+        <id name="idmoneda" type="long">
+            <column name="idmoneda" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="20" not-null="true" />
+        </property>
+        <property name="estado" type="boolean">
+            <column name="estado" not-null="true" />
+        </property>
+        <property name="siglaSunat" type="string">
+            <column name="sigla_sunat" length="10" not-null="true" />
+        </property>
+        <property name="simbolo" type="string">
+            <column name="simbolo" length="3" not-null="true" />
+        </property>
+        <set name="ordenCompras" table="orden_compra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_moneda" />
+            </key>
+            <one-to-many class="org.siga.be.OrdenCompra" />
+        </set>
+    </class>
+</hibernate-mapping>

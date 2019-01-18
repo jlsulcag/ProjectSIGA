@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
-	<property name="ireport.zoom" value="1.1000000000000179"/>
+	<property name="ireport.zoom" value="1.4641000000000244"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="183"/>
+	<property name="ireport.y" value="97"/>
 	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -31,12 +31,16 @@ oc.monto_subtotal,
 oc.monto_igv,
 oc.monto_subtotal,
 (ocd.cantidad*ocd.valor_compra-oc.monto_desc) as total,
-ocd.descripcion as descripcion_detallada
+ocd.descripcion as descripcion_detallada,
+m.descripcion as moneda,
+ocd.descripcion as productos,
+oc.tipo_orden as tipo_orden
 from orden_compra oc inner join proveedor pro
 on oc.id_proveedor = pro.idproveedor inner join orden_compra_detalle ocd
 on oc.idordencompra = ocd.id_ordencompra inner join almacen al
 on oc.id_almacensolicitante = al.idalmacen inner join producto prod
-on ocd.id_producto = prod.idproducto
+on ocd.id_producto = prod.idproducto inner join moneda m
+on oc.id_moneda = m.idmoneda
 where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 	</queryString>
 	<field name="numeroincre" class="java.lang.Long"/>
@@ -63,6 +67,9 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 	<field name="monto_igv" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="descripcion_detallada" class="java.lang.String"/>
+	<field name="moneda" class="java.lang.String"/>
+	<field name="productos" class="java.lang.String"/>
+	<field name="tipo_orden" class="java.lang.String"/>
 	<variable name="SUM" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{cantidad}*$F{precio_compra}]]></variableExpression>
 	</variable>
@@ -171,7 +178,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<text><![CDATA[PENALIDAD :]]></text>
 			</staticText>
 			<rectangle radius="3">
-				<reportElement uuid="473ffb5c-6f14-40ea-bcea-76836b5ab00e" x="4" y="100" width="265" height="88"/>
+				<reportElement uuid="473ffb5c-6f14-40ea-bcea-76836b5ab00e" x="3" y="100" width="265" height="88"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -281,6 +288,20 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				</textElement>
 				<text><![CDATA[FORMA DE PAGO:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="50463b84-f4fa-4ed5-a845-c8eb07b91cef" mode="Opaque" x="4" y="170" width="83" height="13" forecolor="#006699" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONEDA:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a2c07467-7830-4d9f-a178-51757ae40404" x="91" y="169" width="170" height="13"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -400,7 +421,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{descripcion}.equals("COMPRA")?$F{descripcion}:$F{descripcion_detallada})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{tipo_orden}.equals("COMPRA")?$F{descripcion}:$F{descripcion_detallada})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -442,7 +463,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 					<font size="10" isBold="true"/>
 					<paragraph rightIndent="3"/>
 				</textElement>
-				<text><![CDATA[Total S/.]]></text>
+				<text><![CDATA[Total ]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
 				<reportElement uuid="b9e12ed4-8fd2-4b2a-8785-fc66a5a9ad36" mode="Transparent" x="465" y="67" width="81" height="19"/>

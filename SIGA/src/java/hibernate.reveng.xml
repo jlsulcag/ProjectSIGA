@@ -37,4 +37,5 @@
     <table-filter match-name="menu"/>
     <table-filter match-name="proveedor_familia"/>
     <table-filter match-name="usuario_permiso"/>
+    <table-filter match-name="moneda"/>
 </hibernate-reverse-engineering>

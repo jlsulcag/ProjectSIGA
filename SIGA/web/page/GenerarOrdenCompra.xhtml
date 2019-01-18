@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:selectOneMenu id="cbxTipoOrden" value="#{ordenCompraBean.ordenCompra.tipoOrden}" required="true"
-                                                     label="Proveedor">
+                                                     label="Tipo de Orden">
                                         <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="COMPRA" itemValue="COMPRA"/>
                                         <f:selectItem itemLabel="SERVICIO" itemValue="SERVICIO"/>
@@ -110,6 +110,17 @@
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
                                     <p:inputText id="txfObservacion" label="Penalidad" 
                                                  value="#{ordenCompraBean.ordenCompra.penalidadIncumplimiento}" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="cbxMoneda" value="Moneda :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:selectOneMenu id="cbxMoneda" value="#{ordenCompraBean.ordenCompra.moneda.idmoneda}" 
+                                                     required="true" label="Moneda">
+                                        <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true"/>
+                                        <f:selectItems value="#{monedaBean.selectOneItemsMoneda}"/>
+                                    </p:selectOneMenu>
                                 </div>
 
                             </div>                            

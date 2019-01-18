@@ -9,12 +9,16 @@ import org.hibernate.Transaction;
 import org.siga.be.OrdenCompra;
 import org.siga.util.AbstractDA;
 import org.siga.util.HibernateUtil;
+import org.siga.util.MensajeView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository("ordenCompraDao")
 public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
+
+    private Session sesion;
+    private Transaction tx;
 
     @Autowired
     @Qualifier("sessionFactory")
@@ -37,15 +41,20 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
         }
     }
 
-//    private void iniciarOperacion() throws HibernateException {
-//        sesion = HibernateUtil.getSessionFactory().openSession();
-//        tx = sesion.beginTransaction();
-//    }
-//    
-//    private void manejaExcepcion(HibernateException he) {
-//        tx.rollback();
-//        throw new HibernateException("Ocurrió un error en la capa de acceso a datos", he);
-//    }
+    private void iniciarOperacion() throws HibernateException {
+        try {
+            sesion = getSessionFactory().getCurrentSession();
+        } catch (HibernateException e) {
+            sesion = getSessionFactory().openSession();
+        }
+        tx = sesion.beginTransaction();
+    }
+
+    private void manejaExcepcion(HibernateException he) {
+        tx.rollback();
+        MensajeView.errorFatal(he);
+    }
+
     @Override
     public long registrar(OrdenCompra bean) {
         return save(bean);
@@ -118,12 +127,12 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     }
 
     public List<OrdenCompra> listOrdenCompraXEstado(String estado) {
-        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenDestino c where a.estado = '"+estado+"'";
+        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenDestino c where a.estado = '" + estado + "'";
         return listar(hql);
     }
 
     public OrdenCompra buscarXId(long idordencompra) {
-        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenSolicitante c where a.idordencompra = "+idordencompra;
+        String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenSolicitante c where a.idordencompra = " + idordencompra;
         return buscar(hql);
     }
 
