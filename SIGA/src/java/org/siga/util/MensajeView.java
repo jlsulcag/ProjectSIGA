@@ -102,4 +102,9 @@ public class MensajeView {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
+    public static void errorFatal(Exception e) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error Fatal : "+e);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
 }

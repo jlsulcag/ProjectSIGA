@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -60,7 +61,7 @@ public class MisOrdenesCompraBean {
     private OrdenCompraDetalle ordenCompraDetalle;
     @ManagedProperty(value = "#{ordenCompraDetalleBl}")
     private OrdenCompraDetalleBl ordenCompraDetalleBl;
-    
+
     @ManagedProperty(value = "#{proveedorBl}")
     private ProveedorBl proveedorBl;
     @ManagedProperty(value = "#{producto}")
@@ -278,6 +279,17 @@ public class MisOrdenesCompraBean {
 
         }
     }
+    //metodo  que ubica la raiz de la  app
+    public static String getPath() {
+        try {
+            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            return ctx.getRealPath("/");
+        } catch (Exception e) {
+            MensajeView.errorFatal(e);
+            return null;
+        }
+
+    }
 
     public void descargarOrdenCompra() {
         try {
@@ -291,12 +303,15 @@ public class MisOrdenesCompraBean {
                     //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
                     DSConeccion ds = new DSConeccion(Variables.HOST, Variables.PORT, Variables.DB, Variables.USER, Variables.PASS);
                     //DsConexion ds = new DsConexion();
+                    //ruta de logo
+                    String path = getPath() + "/resources/img/logo.png";
                     parametro.put("ID_ORDEN_COMPRA", ordenCompra.getIdordencompra());
+                    parametro.put("P_RUTAIMAGEN", path);
                     JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
                     JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
 
                     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-                    response.addHeader("Content-disposition", "attachment; filename=Orden_Compra_"+Utilitarios.numberFormat(ordenCompra.getNumero(), "########")+".pdf");
+                    response.addHeader("Content-disposition", "attachment; filename=Orden_Compra_" + Utilitarios.numberFormat(ordenCompra.getNumero(), "########") + ".pdf");
                     ServletOutputStream stream = response.getOutputStream();
 
                     JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
