@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
 	<property name="ireport.zoom" value="1.3310000000000388"/>
-	<property name="ireport.x" value="22"/>
-	<property name="ireport.y" value="35"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="ID_PEDIDO" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="P_RUTAIMAGEN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select row_number() OVER () as numeracion,
 concat(per.nombre || ' ' || per.apellido_paterno || ' ' || per.apellido_materno) as nompersona,
@@ -57,10 +58,10 @@ where pe.idpedido  = $P{ID_PEDIDO}]]>
 				<reportElement uuid="1e6fe5ca-c4c7-47b1-b2ee-a7b82fc5adea" x="428" y="57" width="122" height="38"/>
 			</rectangle>
 			<rectangle radius="3">
-				<reportElement uuid="13bf4e15-bb85-42a9-ae58-7f77a449dbdc" x="300" y="57" width="122" height="38"/>
+				<reportElement uuid="13bf4e15-bb85-42a9-ae58-7f77a449dbdc" x="313" y="57" width="109" height="38"/>
 			</rectangle>
 			<textField pattern="0000">
-				<reportElement uuid="0cefb164-4133-4873-a0b3-5f538c81c00c" x="300" y="72" width="122" height="23"/>
+				<reportElement uuid="0cefb164-4133-4873-a0b3-5f538c81c00c" x="316" y="72" width="103" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="14"/>
 				</textElement>
@@ -74,7 +75,7 @@ where pe.idpedido  = $P{ID_PEDIDO}]]>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ad0cac43-3de5-4105-ab2a-08651af7df93" mode="Opaque" x="303" y="58" width="115" height="14" forecolor="#006699" backcolor="#FFFFFF"/>
+				<reportElement uuid="ad0cac43-3de5-4105-ab2a-08651af7df93" mode="Opaque" x="316" y="58" width="103" height="14" forecolor="#006699" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -108,7 +109,7 @@ where pe.idpedido  = $P{ID_PEDIDO}]]>
 				<text><![CDATA[OBSERVACIÓN :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="21" y="61" width="273" height="33" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="81" y="61" width="213" height="33" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18" isBold="true"/>
 				</textElement>
@@ -176,6 +177,10 @@ where pe.idpedido  = $P{ID_PEDIDO}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{oficinaagencia}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="75c88a6f-1e1f-4445-bfcc-a6ca56824316" x="6" y="53" width="60" height="50"/>
+				<imageExpression><![CDATA[$P{P_RUTAIMAGEN}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

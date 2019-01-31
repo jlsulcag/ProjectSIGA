@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
-	<property name="ireport.zoom" value="1.464100000000025"/>
+	<property name="ireport.zoom" value="1.4641000000000268"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="33"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -85,29 +85,12 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 			<rectangle radius="3">
 				<reportElement uuid="1e6fe5ca-c4c7-47b1-b2ee-a7b82fc5adea" x="449" y="53" width="101" height="38"/>
 			</rectangle>
-			<rectangle radius="3">
-				<reportElement uuid="13bf4e15-bb85-42a9-ae58-7f77a449dbdc" x="357" y="53" width="88" height="38"/>
-			</rectangle>
-			<textField pattern="0000">
-				<reportElement uuid="0cefb164-4133-4873-a0b3-5f538c81c00c" x="357" y="68" width="88" height="23"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement uuid="d63fbaec-8326-447b-836c-8c82dcbfab16" mode="Opaque" x="451" y="54" width="97" height="14" forecolor="#006699" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="ad0cac43-3de5-4105-ab2a-08651af7df93" mode="Opaque" x="359" y="54" width="84" height="14" forecolor="#006699" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Número]]></text>
 			</staticText>
 			<rectangle radius="3">
 				<reportElement uuid="550adafd-40ff-4259-925e-856c848fe5af" x="274" y="100" width="275" height="88"/>
@@ -137,7 +120,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<textFieldExpression><![CDATA[$F{penalidad_incumplimiento}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="b127464b-233b-490c-9478-0bb22d82d059" x="449" y="68" width="101" height="23"/>
+				<reportElement uuid="b127464b-233b-490c-9478-0bb22d82d059" x="449" y="67" width="101" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="14"/>
 				</textElement>
@@ -151,7 +134,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<text><![CDATA[PUNTO ENTREGA :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="102" y="53" width="255" height="38" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="82" y="53" width="255" height="38" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -304,9 +287,26 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement uuid="a8efa81a-3174-42bf-a896-f40642562ba3" x="5" y="50" width="100" height="50"/>
+				<reportElement uuid="a8efa81a-3174-42bf-a896-f40642562ba3" x="5" y="50" width="60" height="50"/>
 				<imageExpression><![CDATA[$P{P_RUTAIMAGEN}]]></imageExpression>
 			</image>
+			<rectangle radius="3">
+				<reportElement uuid="1724e0c2-1205-4ca3-912c-111b96d64002" x="356" y="53" width="87" height="38"/>
+			</rectangle>
+			<textField pattern="0000">
+				<reportElement uuid="0cefb164-4133-4873-a0b3-5f538c81c00c" x="357" y="67" width="86" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ad0cac43-3de5-4105-ab2a-08651af7df93" mode="Opaque" x="358" y="54" width="84" height="14" forecolor="#006699" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>

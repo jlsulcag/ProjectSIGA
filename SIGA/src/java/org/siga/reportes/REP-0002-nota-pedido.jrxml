@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REP-0002-nota-pedido" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="70649f45-9d13-46cc-bb5b-b2fdbe84e65b">
 	<property name="ireport.zoom" value="1.100000000000031"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="22"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="ID_PEDIDO" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="P_RUTAIMAGEN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select row_number() OVER () as numeracion,
 pe.numero as idpedido,
@@ -45,16 +46,16 @@ where pe.idpedido = $P{ID_PEDIDO}]]>
 		<band/>
 	</background>
 	<title>
-		<band height="104">
+		<band height="115">
 			<rectangle radius="3">
-				<reportElement uuid="88c27398-fd23-4350-8368-6d7d7af57659" x="1" y="2" width="798" height="96" backcolor="#FEEEBD"/>
+				<reportElement uuid="88c27398-fd23-4350-8368-6d7d7af57659" x="1" y="5" width="798" height="106" backcolor="#FEEEBD"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="271a79a7-f5ac-4969-bad7-eaf8b136fde0" mode="Opaque" x="94" y="5" width="350" height="36" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="271a79a7-f5ac-4969-bad7-eaf8b136fde0" mode="Opaque" x="94" y="11" width="350" height="36" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NOTA PEDIDO]]></text>
+				<text><![CDATA[NOTA DE PEDIDO]]></text>
 			</staticText>
 			<rectangle radius="3">
 				<reportElement uuid="29fb2689-4dde-4e89-baad-b650795c9cb5" x="517" y="11" width="122" height="31"/>
@@ -73,47 +74,47 @@ where pe.idpedido = $P{ID_PEDIDO}]]>
 				<textFieldExpression><![CDATA[$F{idpedido}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="3">
-				<reportElement uuid="0ba79fd0-b862-4504-88ad-da9164ea4ee4" x="492" y="47" width="281" height="14"/>
+				<reportElement uuid="0ba79fd0-b862-4504-88ad-da9164ea4ee4" x="500" y="58" width="281" height="14"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement uuid="15ecc6f1-6166-436a-ae44-9e6ad3ac5ceb" x="498" y="47" width="275" height="13"/>
+				<reportElement uuid="15ecc6f1-6166-436a-ae44-9e6ad3ac5ceb" x="506" y="58" width="275" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre_almacen}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="3">
-				<reportElement uuid="64c5ed2d-fc49-46be-8412-59c6d06f2476" x="139" y="47" width="245" height="14"/>
+				<reportElement uuid="64c5ed2d-fc49-46be-8412-59c6d06f2476" x="147" y="58" width="245" height="14"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement uuid="8d736b96-e064-4953-9e7b-4bca2f8b6ba6" x="144" y="47" width="240" height="13"/>
+				<reportElement uuid="8d736b96-e064-4953-9e7b-4bca2f8b6ba6" x="152" y="58" width="240" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre_depende}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7f863b60-0a5d-4940-a1ae-5786f13e4248" mode="Opaque" x="2" y="48" width="137" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="7f863b60-0a5d-4940-a1ae-5786f13e4248" mode="Opaque" x="10" y="59" width="137" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DEPENDENCIA SOLICITANTE :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="08d9ae32-2581-449c-83b2-fb14f246a38d" mode="Opaque" x="2" y="67" width="137" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="08d9ae32-2581-449c-83b2-fb14f246a38d" mode="Opaque" x="10" y="78" width="137" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OBSERVACIÓN :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1fcbe287-45eb-4144-af5d-6b3900b9b601" mode="Opaque" x="392" y="48" width="92" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="1fcbe287-45eb-4144-af5d-6b3900b9b601" mode="Opaque" x="400" y="59" width="92" height="13" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -134,18 +135,22 @@ where pe.idpedido = $P{ID_PEDIDO}]]>
 				<text><![CDATA[FECHA]]></text>
 			</staticText>
 			<rectangle radius="3">
-				<reportElement uuid="1cf02b2d-5d25-4fb2-ac43-cf462634dc5c" x="139" y="67" width="635" height="24"/>
+				<reportElement uuid="1cf02b2d-5d25-4fb2-ac43-cf462634dc5c" x="147" y="78" width="635" height="24"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement uuid="193ffb91-39b6-4d57-9454-1f6de9518ca8" x="144" y="67" width="629" height="23"/>
+				<reportElement uuid="193ffb91-39b6-4d57-9454-1f6de9518ca8" x="152" y="78" width="629" height="23"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="74d76b6b-1c76-4851-b82a-4845d545f5b3" x="13" y="6" width="60" height="50"/>
+				<imageExpression><![CDATA[$P{P_RUTAIMAGEN}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

@@ -12,6 +12,7 @@
 	<parameter name="FECHA_FIN" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="P_RUTAIMAGEN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select row_number() OVER (ORDER BY ns.idnotasalida desc) as NumeroIncre,
 ns.idnotasalida,
@@ -49,7 +50,7 @@ order by ns.fecha_reg  desc]]>
 	<title>
 		<band height="85" splitType="Stretch">
 			<rectangle radius="3">
-				<reportElement uuid="1c996b14-17c0-4bae-856d-67ef9647beef" x="0" y="37" width="555" height="47" backcolor="#FEEEBD"/>
+				<reportElement uuid="1c996b14-17c0-4bae-856d-67ef9647beef" x="5" y="29" width="559" height="55" backcolor="#FEEEBD"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="91" y="42" width="347" height="21" forecolor="#006699" backcolor="#FEEEBD"/>
@@ -95,6 +96,10 @@ order by ns.fecha_reg  desc]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="6d12b0b6-8e92-4003-8947-962ecc7d8afd" x="8" y="30" width="60" height="50"/>
+				<imageExpression><![CDATA[$P{P_RUTAIMAGEN}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

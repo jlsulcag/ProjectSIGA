@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
 	<property name="ireport.zoom" value="1.46410000000005"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="73"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_INI" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -9,6 +9,7 @@
 	<parameter name="FECHA_FIN" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="P_RUTAIMAGEN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select row_number() OVER (ORDER BY pe.numero desc) as NumeroIncre,
 pe.numero,
@@ -43,10 +44,10 @@ on a.idpedido= b.id_pedido where a.fecha_pedido BETWEEN $P{FECHA_INI} and $P{FEC
 	<title>
 		<band height="85" splitType="Stretch">
 			<rectangle radius="3">
-				<reportElement uuid="1c996b14-17c0-4bae-856d-67ef9647beef" x="0" y="51" width="555" height="33" backcolor="#FEEEBD"/>
+				<reportElement uuid="1c996b14-17c0-4bae-856d-67ef9647beef" x="0" y="35" width="555" height="49" backcolor="#FEEEBD"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="91" y="55" width="347" height="21" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="91" y="45" width="347" height="21" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -82,6 +83,10 @@ on a.idpedido= b.id_pedido where a.fecha_pedido BETWEEN $P{FECHA_INI} and $P{FEC
 				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="2202e682-c7dc-41df-af17-5941d817a2e8" x="4" y="35" width="60" height="50"/>
+				<imageExpression><![CDATA[$P{P_RUTAIMAGEN}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,6 +57,7 @@ import org.siga.bl.UsuarioRolBl;
 import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
+import org.siga.util.Variables;
 
 @ManagedBean
 @ViewScoped
@@ -450,6 +452,18 @@ public class MisPedidosBean {
         }
     }
 
+     //metodo  que ubica la raiz de la  app
+    public static String getPath() {
+        try {
+            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            return ctx.getRealPath("/");
+        } catch (Exception e) {
+            MensajeView.errorFatal(e);
+            return null;
+        }
+
+    }
+
     public void descargarPedido() {
         try {
             if (pedido != null) {
@@ -459,9 +473,13 @@ public class MisPedidosBean {
                     Map<String, Object> parametro = new HashMap<>();
                     //
                     File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0002-nota-pedido.jasper"));
-                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    DSConeccion ds = new DSConeccion(Variables.HOST, Variables.PORT, Variables.DB, Variables.USER, Variables.PASS);
                     //DsConexion ds = new DsConexion();
+                    //ruta de logo
+                    String path = getPath()+ "/resources/img/logo.png";
                     parametro.put("ID_PEDIDO", pedido.getIdpedido());
+                    parametro.put("P_RUTAIMAGEN", path);
                     JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile(file.getPath());
                     JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, ds.getConeccion());
 

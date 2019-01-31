@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,6 +57,7 @@ import org.siga.bl.UsuarioBl;
 import org.siga.ds.DSConeccion;
 import org.siga.util.MensajeView;
 import org.siga.util.Utilitarios;
+import org.siga.util.Variables;
 
 @ManagedBean
 @ViewScoped
@@ -408,7 +410,18 @@ public class NotaSalidaBean {
         FacesMessage msg = new FacesMessage("Edicion cancelada", null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    
+    public static String getPath() {
+        try {
+            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            return ctx.getRealPath("/");
+        } catch (Exception e) {
+            MensajeView.errorFatal(e);
+            return null;
+        }
 
+    }
+    
     public void visualizarPedido() {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         pedido = (Pedido) httpSession.getAttribute("pedidoactual");
@@ -421,9 +434,13 @@ public class NotaSalidaBean {
 
                     //File file = new File("C:\\Reportes\\REP-0005-nota-pedido.jasper");
                     File file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/classes/org/siga/reportes/REP-0005-nota-salida.jasper"));
-                    DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
-
+                    
+                    //DSConeccion ds = new DSConeccion("192.168.32.33", "5432", "sigadb_desa", "siga%admin", "siga%admin");
+                    DSConeccion ds = new DSConeccion(Variables.HOST, Variables.PORT, Variables.DB, Variables.USER, Variables.PASS);
+                    //RUTA LOGO
+                    String path= getPath() + "/resources/img/logo.png";
                     parametro.put("ID_PEDIDO", pedido.getIdpedido());
+                    parametro.put("P_RUTAIMAGEN", path);
                     byte[] documento = JasperRunManager.runReportToPdf(file.getPath(), parametro, ds.getConeccion());
 
                     String fileType = "inline";
