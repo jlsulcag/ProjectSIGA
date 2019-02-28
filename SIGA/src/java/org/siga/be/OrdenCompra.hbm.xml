@@ -64,6 +64,9 @@
         <property name="tipoOrden" type="string">
             <column length="20" name="tipo_orden"/>
         </property>
+        <property name="reqParapago" type="string">
+            <column name="req_parapago" not-null="true" />
+        </property>
         <set fetch="select" inverse="true" lazy="true" name="ordenCompraDetalles" table="orden_compra_detalle">
             <key>
                 <column name="id_ordencompra" not-null="true"/>

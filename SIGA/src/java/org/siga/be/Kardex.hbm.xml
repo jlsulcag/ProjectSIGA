@@ -25,8 +25,8 @@
                 <comment>segun factura nro 001</comment>
             </column>
         </property>
-        <property name="cantidad" type="double">
-            <column name="cantidad" precision="17" scale="17" not-null="true" />
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="13" not-null="true" />
         </property>
         <property name="valorUnit" type="big_decimal">
             <column name="valor_unit" precision="10" not-null="true" />

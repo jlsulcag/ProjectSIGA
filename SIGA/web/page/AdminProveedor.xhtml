@@ -19,12 +19,17 @@
                                 <p:commandButton id="btnNew" icon="ui-icon-plus" value="Nuevo" title="Nuevo" 
                                                  update=":formNew" oncomplete="PF('dlgNew').show();" actionListener="#{proveedorBean.limpiar()}"/> 
                             </f:facet>
+                            
                             <f:facet name="right">
                                 <h:outputText value="Busqueda: " />
-                                <p:inputText id="txtBusqueda" style="width: 300px" value="#{proveedorBean.txtBusqueda}">
-                                    <p:ajax event="keyup" update=":formDataTable" listener="#{proveedorBean.buscarRef()}"/>
+                                <!--
+                                <h:outputText value="Busqueda: " />
+                                <p:inputText id="txtBusqueda" style="width: 300px" value="{proveedorBean.txtBusqueda}">
+                                    <p:ajax event="keyup" update=":formDataTable" listener="{proveedorBean.buscarRef()}"/>
                                 </p:inputText>
+                                -->
                             </f:facet>
+                            
                         </p:toolbar>
 
                     </h:form>
@@ -32,19 +37,20 @@
                         <p:dataTable id="lista" value="#{proveedorBean.listProveedores}" var="item"
                                      paginator="true" rows="10" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10,15,20" editable="true">
+                                     rowsPerPageTemplate="10,15,20"
+                                     filteredValue="#{proveedorBean.filteredProveedores}">
                             <f:facet name="header">
                                 Proveedor
                             </f:facet>
 
-                            <p:column style="width:30px;text-align: center" headerText="ID">
+                            <p:column style="width:30px;text-align: center" headerText="ID" filterBy="#{item.idproveedor}" filterMatchMode="contains">
                                 <h:outputText value="#{item.idproveedor}"/>
                             </p:column>
-                            <p:column headerText="Razon Social">
+                            <p:column headerText="Razon Social" filterBy="#{item.razonSocial}" filterMatchMode="contains">
                                 <h:outputText value="#{item.razonSocial}"/> 
                             </p:column>
 
-                            <p:column headerText="Ruc" style="width: 100px">
+                            <p:column headerText="Ruc" style="width: 100px" filterBy="#{item.ruc}" filterMatchMode="contains">
                                 <h:outputText value="#{item.ruc}"/>
                             </p:column>
 
@@ -178,7 +184,23 @@
                                 <p:inputText id="txtContactoEdit" label="Contacto" 
                                              style="width: 400px; text-transform:uppercase;" value="#{proveedorBean.proveedor.contacto}" />
 
-
+                                                                  
+                                <h:outputText value="Proveedor de Productos :" />
+                                <p:selectBooleanButton id="btnProveedorProd" value="#{proveedorBean.proveedor.deproducto}" onLabel="Sí" offLabel="No" style="width:120px" >
+                                    <p:ajax  listener="#{proveedorBean.listarxTipo()}" update="chbxFamiliaEdit" />
+                                </p:selectBooleanButton>
+                                
+                               <h:outputText value="Proveedor de Servicios :" />
+                               <p:selectBooleanButton id="btnProveedorServ" value="#{proveedorBean.proveedor.deservicio}" onLabel="Sí" offLabel="No" style="width:120px" >
+                                   <p:ajax  listener="#{proveedorBean.listarxTipo()}" update="chbxFamiliaEdit" />
+                               </p:selectBooleanButton>
+                                
+                                <h:outputLabel for="chbxFamiliaEdit" value="Familia :" />
+                                <p:selectCheckboxMenu id="chbxFamiliaEdit" value="#{proveedorBean.listFamilia}" label="Familia" multiple="true"
+                                                      filter="true" filterMatchMode="startsWith" style="width: 410px">
+                                    <f:selectItems value="#{proveedorBean.selectOneItemsFamilia}"/>
+                                </p:selectCheckboxMenu>
+                                
                                 <h:outputLabel for="cbxEstado" value="Estado:" />
                                 <p:selectOneMenu id="cbxEstado" style="width: 380px" value="#{proveedorBean.proveedor.estado}">
                                     <f:selectItem itemLabel="SELECCIONE" noSelectionOption="true" />

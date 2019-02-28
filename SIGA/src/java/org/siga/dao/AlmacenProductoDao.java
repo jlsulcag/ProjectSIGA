@@ -1,6 +1,7 @@
 
 package org.siga.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -131,24 +132,24 @@ public class AlmacenProductoDao extends AbstractDA<AlmacenProducto>{
         }
     }
 
-    public int buscarStockxProducto(long idproducto) {
+    public BigDecimal buscarStockxProducto(long idproducto) {
         Session s = getSession();
         Transaction t = s.beginTransaction();
-        int num = 0;
+        BigDecimal num = BigDecimal.ZERO;
         try {
             String hql = "select a.stockActual from AlmacenProducto a where a.ordenIngreso = (select min(b.ordenIngreso) from AlmacenProducto b where b.producto.idproducto = "+idproducto+" and b.stockActual > 0) and a.producto.idproducto = "+idproducto+" and a.stockActual>0";
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
-                num = 0;
+                num = BigDecimal.ZERO;
             } else {
-                num = (int) query.uniqueResult();
+                num = (BigDecimal) query.uniqueResult();
             }
             t.commit();
             s.close();
             return num;
         } catch (HibernateException e) {
             t.rollback();
-            return 0;
+            return BigDecimal.ZERO;
         }
     }
 

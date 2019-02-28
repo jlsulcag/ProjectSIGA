@@ -16,7 +16,7 @@ public class AlmacenProducto  implements java.io.Serializable {
      private long idalmacenproducto;
      private Almacen almacen;
      private Producto producto;
-     private int stockActual;
+     private BigDecimal stockActual;
      private String lote;
      private Date fechaVencimiento;
      private BigDecimal valorCompraUnitario;
@@ -24,7 +24,7 @@ public class AlmacenProducto  implements java.io.Serializable {
      private String unidad;
      private long idEquivalencia;
      private Date fechaIngreso;
-     private double stockReal;
+     private BigDecimal stockReal;
      
 
     public AlmacenProducto() {
@@ -35,14 +35,14 @@ public class AlmacenProducto  implements java.io.Serializable {
     }
 
 	
-    public AlmacenProducto(long idalmacenproducto, Almacen almacen, Producto producto, int stockActual, String lote) {
+    public AlmacenProducto(long idalmacenproducto, Almacen almacen, Producto producto, BigDecimal stockActual, String lote) {
         this.idalmacenproducto = idalmacenproducto;
         this.almacen = almacen;
         this.producto = producto;
         this.stockActual = stockActual;
         this.lote = lote;
     }
-    public AlmacenProducto(long idalmacenproducto, Almacen almacen, Producto producto, int stockActual, String lote, Date fechaVencimiento, BigDecimal valor) {
+    public AlmacenProducto(long idalmacenproducto, Almacen almacen, Producto producto, BigDecimal stockActual, String lote, Date fechaVencimiento, BigDecimal valor) {
        this.idalmacenproducto = idalmacenproducto;
        this.almacen = almacen;
        this.producto = producto;
@@ -73,11 +73,11 @@ public class AlmacenProducto  implements java.io.Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    public int getStockActual() {
+    public BigDecimal getStockActual() {
         return this.stockActual;
     }
     
-    public void setStockActual(int stockActual) {
+    public void setStockActual(BigDecimal stockActual) {
         this.stockActual = stockActual;
     }
     public String getLote() {
@@ -134,11 +134,11 @@ public class AlmacenProducto  implements java.io.Serializable {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public double getStockReal() {
+    public BigDecimal getStockReal() {
         return stockReal;
     }
 
-    public void setStockReal(double stockReal) {
+    public void setStockReal(BigDecimal stockReal) {
         this.stockReal = stockReal;
     }
 

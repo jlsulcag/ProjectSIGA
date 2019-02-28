@@ -1,6 +1,7 @@
 package org.siga.be;
 // Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
+import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,10 +21,10 @@ public class PedidoDetalle implements java.io.Serializable {
     private long idpedidodetalle;
     private Pedido pedido;
     private Producto producto;
-    private int cantidadSolicitada;
+    private BigDecimal cantidadSolicitada;
     private String unidadMedida;
-    private int cantidadAutorizada;
-    private int cantidadSurtida;
+    private BigDecimal cantidadAutorizada;
+    private BigDecimal cantidadSurtida;
     private long idEquivalencia;
 
     public PedidoDetalle() {
@@ -33,7 +34,7 @@ public class PedidoDetalle implements java.io.Serializable {
 
     }
 
-    public PedidoDetalle(long idpedidodetalle, Pedido pedido, int cantidadSolicitada, int cantidadAutorizada, int cantidadSurtida) {
+    public PedidoDetalle(long idpedidodetalle, Pedido pedido, BigDecimal cantidadSolicitada, BigDecimal cantidadAutorizada, BigDecimal cantidadSurtida) {
         this.idpedidodetalle = idpedidodetalle;
         this.pedido = pedido;
         this.cantidadSolicitada = cantidadSolicitada;
@@ -41,7 +42,7 @@ public class PedidoDetalle implements java.io.Serializable {
         this.cantidadSurtida = cantidadSurtida;
     }
 
-    public PedidoDetalle(long idpedidodetalle, Pedido pedido, int cantidadSolicitada, String unidadMedida, int cantidadAutorizada, int cantidadSurtida) {
+    public PedidoDetalle(long idpedidodetalle, Pedido pedido, BigDecimal cantidadSolicitada, String unidadMedida, BigDecimal cantidadAutorizada, BigDecimal cantidadSurtida) {
         this.idpedidodetalle = idpedidodetalle;
         this.pedido = pedido;
         this.cantidadSolicitada = cantidadSolicitada;
@@ -66,27 +67,27 @@ public class PedidoDetalle implements java.io.Serializable {
         this.pedido = pedido;
     }
 
-    public int getCantidadSolicitada() {
+    public BigDecimal getCantidadSolicitada() {
         return this.cantidadSolicitada;
     }
 
-    public void setCantidadSolicitada(int cantidadSolicitada) {
+    public void setCantidadSolicitada(BigDecimal cantidadSolicitada) {
         this.cantidadSolicitada = cantidadSolicitada;
     }
 
-    public int getCantidadAutorizada() {
+    public BigDecimal getCantidadAutorizada() {
         return this.cantidadAutorizada;
     }
 
-    public void setCantidadAutorizada(int cantidadAutorizada) {
+    public void setCantidadAutorizada(BigDecimal cantidadAutorizada) {
         this.cantidadAutorizada = cantidadAutorizada;
     }
 
-    public int getCantidadSurtida() {
+    public BigDecimal getCantidadSurtida() {
         return this.cantidadSurtida;
     }
 
-    public void setCantidadSurtida(int cantidadSurtida) {
+    public void setCantidadSurtida(BigDecimal cantidadSurtida) {
         this.cantidadSurtida = cantidadSurtida;
     }
 

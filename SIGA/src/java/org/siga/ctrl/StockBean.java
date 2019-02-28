@@ -1,6 +1,8 @@
 
 package org.siga.ctrl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -65,7 +67,7 @@ public class StockBean {
         for (AlmacenProducto obj : almacenProductoBl.listarXAlmacen(idalmacen)) {
             almacenProducto = obj;
             equivalencia = equivalenciaBl.buscaxId(almacenProducto.getIdEquivalencia());
-            almacenProducto.setStockReal(almacenProducto.getStockActual()/equivalencia.getFactor());
+            almacenProducto.setStockReal(almacenProducto.getStockActual().divide(new BigDecimal(equivalencia.getFactor()), 4, RoundingMode.HALF_UP));
             listInventario.add(almacenProducto);
         }
         //setListInventario(almacenProductoBl.listarXAlmacen(idalmacen));

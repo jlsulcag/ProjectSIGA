@@ -19,7 +19,7 @@ public class Kardex  implements java.io.Serializable {
      private Date fechaMov;
      private String movimiento;
      private String detalle;
-     private double cantidad;
+     private BigDecimal cantidad;
      private BigDecimal valorUnit;
      private String horaMov;
      private long numero;
@@ -32,7 +32,7 @@ public class Kardex  implements java.io.Serializable {
     }
 
 	
-    public Kardex(int idkardex, Producto producto, Date fechaMov, String movimiento, double cantidad, BigDecimal valorUnit, long numero) {
+    public Kardex(int idkardex, Producto producto, Date fechaMov, String movimiento, BigDecimal cantidad, BigDecimal valorUnit, long numero) {
         this.idkardex = idkardex;
         this.producto = producto;
         this.fechaMov = fechaMov;
@@ -78,11 +78,11 @@ public class Kardex  implements java.io.Serializable {
     public void setDetalle(String detalle) {
         this.detalle = detalle;
     }
-    public double getCantidad() {
+    public BigDecimal getCantidad() {
         return this.cantidad;
     }
     
-    public void setCantidad(double cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
     public BigDecimal getValorUnit() {

@@ -14,6 +14,26 @@
         <h:outputScript library="js" name="calendar_es.js"/>
         <title>.:SIGA:.</title>
         <f:event type="preRenderView" listener="#{sesionBean.verificarSesion()}" />
+        <style type="text/css">
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        </style>
     </h:head>
 
     <h:body>

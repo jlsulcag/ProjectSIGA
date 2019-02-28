@@ -1,6 +1,7 @@
 
 package org.siga.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -82,24 +83,24 @@ public class NotaIngresoDetalleDao extends AbstractDA<NotaEntradaDetalle>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public long getCantIngresada(long idproducto, long id) {
+    public BigDecimal getCantIngresada(long idproducto, long id) {
         Session s = getSession();
         Transaction t = s.beginTransaction();
-        long cant = 0;
+        BigDecimal cant = BigDecimal.ZERO;
         try {
             String hql = "select sum(a.cantIngreso) from NotaEntradaDetalle a where a.producto.idproducto = "+idproducto +" and a.notaEntrada.ordenCompra.idordencompra = "+id;
             Query query = s.createQuery(hql);
             if (query.uniqueResult() == null) {
-                cant = 0;
+                cant = BigDecimal.ZERO;
             } else {
-                cant = (long) query.uniqueResult();
+                cant = (BigDecimal) query.uniqueResult();
             }
             t.commit();
             s.close();
             return cant;
         } catch (HibernateException e) {
             t.rollback();
-            return 0;
+            return BigDecimal.ZERO;
         }
     }
     

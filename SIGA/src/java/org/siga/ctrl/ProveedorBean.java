@@ -36,6 +36,7 @@ public class ProveedorBean {
     private Familia familia;
 
     private List<Proveedor> listProveedores;
+    private List<Proveedor> filteredProveedores;
     private List<SelectItem> selectOneItemsProveedores;
     private String txtBusqueda;
     private long res;
@@ -257,6 +258,14 @@ public class ProveedorBean {
 
     public void setFamilia(Familia familia) {
         this.familia = familia;
+    }
+
+    public List<Proveedor> getFilteredProveedores() {
+        return filteredProveedores;
+    }
+
+    public void setFilteredProveedores(List<Proveedor> filteredProveedores) {
+        this.filteredProveedores = filteredProveedores;
     }
 
 }

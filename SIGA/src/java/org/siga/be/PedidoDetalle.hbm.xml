@@ -14,17 +14,17 @@
         <many-to-one name="producto" class="org.siga.be.Producto" fetch="select">
             <column name="id_producto" not-null="true" />
         </many-to-one>
-        <property name="cantidadSolicitada" type="int">
-            <column name="cantidad_solicitada" not-null="true" />
+        <property name="cantidadSolicitada" type="big_decimal">
+            <column name="cantidad_solicitada" not-null="true" precision="13"/>
         </property>
         <property name="unidadMedida" type="string">
             <column length="30" name="unidad_medida"/>
         </property>
-        <property name="cantidadAutorizada" type="int">
-            <column name="cantidad_autorizada" not-null="true" />
+        <property name="cantidadAutorizada" type="big_decimal">
+            <column name="cantidad_autorizada" not-null="true" precision="13"/>
         </property>
-        <property name="cantidadSurtida" type="int">
-            <column name="cantidad_surtida" not-null="true" />
+        <property name="cantidadSurtida" type="big_decimal">
+            <column name="cantidad_surtida" not-null="true" precision="13"/>
         </property>
         <property name="idEquivalencia" type="long">
             <column name="id_equivalencia"  />

@@ -155,7 +155,7 @@ public class MisOrdenesCompraBean {
         temp.setDesc2(ordenCompraDetalle.getDesc2());
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
-        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
+        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(ordenCompraDetalle.getCantidad()));
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
@@ -177,12 +177,12 @@ public class MisOrdenesCompraBean {
         HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
-            valorBruto = valorBruto.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+            valorBruto = valorBruto.add(obj.getValorCompra().multiply(obj.getCantidad()));
             totalDescuento = totalDescuento.add(obj.getMontoDescitem());
             valorNeto = valorBruto.subtract(totalDescuento);
             montoIgv = valorNeto.multiply(MensajeView.IGV).setScale(2, RoundingMode.HALF_UP);
             if (httpSession.getAttribute("idOrdenCompra") != null) {
-                totalTemp = totalTemp.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+                totalTemp = totalTemp.add(obj.getValorCompra().multiply(obj.getCantidad()));
             } else {
                 //totalTemp = totalTemp.add(obj.getSubTotal());//Antes
                 totalTemp = valorNeto.subtract(montoIgv);
@@ -455,7 +455,7 @@ public class MisOrdenesCompraBean {
         ordenCompraDetalle.setIdordencompradetalle(0);
         //ordenCompraDetalle.setOrdenCompra(new OrdenCompra());
         //ordenCompraDetalle.setProducto(new Producto());
-        ordenCompraDetalle.setCantidad(0);
+        ordenCompraDetalle.setCantidad(BigDecimal.ZERO);
         ordenCompraDetalle.setObservacion("");
         ordenCompraDetalle.setLote("");
         ordenCompraDetalle.setFechaVencimiento(null);

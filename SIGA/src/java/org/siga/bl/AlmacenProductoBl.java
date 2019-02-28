@@ -1,6 +1,7 @@
 
 package org.siga.bl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.siga.be.Almacen;
 import org.siga.be.AlmacenProducto;
@@ -104,7 +105,7 @@ public class AlmacenProductoBl extends AbstractBL<AlmacenProducto>{
         return dao.buscarMinNumeroOrdenxProducto(idproducto);
     }
 
-    public int buscarStockxProducto(long idproducto) {
+    public BigDecimal buscarStockxProducto(long idproducto) {
         return dao.buscarStockxProducto(idproducto);
     }
 

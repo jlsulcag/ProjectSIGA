@@ -13,8 +13,8 @@
     <many-to-one class="org.siga.be.Producto" fetch="select" name="producto">
       <column name="id_producto" not-null="true"/>
     </many-to-one>
-    <property name="cantidad" type="int">
-      <column name="cantidad" not-null="true"/>
+    <property name="cantidad" type="big_decimal">
+      <column name="cantidad" not-null="true" precision="13"/>
     </property>
     <property name="observacion" type="string">
       <column length="300" name="observacion"/>

@@ -136,6 +136,7 @@ public class OrdenCompraBean {
         ordenCompra.setFecha(new Date());
         ordenCompra.setFechaEntrega(null);
         ordenCompra.setPenalidadIncumplimiento("");
+        ordenCompra.setReqParapago("");
         ordenCompra.setObservacion("");
         ordenCompra.setDocReferencia("");
         ordenCompra.setProveedor(new Proveedor());
@@ -177,7 +178,7 @@ public class OrdenCompraBean {
         //
         temp.setUnidadMedida(unidadMedida.getDescripcion());
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
-        temp.setSubTotal((ordenCompraDetalle.getPrecioCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad()))).setScale(2, RoundingMode.HALF_UP));
+        temp.setSubTotal((ordenCompraDetalle.getPrecioCompra().multiply(ordenCompraDetalle.getCantidad())).setScale(2, RoundingMode.HALF_UP));
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
@@ -201,27 +202,67 @@ public class OrdenCompraBean {
         }
     }
 
-    public void registrar() {
-        long res3 = -1;
+    public void guardar() {
+        int res = -1;
         if (!listOrdenCompraDetalles.isEmpty()) {
-            res = registrarOrdenCompra();
-            if (res == 0) {
-                res2 = registrarOrdenCompraDetalle();
-                if (res2 == 0) {
-                    res3 = registrarOrdenCompraSeguimiento(ordenCompra);
-                    if (res3 == 0) {
-                        MensajeView.registroCorrecto();
-                        inicio();
-                    } else {
-                        MensajeView.registroError();
-                    }
-                }
+            ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
+            ordenCompra.setDocReferencia(ordenCompra.getDocReferencia().toUpperCase());
+            ordenCompra.setHoraRegistro(Utilitarios.horaActual());
+            ordenCompra.setValorBruto(valorBruto);
+            ordenCompra.setMontoDesc(totalDescuento);
+            ordenCompra.setValorNeto(valorNeto);
+            ordenCompra.setMontoIgv(montoIgv);
+            ordenCompra.setMontoSubTotal(montoSubtotal);
+            ordenCompra.setMontoTotal(montoTotal);
+            ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
+            ordenCompra.setPenalidadIncumplimiento(ordenCompra.getPenalidadIncumplimiento().toUpperCase());
+            ordenCompra.setReqParapago(ordenCompra.getReqParapago().toUpperCase());
+            //
+            ordenCompraSeguimiento.setOrdenCompraEstados(ordenCompraEstadosBl.buscar(1));
+            ordenCompraSeguimiento.setFecha(new Date());
+            ordenCompraSeguimiento.setHora(Utilitarios.horaActual());
+            ordenCompraSeguimiento.setNumero(ordenCompraSeguimientoBl.maxNumero(ordenCompra.getIdordencompra()) + 1);
+            ordenCompraSeguimiento.setObservacion("");
+            HttpSession sesionUser = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            if (sesionUser.getAttribute("idUsuario") != null) {
+                ordenCompraSeguimiento.setIdUser(Long.parseLong(sesionUser.getAttribute("idUsuario").toString()));
+            }
+
+            res = ordenCompraBl.guardar(ordenCompra, listOrdenCompraDetalles, ordenCompraSeguimiento);
+            if (res == 1) {
+                MensajeView.registroCorrecto();
+                inicio();
+            } else {
+                MensajeView.registroError();
             }
         } else {
             MensajeView.listVacia();
         }
 
     }
+    /*
+     public void registrar() {
+     long res3 = -1;
+     if (!listOrdenCompraDetalles.isEmpty()) {
+     res = registrarOrdenCompra();
+     if (res == 0) {
+     res2 = registrarOrdenCompraDetalle();
+     if (res2 == 0) {
+     res3 = registrarOrdenCompraSeguimiento(ordenCompra);
+     if (res3 == 0) {
+     MensajeView.registroCorrecto();
+     inicio();
+     } else {
+     MensajeView.registroError();
+     }
+     }
+     }
+     } else {
+     MensajeView.listVacia();
+     }
+
+     }
+     */
 
     public long registrarOrdenCompra() {
         ordenCompra.setObservacion(ordenCompra.getObservacion().toUpperCase());
@@ -235,6 +276,7 @@ public class OrdenCompraBean {
         ordenCompra.setMontoTotal(montoTotal);
         ordenCompra.setFormaPago(ordenCompra.getFormaPago().toUpperCase());
         ordenCompra.setPenalidadIncumplimiento(ordenCompra.getPenalidadIncumplimiento().toUpperCase());
+        ordenCompra.setReqParapago(ordenCompra.getReqParapago().toUpperCase());
 
         return ordenCompraBl.registrar(ordenCompra);
 
@@ -348,7 +390,7 @@ public class OrdenCompraBean {
         ordenCompraDetalle.setIdordencompradetalle(0);
         ordenCompraDetalle.setOrdenCompra(new OrdenCompra());
         ordenCompraDetalle.setProducto(new Producto());
-        ordenCompraDetalle.setCantidad(0);
+        ordenCompraDetalle.setCantidad(BigDecimal.ZERO);
         ordenCompraDetalle.setObservacion("");
         ordenCompraDetalle.setLote("");
         ordenCompraDetalle.setFechaVencimiento(null);
@@ -543,14 +585,14 @@ public class OrdenCompraBean {
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
             //Los calculos se estan realizando  teniendo en cuenta el precio de compra
-            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
+            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(obj.getCantidad()))).setScale(2, RoundingMode.HALF_UP);
             totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
             valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
             montoSubtotal = valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
             montoIgv = valorNeto.subtract(montoSubtotal).setScale(2, RoundingMode.HALF_UP);
 
             if (httpSession.getAttribute("idOrdenCompra") != null) {
-                montoTotal = montoTotal.add(obj.getValorCompra().multiply(new BigDecimal(obj.getCantidad())));
+                montoTotal = montoTotal.add(obj.getValorCompra().multiply(obj.getCantidad()));
             } else {
                 //totalTemp = montoTotal.add(obj.getSubTotal());//Antes
                 montoTotal = valorNeto;
@@ -795,6 +837,12 @@ public class OrdenCompraBean {
 
     public void setUsuarioPermiso(UsuarioPermiso usuarioPermiso) {
         this.usuarioPermiso = usuarioPermiso;
+    }
+
+    public void quitarItem() {
+        listOrdenCompraDetalles.remove(ordenCompraDetalle);
+        calcularTotal(listOrdenCompraDetalles);
+
     }
 
 }

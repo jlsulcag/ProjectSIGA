@@ -1,6 +1,7 @@
 package org.siga.be;
 // Generated 07/08/2017 05:08:45 PM by Hibernate Tools 4.3.1
 
+import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,12 +14,12 @@ public class NotaSalidaDetalle implements java.io.Serializable {
     private Producto producto;
     private String unidadmedida;
     private NotaSalida notasalida;
-    private int cantSolicitada;
-    private int cantAtendida;
-    private int cantPendiente;
-    private int cantSalida;
+    private BigDecimal cantSolicitada;
+    private BigDecimal cantAtendida;
+    private BigDecimal cantPendiente;
+    private BigDecimal cantSalida;
     private long idAlmacenProducto;
-    private int stock;
+    private BigDecimal stock;
     private long idEquivalencia;
 
     public NotaSalidaDetalle() {
@@ -74,43 +75,43 @@ public class NotaSalidaDetalle implements java.io.Serializable {
         this.idAlmacenProducto = idAlmacenProducto;
     }
 
-    public int getStock() {
+    public BigDecimal getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(BigDecimal stock) {
         this.stock = stock;
     }
 
-    public int getCantSolicitada() {
+    public BigDecimal getCantSolicitada() {
         return cantSolicitada;
     }
 
-    public void setCantSolicitada(int cantSolicitada) {
+    public void setCantSolicitada(BigDecimal cantSolicitada) {
         this.cantSolicitada = cantSolicitada;
     }
 
-    public int getCantAtendida() {
+    public BigDecimal getCantAtendida() {
         return cantAtendida;
     }
 
-    public void setCantAtendida(int cantAtendida) {
+    public void setCantAtendida(BigDecimal cantAtendida) {
         this.cantAtendida = cantAtendida;
     }
 
-    public int getCantPendiente() {
+    public BigDecimal getCantPendiente() {
         return cantPendiente;
     }
 
-    public void setCantPendiente(int cantPendiente) {
+    public void setCantPendiente(BigDecimal cantPendiente) {
         this.cantPendiente = cantPendiente;
     }
 
-    public int getCantSalida() {
+    public BigDecimal getCantSalida() {
         return cantSalida;
     }
 
-    public void setCantSalida(int cantSalida) {
+    public void setCantSalida(BigDecimal cantSalida) {
         this.cantSalida = cantSalida;
     }
 

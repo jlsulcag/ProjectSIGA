@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.siga.be.OrdenCompra;
+import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.util.AbstractDA;
 import org.siga.util.HibernateUtil;
 import org.siga.util.MensajeView;
@@ -19,6 +21,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
 
     private Session sesion;
     private Transaction tx;
+    private static final int SUCCESS = 1, ERROR = 0; 
 
     @Autowired
     @Qualifier("sessionFactory")
@@ -134,6 +137,29 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     public OrdenCompra buscarXId(long idordencompra) {
         String hql = "from OrdenCompra a left join fetch a.proveedor b left join fetch a.almacenSolicitante c where a.idordencompra = " + idordencompra;
         return buscar(hql);
+    }
+
+    public int guardar(OrdenCompra obj, List<OrdenCompraDetalle> listOrdenCompraDetalles, OrdenCompraSeguimiento ocs) {
+        try {
+            iniciarOperacion();
+            sesion.save(obj);
+            //guardar detalle de la orden de compra
+            for (OrdenCompraDetalle temp : listOrdenCompraDetalles) {
+                temp.setOrdenCompra(obj);
+                sesion.save(temp);
+            }
+            //guardar  orden compra seguimiento
+            ocs.setOrdenCompra(obj);
+            sesion.save(ocs);
+            
+            tx.commit();
+            return SUCCESS;
+        } catch (HibernateException e) {
+            manejaExcepcion(e);
+            return ERROR;
+        }finally{
+            sesion.close();
+        }
     }
 
 }

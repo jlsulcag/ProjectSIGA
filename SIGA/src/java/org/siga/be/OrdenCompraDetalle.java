@@ -10,7 +10,7 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
      private long idordencompradetalle;
      private OrdenCompra ordenCompra;
      private Producto producto;
-     private int cantidad;
+     private BigDecimal cantidad;
      private String observacion;
      private String lote;
      private Date fechaVencimiento;
@@ -31,13 +31,13 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
     }
 
 	
-    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, int cantidad) {
+    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, BigDecimal cantidad) {
         this.idordencompradetalle = idordencompradetalle;
         this.ordenCompra = ordenCompra;
         this.producto = producto;
         this.cantidad = cantidad;
     }
-    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, int cantidad, String observacion) {
+    public OrdenCompraDetalle(long idordencompradetalle, OrdenCompra ordenCompra, Producto producto, BigDecimal cantidad, String observacion) {
        this.idordencompradetalle = idordencompradetalle;
        this.ordenCompra = ordenCompra;
        this.producto = producto;
@@ -66,11 +66,11 @@ public class OrdenCompraDetalle  implements java.io.Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    public int getCantidad() {
+    public BigDecimal getCantidad() {
         return this.cantidad;
     }
     
-    public void setCantidad(int cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
     public String getObservacion() {

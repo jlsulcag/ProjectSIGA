@@ -189,7 +189,7 @@ public class NotaIngresoBean {
         notaEntradaDetalle.setProducto(new Producto());
         notaEntradaDetalle.setUnidadMedida("");
         notaEntradaDetalle.setValorCompra(BigDecimal.ZERO);
-        notaEntradaDetalle.setCantIngreso(0);
+        notaEntradaDetalle.setCantIngreso(BigDecimal.ZERO);
         setTotalProductos(0);
         notaEntradaDetalle.setFechaVencimiento(null);
         notaEntradaDetalle.setLote("");
@@ -226,8 +226,8 @@ public class NotaIngresoBean {
 
             notaED.setCantSolicitada(obj.getCantidad());
             //buscar la suma de la cantidad ingresada hasta ese momento.. buscar por orden de compra y producto
-            notaED.setCantRecibida((int) notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
-            notaED.setCantPendiente(notaED.getCantSolicitada() - notaED.getCantRecibida());
+            notaED.setCantRecibida(notaIngresoDetalleBl.getCantIngresada(obj.getProducto().getIdproducto(), id));
+            notaED.setCantPendiente(notaED.getCantSolicitada().subtract(notaED.getCantRecibida()));
             notaED.setCantIngreso(notaED.getCantPendiente());
             //validar que solo se agreguen los productos que faltan recepcionar
             //if (notaED.getCantRecibida() < notaED.getCantSolicitada()) {
@@ -235,14 +235,14 @@ public class NotaIngresoBean {
             //buscar la equivalencia  utiliza para la orden de compra 
             equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
             if (equivalencia != null) {
-                notaED.setTotalProductos((int) (notaED.getCantIngreso() * equivalencia.getFactor()));
+                notaED.setTotalProductos((notaED.getCantIngreso().multiply(new BigDecimal(equivalencia.getFactor()))));
             }
 
             //buscar stock disponible en el inventario
             AlmacenProducto temp = new AlmacenProducto();
             temp = almacenProductoBl.buscarProductoxAlmacenyLote(notaED.getLote(), notaED.getNotaEntrada().getOrdenCompra().getAlmacenSolicitante().getIdalmacen(), notaED.getProducto());
             if (temp == null) {
-                notaED.setCantDisponible(0);
+                notaED.setCantDisponible(BigDecimal.ZERO);
             } else {
                 notaED.setCantDisponible(temp.getStockActual());
             }
@@ -262,7 +262,8 @@ public class NotaIngresoBean {
             NotaEntradaDetalle ned = new NotaEntradaDetalle();
             ned = listNotaEntradaDetalle.get(i);
             if (listNotaEntradaDetalle.get(i).getProducto() == notaEntradaDetalleTemp.getProducto()) {
-                if (notaEntradaDetalleTemp.getCantIngreso() > ned.getCantPendiente()) {
+                if ((notaEntradaDetalleTemp.getCantIngreso().compareTo(ned.getCantPendiente()) == 1)) {
+                    //si el primero es  mayor que el segundo
                     //la cantidad ingresa se debe mantener
                     ned.setCantIngreso(ned.getCantPendiente());
                     msg = "La cantidad ingresada supera a la cantidad pendiente";
@@ -272,7 +273,7 @@ public class NotaIngresoBean {
                     ned.setCantIngreso(notaEntradaDetalleTemp.getCantIngreso());
                 }
                 equivalencia = equivalenciaBl.buscaxId(ned.getIdEquivalencia());
-                ned.setTotalProductos((int) (ned.getCantIngreso() * equivalencia.getFactor()));
+                ned.setTotalProductos((ned.getCantIngreso().multiply(new BigDecimal(equivalencia.getFactor()))));
             }
             listNotaEntradaDetalleTemp.add(ned);
         }
@@ -302,10 +303,10 @@ public class NotaIngresoBean {
         unidadMedida = unidadMedidaBl.buscar(equivalencia.getUnidadEquivalente().getIdunidadmedida());
         //
         ned.setUnidadMedida(unidadMedida.getDescripcion());
-        ned.setTotalProductos((int) (notaEntradaDetalle.getCantIngreso() * equivalencia.getFactor()));
-        ned.setCantSolicitada(0);
-        ned.setCantPendiente(0);
-        ned.setCantRecibida(0);
+        ned.setTotalProductos((notaEntradaDetalle.getCantIngreso().multiply(new BigDecimal(equivalencia.getFactor()))));
+        ned.setCantSolicitada(BigDecimal.ZERO);
+        ned.setCantPendiente(BigDecimal.ZERO);
+        ned.setCantRecibida(BigDecimal.ZERO);
 
         listNotaEntradaDetalle.add(ned);
     }

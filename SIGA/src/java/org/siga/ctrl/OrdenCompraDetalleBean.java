@@ -3,7 +3,6 @@ package org.siga.ctrl;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Date;
@@ -114,7 +113,7 @@ public class OrdenCompraDetalleBean {
         }
 
         //realizar los calculos con el valor de compra, para  obtener el sub total por item
-        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(ordenCompraDetalle.getCantidad())));
+        temp.setSubTotal(ordenCompraDetalle.getValorCompra().multiply(ordenCompraDetalle.getCantidad()));
         double du;
         du = calcularDescItem(ordenCompraDetalle.getDesc1(), ordenCompraDetalle.getDesc2());
         temp.setMontoDescitem(ordenCompraDetalle.getValorCompra().multiply(new BigDecimal(du).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP)));
@@ -184,7 +183,7 @@ public class OrdenCompraDetalleBean {
         ordenCompraDetalle.setIdordencompradetalle(0);
         ordenCompraDetalle.setOrdenCompra(new OrdenCompra());
         ordenCompraDetalle.setProducto(new Producto());
-        ordenCompraDetalle.setCantidad(0);
+        ordenCompraDetalle.setCantidad(BigDecimal.ZERO);
         ordenCompraDetalle.setObservacion("");
         ordenCompraDetalle.setLote("");
         ordenCompraDetalle.setFechaVencimiento(null);
@@ -452,14 +451,14 @@ public class OrdenCompraDetalleBean {
         for (OrdenCompraDetalle obj : listOrdenCompraDetalles) {
             //Realizar todos los calculos de moneda
             //Los calculos se estan realizando  teniendo en cuenta el precio de compra
-            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())))).setScale(2, RoundingMode.HALF_UP);
+            valorBruto = (valorBruto.add(obj.getPrecioCompra().multiply(obj.getCantidad()))).setScale(2, RoundingMode.HALF_UP);
             totalDescuento = (totalDescuento.add(obj.getMontoDescitem())).setScale(2, RoundingMode.HALF_UP);
             valorNeto = (valorBruto.subtract(totalDescuento)).setScale(2, RoundingMode.HALF_UP);
             montoSubtotal = valorNeto.divide(MensajeView.IGV_DIV, 4, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
             montoIgv = valorNeto.subtract(montoSubtotal).setScale(2, RoundingMode.HALF_UP);
 
             if (httpSession.getAttribute("idOrdenCompra") != null) {
-                montoTotal = montoTotal.add(obj.getPrecioCompra().multiply(new BigDecimal(obj.getCantidad())));
+                montoTotal = montoTotal.add(obj.getPrecioCompra().multiply(obj.getCantidad()));
             } else {
                 //totalTemp = montoTotal.add(obj.getSubTotal());//Antes
                 montoTotal = valorNeto;

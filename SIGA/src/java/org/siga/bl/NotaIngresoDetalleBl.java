@@ -1,6 +1,7 @@
 
 package org.siga.bl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.siga.be.NotaEntradaDetalle;
 import org.siga.dao.NotaIngresoDetalleDao;
@@ -79,7 +80,7 @@ public class NotaIngresoDetalleBl extends AbstractBL<NotaEntradaDetalle>{
         this.dao = dao;
     }
 
-    public long getCantIngresada(long idproducto, long id) {
+    public BigDecimal getCantIngresada(long idproducto, long id) {
         return dao.getCantIngresada(idproducto, id);
     }
     

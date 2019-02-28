@@ -36,6 +36,7 @@ public class OrdenCompra  implements java.io.Serializable {
      private String estado;
      private String penalidadIncumplimiento;
      private String tipoOrden;
+     private String reqParapago;
      
      private Set<OrdenCompraDetalle> ordenCompraDetalles = new HashSet<OrdenCompraDetalle>(0);
      private Set<NotaEntrada> notaEntradas = new HashSet<NotaEntrada>(0);
@@ -235,6 +236,14 @@ public class OrdenCompra  implements java.io.Serializable {
 
     public void setMoneda(Moneda moneda) {
         this.moneda = moneda;
+    }
+
+    public String getReqParapago() {
+        return reqParapago;
+    }
+
+    public void setReqParapago(String reqParapago) {
+        this.reqParapago = reqParapago;
     }
 
 

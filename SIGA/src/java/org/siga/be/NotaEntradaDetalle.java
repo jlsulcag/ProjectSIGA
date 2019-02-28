@@ -23,12 +23,12 @@ public class NotaEntradaDetalle implements java.io.Serializable {
     private String unidadMedida;
     private BigDecimal montoDescitem;
     private BigDecimal subTotal;
-    private int cantSolicitada;
-    private int cantRecibida;
-    private int cantPendiente;
-    private int cantIngreso;
-    private int cantDisponible;
-    private int totalProductos;
+    private BigDecimal cantSolicitada;
+    private BigDecimal cantRecibida;
+    private BigDecimal cantPendiente;
+    private BigDecimal cantIngreso;
+    private BigDecimal cantDisponible;
+    private BigDecimal totalProductos;
     private long idEquivalencia;
 
     public NotaEntradaDetalle() {
@@ -133,51 +133,51 @@ public class NotaEntradaDetalle implements java.io.Serializable {
         this.subTotal = subTotal;
     }
 
-    public int getCantSolicitada() {
+    public BigDecimal getCantSolicitada() {
         return cantSolicitada;
     }
 
-    public void setCantSolicitada(int cantSolicitada) {
+    public void setCantSolicitada(BigDecimal cantSolicitada) {
         this.cantSolicitada = cantSolicitada;
     }
 
-    public int getCantRecibida() {
+    public BigDecimal getCantRecibida() {
         return cantRecibida;
     }
 
-    public void setCantRecibida(int cantRecibida) {
+    public void setCantRecibida(BigDecimal cantRecibida) {
         this.cantRecibida = cantRecibida;
     }
 
-    public int getCantPendiente() {
+    public BigDecimal getCantPendiente() {
         return cantPendiente;
     }
 
-    public void setCantPendiente(int cantPendiente) {
+    public void setCantPendiente(BigDecimal cantPendiente) {
         this.cantPendiente = cantPendiente;
     }
 
-    public int getCantIngreso() {
+    public BigDecimal getCantIngreso() {
         return cantIngreso;
     }
 
-    public void setCantIngreso(int cantIngreso) {
+    public void setCantIngreso(BigDecimal cantIngreso) {
         this.cantIngreso = cantIngreso;
     }
 
-    public int getCantDisponible() {
+    public BigDecimal getCantDisponible() {
         return cantDisponible;
     }
 
-    public void setCantDisponible(int cantDisponible) {
+    public void setCantDisponible(BigDecimal cantDisponible) {
         this.cantDisponible = cantDisponible;
     }
 
-    public int getTotalProductos() {
+    public BigDecimal getTotalProductos() {
         return totalProductos;
     }
 
-    public void setTotalProductos(int totalProductos) {
+    public void setTotalProductos(BigDecimal totalProductos) {
         this.totalProductos = totalProductos;
     }
 

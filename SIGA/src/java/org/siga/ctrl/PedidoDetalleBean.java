@@ -2,6 +2,7 @@ package org.siga.ctrl;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -260,7 +261,7 @@ public class PedidoDetalleBean {
                     notaEntradaDetalle.setUnidadMedida(obj.getUnidadMedida());
                     notaEntradaDetalle.setCantSolicitada(obj.getCantidadSolicitada());
                     notaEntradaDetalle.setCantRecibida(obj.getCantidadSurtida());
-                    notaEntradaDetalle.setCantPendiente(0);
+                    notaEntradaDetalle.setCantPendiente(BigDecimal.ZERO);
                     notaEntradaDetalle.setCantIngreso(obj.getCantidadSurtida());
                     notaEntradaDetalle.setIdEquivalencia(obj.getIdEquivalencia());
 
@@ -312,7 +313,7 @@ public class PedidoDetalleBean {
         getAlmacenProducto().setUnidad(obj.getUnidadMedida());
         //Obtener factor de equivalencia
         equivalencia = equivalenciaBl.buscaxId(obj.getIdEquivalencia());
-        getAlmacenProducto().setStockActual((int) (obj.getCantIngreso() * equivalencia.getFactor()));
+        getAlmacenProducto().setStockActual((obj.getCantIngreso().multiply(new BigDecimal(equivalencia.getFactor()))));
 
         getAlmacenProductoBl().registrar(getAlmacenProducto());
         return getAlmacenProducto().getIdalmacenproducto();

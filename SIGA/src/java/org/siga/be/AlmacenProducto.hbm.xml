@@ -13,8 +13,8 @@
     <many-to-one class="org.siga.be.Producto" fetch="select" name="producto">
       <column name="id_producto" not-null="true"/>
     </many-to-one>
-    <property name="stockActual" type="int">
-      <column name="stock_actual" not-null="true"/>
+    <property name="stockActual" type="big_decimal">
+      <column name="stock_actual" not-null="true" precision="13"/>
     </property>
     <property name="lote" type="string">
       <column length="20" name="lote" not-null="true"/>

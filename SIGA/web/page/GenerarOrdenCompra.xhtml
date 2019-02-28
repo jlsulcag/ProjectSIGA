@@ -28,7 +28,7 @@
                                     <h:outputLabel value="Fecha :"/>
                                 </div>
                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
-                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es" disabled="true"
+                                    <p:calendar id="txfFecha" class="calendar" navigator="true" pattern="dd/MM/yyyy" mask="true" locale="es"
                                                 value="#{ordenCompraBean.ordenCompra.fecha}" required="true">
                                         <f:convertDateTime type="date"  dateStyle="short" pattern="dd/MM/yyyy" timeZone="GTM-5"/>
                                     </p:calendar>
@@ -122,6 +122,14 @@
                                         <f:selectItems value="#{monedaBean.selectOneItemsMoneda}"/>
                                     </p:selectOneMenu>
                                 </div>
+                                
+                                 <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <h:outputLabel for="txfReqParapago" value="Condiciones para pago :" />
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-3">
+                                    <p:inputText id="txfReqParapago" label="Condiciones para pago" 
+                                                 value="#{ordenCompraBean.ordenCompra.reqParapago}" />
+                                </div>
 
                             </div>                            
                         </div> 
@@ -136,7 +144,7 @@
                             </f:facet>
                             <f:facet name="right">
                                 <p:commandButton value="Guardar" icon="ui-icon-check" update=":formDataTable, :msg, :formP"
-                                                 actionListener="#{ordenCompraBean.registrar()}"/>
+                                                 actionListener="#{ordenCompraBean.guardar()}"/>
                                 <p:commandButton value="Cancelar" icon="ui-icon-close" actionListener="#{ordenCompraBean.inicio()}"
                                                  update="formP, :formDataTable"/>
                             </f:facet>
@@ -150,8 +158,11 @@
                                      rowsPerPageTemplate="10,15,20">
                             <f:facet name="header">Productos</f:facet>
 
-                            <p:column headerText="ID" style="width: 50px">
-                                <h:outputText value="#{item.idordencompradetalle}"/>
+                            <p:column style="width:80px;text-align: center">
+                                <p:commandButton id="btnDelete" update="formDataTable" action="#{ordenCompraBean.quitarItem()}"
+                                                 icon="ui-icon-trash" title="Borrar">
+                                    <f:setPropertyActionListener value="#{item}" target="#{ordenCompraBean.ordenCompraDetalle}" />
+                                </p:commandButton>
                             </p:column>
 
                             <p:column headerText="Producto">

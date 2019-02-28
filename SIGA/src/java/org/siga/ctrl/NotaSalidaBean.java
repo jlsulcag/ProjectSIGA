@@ -2,6 +2,7 @@ package org.siga.ctrl;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -213,7 +214,7 @@ public class NotaSalidaBean {
         //
         temp.setUnidadmedida(getUnidadMedida().getDescripcion());
         temp.setIdEquivalencia(equivalencia.getIdequivalencia());
-        if (notaSalidaDetalle.getCantSalida() <= almacenProducto.getStockActual()) {
+        if (notaSalidaDetalle.getCantSalida().compareTo(almacenProducto.getStockActual())==-1 || notaSalidaDetalle.getCantSalida().compareTo(almacenProducto.getStockActual())==0) {
             getListNotaSalidas().add(temp);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Cantidad no disponible");
@@ -248,10 +249,10 @@ public class NotaSalidaBean {
                 res2 = registrarNotaSalidaDetalle();
                 if (res2 == 0) {
                     for (NotaSalidaDetalle nsd : listNotaSalidas) {
-                        if (nsd.getStock() >= 0 && nsd.getStock() >= nsd.getCantSolicitada()) {
+                        if ((nsd.getStock().compareTo(BigDecimal.ZERO)==0 || nsd.getStock().compareTo(BigDecimal.ZERO)==1) && (nsd.getStock().compareTo(nsd.getCantSolicitada())==0 || nsd.getStock().compareTo(nsd.getCantSolicitada())==1)) {
                             equivalencia = equivalenciaBl.buscaxId(nsd.getIdEquivalencia());
                             if (equivalencia != null) {
-                                actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (int) (nsd.getCantSalida() * equivalencia.getFactor()));
+                                actualizarStock(MensajeView.SALIDA, nsd.getIdAlmacenProducto(), (nsd.getCantSalida().multiply(new BigDecimal(equivalencia.getFactor()))));
                             }
 
                         } else {
@@ -341,7 +342,7 @@ public class NotaSalidaBean {
     private long registrarNotaSalidaDetalle() {
         long id = -1;
         for (NotaSalidaDetalle obj : listNotaSalidas) {
-            if (obj.getStock() >= obj.getCantSolicitada()) {
+            if (obj.getStock().compareTo(obj.getCantSolicitada())==0 || obj.getStock().compareTo(obj.getCantSolicitada())==1) {
                 obj.setNotasalida(notaSalida);
                 id = notaSalidaDetalleBl.registrar(obj);
             }
@@ -352,10 +353,10 @@ public class NotaSalidaBean {
     public void inicioNew() {
         notaSalidaDetalle.setProducto(new Producto());
         producto.setUnidadMedida(null);
-        notaSalidaDetalle.setCantSolicitada(0);
-        notaSalidaDetalle.setCantAtendida(0);
-        notaSalidaDetalle.setCantPendiente(0);
-        notaSalidaDetalle.setCantSalida(0);
+        notaSalidaDetalle.setCantSolicitada(BigDecimal.ZERO);
+        notaSalidaDetalle.setCantAtendida(BigDecimal.ZERO);
+        notaSalidaDetalle.setCantPendiente(BigDecimal.ZERO);
+        notaSalidaDetalle.setCantSalida(BigDecimal.ZERO);
         notaSalidaDetalle.setIdAlmacenProducto(0);
         almacenProducto.setIdalmacenproducto(0);
         setTotalProductos(0);
@@ -375,7 +376,7 @@ public class NotaSalidaBean {
             nsd.setNotasalida(notaSalida);
             nsd.setCantSolicitada(obj.getCantidadSolicitada());
             nsd.setCantAtendida(obj.getCantidadSurtida());
-            nsd.setCantPendiente(obj.getCantidadSolicitada() - obj.getCantidadAutorizada());
+            nsd.setCantPendiente(obj.getCantidadSolicitada().subtract(obj.getCantidadAutorizada()));
             nsd.setCantSalida(obj.getCantidadAutorizada());
             //buscar el producto en el almacen  para realizar  la actualizacion de stock de acuerdo al orden de ingreso  y stock disponible
             nsd.setIdAlmacenProducto(almacenProductoBl.buscarMinNumeroOrdenxProducto(nsd.getProducto().getIdproducto()));
@@ -394,7 +395,7 @@ public class NotaSalidaBean {
             //obj.setCantPendiente(notaEntradaDetalle.getCantPendiente());
             if (obj.getProducto() == NotaSalidaDetalleTemp.getProducto()) {
 
-                if (NotaSalidaDetalleTemp.getCantSalida() > obj.getCantSolicitada()) {
+                if (NotaSalidaDetalleTemp.getCantSalida().compareTo(obj.getCantSolicitada())==1) {
                     //la cantidad ingresa se debe mantener
                     obj.setCantSalida(obj.getCantPendiente());
                     msg = "La cantidad ingresada supera a la cantidad pendiente";
@@ -623,13 +624,13 @@ public class NotaSalidaBean {
         this.pedidoBl = pedidoBl;
     }
 
-    private void actualizarStock(int op, long idAlmacenProducto, int cantidad) {
+    private void actualizarStock(int op, long idAlmacenProducto, BigDecimal cantidad) {
         AlmacenProducto temp = new AlmacenProducto();
         temp = almacenProductoBl.buscar(idAlmacenProducto);
         if (op == MensajeView.SALIDA) {
-            temp.setStockActual(temp.getStockActual() - cantidad);
+            temp.setStockActual(temp.getStockActual().subtract(cantidad));
         } else if (op == MensajeView.ENTRADA) {
-            temp.setStockActual(temp.getStockActual() + cantidad);
+            temp.setStockActual(temp.getStockActual().add(cantidad));
         }
         almacenProducto.setIdalmacenproducto(temp.getIdalmacenproducto());
         almacenProductoBl.actualizar(temp);

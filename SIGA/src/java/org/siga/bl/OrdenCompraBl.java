@@ -3,6 +3,8 @@ package org.siga.bl;
 
 import java.util.List;
 import org.siga.be.OrdenCompra;
+import org.siga.be.OrdenCompraDetalle;
+import org.siga.be.OrdenCompraSeguimiento;
 import org.siga.dao.OrdenCompraDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
@@ -91,6 +93,10 @@ public class OrdenCompraBl extends AbstractBL<OrdenCompra>{
 
     public OrdenCompra buscarXId(long idordencompra) {
         return dao.buscarXId(idordencompra);
+    }
+    
+    public int guardar(OrdenCompra obj, List<OrdenCompraDetalle> listOrdenCompraDetalles, OrdenCompraSeguimiento ocs){
+        return dao.guardar(obj, listOrdenCompraDetalles, ocs);
     }
     
 }

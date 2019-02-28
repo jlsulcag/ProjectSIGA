@@ -1,5 +1,6 @@
 package org.siga.ctrl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -160,7 +161,7 @@ public class PedidoBean {
 
     public void inicioNew() {
         pedidoDetalle.setProducto(new Producto());
-        pedidoDetalle.setCantidadSolicitada(0);
+        pedidoDetalle.setCantidadSolicitada(BigDecimal.ZERO);
         setTotalProductos(0);
         if(producto != null){
             producto = null;
