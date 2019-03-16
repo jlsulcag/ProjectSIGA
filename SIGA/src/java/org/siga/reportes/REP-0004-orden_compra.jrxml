@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e07872e-b0af-4075-bb12-ddd09af90482">
 	<property name="ireport.zoom" value="1.464100000000029"/>
 	<property name="ireport.x" value="14"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="ID_ORDEN_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -136,7 +136,7 @@ where oc.idordencompra=$P{ID_ORDEN_COMPRA}]]>
 				<text><![CDATA[PUNTO ENTREGA :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="84" y="86" width="255" height="19" forecolor="#006699" backcolor="#FEEEBD"/>
+				<reportElement uuid="46a0f2b4-f70e-478a-89f0-4e43b1759c78" mode="Opaque" x="84" y="87" width="255" height="19" forecolor="#006699" backcolor="#FEEEBD"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
