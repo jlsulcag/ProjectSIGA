@@ -39,17 +39,17 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada> {
     private SessionFactory sessionFactory;
     
     //@ManagedProperty(value = "#{almacenProducto}")
-    @Autowired
-    @Qualifier("almacenProducto")
-    private AlmacenProducto almacenProducto;
+    //@Autowired
+    //@Qualifier("almacenProducto")
+    //private AlmacenProducto almacenProducto;
     //@ManagedProperty(value = "#{almacenProductoBl}")
     @Autowired
     @Qualifier("almacenProductoBl")
     private AlmacenProductoBl almacenProductoBl;
     //@ManagedProperty(value = "#{kardex}")
-    @Autowired
-    @Qualifier("kardex")
-    private Kardex kardex;
+    //@Autowired
+    //@Qualifier("kardex")
+    //private Kardex kardex;
     //@ManagedProperty(value = "#{kardexBl}")
     @Autowired
     @Qualifier("kardexBl")
@@ -180,21 +180,22 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada> {
                 obj.setNotaEntrada(notaEntrada);
                 sesion.save(obj);                
                 //stock  almacen
-                getAlmacenProducto().setProducto(obj.getProducto());
-                getAlmacenProducto().setStockActual(obj.getTotalProductos());
-                getAlmacenProducto().setProducto(obj.getProducto());
-                getAlmacenProducto().setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
-                getAlmacenProducto().setLote(obj.getLote());
-                getAlmacenProducto().setFechaVencimiento(obj.getFechaVencimiento());
-                getAlmacenProducto().setValorCompraUnitario(obj.getValorCompra());
-                getAlmacenProducto().setIdEquivalencia(obj.getIdEquivalencia());
-                getAlmacenProducto().setFechaIngreso(new Date());
+                AlmacenProducto almacenProducto = new AlmacenProducto();
+                almacenProducto.setProducto(obj.getProducto());
+                almacenProducto.setStockActual(obj.getTotalProductos());
+                almacenProducto.setAlmacen(obj.getNotaEntrada().getAlmacenDestino());
+                almacenProducto.setLote(obj.getLote());
+                almacenProducto.setFechaVencimiento(obj.getFechaVencimiento());
+                almacenProducto.setValorCompraUnitario(obj.getValorCompra());
+                almacenProducto.setIdEquivalencia(obj.getIdEquivalencia());
+                almacenProducto.setFechaIngreso(new Date());
                 //registrar el orden de ingreso para cumplir con FIFO
                 int numOrden = getAlmacenProductoBl().obtenerUltimoNumero(obj.getProducto().getIdproducto());
-                getAlmacenProducto().setOrdenIngreso(numOrden + 1);
-                getAlmacenProducto().setUnidad(obj.getUnidadMedida());
-                sesion.save(getAlmacenProducto());
+                almacenProducto.setOrdenIngreso(numOrden + 1);
+                almacenProducto.setUnidad(obj.getUnidadMedida());
+                sesion.save(almacenProducto);
                 //kardex
+                Kardex kardex = new Kardex();
                 kardex.setProducto(obj.getProducto());
                 kardex.setAlmacen(notaEntrada.getAlmacenDestino());
                 kardex.setFechaMov(new Date());
@@ -250,28 +251,12 @@ public class NotaIngresoDao extends AbstractDA<NotaEntrada> {
         MensajeView.errorFatal(he);
     }
 
-    public AlmacenProducto getAlmacenProducto() {
-        return almacenProducto;
-    }
-
-    public void setAlmacenProducto(AlmacenProducto almacenProducto) {
-        this.almacenProducto = almacenProducto;
-    }
-
     public AlmacenProductoBl getAlmacenProductoBl() {
         return almacenProductoBl;
     }
 
     public void setAlmacenProductoBl(AlmacenProductoBl almacenProductoBl) {
         this.almacenProductoBl = almacenProductoBl;
-    }
-
-    public Kardex getKardex() {
-        return kardex;
-    }
-
-    public void setKardex(Kardex kardex) {
-        this.kardex = kardex;
     }
 
     public KardexBl getKardexBl() {
