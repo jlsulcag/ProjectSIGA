@@ -3,6 +3,7 @@ package org.siga.bl;
 
 import java.util.List;
 import org.siga.be.NotaEntrada;
+import org.siga.be.NotaEntradaDetalle;
 import org.siga.dao.NotaIngresoDao;
 import org.siga.util.AbstractBL;
 import org.siga.util.AbstractDA;
@@ -97,5 +98,9 @@ public class NotaIngresoBl extends AbstractBL<NotaEntrada>{
 
     public List<NotaEntrada> listarCompras() {
         return dao.listarCompras();
+    }
+
+    public int registrar(NotaEntrada notaEntrada, List<NotaEntradaDetalle> listNotaEntradaDetalle) {
+        return dao.registrar(notaEntrada, listNotaEntradaDetalle);
     }
 }

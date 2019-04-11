@@ -120,49 +120,40 @@ public class NotaIngresoBean {
     }
 
     public void registrar() {
-        //validar  que el los productos esten cargados en la tabla de  detalle
-        int r = -1;
-        int cont = 0;
-        NotaEntrada temp = new NotaEntrada();
         if (!listNotaEntradaDetalle.isEmpty()) {
-            res = registrarNotaEntrada();
-            //Registrar Nota Entrada Detalle
-            if (res == 0) {
-                if (notaEntrada.getOrdenCompra() != null) {
-                    temp = notaIngresoBl.buscarxIdCompra(notaEntrada.getOrdenCompra().getIdordencompra());
-                    if (temp != null) {
-                        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-                        httpSession.setAttribute("notaEntrada", temp);
-                    }
-                }
-
-                for (NotaEntradaDetalle obj : listNotaEntradaDetalle) {
-                    cont++;
-                    obj.setNotaEntrada(notaEntrada);
-                    notaIngresoDetalleBl.registrar(obj);
-                    //Registrar o actualizar almacen stock
-                    long resp = registrarStockAlmacen(obj);
-                    if (cont == listNotaEntradaDetalle.size()) {
-                        if (resp != 0) {
-                            MensajeView.registroCorrecto();
-                        } else {
-                            MensajeView.registroError();
-                        }
-                    }
-
-                    //Registrar Kardex
-                    long kx = registrarKardex(obj, notaEntrada);
-                }
-                //Actualizar el estado de  la orden de compra, solo si es que el ingreso proviene de una orden de compra
+            int r = -1;
+            Usuario user = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+            //BUSCAR ORDEN COMPRA PARA OBTENER SU PROVEEDOR  Y ALMACEN DESTINNO REGISTRADO
+            OrdenCompra temp = ordenCompraBl.buscarXId(notaEntrada.getOrdenCompra().getIdordencompra());
+            if (temp != null) {
                 if (notaEntrada.getOrdenCompra() != null && notaEntrada.getOrdenCompra().getIdordencompra() != 0) {
-                    long res = -1;
-                    res = registrarOrdenCompraSeguimiento();
+                    notaEntrada.setOrdenCompra(notaEntrada.getOrdenCompra());
+                    notaEntrada.setProveedor(temp.getProveedor());
+                    notaEntrada.setAlmacenDestino(temp.getAlmacenSolicitante());
+                } else {
+                    notaEntrada.setOrdenCompra(null);
+                    notaEntrada.setProveedor(null);
+                    notaEntrada.setAlmacenDestino(null);
                 }
+                notaEntrada.setIdUserReg(user != null ? user.getIdusuario() : 0);
+                notaEntrada.setObservacion("");
+            } else {
+                notaEntrada.setOrdenCompra(null);
+                notaEntrada.setIdUserReg(user != null ? user.getIdusuario() : 0);
+                notaEntrada.setObservacion("");
+                notaEntrada.setProveedor(notaEntrada.getProveedor().getIdproveedor() > 0 ? notaEntrada.getProveedor() : null);
             }
-            iniciar();
+            //METODO TRANSACCIONAL QUE REGISTRA LA NOTA  DE ENTRADA, DETALLE, ACTUALIZA STOCK ALMACEN, REGISTRA MOVIMIENTO DE KARDEX Y ACTUALIZA ESTADO DE ORDEN DE COMPRA
+            r = notaIngresoBl.registrar(notaEntrada, listNotaEntradaDetalle);
+            if (r == 1) {
+                MensajeView.registroCorrecto();
+                iniciar();
+            } else {
+                MensajeView.registroError();
+            }
         } else {
             MensajeView.listVacia();
-        }
+        }        
     }
 
     @PostConstruct

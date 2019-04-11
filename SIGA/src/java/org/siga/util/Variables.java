@@ -12,6 +12,7 @@ package org.siga.util;
 public class Variables {
     
     //public static final String HOST = "127.0.0.1";
+    //public static final String HOST = "192.168.32.33";
     public static final String HOST = "192.168.32.33";
     public static final String PORT = "5432";
     public static final String DB = "sigadb_desa";
