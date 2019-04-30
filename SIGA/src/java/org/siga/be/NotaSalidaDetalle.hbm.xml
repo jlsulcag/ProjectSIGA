@@ -17,16 +17,16 @@
         <property name="unidadmedida" type="string">
             <column length="30" name="unidadmedida"/>
         </property>
-        <property name="cantSolicitada" type="int">
+        <property name="cantSolicitada" type="big_decimal">
             <column name="cant_solicitada"/>
         </property>
-        <property name="cantAtendida" type="int">
+        <property name="cantAtendida" type="big_decimal">
             <column name="cant_atendida" not-null="true"/>
         </property>
-        <property name="cantPendiente" type="int">
+        <property name="cantPendiente" type="big_decimal">
             <column name="cant_pendiente" not-null="true"/>
         </property>
-        <property name="cantSalida" type="int">
+        <property name="cantSalida" type="big_decimal">
             <column name="cant_salida" not-null="true"/>
         </property>
         <property name="idAlmacenProducto" type="long">

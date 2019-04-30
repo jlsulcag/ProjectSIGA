@@ -153,6 +153,8 @@ public class PedidoBean {
         long id = -1;
         for (PedidoDetalle obj : listPedidoDetalle) {
             obj.setPedido(pedido);
+            obj.setCantidadAutorizada(BigDecimal.ZERO);
+            obj.setCantidadSurtida(BigDecimal.ZERO);
             pedidoDetalleBl.registrar(obj);
             id = obj.getIdpedidodetalle();
         }
