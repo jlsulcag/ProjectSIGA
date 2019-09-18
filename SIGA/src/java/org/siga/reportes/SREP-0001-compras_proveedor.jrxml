@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FAR_COMPRAS_DETALLE" language="groovy" pageWidth="540" pageHeight="555" orientation="Landscape" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="56c40606-93dd-4203-921e-449a16765d39">
-	<property name="ireport.zoom" value="2.1435888100000104"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="6.727499949325641"/>
+	<property name="ireport.x" value="71"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="ID_COMPRA" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -30,7 +30,7 @@ order by pro.descripcion]]>
 	<columnHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="97b63155-3843-46be-8de6-cda1c4adb5de" x="0" y="0" width="203" height="15"/>
+				<reportElement uuid="97b63155-3843-46be-8de6-cda1c4adb5de" x="0" y="0" width="203" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -46,7 +46,7 @@ order by pro.descripcion]]>
 				<text><![CDATA[Lote]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="543b5d7b-450d-4d67-98d0-d2142bec6a99" x="301" y="0" width="77" height="15"/>
+				<reportElement uuid="543b5d7b-450d-4d67-98d0-d2142bec6a99" x="301" y="0" width="77" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -62,7 +62,7 @@ order by pro.descripcion]]>
 				<text><![CDATA[Cant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="20fef145-8a32-46d9-8c32-7bec0b4d3787" x="423" y="0" width="59" height="15"/>
+				<reportElement uuid="20fef145-8a32-46d9-8c32-7bec0b4d3787" x="423" y="0" width="59" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 					<paragraph leftIndent="5"/>
@@ -70,7 +70,7 @@ order by pro.descripcion]]>
 				<text><![CDATA[PC Unit.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bf72722c-c440-41bc-b31c-b5da3459a4b2" x="481" y="0" width="58" height="15"/>
+				<reportElement uuid="bf72722c-c440-41bc-b31c-b5da3459a4b2" x="481" y="0" width="58" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 					<paragraph leftIndent="5"/>

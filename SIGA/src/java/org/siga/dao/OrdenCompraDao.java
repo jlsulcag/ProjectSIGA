@@ -140,7 +140,7 @@ public class OrdenCompraDao extends AbstractDA<OrdenCompra> {
     }
 
     public int guardar(OrdenCompra obj, List<OrdenCompraDetalle> listOrdenCompraDetalles, OrdenCompraSeguimiento ocs) {
-        try {
+        try {            
             iniciarOperacion();
             sesion.save(obj);
             //guardar detalle de la orden de compra

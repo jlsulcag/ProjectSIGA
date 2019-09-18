@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SREP-10-Detalles" language="groovy" pageWidth="540" pageHeight="555" orientation="Landscape" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1b5811a9-74a4-4297-85ac-657574ea8d33">
+	<property name="ireport.zoom" value="1.7715610000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_ORDENCOMPRA" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT
+A.idordencompradetalle,
+A.cantidad,
+A.lote,
+A.fecha_vencimiento,
+A.valor_compra,
+A.precio_compra,
+B.idordencompra,
+(CASE WHEN B.tipo_orden = 'SERVICIO' THEN A.descripcion ELSE C.descripcion END) AS descipcion_producto,
+C.descripcion AS producto,
+(A.cantidad*A.precio_compra) AS valor_subtotal
+FROM ORDEN_COMPRA_DETALLE A INNER JOIN ORDEN_COMPRA B
+ON A.id_ordencompra = B.idordencompra INNER JOIN PRODUCTO C
+ON A.id_producto = C.idproducto
+WHERE B.idordencompra = $P{ID_ORDENCOMPRA}
+ORDER BY A.idordencompradetalle ASC]]>
+	</queryString>
+	<field name="idordencompradetalle" class="java.lang.Long"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="lote" class="java.lang.String"/>
+	<field name="fecha_vencimiento" class="java.sql.Date"/>
+	<field name="valor_compra" class="java.math.BigDecimal"/>
+	<field name="precio_compra" class="java.math.BigDecimal"/>
+	<field name="idordencompra" class="java.lang.Long"/>
+	<field name="descipcion_producto" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="valor_subtotal" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="68006db6-c3ea-4d87-b357-74523f7b7725" x="1" y="0" width="539" height="13"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="2af6f789-462e-4dd6-bf5d-0c5be82f1f60" x="302" y="0" width="77" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Fecha Venc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86980116-7cf3-47ca-95cb-add331f527db" x="378" y="0" width="47" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Cant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7821d5b2-133d-4507-8112-fce167e5bcd5" x="1" y="0" width="203" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec5273be-3934-44ea-bf71-5dc817293ed5" x="424" y="0" width="59" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[PC Unit.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01d3560e-c7e4-4cd5-b3a8-de6a30995a7a" x="482" y="0" width="58" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Sub Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7e0a5bbb-e68f-4633-bda0-1606c16bac2a" x="203" y="0" width="99" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="603e19b7-db1b-4c95-9544-37c50a849a3c" x="1" y="0" width="202" height="12"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descipcion_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6956ebc9-fdb2-44c3-b959-bf24e143d448" x="204" y="0" width="98" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e350c3af-c6c2-4b14-9d5d-269194750389" x="302" y="0" width="77" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="53c97725-b708-4490-81d1-dcd1d72ccf27" x="379" y="0" width="46" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement uuid="bc8e5d3e-fdeb-441e-8482-0a6857696d4e" x="425" y="0" width="57" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio_compra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement uuid="ead2cb33-98b6-4adb-bb75-98838b602fec" x="483" y="0" width="57" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

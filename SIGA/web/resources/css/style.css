@@ -78,8 +78,6 @@ body{
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;*/
-    //filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/fonfo.jpg', sizingMethod='scale');
-    //-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/fonfo.jpg', sizingMethod='scale')";
 }
 .admin_body{
     background: url("../img/bg.png"); 
@@ -474,7 +472,7 @@ body{
         width:450px !important;
 }*/
 
-// LOGUIN
+
 .login {
     position: absolute; 
     top: 50%;
